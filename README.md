@@ -84,6 +84,7 @@ Figma：https://www.figma.com/file/2YTQ4ytdWl1pL92nNYW53W/Fighter-APP?type=desig
 - [x] 音声投稿機能
 - [x] 閲覧機能（未ログインでも閲覧可能）
 - [x] 音声投稿の削除機能
+- [x] プライバシー設定の機能
 - [x] いいね機能
 
 
@@ -95,3 +96,6 @@ Figma：https://www.figma.com/file/2YTQ4ytdWl1pL92nNYW53W/Fighter-APP?type=desig
 直接変更できるものではなく、一旦メールなどを介して専用のページで変更する画面遷移になっているか？
 - [x] メールアドレス
 - [x] パスワード
+
+### ER図
+ER図：https://i.gyazo.com/b5f6223ad83aa71319a18820c022d3ca.png
