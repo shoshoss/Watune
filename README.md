@@ -98,4 +98,4 @@ Figma：https://www.figma.com/file/2YTQ4ytdWl1pL92nNYW53W/Fighter-APP?type=desig
 - [x] パスワード
 
 ### ER図
-ER図：https://i.gyazo.com/5289dc1b4444fb2a2509ac7e027ebab0.png
+ER図：https://i.gyazo.com/71f8b38b0844ad18f4bf3eab32281724.png
