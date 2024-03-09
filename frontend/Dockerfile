@@ -1,0 +1,13 @@
+# React フロントエンド用の Dockerfile
+FROM node:20
+
+# 作業ディレクトリの作成と設定
+RUN mkdir /app
+WORKDIR /app
+
+# 依存関係のインストール
+COPY package.json yarn.lock /app/
+RUN yarn install
+
+# アプリケーションのコードをコピー
+COPY . /app
