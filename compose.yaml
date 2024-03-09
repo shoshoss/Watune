@@ -1,10 +1,12 @@
 services:
   # Rails バックエンドのサービス設定
   backend:
-    build:
-      context: ./backend
+    build: ./backend
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    container_name: fighter_app_backend_container
     volumes:
       - ./backend:/app
+      - bundle_data:/usr/local/bundle
     ports:
       - "3001:3000"
     environment:
@@ -17,5 +19,6 @@ services:
       - ./frontend:/app
     ports:
       - "3000:3000"
+    container_name: fighter_app_frontend_container
     environment:
       - TZ=Asia/Tokyo
