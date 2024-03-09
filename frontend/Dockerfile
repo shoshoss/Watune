@@ -6,7 +6,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # 依存関係のインストール
-COPY package.json yarn.lock /app/
+COPY package.json package-lock.json /app/
 RUN yarn install
 
 # アプリケーションのコードをコピー
