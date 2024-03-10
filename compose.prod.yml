@@ -1,0 +1,12 @@
+services:
+  backend:
+    environment:
+      RAILS_ENV: production # 本番環境であることをRailsに指示
+      DATABASE_URL: ${DATABASE_URL} # データベースURLを環境変数から取得
+    ports:
+      - "3001:3000" # ホストのポート3001をコンテナのポート3000に転送
+  frontend:
+    environment:
+      NODE_ENV: production # 本番環境であることをNode.jsに指示
+    ports:
+      - "3000:3000" # ホストのポート3000をコンテナのポート3000に転送
