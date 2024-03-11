@@ -1,27 +1,28 @@
-# Rails バックエンド用の Dockerfile
-FROM ruby:3.3
+# Rubyのバージョンを修正
+FROM ruby:3.1.3
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-# PostgreSQLクライアントをインストールします。データベースへの接続に必要です。
-RUN apt-get update -qq && apt-get install -y postgresql-client
+# PostgreSQLクライアントと必要なパッケージを一度にインストール
+RUN apt-get update -qq && apt-get install -y postgresql-client curl apt-transport-https wget && \
+  rm -rf /var/lib/apt/lists/*
 
-# アプリケーション用のディレクトリを作成します。
-RUN mkdir /app
-WORKDIR /app
+# 作業ディレクトリを/backendに設定
+RUN mkdir /backend
+WORKDIR /backend
 
-# Bundlerをインストールし、Gemfileに基づいて必要なGemをインストールします。
-COPY Gemfile Gemfile.lock /app/
+# BundlerとGemの依存関係をインストール
+COPY Gemfile Gemfile.lock /backend/
 RUN gem install bundler && bundle install
 
-# Railsアプリケーションが起動する際に前回のプロセスIDが残っているとエラーになるため、
-# エントリーポイントスクリプトを使用してそれを削除します。
+# エントリーポイントスクリプトをコピーして実行可能に設定
 COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
-# アプリケーションのコードをコピーします。
-COPY . /app
+# アプリケーションのコードをコピー
+COPY . /backend
 
-# entrypoint.shの内容も適切ですが、`/backend/tmp/pids/server.pid`のパスが`/app/tmp/pids/server.pid`であるべきか確認してください。
-# Dockerfileと同じディレクトリにあるentrypoint.shを編集してください。
+# Railsサーバーを起動するための設定
+EXPOSE 3000
+CMD ["rails", "server", "-b", "0.0.0.0"]
