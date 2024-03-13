@@ -11,8 +11,8 @@ RUN mkdir backend
 WORKDIR /backend
 
 # Bundlerが依存するバージョンのGemをインストールし、bundle installを実行
-COPY Gemfile /backend/Gemfile
-COPY Gemfile.lock /backend/Gemfile.lock
+ADD Gemfile /backend/Gemfile
+ADD Gemfile.lock /backend/Gemfile.lock
 RUN gem install bundler -v 2.5.6 && bundle _2.5.6_ install
 
 # アプリケーションのコードをコピー
