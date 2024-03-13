@@ -2,18 +2,20 @@ services:
   db:
     image: postgres # PostgreSQLデータベースの使用
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data # データの永続化
+      - postgres_volume:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORD: admin
     ports:
-      - "15432:5432" # ホストマシンの15432ポートをコンテナの5432ポートに転送
+      - "5432:5432" # ホストマシンの5432ポートをコンテナの5432ポートに転送
 
-  api:
-    build: ./backend # Dockerfileが存在するディレクトリを指定
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+  backend:
+    build: ./docker/rails # Dockerfileが存在するディレクトリを指定
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    tty: true
+    stdin_open: true
     volumes:
-      - ./backend:/app # バックエンドディレクトリをコンテナの/appディレクトリにマウント
+      - ./backend:/backend
     environment:
       RAILS_ENV: development
       TZ: Asia/Tokyo # タイムゾーンを設定
@@ -21,19 +23,23 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    restart: always
 
   # React フロントエンドのサービス設定
   front:
-    build: ./frontend # Dockerfileが存在するディレクトリを指定
-    container_name: fighter_app_frontend_container # コンテナの名前を設定
+    build: ./docker/react # Dockerfileが存在するディレクトリを指定
     volumes:
-      - ./frontend:/app # ホストマシンのfrontendディレクトリをコンテナの/appディレクトリにマウント
+      - ./:/usr/src/app
+    command: sh -c 'cd frontend && yarn start'
     ports:
       - "3001:3000" # フロントエンドは3000ポートで起動し、ホストの3001ポートに転送
     environment:
       TZ: Asia/Tokyo # タイムゾーンを設定
+    tty: true
 
 # ボリュームの定義
 volumes:
   bundle_data: # RailsのGem依存関係をキャッシュするためのボリューム
   node_modules: # Reactのnpm依存関係をキャッシュするためのボリューム
+  postgres_volume:
+    external: true
