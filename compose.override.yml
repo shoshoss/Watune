@@ -1,13 +1,15 @@
 services:
-  backend:
+  api:
     volumes:
       - ./backend:/app # 開発時にコードの変更をコンテナに即時反映させるための設定
       - bundle_data:/usr/local/bundle # Bundlerのキャッシュをボリュームに保持
     environment:
       RAILS_ENV: development # 開発環境であることをRailsに指示
-  frontend:
+
+  front:
     volumes:
       - ./frontend:/app # 開発時にコードの変更をコンテナに即時反映させるための設定
       - node_modules:/app/node_modules # ノードモジュールをボリュームに保持
     environment:
+      PORT: "3001"
       NODE_ENV: development # 開発環境であることをNode.jsに指示
