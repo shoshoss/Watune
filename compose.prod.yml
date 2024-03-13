@@ -4,9 +4,14 @@ services:
       RAILS_ENV: production # 本番環境であることをRailsに指示
       DATABASE_URL: ${DATABASE_URL} # データベースURLを環境変数から取得
     ports:
-      - "3001:3000" # ホストのポート3001をコンテナのポート3000に転送
-  frontend:
+      - "3000:3000" # 本番環境では3000ポートをそのまま使用
+
+  front:
+    # 本番環境用のフロントエンド設定
+    # ビルドステップや特定の環境変数が異なる可能性がある
+    # この例では、フロントエンドの本番ビルド用コマンドを指定する
+    command: yarn build && yarn serve -s build -l 3000
     environment:
       NODE_ENV: production # 本番環境であることをNode.jsに指示
     ports:
-      - "3000:3000" # ホストのポート3000をコンテナのポート3000に転送
+      - "3001:3000" # 本番ビルドされたアプリケーションは3000ポートでサーブされ、ホストの3001ポートに転送
