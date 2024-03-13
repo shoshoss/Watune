@@ -13,7 +13,7 @@ WORKDIR /backend
 
 # BundlerとGemの依存関係をインストール
 COPY Gemfile Gemfile.lock /backend/
-RUN gem install bundler && bundle install
+RUN gem install bundler -v 2.5.6 && bundle _2.5.6_ install
 
 # エントリーポイントスクリプトをコピーして実行可能に設定
 COPY entrypoint.sh /usr/bin/
