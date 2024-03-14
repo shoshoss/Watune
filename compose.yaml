@@ -25,11 +25,13 @@ services:
     restart: always
 
   frontend:
-    build: ./docker/react
+    build:
+      context: ./frontend  # ビルドコンテキストをfrontendディレクトリに設定
+      dockerfile: ../docker/react/Dockerfile  # docker/reactディレクトリ内のDockerfileを指定
     volumes:
       - ./frontend:/usr/src/app
       - node_modules:/usr/src/app/node_modules
-    command: yarn start
+    command: npm start
     environment:
       NODE_ENV: development
     ports:
