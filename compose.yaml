@@ -1,45 +1,46 @@
 services:
+  # データベースサービス
   db:
-    image: postgres # PostgreSQLデータベースの使用
+    image: postgres
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORD: admin
     ports:
-      - "5432:5432" # ホストマシンの5432ポートをコンテナの5432ポートに転送
+      - "5432:5432"
 
+  # バックエンドサービス
   backend:
-    build: ./docker/rails # Dockerfileが存在するディレクトリを指定
+    build: ./docker/rails
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
-    tty: true
-    stdin_open: true
     volumes:
       - ./backend:/backend
+      - bundle_data:/usr/local/bundle
     environment:
       RAILS_ENV: development
-      TZ: Asia/Tokyo # タイムゾーンを設定
+      TZ: Asia/Tokyo
     ports:
       - "3000:3000"
     depends_on:
       - db
     restart: always
 
-  # React フロントエンドのサービス設定
-  front:
-    build: ./docker/react # Dockerfileが存在するディレクトリを指定
+  # フロントエンドサービス
+  frontend:
+    build: ./docker/react
     volumes:
-      - ./:/usr/src/app
+      - ./frontend:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
     command: sh -c 'cd frontend && yarn start'
-    ports:
-      - "3001:3000" # フロントエンドは3000ポートで起動し、ホストの3001ポートに転送
     environment:
-      TZ: Asia/Tokyo # タイムゾーンを設定
-    tty: true
+      NODE_ENV: development
+      TZ: Asia/Tokyo
+    ports:
+      - "3001:3000"
 
-# ボリュームの定義
 volumes:
-  bundle_data: # RailsのGem依存関係をキャッシュするためのボリューム
-  node_modules: # Reactのnpm依存関係をキャッシュするためのボリューム
+  bundle_data:
+  node_modules:
   postgres_volume:
     external: true
