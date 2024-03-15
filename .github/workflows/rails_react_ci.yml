@@ -24,22 +24,22 @@ jobs:
         with:
           ruby-version: "3.3.0"
           bundler-cache: true
-
-      - name: Install dependencies
-        run: |
-          bundle install --jobs 4 --retry 3
+        working-directory: backend
 
       - name: Setup database
         run: |
-          cp config/database.yml.ci config/database.yml
+          cp docker/postgres/database.yml config/database.yml
           bundle exec rails db:create RAILS_ENV=test
           bundle exec rails db:migrate RAILS_ENV=test
+        working-directory: backend
 
       - name: Run RuboCop
         run: bundle exec rubocop
+        working-directory: backend
 
       - name: Run RSpec
         run: bundle exec rspec
+        working-directory: backend
 
   frontend-tests:
     runs-on: ubuntu-latest
@@ -55,6 +55,8 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        working-directory: frontend
 
       - name: Run frontend tests
         run: npm test
+        working-directory: frontend
