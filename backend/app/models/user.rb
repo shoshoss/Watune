@@ -4,11 +4,11 @@ class User < ApplicationRecord
 
   # ユーザーが「フォローしている」関係性。ユーザーが削除されると、そのユーザーがフォローしている関係性も全て削除される。
   # "Relationship" モデルを "active_relationships" として参照し、"follower_id" を外部キーとして使用。
-  has_many :active_relationships, class_name: "Relationship", foreign_key: "follower_id", dependent: :destroy
-  
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
+
   # ユーザーを「フォローしている」関係性。ユーザーが削除されると、そのユーザーをフォローしている関係性も全て削除される。
   # "Relationship" モデルを "passive_relationships" として参照し、"followed_id" を外部キーとして使用。
-  has_many :passive_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
+  has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
 
   # ユーザーがフォローしている他のユーザー。"active_relationships" を通じて、フォローしている（"followed"）ユーザーを取得。
   has_many :following, through: :active_relationships, source: :followed
