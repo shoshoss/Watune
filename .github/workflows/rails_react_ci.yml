@@ -5,16 +5,16 @@ name: Rails React CI
 on: [push, pull_request]
 
 jobs:
+
   # バックエンドのテストジョブ
   backend-tests:
     # Ubuntu 最新バージョンで実行
     runs-on: ubuntu-latest
+
     # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
-    # バックエンドディレクトリを作業ディレクトリに設定
-    working-directory: backend
 
-    # Postgresサービスを立ち上げる
+    # サービスコンテナの設定
     services:
       postgres:
         # Postgres 16.2のイメージを使用
@@ -25,57 +25,70 @@ jobs:
         ports:
           - 5432:5432
         # Postgresの健全性をチェックする設定
-        options: --health-cmd "pg_isready" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd "pg_isready"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     # ジョブの手順
     steps:
-      - uses: actions/checkout@v4
 
-      # Rubyのセットアップ
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3.0"
-          bundler-cache: true
+    - uses: actions/checkout@v4
 
-      # データベースのセットアップ
-      - name: Setup database
-        run: |
-          cp docker/postgres/database.yml config/database.yml
-          bundle exec rails db:create RAILS_ENV=test
-          bundle exec rails db:migrate RAILS_ENV=test
+    # Rubyのセットアップ
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.3.0'
+        bundler-cache: true
 
-      # Rubocopでコードをチェック
-      - name: Run RuboCop
-        run: bundle exec rubocop
+    # バックエンドディレクトリを作業ディレクトリに設定
+    - name: Change working directory
+      run: cd backend
 
-      # RSpecでテストを実行
-      - name: Run RSpec
-        run: bundle exec rspec
+    # データベースのセットアップ
+    - name: Setup database
+      run: |
+        cp docker/postgres/database.yml config/database.yml
+        bundle exec rails db:create RAILS_ENV=test
+        bundle exec rails db:migrate RAILS_ENV=test
+
+    # Rubocopでコードをチェック
+    - name: Run RuboCop
+      run: bundle exec rubocop
+
+    # RSpecでテストを実行
+    - name: Run RSpec
+      run: bundle exec rspec
 
   # フロントエンドのテストジョブ
   frontend-tests:
     # Ubuntu 最新バージョンで実行
     runs-on: ubuntu-latest
+
     # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
-    # フロントエンドディレクトリを作業ディレクトリに設定
-    working-directory: frontend
 
     # ジョブの手順
     steps:
-      - uses: actions/checkout@v4
 
-      # Node.jsのセットアップ
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
+    - uses: actions/checkout@v4
 
-      # 依存関係のインストール
-      - name: Install dependencies
-        run: npm ci
+    # Node.jsのセットアップ
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      # フロントエンドのテストを実行
-      - name: Run frontend tests
-        run: npm test
+    # フロントエンドディレクトリを作業ディレクトリに設定
+    - name: Change working directory
+      run: cd frontend
+
+    # 依存関係のインストール
+    - name: Install dependencies
+      run: npm ci
+
+    # フロントエンドのテストを実行
+    - name: Run frontend tests
+      run: npm test
