@@ -11,7 +11,9 @@ services:
       - "5432:5432"
 
   backend:
-    build: ./docker/rails
+    build:
+      context: ./backend
+      dockerfile: ../docker/rails/Dockerfile
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     volumes:
       - ./backend:/backend
@@ -26,8 +28,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend  # ビルドコンテキストをfrontendディレクトリに設定
-      dockerfile: ../docker/react/Dockerfile  # docker/reactディレクトリ内のDockerfileを指定
+      context: ./frontend
+      dockerfile: ../docker/react/Dockerfile
     volumes:
       - ./frontend:/usr/src/app
       - node_modules:/usr/src/app/node_modules
