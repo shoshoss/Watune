@@ -33,7 +33,6 @@ jobs:
 
     # ジョブの手順
     steps:
-
     - uses: actions/checkout@v4
 
     # Rubyのセットアップ
@@ -50,7 +49,7 @@ jobs:
     # データベースのセットアップ
     - name: Setup database
       run: |
-        cp docker/postgres/database.yml config/database.yml
+        cp ../docker/postgres/database.yml config/database.yml
         bundle exec rails db:create RAILS_ENV=test
         bundle exec rails db:migrate RAILS_ENV=test
 
@@ -72,7 +71,6 @@ jobs:
 
     # ジョブの手順
     steps:
-
     - uses: actions/checkout@v4
 
     # Node.jsのセットアップ
