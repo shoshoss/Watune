@@ -37,6 +37,9 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
 
+    - name: Create PostgreSQL volume
+      run: docker volume create postgres_volume
+
     # Rubyのセットアップ
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
