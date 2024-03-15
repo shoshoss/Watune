@@ -42,24 +42,23 @@ jobs:
         ruby-version: '3.3.0'
         bundler-cache: true
 
-    # バックエンドディレクトリを作業ディレクトリに設定
-    - name: Change working directory
-      run: cd backend
-
     # データベースのセットアップ
     - name: Setup database
       run: |
         cp ../docker/postgres/database.yml backend/config/database.yml
         bundle exec rails db:create RAILS_ENV=test
         bundle exec rails db:migrate RAILS_ENV=test
+      working-directory: backend
 
     # Rubocopでコードをチェック
     - name: Run RuboCop
       run: bundle exec rubocop
+      working-directory: backend
 
     # RSpecでテストを実行
     - name: Run RSpec
       run: bundle exec rspec
+      working-directory: backend
 
   # フロントエンドのテストジョブ
   frontend-tests:
@@ -79,14 +78,12 @@ jobs:
       with:
         node-version: '20'
 
-    # フロントエンドディレクトリを作業ディレクトリに設定
-    - name: Change working directory
-      run: cd frontend
-
     # 依存関係のインストール
     - name: Install dependencies
       run: npm ci
+      working-directory: frontend
 
     # フロントエンドのテストを実行
     - name: Run frontend tests
       run: npm test
+      working-directory: frontend
