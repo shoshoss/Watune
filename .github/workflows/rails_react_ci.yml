@@ -47,11 +47,11 @@ jobs:
     # データベースのセットアップ
     - name: Setup database
       run: |
-        cp ../docker/postgres/database.yml config/database.yml
-        docker compose -f ../docker-compose.yml build
-        docker compose -f ../docker-compose.yml run --rm backend bundle exec rails db:create RAILS_ENV=test
-        docker compose -f ../docker-compose.yml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
-      working-directory: backend
+        cp docker/postgres/database.yml backend/config/database.yml
+        docker compose -f docker-compose.yml build
+        docker compose -f docker-compose.yml run --rm backend bundle exec rails db:create RAILS_ENV=test
+        docker compose -f docker-compose.yml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
+      working-directory: .  # コマンドをリポジトリのルートディレクトリで実行
 
     # Rubocopでコードの静的解析
     - name: Run RuboCop
