@@ -22,7 +22,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: admin
         ports:
-          - 5432:5432
+          - 5433:5432
         # Postgresが起動しているかどうかを定期的にチェック
         options: >-
           --health-cmd "pg_isready"
