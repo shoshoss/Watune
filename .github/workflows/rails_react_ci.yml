@@ -48,9 +48,9 @@ jobs:
     # データベースのセットアップ
     - name: Setup database
       run: |
-        cp ../docker/postgres/database.yml config/database.yml  # データベース設定ファイルのコピー
-        docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test  # テスト用DBの作成
-        docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test  # マイグレーションの実行
+        cp ../docker/postgres/database.yml config/database.yml
+        docker run --rm -v postgres_volume:/var/lib/postgresql/data backend bundle exec rails db:create RAILS_ENV=test
+        docker run --rm -v postgres_volume:/var/lib/postgresql/data backend bundle exec rails db:migrate RAILS_ENV=test
       working-directory: backend  # backendディレクトリでコマンドを実行
 
     # Rubocopでコードの静的解析
@@ -73,7 +73,7 @@ jobs:
 
     # Node.jsのセットアップ
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20'  # 使用するNode.jsのバージョン
 
