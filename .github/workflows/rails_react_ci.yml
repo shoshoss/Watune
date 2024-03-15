@@ -1,89 +1,88 @@
-# Rails React CI というワークフロー名
+# ワークフローの名前
 name: Rails React CI
 
-# push とpull_request の際にトリガーされる
+# このワークフローが実行されるトリガー
 on: [push, pull_request]
 
 jobs:
-
   # バックエンドのテストジョブ
   backend-tests:
-    # Ubuntu 最新バージョンで実行
+    # 実行環境をUbuntuの最新版に設定
     runs-on: ubuntu-latest
 
     # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
 
-    # サービスコンテナの設定
+    # Postgresサービスコンテナの設定
     services:
       postgres:
-        # Postgres 16.2のイメージを使用
+        # 使用するDockerイメージ
         image: postgres:16.2
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: admin
         ports:
           - 5432:5432
-        # Postgresの健全性をチェックする設定
+        # Postgresが起動しているかどうかを定期的にチェック
         options: >-
           --health-cmd "pg_isready"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
 
-    # ジョブの手順
+    # 実行するステップ
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # リポジトリのチェックアウト
+
+    # Docker Buildxをセットアップ（ビルドのパフォーマンス向上やマルチプラットフォームビルドに役立つ）
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
     # Rubyのセットアップ
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.3.0'
-        bundler-cache: true
+        ruby-version: '3.3.0'  # 使用するRubyのバージョン
+        bundler-cache: true  # Bundlerのキャッシュを有効化
 
     # データベースのセットアップ
     - name: Setup database
       run: |
-        cp ../docker/postgres/database.yml config/database.yml
-        docker compose run backend bundle exec rails db:create RAILS_ENV=test
-        docker compose run backend bundle exec rails db:migrate RAILS_ENV=test
-      working-directory: backend
+        cp docker/postgres/database.yml config/database.yml  # データベース設定ファイルのコピー
+        docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test  # テスト用DBの作成
+        docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test  # マイグレーションの実行
+      working-directory: backend  # backendディレクトリでコマンドを実行
 
-    # Rubocopでコードをチェック
+    # Rubocopでコードの静的解析
     - name: Run RuboCop
-      run: docker compose run backend bundle exec rubocop
+      run: docker compose run --rm backend bundle exec rubocop
       working-directory: backend
 
     # RSpecでテストを実行
     - name: Run RSpec
-      run: docker compose run backend bundle exec rspec
+      run: docker compose run --rm backend bundle exec rspec
       working-directory: backend
 
   # フロントエンドのテストジョブ
   frontend-tests:
-    # Ubuntu 最新バージョンで実行
     runs-on: ubuntu-latest
-
-    # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
 
-    # ジョブの手順
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # リポジトリのチェックアウト
 
     # Node.jsのセットアップ
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20'
+        node-version: '20'  # 使用するNode.jsのバージョン
 
     # 依存関係のインストール
     - name: Install dependencies
-      run: npm ci
+      run: npm ci  # ciコマンドで依存関係をインストール（package-lock.jsonを利用）
       working-directory: frontend
 
-    # フロントエンドのテストを実行
+    # フロントエンドのテスト実行
     - name: Run frontend tests
       run: npm test
       working-directory: frontend
