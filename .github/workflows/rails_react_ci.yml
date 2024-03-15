@@ -54,6 +54,10 @@ jobs:
         docker-compose -f ../compose.yaml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
       working-directory: backend  # backendディレクトリでコマンドを実行
 
+    # postgres_volumeの作成
+    - name: Create postgres_volume
+      run: docker volume create --name=postgres_volume
+
     # Rubocopでコードの静的解析
     - name: Run RuboCop
       run: docker compose run --rm backend bundle exec rubocop
