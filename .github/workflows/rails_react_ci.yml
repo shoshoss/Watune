@@ -44,7 +44,7 @@ jobs:
 
     # バックエンドディレクトリを作業ディレクトリに設定
     - name: Change working directory
-      run: cd ../backend
+      run: cd ../../backend
 
     # データベースのセットアップ
     - name: Setup database
@@ -81,7 +81,7 @@ jobs:
 
     # フロントエンドディレクトリを作業ディレクトリに設定
     - name: Change working directory
-      run: cd ../frontend
+      run: cd ../../frontend
 
     # 依存関係のインストール
     - name: Install dependencies
