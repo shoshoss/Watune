@@ -13,23 +13,6 @@ jobs:
     # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
 
-    # Postgresサービスコンテナの設定
-    services:
-      postgres:
-        # 使用するDockerイメージ
-        image: postgres:16.2
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: admin
-        ports:
-          - 5433:5432
-        # Postgresが起動しているかどうかを定期的にチェック
-        options: >-
-          --health-cmd "pg_isready"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     # 実行するステップ
     steps:
     - uses: actions/checkout@v4  # リポジトリのチェックアウト
@@ -54,6 +37,9 @@ jobs:
         docker compose -f compose.yaml build
         docker compose -f compose.yaml run --rm backend bundle exec rails db:create RAILS_ENV=test
         docker compose -f compose.yaml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
+      env:
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       working-directory: .  # コマンドをリポジトリのルートディレクトリで実行
 
     # Rubocopでコードの静的解析
