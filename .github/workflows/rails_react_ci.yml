@@ -23,6 +23,11 @@ jobs:
     # - name: Create PostgreSQL volume
     #   run: docker volume create postgres_volume
 
+    - name: Set environment variables
+      run: |
+        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+
     # Rubyのセットアップ
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
@@ -37,9 +42,6 @@ jobs:
         docker compose -f compose.yaml build
         docker compose -f compose.yaml run --rm backend bundle exec rails db:create RAILS_ENV=test
         docker compose -f compose.yaml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
-      env:
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       working-directory: .  # コマンドをリポジトリのルートディレクトリで実行
 
     # Rubocopでコードの静的解析

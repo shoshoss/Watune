@@ -1,44 +1,47 @@
 version: '3.8'
 services:
+  # Postgresデータベースの設定
   db:
-    image: postgres:16.2
+    image: postgres:16.2 # 使用するPostgresのイメージ
     volumes:
-      - postgres_volume:/var/lib/postgresql/data
+      - postgres_volume:/var/lib/postgresql/data # データベースデータの永続化
     environment:
-      POSTGRES_USER: <%= ENV['POSTGRES_USER'] %>
-      POSTGRES_PASSWORD: <%= ENV['POSTGRES_PASSWORD'] %>
+      POSTGRES_USER: ${POSTGRES_USER} # データベースユーザー名
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # データベースパスワード
     ports:
-      - "5432:5432"
+      - "5432:5432" # ポートマッピング
 
+  # バックエンドアプリケーションの設定
   backend:
     build:
       context: ./backend
       dockerfile: ../docker/rails/Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" # 起動コマンド
     volumes:
-      - ./backend:/backend
+      - ./backend:/backend # ボリュームのマウント
       - bundle_data:/usr/local/bundle
     environment:
-      RAILS_ENV: development
+      RAILS_ENV: development # Railsの環境変数
     ports:
-      - "3000:3000"
+      - "3000:3000" # ポートマッピング
     depends_on:
-      - db
-    restart: always
+      - db # dbサービスに依存
+    restart: always # 常に再起動
 
+  # フロントエンドアプリケーションの設定
   frontend:
     build:
       context: ./frontend
       dockerfile: ../docker/react/Dockerfile
     volumes:
-      - ./frontend:/usr/src/app
+      - ./frontend:/usr/src/app # ボリュームのマウント
       - node_modules:/usr/src/app/node_modules
-    command: npm start
+    command: npm start # 起動コマンド
     environment:
-      NODE_ENV: development
+      NODE_ENV: development # Nodeの環境変数
     ports:
-      - "3001:3000"
-    restart: always
+      - "3001:3000" # ポートマッピング
+    restart: always # 常に再起動
 
 volumes:
   bundle_data:
