@@ -17,7 +17,7 @@ RUN bundle install
 COPY . .
 
 # データベース設定ファイルのコピー（適切なパスに修正が必要）
-COPY ../docker/postgres/database.yml /backend/config/database.yml
+COPY ../docker/postgres/database.yml config/database.yml
 
 # セキュリティ強化のため、非rootユーザーでアプリケーションを実行
 RUN useradd -m -s /bin/bash rails && \
