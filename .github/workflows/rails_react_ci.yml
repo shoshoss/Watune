@@ -23,11 +23,6 @@ jobs:
     # - name: Create PostgreSQL volume
     #   run: docker volume create postgres_volume
 
-    - name: Set environment variables
-      run: |
-        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
-        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-
     # Rubyのセットアップ
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
@@ -38,6 +33,8 @@ jobs:
     # データベースのセットアップ
     - name: Setup database
       run: |
+        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
         cp docker/postgres/database.yml backend/config/database.yml
         docker compose -f compose.yaml build
         docker compose -f compose.yaml run --rm backend bundle exec rails db:create RAILS_ENV=test
