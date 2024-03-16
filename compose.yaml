@@ -5,7 +5,7 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
@@ -45,4 +45,3 @@ volumes:
   bundle_data:
   node_modules:
   postgres_volume:
-
