@@ -5,8 +5,8 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: <%= ENV['POSTGRES_USER'] %>
+      POSTGRES_PASSWORD: <%= ENV['POSTGRES_PASSWORD'] %>
     ports:
       - "5432:5432"
 
