@@ -10,6 +10,21 @@ jobs:
     # 実行環境をUbuntuの最新版に設定
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     # ジョブのタイムアウト時間を10分に設定
     timeout-minutes: 10
 
@@ -35,11 +50,13 @@ jobs:
       run: |
         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-        cp docker/postgres/database.yml backend/config/database.yml
-        docker compose -f compose.yaml build
-        docker compose -f compose.yaml run --rm backend bundle exec rails db:create RAILS_ENV=test
-        docker compose -f compose.yaml run --rm backend bundle exec rails db:migrate RAILS_ENV=test
-      working-directory: .  # コマンドをリポジトリのルートディレクトリで実行
+        echo "DB_NAME_TEST=${{ secrets.DB_NAME_TEST }}" >> $GITHUB_ENV
+        cp config/database.ci.yml config/database.yml
+        bundle exec rails db:create RAILS_ENV=test
+        bundle exec rails db:migrate RAILS_ENV=test
+      env:
+        RAILS_ENV: test
+      working-directory: backend
 
     # Rubocopでコードの静的解析
     - name: Run RuboCop

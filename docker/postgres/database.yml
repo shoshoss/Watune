@@ -2,20 +2,20 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: ${POSTGRES_USER}
-  password: ${POSTGRES_PASSWORD}
-  host: db #デフォルトでは無いので設定
+  username: <%= ENV['DB_USERNAME'] || 'postgres' %>
+  password: <%= ENV['DB_PASSWORD'] || 'password' %>
+  host: <%= ENV['DB_HOST'] || 'localhost' %>
 
 development:
   <<: *default
-  database: backend_development #適宜修正
+  database: <%= ENV['DB_NAME_DEVELOPMENT'] || 'backend_development' %>
 
 test:
   <<: *default
-  database: backend_test #適宜修正
+  database: <%= ENV['DB_NAME_TEST'] || 'backend_test' %>
 
 production:
   <<: *default
-  database: backend_production #適宜修正
-  username: backend #適宜修正
-  password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %> #適宜修正
+  database: <%= ENV['DB_NAME_PRODUCTION'] || 'backend_production' %>
+  username: <%= ENV['DB_USERNAME_PRODUCTION'] || 'backend' %>
+  password: <%= ENV['DB_PASSWORD_PRODUCTION'] %>
