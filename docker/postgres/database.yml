@@ -2,8 +2,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}
   host: db #デフォルトでは無いので設定
 
 development:
