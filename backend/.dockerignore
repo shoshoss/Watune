@@ -1,41 +1,44 @@
 # See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
 
+# ベンダーディレクトリを無視する
 vendor/
 
+# アセットやパックのディレクトリを無視する
 public/assets/
 public/packs/
 
+# テスト関連のディレクトリを無視する
 test/
 spec/
 factory_bot/
 capybara/
 rspec/
 
-# Ignore git directory.
+# Gitディレクトリを無視する
 .git/
 
-# Ignore bundler config.
+# Bundlerの設定ファイルを無視する
 .bundle
 
-# Ignore all environment files (except templates).
+# 環境変数ファイルを無視する(ERBテンプレートは除く)
 .env*
 !.env*.erb
 
-# Ignore all default key files.
+# マスターキーとcredentialsのキーファイルを無視する
 config/master.key
 config/credentials/*.key
 
-# Ignore all logfiles and tempfiles.
+# ログファイルと一時ファイルを無視する(keepファイルは除く)
 log/*
 tmp/*
 !log/.keep
 !tmp/.keep
 
-# Ignore pidfiles, but keep the directory.
+# PIDファイルを無視する(ディレクトリ自体は残す)
 tmp/pids/*
 !tmp/pids/.keep
 
-# Ignore storage (uploaded files in development and any SQLite databases).
+# アップロードされたファイルとSQLiteデータベースを無視する(keepファイルは除く)
 storage/*
 !storage/.keep
 tmp/storage/*
