@@ -51,9 +51,8 @@ jobs:
         echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
         echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
         echo "DB_NAME_TEST=${{ secrets.DB_NAME_TEST }}" >> $GITHUB_ENV
-        cp config/database.ci.yml config/database.yml
-        bundle exec rails db:create RAILS_ENV=test
-        bundle exec rails db:migrate RAILS_ENV=test
+        docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test
+        docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
       env:
         RAILS_ENV: test
       working-directory: backend
