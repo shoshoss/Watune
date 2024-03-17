@@ -1,21 +1,22 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['DB_USERNAME'] || 'postgres' %>
-  password: <%= ENV['DB_PASSWORD'] || 'password' %>
-  host: <%= ENV['DB_HOST'] || 'localhost' %>
+  host: <%= ENV.fetch("DB_HOST", "db") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 development:
   <<: *default
-  database: <%= ENV['DB_NAME_DEVELOPMENT'] || 'backend_development' %>
+  database: <%= ENV.fetch("DB_NAME_DEVELOPMENT", "backend_development") %>
 
 test:
   <<: *default
-  database: <%= ENV['DB_NAME_TEST'] || 'backend_test' %>
+  database: <%= ENV.fetch("DB_NAME_TEST", "backend_test") %>
 
 production:
   <<: *default
-  database: <%= ENV['DB_NAME_PRODUCTION'] || 'backend_production' %>
-  username: <%= ENV['DB_USERNAME_PRODUCTION'] || 'backend' %>
-  password: <%= ENV['DB_PASSWORD_PRODUCTION'] %>
+  database: <%= ENV.fetch("POSTGRES_DB", "backend_production") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  host: <%= ENV.fetch("DB_HOST") %>
