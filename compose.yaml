@@ -47,3 +47,4 @@ volumes:
   bundle_data:
   node_modules:
   postgres_volume:
+  #   external: true
