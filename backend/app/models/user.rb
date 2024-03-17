@@ -25,9 +25,6 @@ class User < ApplicationRecord
   # ユーザーが行った「いいね」。ユーザーが削除されると、そのユーザーの「いいね」も全て削除される。
   has_many :likes, dependent: :destroy
 
-  # パスワードの安全なハッシュ化と認証を可能にする。このためには、bcrypt gemが必要。
-  has_secure_password
-
   # 投稿に「いいね」をする
   def like(post)
     likes.create(post_id: post.id)
