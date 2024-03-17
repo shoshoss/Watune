@@ -8,6 +8,6 @@ class CreateRelationships < ActiveRecord::Migration[7.1]
     end
 
     # フォロワーとフォローされるユーザーのペアの一意性を保証
-    add_index :relationships, [:follower_id, :followed_id], unique: true
+    add_index :relationships, %i[follower_id followed_id], unique: true
   end
 end

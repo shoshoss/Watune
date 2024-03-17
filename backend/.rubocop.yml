@@ -1,0 +1,33 @@
+inherit_from: .rubocop_todo.yml
+
+require: rubocop-rails
+
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'db/schema.rb' # スキーマファイルは自動生成されるため除外
+    - 'bin/*' # ビンスクリプトは除外
+    - 'node_modules/**/*' # フロントエンド依存関係は除外
+    - 'vendor/**/*' # サードパーティのソースコードは除外
+
+# Rails固有のコーディングスタイルを適用
+Rails:
+  Enabled: true
+
+# メトリクス（長さや複雑さに関するルール）の調整
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb' # ルーティングファイルは除外
+    - 'spec/**/*.rb' # RSpecのファイルは除外
+Metrics/MethodLength:
+  Max: 15 # メソッドの最大行数を15に設定
+
+# ドキュメンテーションコメントの強制を無効化
+Style/Documentation:
+  Enabled: false
+
+# 文字列リテラルの引用符のスタイル（デフォルトはシングルクォートを推奨）
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# その他のカスタム設定...

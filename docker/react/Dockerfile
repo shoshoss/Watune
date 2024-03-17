@@ -5,3 +5,11 @@ ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
 WORKDIR /usr/src/app
+
+# プロジェクトの依存関係をインストール
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+
+# アプリケーションのソースコードをコピー
+COPY . .
