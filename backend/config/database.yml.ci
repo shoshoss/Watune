@@ -4,7 +4,7 @@ default: &default
   host: <%= ENV.fetch("DB_HOST", "db") %> # GitHub Actionsの設定に合わせて"localhost"を保持
   port: <%= ENV.fetch("DB_PORT", "5432") %> # GitHub Actionsでマッピングされたポートに更新
   username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD", "password") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "admin") %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 test:
