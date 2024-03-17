@@ -16,10 +16,9 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          DB_HOST: ${{ secrets.DB_HOST }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -32,9 +31,6 @@ jobs:
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-
-    # - name: Create PostgreSQL volume
-    #   run: docker volume create postgres_volume
 
     # Rubyのセットアップ
     - name: Setup Ruby
@@ -51,7 +47,11 @@ jobs:
         docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
       env:
         RAILS_ENV: test
-      working-directory: backend
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
+      working-directory: ./backend
 
     # Rubocopでコードの静的解析
     - name: Run RuboCop
