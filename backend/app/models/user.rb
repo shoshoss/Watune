@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
+
   # ユーザーが投稿した記事。ユーザーが削除されると、そのユーザーの投稿も全て削除される。
   has_many :posts, dependent: :destroy
 
@@ -20,9 +24,6 @@ class User < ApplicationRecord
 
   # ユーザーが行った「いいね」。ユーザーが削除されると、そのユーザーの「いいね」も全て削除される。
   has_many :likes, dependent: :destroy
-
-  # パスワードの安全なハッシュ化と認証を可能にする。このためには、bcrypt gemが必要。
-  has_secure_password
 
   # 投稿に「いいね」をする
   def like(post)
