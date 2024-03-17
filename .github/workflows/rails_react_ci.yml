@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -24,9 +24,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-    # ジョブのタイムアウト時間を10分に設定
-    timeout-minutes: 10
 
     # 実行するステップ
     steps:
@@ -48,9 +45,7 @@ jobs:
     # データベースのセットアップ
     - name: Setup database
       run: |
-        echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> $GITHUB_ENV
-        echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-        echo "DB_NAME_TEST=${{ secrets.DB_NAME_TEST }}" >> $GITHUB_ENV
+        cp config/database.yml.ci config/database.yml
         docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test
         docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
       env:
