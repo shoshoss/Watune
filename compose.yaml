@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER} # データベースユーザー名
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # データベースパスワード
     ports:
-      - "5432:5433" # ポートマッピング
+      - "5432:5432" # ポートマッピング
 
   # バックエンドアプリケーションの設定
   backend:
