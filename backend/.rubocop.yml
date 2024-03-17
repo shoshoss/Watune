@@ -21,6 +21,8 @@ Metrics/BlockLength:
     - 'spec/**/*.rb' # RSpecのファイルは除外
 Metrics/MethodLength:
   Max: 15 # メソッドの最大行数を15に設定
+  Exclude:
+    - db/migrate/*.rb
 
 # ドキュメンテーションコメントの強制を無効化
 Style/Documentation:
@@ -31,3 +33,5 @@ Style/StringLiterals:
   EnforcedStyle: single_quotes
 
 # その他のカスタム設定...
+Layout/LineLength:
+  Max: 160
