@@ -43,8 +43,8 @@ jobs:
     - name: Setup database
       run: |
         cp config/database.yml.ci config/database.yml
-        docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test
-        docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
+        rails db:create RAILS_ENV=test
+        rails db:migrate RAILS_ENV=test
       env:
         RAILS_ENV: test
         POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
