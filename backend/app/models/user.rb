@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
+
   # ユーザーが投稿した記事。ユーザーが削除されると、そのユーザーの投稿も全て削除される。
   has_many :posts, dependent: :destroy
 
