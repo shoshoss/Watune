@@ -38,3 +38,7 @@ Style/StringLiterals:
 # その他のカスタム設定...
 Layout/LineLength:
   Max: 160
+
+Rails/BulkChangeTable:
+  Exclude:
+    - db/migrate/20240317233629_remove_auth_columns_from_users.rb
