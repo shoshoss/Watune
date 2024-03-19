@@ -1,11 +1,21 @@
+// src/App.tsx
 import React from 'react';
 import './App.css';
+// 1. RegistrationFormコンポーネントをインポート
+import { RegistrationForm } from './components/RegistrationForm';
 
 function App() {
   return (
     <div className="App">
-      {/* アプリケーションのコンテンツをここに記述します */}
-      <h1>Welcome to Your React App</h1>
+      {/* アプリケーションのメインコンテンツ */}
+      <header className="App-header">
+        {/* 他のコンテンツがあればここに記述 */}
+        
+        {/* 2. RegistrationFormコンポーネントを配置 */}
+        <RegistrationForm />
+        
+        {/* 他のコンテンツがあればここに続けて記述 */}
+      </header>
     </div>
   );
 }
