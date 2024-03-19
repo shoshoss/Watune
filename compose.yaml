@@ -6,8 +6,8 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql/data # データベースデータの永続化
     environment:
-      POSTGRES_USER: ${POSTGRES_USER} # データベースユーザー名
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # データベースパスワード
+      POSTGRES_USER: postgres # データベースユーザー名
+      POSTGRES_PASSWORD: admin # データベースパスワード
     ports:
       - "5432:5432" # ポートマッピング
 
