@@ -9,7 +9,7 @@ services:
       POSTGRES_USER: postgres # データベースユーザー名
       POSTGRES_PASSWORD: admin # データベースパスワード
     ports:
-      - "5432:5432" # ポートマッピング
+      - "5433:5432" # ポートマッピング
 
   # バックエンドアプリケーションの設定
   backend:
