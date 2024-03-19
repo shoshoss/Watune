@@ -4,47 +4,47 @@ services:
   db:
     image: postgres:16.2 # 使用するPostgresのイメージ
     volumes:
-      - postgres_volume:/var/lib/postgresql/data # データベースデータの永続化
+      - postgres_volume:/var/lib/postgresql/data # データベースのデータを永続化するためのボリュームマウント
     environment:
-      POSTGRES_USER: postgres # データベースユーザー名
-      POSTGRES_PASSWORD: admin # データベースパスワード
+      POSTGRES_USER: postgres # データベースのユーザー名
+      POSTGRES_PASSWORD: admin # データベースのパスワード
     ports:
-      - "5433:5432" # ポートマッピング
+      - "5433:5432" # ホストの5433ポートからコンテナの5432ポートへのマッピング
 
-  # バックエンドアプリケーションの設定
+  # バックエンドアプリケーション（Rails）の設定
   backend:
     build:
-      context: ./backend
-      dockerfile: ../docker/rails/Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" # 起動コマンド
+      context: ./backend # Dockerfileの場所（コンテキスト）
+      dockerfile: ../docker/rails/Dockerfile # Dockerfileへのパス
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'" # サーバー起動コマンド
     volumes:
-      - ./backend:/backend # ボリュームのマウント
-      - bundle_data:/usr/local/bundle
+      - ./backend:/backend # バックエンドのソースコードをコンテナにマウント
+      - bundle_data:/usr/local/bundle # bundle installの結果を永続化
     environment:
-      RAILS_ENV: development # Railsの環境変数
+      RAILS_ENV: development # Railsの実行環境
     ports:
-      - "3000:3000" # ポートマッピング
+      - "3001:3000" # ホストの3001ポートからコンテナの3000ポートへのマッピング
     depends_on:
-      - db # dbサービスに依存
-    restart: always # 常に再起動
+      - db # dbサービスが起動してからbackendサービスを起動
+    restart: always # コンテナが停止した場合は常に再起動
 
-  # フロントエンドアプリケーションの設定
+  # フロントエンドアプリケーション（React）の設定
   frontend:
     build:
-      context: ./frontend
-      dockerfile: ../docker/react/Dockerfile
+      context: ./frontend # Dockerfileの場所（コンテキスト）
+      dockerfile: ../docker/react/Dockerfile # Dockerfileへのパス
     volumes:
-      - ./frontend:/usr/src/app # ボリュームのマウント
-      - node_modules:/usr/src/app/node_modules
-    command: npm start # 起動コマンド
+      - ./frontend:/usr/src/app # フロントエンドのソースコードをコンテナにマウント
+      - node_modules:/usr/src/app/node_modules # node_modulesを永続化
+    command: npm start # アプリケーションの起動コマンド
     environment:
-      NODE_ENV: development # Nodeの環境変数
+      NODE_ENV: development # Node.jsの実行環境
     ports:
-      - "3001:3000" # ポートマッピング
-    restart: always # 常に再起動
+      - "3002:3000" # ホストの3002ポートからコンテナの3000ポートへのマッピング
+    restart: always # コンテナが停止した場合は常に再起動
 
 volumes:
   bundle_data:
   node_modules:
   postgres_volume:
-  #   external: true
+  #   external: true # 外部で定義されたボリュームを使用する場合はコメントを外す
