@@ -1,9 +1,10 @@
 import React from 'react';
+import { useForm } from 'react-hook-form';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 // configureStoreをインポート
 import { configureStore } from '@reduxjs/toolkit';
-import App from './App';
+import App from '../App';
 
 interface Action {
   type: string;
@@ -29,6 +30,6 @@ test('renders learn react link', () => {
       <App />
     </Provider>
   );
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByText(/Googleで登録/i);
   expect(linkElement).toBeInTheDocument();
 });
