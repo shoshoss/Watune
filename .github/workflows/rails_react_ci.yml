@@ -85,4 +85,4 @@ jobs:
       # フロントエンドのテスト実行
       - name: Run frontend tests
         run: npm test
-        working-directory: frontend
+        working-directory: frontend/frontend
