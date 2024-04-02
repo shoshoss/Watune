@@ -27,41 +27,41 @@ jobs:
 
     # 実行するステップ
     steps:
-    - uses: actions/checkout@v4  # リポジトリのチェックアウト
+      - uses: actions/checkout@v4 # リポジトリのチェックアウト
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    # Rubyのセットアップ
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.3.0'  # 使用するRubyのバージョン
-        bundler-cache: true  # Bundlerのキャッシュを有効化
+      # Rubyのセットアップ
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.0" # 使用するRubyのバージョン
+          bundler-cache: true # Bundlerのキャッシュを有効化
 
-    # データベースのセットアップ
-    - name: Setup database
-      run: |
-        cp config/database.yml.ci config/database.yml
-        docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test
-        docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
-      env:
-        RAILS_ENV: test
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ secrets.POSTGRES_DB }}
-      working-directory: ./backend
+      # データベースのセットアップ
+      - name: Setup database
+        run: |
+          cp config/database.yml.ci config/database.yml
+          docker compose run --rm backend bundle exec rails db:create RAILS_ENV=test
+          docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ secrets.POSTGRES_DB }}
+        working-directory: ./backend
 
-    # Rubocopでコードの静的解析
-    - name: Run RuboCop
-      run: docker compose run --rm backend bundle exec rubocop
-      working-directory: backend
+      # Rubocopでコードの静的解析
+      - name: Run RuboCop
+        run: docker compose run --rm backend bundle exec rubocop
+        working-directory: backend
 
-    # RSpecでテストを実行
-    - name: Run RSpec
-      run: docker compose run --rm backend bundle exec rspec
-      working-directory: backend
+      # RSpecでテストを実行
+      - name: Run RSpec
+        run: docker compose run --rm backend bundle exec rspec
+        working-directory: backend
 
   # フロントエンドのテストジョブ
   frontend-tests:
@@ -69,20 +69,20 @@ jobs:
     timeout-minutes: 10
 
     steps:
-    - uses: actions/checkout@v4  # リポジトリのチェックアウト
+      - uses: actions/checkout@v4 # リポジトリのチェックアウト
 
-    # Node.jsのセットアップ
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'  # 使用するNode.jsのバージョン
+      # Node.jsのセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # 使用するNode.jsのバージョン
 
-    # 依存関係のインストール
-    - name: Install dependencies
-      run: npm ci  # ciコマンドで依存関係をインストール（package-lock.jsonを利用）
-      working-directory: frontend
+      # 依存関係のインストール
+      - name: Install dependencies
+        run: npm ci # ciコマンドで依存関係をインストール（package-lock.jsonを利用）
+        working-directory: frontend/frontend
 
-    # フロントエンドのテスト実行
-    - name: Run frontend tests
-      run: npm test
-      working-directory: frontend
+      # フロントエンドのテスト実行
+      - name: Run frontend tests
+        run: npm test
+        working-directory: frontend
