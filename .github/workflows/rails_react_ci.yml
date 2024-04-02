@@ -80,9 +80,9 @@ jobs:
       # 依存関係のインストール
       - name: Install dependencies
         run: npm ci # ciコマンドで依存関係をインストール（package-lock.jsonを利用）
-        working-directory: frontend/frontend
+        working-directory: frontend
 
       # フロントエンドのテスト実行
       - name: Run frontend tests
         run: npm test
-        working-directory: frontend/frontend
+        working-directory: frontend

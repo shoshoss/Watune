@@ -31,10 +31,10 @@ services:
   # フロントエンドアプリケーション（React）の設定
   frontend:
     build:
-      context: ./frontend/frontend # Dockerfileの場所（コンテキスト）
+      context: ./frontend # Dockerfileの場所（コンテキスト）
       dockerfile: ../docker/react/Dockerfile # Dockerfileへのパス
     volumes:
-      - ./frontend/frontend:/usr/src/app # フロントエンドのソースコードをコンテナにマウント
+      - ./frontend:/usr/src/app # フロントエンドのソースコードをコンテナにマウント
       - node_modules:/usr/src/app/node_modules # node_modulesを永続化
     command: npm start # アプリケーションの起動コマンド
     environment:
