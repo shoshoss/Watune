@@ -1,0 +1,20 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+      - develop # 本番と開発の両方のブランチをデプロイ対象にする
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vercel Deployment
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Vercelのトークン
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # Vercelの組織ID
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのプロジェクトID
+          vercel-args: "--prod" # 本番環境へのデプロイを指示
