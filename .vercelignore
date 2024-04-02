@@ -1,0 +1,11 @@
+# バックエンド全体を除外
+backend/
+
+# フロントエンド内の特定のディレクトリ/ファイルを除外
+frontend/.next/
+frontend/node_modules/
+frontend/.env.local
+frontend/.env.production.local
+
+# プロジェクトのルートにあるgit関連ファイル/ディレクトリ
+.git/
