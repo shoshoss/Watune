@@ -10,6 +10,8 @@
     "test": "jest"
   },
   "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/supabase-js": "^2.41.1",
     "next": "14.1.4",
     "react": "^18",
