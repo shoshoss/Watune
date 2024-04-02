@@ -10,13 +10,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.41.1",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
-    "@types/node": "^20",
+    "@types/node": "^20.12.2",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
