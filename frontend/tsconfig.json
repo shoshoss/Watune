@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // ターゲットをES5に設定することで、古いブラウザでも動作するコードを生成できる
+    "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -7,7 +9,8 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    // モジュール解決をnodeに設定することで、Next.jsなどのフレームワークのモジュールを解決できるようになる
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",

@@ -1,10 +1,23 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
-import type { NextRequest } from "next/server";
+import { createClient } from "@/utils/supabese/server";
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
+  // The `/auth/callback` route is required for the server-side auth flow implemented
+  // by the Auth Helpers package. It exchanges an auth code for the user's session.
+  // `/auth/callback` ルートは、Auth Helpers パッケージによって実装されたサーバーサイドの認証フローに必要です。
+  // 認証コードをユーザーのセッションに交換します。
+  // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-sign-in-with-code-exchange
   const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get("code");
 
-  console.log(requestUrl.origin);
-  return NextResponse.redirect(requestUrl.origin + "/");
+  if (code) {
+    const supabase = createClient();
+    await supabase.auth.exchangeCodeForSession(code);
+  }
+
+  // URL to redirect to after sign in process completes
+  // サインインプロセスが完了した後にリダイレクトする URL
+  return NextResponse.redirect(requestUrl.origin);
 }
