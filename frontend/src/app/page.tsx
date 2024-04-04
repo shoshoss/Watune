@@ -1,12 +1,9 @@
-import AuthButton from "@/components/AuthButton";
+import LoginPage from "./login/page";
 
 export default async function Index() {
   return (
     <div>
-      <nav>
-        Supabase SSR 認証でのログイン
-        <AuthButton />
-      </nav>
+      <nav>Supabase SSR 認証でのログイン</nav>
     </div>
   );
 }
