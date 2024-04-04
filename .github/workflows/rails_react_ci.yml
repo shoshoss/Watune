@@ -14,7 +14,9 @@ jobs:
       db:
         image: postgres
         env:
-          VAR_HOGE: null
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -45,7 +47,10 @@ jobs:
           docker compose run --rm backend bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
-          VAR_HOGE: null
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@db:5432/${{ secrets.POSTGRES_DB }}
         working-directory: ./backend
 
       # Rubocopでコードの静的解析
