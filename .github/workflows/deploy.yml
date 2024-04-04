@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop # 本番と開発の両方のブランチをデプロイ対象にする
+      - mvp-feature/01-8-frontend-supabase-signup-process
 
 jobs:
   deploy:
