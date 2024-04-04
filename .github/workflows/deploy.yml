@@ -15,5 +15,7 @@ jobs:
       - name: Vercel Deployment
         uses: amondnet/vercel-action@v25
         with:
-          VAR_HOGE: null
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Vercelのトークン
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} # Vercelの組織ID
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} # VercelのプロジェクトID
           vercel-args: "--prod" # 本番環境へのデプロイを指示
