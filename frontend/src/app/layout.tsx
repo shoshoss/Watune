@@ -1,27 +1,36 @@
 import "./globals.css";
+import { Inter } from "next/font/google";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+import SupabaseListener from "@/components/auth/supabase-listener";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase SSR Auth",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Supabase Auth",
+  description: "Supabase Auth",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// レイアウト
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="ja">
-      <body>
-        <main className="flex flex-col items-center min-h-screen">
-          {children}
-        </main>
+    <html>
+      <body className={inter.className}>
+        <div className="flex flex-col min-h-screen">
+          <SupabaseListener />
+
+          <main className="flex-1 container max-w-screen-sm mx-auto px-1 py-5">
+            {children}
+          </main>
+
+          <footer className="py-5">
+            <div className="text-center text-sm">
+              Copyright © All rights reserved | FullStackChannel
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
