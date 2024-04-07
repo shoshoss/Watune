@@ -2,7 +2,7 @@
 name: Rails React CI
 
 # このワークフローが実行されるトリガー
-on: [push, pull_request]
+on: [push]
 
 jobs:
   # バックエンドのテストジョブ

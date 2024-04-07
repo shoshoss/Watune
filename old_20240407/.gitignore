@@ -51,3 +51,4 @@ Thumbs.db
 yarn-debug.log*
 .yarn-integrity
 .vercel
+.env*.local
