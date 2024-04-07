@@ -35,13 +35,13 @@ export type Database = {
   }
   public: {
     Tables: {
-      users: {
+      profiles: {
         Row: {
           avatar_url: string | null
           created_at: string | null
           display_name: string | null
           email: string
-          id: number
+          id: string
           self_introduction: string | null
           updated_at: string | null
           username_slug: string
@@ -51,7 +51,7 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           email: string
-          id?: number
+          id: string
           self_introduction?: string | null
           updated_at?: string | null
           username_slug: string
@@ -61,12 +61,20 @@ export type Database = {
           created_at?: string | null
           display_name?: string | null
           email?: string
-          id?: number
+          id?: string
           self_introduction?: string | null
           updated_at?: string | null
           username_slug?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
