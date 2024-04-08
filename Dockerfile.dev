@@ -1,0 +1,41 @@
+# syntax=docker/dockerfile:1
+
+# RubyのバージョンをARGで指定します。.ruby-versionファイルとGemfileに合わせて指定することが推奨されます。
+ARG RUBY_VERSION=3.3.0
+
+# Rubyの公式イメージをベースとして使用します。slimバージョンは必要最低限のパッケージのみを含むため、イメージサイズを小さく保てます。
+FROM ruby:$RUBY_VERSION-slim
+
+# アプリケーションの作業ディレクトリを設定します。このディレクトリ内で後続のコマンドが実行されます。
+WORKDIR /gratiwave
+
+# ロケールとタイムゾーンの設定。（デフォルトでRAILS_ENV="development"となっている）
+ENV BUNDLE_PATH="/usr/local/bundle" \
+    LANG=C.UTF-8 \
+    TZ=Asia/Tokyo
+
+# GemとNode.js modulesのビルドに必要なパッケージをインストールします。
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips nodejs npm && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Node.jsとYarnのインストール。最新の安定バージョンを使用。
+RUN npm install -g yarn
+
+# Bundlerの依存関係をインストール。
+COPY Gemfile Gemfile.lock ./
+RUN gem install bundler:2.5.7 && \
+    bundle install
+
+# Yarnの依存関係をインストール。
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# アプリケーションのソースコードをコピー。
+COPY . .
+
+# Railsサーバーのデフォルトポートを公開。
+EXPOSE 3000
+
+# Railsサーバーを起動するコマンド。`-b 0.0.0.0`はDockerコンテナ内からの接続を許可します。
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
