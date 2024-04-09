@@ -38,5 +38,8 @@ module Gratiwave
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # デプロイするサービスのホストを追加する
+    config.hosts << 'xxx.onrender.com'
   end
 end
