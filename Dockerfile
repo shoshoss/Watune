@@ -1,60 +1,75 @@
 # syntax = docker/dockerfile:1
-# Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
+
 ARG RUBY_VERSION=3.3.0
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
 
-# Rails app lives here
-WORKDIR /rails
+ARG POSTGRES_PASSWORD
 
-# Set production environment
+# Railsアプリケーションの作業ディレクトリを設定します。
+WORKDIR /gratiwave
+
+# 本番環境用の環境変数、ロケールとタイムゾーンを設定します。
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
+    BUNDLE_WITHOUT="development" \
+    LANG=C.UTF-8 \
+    TZ=Asia/Tokyo
 
-# Throw-away build stage to reduce size of final image
+# Gemとnode modulesのビルドに必要なパッケージをインストールします。
 FROM base as build
-
-# Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips pkg-config libpq-dev
+    apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips node-gyp pkg-config python-is-python3
 
-# Install application gems
+# JavaScriptの依存関係をインストールします。
+ARG NODE_VERSION=21.7.2
+ARG YARN_VERSION=1.22.19
+ENV PATH=/usr/local/node/bin:$PATH
+RUN curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
+    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
+    npm install -g yarn@$YARN_VERSION && \
+    rm -rf /tmp/node-build-master
+
+# Rubyの依存関係をインストールします。
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.5.6
-RUN bundle install && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+RUN bundle install
+RUN rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
+RUN bundle exec bootsnap precompile --gemfile
 
-# Copy application code
+# node modulesをインストールします。
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# アプリケーションのコードをコピーします。
 COPY . .
 
-# Precompile bootsnap code for faster boot times
+# アプリケーションの起動を高速化するためにbootsnapを事前コンパイルします。
 RUN bundle exec bootsnap precompile app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# 本番環境でのアセットプリコンパイル（RAILS_MASTER_KEYが不要）
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile --trace
 
-# Final stage for app image
+# アプリケーションを実行する最終イメージ
 FROM base
 
-# Install packages needed for deployment
+# デプロイメントに必要なパッケージをインストールします。
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libsqlite3-0 libvips libpq-dev && \
+    apt-get install --no-install-recommends -y curl libvips postgresql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy built artifacts: gems, application
+# ビルドしたアーティファクトをコピーします。
 COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build /rails /rails
+COPY --from=build /gratiwave /gratiwave
 
-# Run and own only the runtime files as a non-root user for security
+# セキュリティのため、非rootユーザーでアプリケーションを実行します。
 RUN useradd rails --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 USER rails:rails
 
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# データベースの準備をするエントリーポイント
+ENTRYPOINT ["/gratiwave/bin/docker-entrypoint"]
 
-# Start the server by default, this can be overwritten at runtime
+# デフォルトでRailsサーバーを起動します。
 EXPOSE 3000
 CMD ["./bin/rails", "server"]
