@@ -20,4 +20,4 @@ test:
 production:
   <<: *default
   password: <%= ENV["GRATIWAVE_DATABASE_PASSWORD"] %>
-  # url: <%= ENV['DATABASE_URL'] %>
+  url: <%= ENV['DATABASE_URL'] %>
