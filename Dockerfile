@@ -48,7 +48,7 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # 本番環境でのアセットプリコンパイル（RAILS_MASTER_KEYが不要）
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile --trace
 
 # アプリケーションを実行する最終イメージ
 FROM base
