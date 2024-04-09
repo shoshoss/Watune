@@ -20,3 +20,4 @@ test:
 production:
   <<: *default
   database: gratiwave_production
+  url: <%= ENV['DATABASE_URL'] %>
