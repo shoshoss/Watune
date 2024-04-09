@@ -57,3 +57,5 @@ yarn-error.log
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+
+/config/credentials/production.key
