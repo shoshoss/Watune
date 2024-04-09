@@ -47,8 +47,9 @@ COPY . .
 # アプリケーションの起動を高速化するためにbootsnapを事前コンパイルします。
 RUN bundle exec bootsnap precompile app/ lib/
 
-# 本番環境でのアセットプリコンパイル（RAILS_MASTER_KEYが不要）
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile --trace
+# 本番環境でのアセットプリコンパイル
+ENV SECRET_KEY_BASE=${SECRET_KEY_BASE}
+RUN ./bin/rails assets:precompile --trace
 
 # アプリケーションを実行する最終イメージ
 FROM base
