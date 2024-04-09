@@ -37,6 +37,16 @@ services:
     ports:
       - "4444:4444"
 
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTH}
+    command: ["http", "web:3000"]
+    depends_on:
+      - web
+    ports:
+      - "4040:4040"
+
 volumes:
   postgres_data:
   bundle_data:
