@@ -30,6 +30,10 @@ RUN yarn install
 # アプリケーションのソースコードをコピー
 COPY . .
 
+# JavaScriptとCSSのビルド
+RUN bin/rails javascript:build
+RUN bin/rails css:build
+
 EXPOSE 3000
 
 CMD ["rails", "server", "-b", "0.0.0.0"]
