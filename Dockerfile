@@ -1,8 +1,9 @@
 # syntax = docker/dockerfile:1
 
-# Rubyのバージョンを確認してください。.ruby-versionファイルとGemfileに合わせてください。
 ARG RUBY_VERSION=3.3.0
 FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+
+ARG POSTGRES_PASSWORD
 
 # Railsアプリケーションの作業ディレクトリを設定します。
 WORKDIR /gratiwave
