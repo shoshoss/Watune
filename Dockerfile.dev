@@ -20,7 +20,7 @@ RUN npm install -g yarn
 
 # GemfileとGemfile.lockをコピーし、Bundlerと依存関係をインストール
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler:2.5.7 && \
+RUN gem install bundler:2.5.6 && \
     bundle install --binstubs
 
 # Yarnの依存関係をインストール
