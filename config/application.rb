@@ -40,6 +40,6 @@ module Gratiwave
     config.generators.system_tests = nil
 
     # デプロイするサービスのホストを追加する
-    config.hosts << 'xxx.onrender.com'
+    config.hosts << 'gratiwave.onrender.com'
   end
 end
