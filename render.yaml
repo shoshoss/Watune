@@ -20,4 +20,6 @@ services:
       - key: RAILS_MASTER_KEY
         sync: false
       - key: WEB_CONCURRENCY
-        value: 2 # sensible default
+        value: 2
+      - key: POSTGRES_PASSWORD
+        value: ${POSTGRES_PASSWORD}
