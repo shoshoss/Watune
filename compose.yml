@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:16.2
+    environment:
+      RAILS_ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gratiwave_production
+
+  web:
+    build:
+      context: .
+      args:
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    container_name: gratiwave_production
+    environment:
+      RAILS_ENV: production
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    environment:
+      NGROK_AUTHTOKEN: ${NGROK_AUTH}
+    command: ["http", "web:3000"]
+    depends_on:
+      - web
+    ports:
+      - "4040:4040"
