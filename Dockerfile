@@ -2,8 +2,6 @@
 ARG RUBY_VERSION=3.3.0
 FROM ruby:$RUBY_VERSION-slim
 
-ARG POSTGRES_PASSWORD
-
 WORKDIR /gratiwave
 
 # 環境変数の設定
