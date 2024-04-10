@@ -32,7 +32,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # アセットプリコンパイル。cssbundling-railsとjsbundling-railsのビルドコマンドを使用
-RUN  bin/rails assets:precompile
+RUN  SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
 
 EXPOSE 3000
 
