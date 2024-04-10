@@ -32,8 +32,13 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # アセットプリコンパイル。cssbundling-railsとjsbundling-railsのビルドコマンドを使用
-RUN  bin/rails assets:precompile
+RUN  SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
 
+## Add a script to be executed every time the container starts.
+COPY render-build.sh /usr/bin/
+RUN chmod a+x bin/render-build.sh
+ENTRYPOINT ["render-build.sh"]
 EXPOSE 3000
 
+## Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
