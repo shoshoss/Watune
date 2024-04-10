@@ -36,7 +36,7 @@ COPY . .
 RUN bundle exec bootsnap precompile app/ lib/
 
 # アセットプリコンパイル。cssbundling-railsとjsbundling-railsのビルドコマンドを使用
-RUN  SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
+RUN  SECRET_KEY_BASE=${SECRET_KEY_BASE} ./bin/rails assets:precompile
 
 # ビルドしたアーティファクトをコピーします。
 COPY --from=build /usr/local/bundle /usr/local/bundle
@@ -48,9 +48,9 @@ RUN useradd rails --create-home --shell /bin/bash && \
 USER rails:rails
 
 ## Add a script to be executed every time the container starts.
-COPY bin/render-build.sh /usr/bin/
-RUN chmod a+x bin/render-build.sh
-ENTRYPOINT ["render-build.sh"]
+COPY /gratiwave/bin/render-build.sh /gratiwave/bin
+RUN chmod a+x /gratiwave/bin/render-build.sh
+ENTRYPOINT ["/gratiwave/bin/render-build.sh"]
 EXPOSE 3000
 
 ## Start the main process.
