@@ -5,7 +5,8 @@ FROM ruby:$RUBY_VERSION-slim
 WORKDIR /gratiwave
 
 # 環境変数の設定
-ENV BUNDLE_PATH="/usr/local/bundle" \
+ENV RAILS_ENV="production" \
+    BUNDLE_PATH="/usr/local/bundle" \
     LANG=C.UTF-8 \
     TZ=Asia/Tokyo \
     PATH="/gratiwave/bin:${PATH}"
@@ -31,7 +32,7 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # アセットプリコンパイル。cssbundling-railsとjsbundling-railsのビルドコマンドを使用
-RUN RAILS_ENV=production SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
+RUN  bin/rails assets:precompile
 
 EXPOSE 3000
 
