@@ -4,38 +4,29 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
+      TZ: Asia/Tokyo
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: gratiwave_development
     ports:
       - "5433:5432"
 
   web:
     build:
       context: .
-      dockerfile: Dockerfile.dev # 開発用Dockerfileを指定
+      dockerfile: Dockerfile.dev
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    container_name: gratiwave_development
     stdin_open: true
     tty: true
     volumes:
-      - ./:/gratiwave
+      - ./:/app
       - bundle_data:/usr/local/bundle:cached
-      - node_modules:/gratiwave/node_modules
+      - node_modules:/app/node_modules
     environment:
+      TZ: Asia/Tokyo
       RAILS_ENV: development
-      POSTGRES_PASSWORD: password
-      SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     ports:
       - "3000:3000"
     depends_on:
       - db
-      - chrome
-
-  chrome:
-    image: seleniarm/standalone-chromium:latest
-    ports:
-      - "4444:4444"
 
   ngrok:
     image: ngrok/ngrok:latest
