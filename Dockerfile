@@ -10,32 +10,28 @@ ENV BUNDLE_PATH="/usr/local/bundle" \
     TZ=Asia/Tokyo \
     PATH="/gratiwave/bin:${PATH}"
 
-# 依存関係のインストール
+# 依存関係のインストール。Node.jsとYarnの安定版をインストールします。
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential curl git libpq-dev libvips nodejs npm && \
+    apt-get install -y ca-certificates curl gnupg build-essential libpq-dev libssl-dev && \
+    curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn && \
     rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
-# Node.jsとYarnのインストール。最新の安定バージョンを使用。
-RUN npm install -g yarn
 
 # GemfileとGemfile.lockをコピーし、Bundlerと依存関係をインストール
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.5.6 && \
-    bundle install --binstubs
+    bundle install --without development test --retry 3 --jobs 4
 
 # Yarnの依存関係をインストール
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 # アプリケーションのソースコードをコピー
 COPY . .
 
-# JavaScriptとCSSのビルド（エラーが発生した場合はこの部分を確認）
-RUN yarn build
-RUN yarn build:css
-
-# 本番環境でのアセットプリコンパイル
-RUN RAILS_ENV=production SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
+# アセットプリコンパイル。cssbundling-railsとjsbundling-railsのビルドコマンドを使用
+RUN RAILS_ENV=production SECRET_KEY_BASE=dummy bin/rails assets:precompile
 
 EXPOSE 3000
 
