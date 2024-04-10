@@ -1,23 +1,20 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-
-  # For details on connection pooling, see Rails configuration guide
-  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  host: db
+  username: app
+  password: password
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  port: 5432
 
 development:
   <<: *default
-  database: gratiwave_development
-  host: db
-  username: postgres
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
-  port: 5432
+  database: app_development
 
 test:
   <<: *default
-  database: gratiwave_test
+  database: app_test
 
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+  database: app_production

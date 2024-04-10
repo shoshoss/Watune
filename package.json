@@ -1,6 +1,9 @@
 {
   "name": "app",
-  "private": "true",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/shoshoss/gratiwave.git",
+  "license": "MIT",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "autoprefixer": "^10.4.19",

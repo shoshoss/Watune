@@ -18,7 +18,7 @@ require "action_cable/engine"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Gratiwave
+module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
@@ -38,8 +38,5 @@ module Gratiwave
 
     # Don't generate system test files.
     config.generators.system_tests = nil
-
-    # デプロイするサービスのホストを追加する
-    config.hosts << 'gratiwave.onrender.com'
   end
 end
