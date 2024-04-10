@@ -1,6 +1,6 @@
 # Rubyのバージョンを指定
 ARG RUBY_VERSION=3.3.0
-FROM ruby:$RUBY_VERSION-slim AS app-build
+FROM ruby:$RUBY_VERSION-slim
 
 WORKDIR /gratiwave
 
@@ -30,6 +30,10 @@ RUN yarn install --frozen-lockfile
 
 # アプリケーションのソースコードをコピー
 COPY . .
+
+# bootsnapを利用したアプリケーションの起動の高速化
+RUN bundle exec bootsnap precompile --gemfile && \
+    bundle exec bootsnap precompile
 
 # アセットプリコンパイル
 RUN SECRET_KEY_BASE=${SECRET_KEY_BASE} ./bin/rails assets:precompile
