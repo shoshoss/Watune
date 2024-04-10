@@ -30,10 +30,12 @@ RUN yarn install
 # アプリケーションのソースコードをコピー
 COPY . .
 
-# JavaScriptとCSSのビルドに加えて、アセットプリコンパイルを実行
-RUN bin/rails javascript:build
-RUN bin/rails css:build
-RUN RAILS_ENV=production bin/rails assets:precompile
+# JavaScriptとCSSのビルド（エラーが発生した場合はこの部分を確認）
+RUN yarn build
+RUN yarn build:css
+
+# 本番環境でのアセットプリコンパイル
+RUN RAILS_ENV=production SECRET_KEY_BASE=${SECRET_KEY_BASE} bin/rails assets:precompile
 
 EXPOSE 3000
 
