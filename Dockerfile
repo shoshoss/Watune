@@ -26,7 +26,7 @@ RUN apt-get update -qq && \
 # GemfileとGemfile.lockをコピーし、Bundlerと依存関係をインストール
 COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.5.6 && \
-    bundle install --without development test --retry 3 --jobs 4\
+    bundle install --without development test --retry 3 --jobs 4 && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
 
