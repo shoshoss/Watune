@@ -13,6 +13,7 @@ RUN apt-get update -qq \
 && apt-get install -y build-essential libpq-dev libssl-dev nodejs yarn vim
 RUN mkdir /app
 WORKDIR /app
+COPY Gemfile Gemfile.lock ./
 RUN gem install bundler:2.5.7 && \
     bundle install
 COPY . /app
