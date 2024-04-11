@@ -16,6 +16,8 @@ jobs:
         env:
           POSTGRES_USER: app
           POSTGRES_PASSWORD: password
+          POSTGRES_DB: app_test
+          POSTGRES_HOST_AUTH_METHOD: md5
         ports:
           - 5432:5432
         options: >-
