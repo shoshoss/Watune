@@ -21,6 +21,7 @@ require 'action_cable/engine'
 Bundler.require(*Rails.groups)
 
 module App
+  # アプリケーション設定クラス
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
