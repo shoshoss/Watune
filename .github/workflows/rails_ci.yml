@@ -14,6 +14,7 @@ jobs:
       db:
         image: postgres
         env:
+          POSTGRES_USER: app
           POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
@@ -44,7 +45,6 @@ jobs:
           docker compose run --rm web bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://app:password@db:5432/app_test
         working-directory: ./app
 
       # Rubocopでコードの静的解析
