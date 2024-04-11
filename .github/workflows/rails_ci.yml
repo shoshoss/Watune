@@ -14,7 +14,7 @@ jobs:
       db:
         image: postgres
         env:
-          RAILS_ENV: test
+          POSTGRES_PASSWORD: password
         ports:
           - 5432:5432
         options: >-
@@ -40,8 +40,8 @@ jobs:
       # データベースのセットアップ
       - name: Setup database
         run: |
-          docker compose run --rm web bundle exec rails db:create RAILS_ENV=test
-          docker compose run --rm web bundle exec rails db:migrate RAILS_ENV=test
+          docker compose run --rm app bundle exec rails db:create RAILS_ENV=test
+          docker compose run --rm app bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://app:password@db:5432/app_test
@@ -49,10 +49,10 @@ jobs:
 
       # Rubocopでコードの静的解析
       - name: Run RuboCop
-        run: docker compose run --rm web bundle exec rubocop
+        run: docker compose run --rm app bundle exec rubocop
         working-directory: app
 
       # RSpecでテストを実行
       - name: Run RSpec
-        run: docker compose run --rm web bundle exec rspec
+        run: docker compose run --rm app bundle exec rspec
         working-directory: app
