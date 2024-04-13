@@ -149,6 +149,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.7.3)
     rack (3.0.10)
+    rack-mini-profiler (3.3.1)
+      rack (>= 1.2.0)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -229,6 +231,7 @@ GEM
       rubocop (>= 1.33.0, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
+    spring (4.2.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -271,10 +274,12 @@ DEPENDENCIES
   jbuilder
   pg (~> 1.5)
   puma (>= 5.0)
+  rack-mini-profiler
   rails (~> 7.1.3, >= 7.1.3.2)
   rspec-rails (>= 6.1)
   rubocop (>= 1.63)
   rubocop-rails (>= 2.24)
+  spring
   sprockets-rails
   stimulus-rails
   turbo-rails
