@@ -47,7 +47,7 @@ module App
       g.helper false
       g.test_framework :rspec,
         controller_specs: true,
-        fixtures: true,
+        fixtures: false,
         helper_specs: true,
         model_specs: true,
         request_spec: true,
