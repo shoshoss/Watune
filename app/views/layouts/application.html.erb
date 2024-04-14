@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>App</title>
+    <title>コングラワ</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,8 @@
   </head>
 
   <body>
+    <%= render 'layouts/shared/header' %>
     <%= yield %>
+    <%= render 'layouts/shared/footer' %>
   </body>
 </html>
