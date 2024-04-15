@@ -37,8 +37,19 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.0" # 使用するRubyのバージョン
-          bundler-cache: true # Bundlerのキャッシュを有効化
+          ruby-version: "3.3.0"
+          bundler-cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21"
+
+      - name: Install JavaScript dependencies
+        run: yarn install
+
+      - name: Precompile assets
+        run: RAILS_ENV=test bundle exec rails assets:precompile
 
       # データベースのセットアップ
       - name: Setup database
