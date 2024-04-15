@@ -25,7 +25,7 @@ RSpec.describe '共通系' do
 
   describe 'フッター' do
     it '著作権情報が正しく表示されていること' do
-      expect(page).to have_content('Copyright'), '「Copyright」というテキストが表示されていません'
+      expect(page).to have_content('©'), '「©」というテキストが表示されていません'
     end
   end
 end
