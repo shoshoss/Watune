@@ -10,7 +10,7 @@ services:
       POSTGRES_DB: app_test
       POSTGRES_HOST_AUTH_METHOD: md5
     ports:
-      - "5433:5432"
+      - "5432:5432"
 
   web:
     build:
@@ -26,10 +26,17 @@ services:
     environment:
       TZ: Asia/Tokyo
       RAILS_ENV: development
+      SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     ports:
       - "3000:3000"
     depends_on:
       - db
+      - chrome
+
+  chrome:
+    image: seleniarm/standalone-chromium:latest
+    ports:
+      - 4444:4444
 
   ngrok:
     image: ngrok/ngrok:latest

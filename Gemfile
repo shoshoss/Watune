@@ -54,7 +54,9 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'rspec-rails', '>= 6.1'
   gem 'rubocop', '>= 1.63', require: false
+  gem 'rubocop-capybara', '>= 2.20', require: false
   gem 'rubocop-rails', '>= 2.24', require: false
+  gem 'rubocop-rspec', '>= 2.28', require: false
 end
 
 group :development do
@@ -66,4 +68,11 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   gem 'spring'
+end
+
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end

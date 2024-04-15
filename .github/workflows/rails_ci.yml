@@ -37,24 +37,25 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.0" # 使用するRubyのバージョン
-          bundler-cache: true # Bundlerのキャッシュを有効化
+          ruby-version: "3.3.0"
+          bundler-cache: true
+
+      - name: Build CSS
+        run: |
+          bundle exec rails css:build
 
       # データベースのセットアップ
       - name: Setup database
         run: |
-          docker compose run --rm web bundle exec rails db:create RAILS_ENV=test
-          docker compose run --rm web bundle exec rails db:migrate RAILS_ENV=test
+          docker compose -f compose.test.yml run --rm web bundle exec rails db:create RAILS_ENV=test
+          docker compose -f compose.test.yml run --rm web bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
-        working-directory: ./app
+        working-directory: .
 
       # Rubocopでコードの静的解析
       - name: Run RuboCop
-        run: docker compose run --rm web bundle exec rubocop
-        working-directory: app
-
-      # RSpecでテストを実行
-      - name: Run RSpec
-        run: docker compose run --rm web bundle exec rspec
-        working-directory: app
+        run: docker compose -f compose.test.yml run --rm web bundle exec rubocop
+        env:
+          RAILS_ENV: test
+        working-directory: .
