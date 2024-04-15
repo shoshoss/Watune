@@ -20,7 +20,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_091751) do
     t.string "salt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "display_name"
+    t.string "display_name", limit: 50
     t.string "username_slug", limit: 15
     t.string "self_introduction", limit: 500
     t.string "avatar_url", limit: 255
