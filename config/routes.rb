@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get 'render/index'
+  get 'static_pages/top'
 
   # Defines the root path route ("/")
   root 'static_pages#top'

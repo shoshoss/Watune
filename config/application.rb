@@ -46,13 +46,13 @@ module App
       g.skip_routes true
       g.helper false
       g.test_framework :rspec,
-        controller_specs: true,
-        fixtures: false,
-        helper_specs: true,
-        model_specs: true,
-        request_spec: true,
-        routing_specs: false,
-        view_specs: false
+                       controller_specs: true,
+                       fixtures: false,
+                       helper_specs: true,
+                       model_specs: true,
+                       request_spec: true,
+                       routing_specs: false,
+                       view_specs: false
     end
   end
 end
