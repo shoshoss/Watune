@@ -1,9 +1,13 @@
+# ワークフローの名前
 name: Rails CI
 
+# このワークフローが実行されるトリガー
 on: [push]
 
 jobs:
+  # バックエンドのテストジョブ
   app-tests:
+    # 実行環境をUbuntuの最新版に設定
     runs-on: ubuntu-latest
 
     services:
@@ -22,30 +26,35 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    # 実行するステップ
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # リポジトリのチェックアウト
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Rubyのセットアップ
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3.0"
-          bundler-cache: true
+          ruby-version: "3.3.0" # 使用するRubyのバージョン
+          bundler-cache: true # Bundlerのキャッシュを有効化
 
+      # データベースのセットアップ
       - name: Setup database
         run: |
           docker compose -f compose.dev.yml run --rm web bundle exec rails db:create RAILS_ENV=test
           docker compose -f compose.dev.yml run --rm web bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
-        working-directory: ./app
+        working-directory: .
 
+      # Rubocopでコードの静的解析
       - name: Run RuboCop
         run: docker compose -f compose.dev.yml run --rm web bundle exec rubocop
-        working-directory: app
+        working-directory: .
 
+      # RSpecでテストを実行
       - name: Run RSpec
         run: docker compose -f compose.dev.yml run --rm web bundle exec rspec
-        working-directory: app
+        working-directory: .
