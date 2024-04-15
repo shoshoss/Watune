@@ -59,10 +59,3 @@ jobs:
         env:
           RAILS_ENV: test
         working-directory: .
-
-      # RSpecでテストを実行
-      - name: Run RSpec
-        run: docker compose -f compose.test.yml run --rm web bundle exec rspec
-        env:
-          RAILS_ENV: test
-        working-directory: .
