@@ -43,22 +43,22 @@ jobs:
       # データベースのセットアップ
       - name: Setup database
         run: |
-          docker compose -f compose.dev.yml run --rm web bundle exec rails db:create RAILS_ENV=test
-          docker compose -f compose.dev.yml run --rm web bundle exec rails db:migrate RAILS_ENV=test
+          docker compose -f compose.test.yml run --rm web bundle exec rails db:create RAILS_ENV=test
+          docker compose -f compose.test.yml run --rm web bundle exec rails db:migrate RAILS_ENV=test
         env:
           RAILS_ENV: test
         working-directory: .
 
       # Rubocopでコードの静的解析
       - name: Run RuboCop
-        run: docker compose -f compose.dev.yml run --rm web bundle exec rubocop
+        run: docker compose -f compose.test.yml run --rm web bundle exec rubocop
         env:
           RAILS_ENV: test
         working-directory: .
 
       # RSpecでテストを実行
       - name: Run RSpec
-        run: docker compose -f compose.dev.yml run --rm web bundle exec rspec
+        run: docker compose -f compose.test.yml run --rm web bundle exec rspec
         env:
           RAILS_ENV: test
         working-directory: .
