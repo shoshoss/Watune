@@ -21,8 +21,17 @@ services:
     environment:
       TZ: Asia/Tokyo
       RAILS_ENV: test
+      SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
+    ports:
+      - "3000:3000"
     depends_on:
       - db
+      - chrome
+
+  chrome:
+    image: seleniarm/standalone-chromium:latest
+    ports:
+      - 4444:4444
 
 volumes:
   postgres_data:
