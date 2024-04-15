@@ -1,0 +1,5 @@
+# config/locales/ja.yml
+ja:
+  errors:
+    messages:
+      username_format: "文字、数字、アンダースコアのみを含むこと。"

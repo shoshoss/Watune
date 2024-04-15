@@ -1,16 +1,23 @@
 require 'rails_helper'
 
-RSpec.describe 'Users' do
+RSpec.describe 'UserSessions' do
   describe 'GET /new' do
     it 'returns http success' do
-      get '/users/new'
+      get '/user_sessions/new'
       expect(response).to have_http_status(:success)
     end
   end
 
   describe 'GET /create' do
     it 'returns http success' do
-      get '/users/create'
+      get '/user_sessions/create'
+      expect(response).to have_http_status(:success)
+    end
+  end
+
+  describe 'GET /destroy' do
+    it 'returns http success' do
+      get '/user_sessions/destroy'
       expect(response).to have_http_status(:success)
     end
   end
