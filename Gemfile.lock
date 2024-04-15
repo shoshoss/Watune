@@ -352,7 +352,7 @@ DEPENDENCIES
   rubocop-rails (>= 2.24)
   rubocop-rspec (>= 2.28)
   selenium-webdriver
-  sorcery
+  sorcery (~> 0.17)
   spring
   sprockets-rails
   stimulus-rails
