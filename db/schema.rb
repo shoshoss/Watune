@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_15_091751) do
     t.string "display_name", limit: 50
     t.string "username_slug", limit: 15
     t.string "self_introduction", limit: 500
-    t.string "avatar_url", limit: 255
+    t.string "avatar", limit: 255
     t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username_slug"], name: "index_users_on_username_slug", unique: true

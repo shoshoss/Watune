@@ -33,11 +33,11 @@ class User < ApplicationRecord
   validates :self_introduction, length: { maximum: 500 }
 
   # アバターURLはURL形式で、存在しなくても良い
-  validates :avatar_url, url: true, allow_blank: true
+  # validates :avatar_url, url: true, allow_blank: true
 
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
 
   # アバター画像のアップローダーをマウント
-  mount_uploader :avatar_url, AvatarUploader
+  # mount_uploader :avatar, AvatarUploader
 end
