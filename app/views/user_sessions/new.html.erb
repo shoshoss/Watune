@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4">
   <div class="max-w-xl mx-auto my-10 bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-2xl font-bold mb-6 text-center">ログイン</h1>
-    <%= form_with url: login_path, local: true do |f| %>
+    <%= form_with url: login_path do |f| %>
       <div class="mb-6">
         <%= f.label :email, class: "block text-lg font-medium text-gray-700" %>
         <%= f.email_field :email, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>

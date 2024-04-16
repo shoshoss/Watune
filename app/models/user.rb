@@ -2,6 +2,8 @@ class User < ApplicationRecord
   # Sorceryによる認証機能を有効化
   authenticates_with_sorcery!
 
+  before_validation :generate_username_slug, on: :create
+
   # メールアドレスは一意であり、存在が必要で、最大255文字
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
@@ -21,9 +23,9 @@ class User < ApplicationRecord
   # validates :display_name, length: { maximum: 50 }
 
   # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
-  # validates :username_slug, uniqueness: true,
-  #                          length: { maximum: 15 },
-  #                          format: { with: /\A[a-zA-Z_][a-zA-Z0-9_]*\z/ }
+  validates :username_slug, presence: true, uniqueness: true,
+                            length: { minimum: 3, maximum: 15 },
+                            format: { with: /\A[\w]+\z/ }
 
   # 自己紹介は最大500文字まで
   # validates :self_introduction, length: { maximum: 500 }
@@ -36,4 +38,16 @@ class User < ApplicationRecord
 
   # アバター画像のアップローダーをマウント
   # mount_uploader :avatar, AvatarUploader
+
+  private
+
+  def generate_username_slug
+    return if username_slug.present?
+
+    loop do
+      # 3文字以上、15文字以内のランダムな文字列を生成
+      self.username_slug = SecureRandom.alphanumeric(rand(3..15)).downcase
+      break unless User.exists?(username_slug:)
+    end
+  end
 end
