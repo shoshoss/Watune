@@ -18,10 +18,10 @@ class User < ApplicationRecord
   # validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
   # 最大50文字
-  #validates :display_name, length: { maximum: 50 }
+  # validates :display_name, length: { maximum: 50 }
 
   # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
-  #validates :username_slug, uniqueness: true,
+  # validates :username_slug, uniqueness: true,
   #                          length: { maximum: 15 },
   #                          format: { with: /\A[a-zA-Z_][a-zA-Z0-9_]*\z/ }
 
