@@ -24,9 +24,10 @@ class User < ApplicationRecord
   validates :display_name, presence: true, length: { maximum: 50 }
   
   # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
-  validates :username_slug, uniqueness: true, presence: true, length: { maximum: 15 },
+  validates :username_slug, uniqueness: true, presence: true,
+            length: { maximum: 15 },
             format: { with: /\A[a-zA-Z_][a-zA-Z0-9_]*\z/,
-                      message: 'must start with a letter and contain only letters, digits, and underscores' }
+                      message: I18n.t('errors.messages.username_format') }
   
   # 自己紹介は最大500文字まで
   validates :self_introduction, length: { maximum: 500 }
