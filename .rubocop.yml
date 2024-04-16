@@ -14,6 +14,10 @@ AllCops:
     - "node_modules/**/*" # フロントエンド依存関係は除外
     - "vendor/**/*" # サードパーティのソースコードは除外
 
+# 国際化の無効化
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 # Rails固有のコーディングスタイルを適用
 Rails:
   Enabled: true
