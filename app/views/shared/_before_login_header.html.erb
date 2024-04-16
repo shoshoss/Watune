@@ -1,0 +1,21 @@
+<header class="bg-cyan-600/10">
+  <div class="navbar">
+    <div class="flex-1 px-4">
+      <%= link_to '/' do %>
+        <%= image_tag 'logo.png', alt: 'ロゴのタイトル', class: "h-14 w-auto max-w-full" %>
+      <% end %>
+    </div>
+    <div class=" items-center">
+      <ul class="menu menu-horizontal px-1 flex items-center text-lg">
+        <li class="border-b-2 border-cyan-600">
+          <%= link_to 'ホーム', '/', class: 'text-current font-bold' %>
+        </li>
+        <li class="border-b-2 border-transparent hover:border-cyan-300">
+          <%= link_to 'みんなのWave', '#', class: 'hover:text-current font-bold' %>
+        </li>
+        <li><%= link_to 'ログイン', login_path, class: 'font-bold' %></li>
+        <li><%= link_to '新規登録', new_user_path, class: 'font-bold' %></li>
+      </ul>
+    </div>
+  </div>
+</header>
