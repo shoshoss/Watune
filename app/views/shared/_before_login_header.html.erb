@@ -6,16 +6,15 @@
       <% end %>
     </div>
     <div class=" items-center">
-      <ul class="menu menu-horizontal px-1 flex items-center text-lg"> <!-- テキストサイズを大きめに設定 -->
-        <!-- 「ホーム」リンクを追加し、アクティブなページとしてスタイリング -->
+      <ul class="menu menu-horizontal px-1 flex items-center text-lg">
         <li class="border-b-2 border-cyan-600">
           <%= link_to 'ホーム', '/', class: 'text-current font-bold' %>
         </li>
         <li class="border-b-2 border-transparent hover:border-cyan-300">
           <%= link_to 'みんなのWave', '#', class: 'hover:text-current font-bold' %>
         </li>
-        <li><%= link_to 'ログイン', '#', class: 'font-bold' %></li>
-        <li><%= link_to '新規登録', "#", class: 'font-bold' %></li>
+        <li><%= link_to 'ログイン', login_path, class: 'font-bold' %></li>
+        <li><%= link_to '新規登録', new_user_path, class: 'font-bold' %></li>
       </ul>
     </div>
   </div>
