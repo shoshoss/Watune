@@ -1,18 +1,20 @@
 <%= form_with model: @user do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
-  <div class="mb-6">
-    <%= f.label :email, class: "block text-lg font-medium text-gray-700" %>
-    <%= f.email_field :email, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
-  </div>
-  <div class="mb-6">
-    <%= f.label :password, class: "block text-lg font-medium text-gray-700" %>
-    <%= f.password_field :password, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
-  </div>
-  <div class="mb-6">
-    <%= f.label :password_confirmation, class: "block text-lg font-medium text-gray-700" %>
-    <%= f.password_field :password_confirmation, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
-  </div>
-  <div class="form-control mt-4 lg:mt-6">
-  <%= f.submit "登録", class: "btn btn-primary" %>
+  <div class="card w-full max-w-md shadow-2xl bg-base-100 p-8 mx-auto">
+    <div class="form-control mt-2">
+      <%= f.label :email, 'メールアドレス', class: "label-text mb-1" %>
+      <%= f.email_field :email, placeholder: "email@example.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
+    </div>
+    <div class="form-control mt-2">
+      <%= f.label :password, 'パスワード', class: "label-text mb-1" %>
+      <%= f.password_field :password, placeholder: "password", class: "input input-bordered text-lg", required: true, autocomplete: "new-password" %>
+    </div>
+    <div class="form-control mt-2">
+      <%= f.label :password_confirmation, 'パスワード確認', class: "label-text mb-1" %>
+      <%= f.password_field :password_confirmation, placeholder: "password", class: "input input-bordered text-lg", required: true, autocomplete: "new-password" %>
+    </div>
+    <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit "登録", class: "btn btn-primary w-full" %>
+    </div>
   </div>
 <% end %>
