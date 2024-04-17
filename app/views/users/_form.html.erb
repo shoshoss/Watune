@@ -1,14 +1,5 @@
 <%= form_with model: @user do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-      <strong class="font-bold">エラーが発生しました:</strong>
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render 'shared/error_messages', object: f.object %>
   <div class="mb-6">
     <%= f.label :email, class: "block text-lg font-medium text-gray-700" %>
     <%= f.email_field :email, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>

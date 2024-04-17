@@ -11,7 +11,7 @@ class UsersController < ApplicationController
       login(user_params[:email], user_params[:password])
       redirect_to edit_profile_path, notice: 'ユーザー登録に成功しました'
     else
-      flash.now[:alert] = 'ユーザー登録に失敗しました'
+      flash.now[:error] = 'ユーザー登録に失敗しました'
       render :new, status: :unprocessable_entity
     end
   end
