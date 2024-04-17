@@ -10,7 +10,9 @@
         <%= f.label :password, class: "block text-lg font-medium text-gray-700" %>
         <%= f.password_field :password, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
       </div>
-      <%= f.submit "ログイン", class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit "ログイン", class: "btn btn-primary" %>
+      </div>
     <% end %>
     <div class='mt-6 text-center text-sm text-gray-600'>
       <%= link_to '登録ページへ', new_user_path, class: "text-blue-500 hover:text-blue-600" %>
