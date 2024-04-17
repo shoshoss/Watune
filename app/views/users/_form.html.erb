@@ -1,0 +1,18 @@
+<%= form_with model: @user do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+  <div class="mb-6">
+    <%= f.label :email, class: "block text-lg font-medium text-gray-700" %>
+    <%= f.email_field :email, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
+  </div>
+  <div class="mb-6">
+    <%= f.label :password, class: "block text-lg font-medium text-gray-700" %>
+    <%= f.password_field :password, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
+  </div>
+  <div class="mb-6">
+    <%= f.label :password_confirmation, class: "block text-lg font-medium text-gray-700" %>
+    <%= f.password_field :password_confirmation, class: "mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-lg" %>
+  </div>
+  <div class="form-control mt-4 lg:mt-6">
+  <%= f.submit "登録", class: "btn btn-primary" %>
+  </div>
+<% end %>
