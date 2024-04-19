@@ -26,6 +26,8 @@ services:
     environment:
       TZ: Asia/Tokyo
       RAILS_ENV: development
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
     ports:
       - "3000:3000"
@@ -37,16 +39,6 @@ services:
     image: seleniarm/standalone-chromium:latest
     ports:
       - 4444:4444
-
-  ngrok:
-    image: ngrok/ngrok:latest
-    environment:
-      NGROK_AUTHTOKEN: ${NGROK_AUTH}
-    command: ["http", "web:3000"]
-    depends_on:
-      - web
-    ports:
-      - "4040:4040"
 
 volumes:
   postgres_data:

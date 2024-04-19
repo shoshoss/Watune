@@ -1,0 +1,24 @@
+<%= form_with model: @user, url: profile_path do |f| %>
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <div class="card w-full max-w-md shadow-2xl bg-base-100 p-8 mx-auto">
+    <div class="form-control mt-2">
+      <%= f.label :display_name, '名前', class: "label-text mb-1" %>
+      <%= f.text_field :display_name, class: "input input-bordered text-lg" %>
+    </div>
+
+    <div class="form-control">
+      <%= f.label :username_slug, 'ユーザー名', class: "label-text mb-1" %>
+      <%= f.text_field :username_slug, class: "input input-bordered text-lg" %>
+    </div>
+
+    <div class="form-control mt-2">
+      <%= f.label :self_introduction, '自己紹介', class: "label-text mb-1" %>
+      <%= f.text_area :self_introduction, class: "input input-bordered text-lg", rows: 3 %>
+    </div>
+
+    <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit "プロファイル更新", class: "btn btn-primary w-full" %>
+    </div>
+  </div>
+<% end %>
