@@ -1,6 +1,6 @@
 databases:
   - name: ConGraWa
-    databaseName: ConGraWa_db
+    databaseName: ConGraWaDb
     user: shonosuke
     region: singapore
 
