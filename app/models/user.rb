@@ -18,14 +18,14 @@ class User < ApplicationRecord
   # メールアドレスは一意であり、存在が必要で、最大255文字
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
-  # パスワードは新規作成または変更時に8文字以上必要
-  validates :password, length: { minimum: 8 }, if: -> { new_record? || changes[:crypted_password] }
+ # パスワードは新規作成または変更時に8文字以上であり、かつ半角英数字を含む必要がある
+  validates :password, length: { minimum: 8 }, format: { with: /\A[a-zA-Z0-9]+\z/, message: "は半角英数字である必要があります" }, if: -> { new_record? || changes[:crypted_password] }
 
   # パスワードの確認が必要
-  validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
+  # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
 
   # パスワード確認フィールドの存在確認
-  validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
+  # validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
 
   # リセットパスワードトークンは一意であり、存在することも許可される
   # validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true

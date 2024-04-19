@@ -62,7 +62,7 @@ class OauthsController < ApplicationController
       display_name: @user_hash[:user_info]['name'].presence || 'Default Name',
       external_auth: true
     )
-    user.password = user.password_confirmation = SecureRandom.hex(10)
+    user.password = SecureRandom.alphanumeric(10)
     user.save!
   end
 end
