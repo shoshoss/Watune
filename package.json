@@ -2,7 +2,7 @@
   "name": "app",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/shoshoss/gratiwave.git",
+  "repository": "https://github.com/shoshoss/ConGraWa.git",
   "license": "MIT",
   "dependencies": {
     "autoprefixer": "^10.4.19",
