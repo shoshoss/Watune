@@ -19,7 +19,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
  # パスワードは新規作成または変更時に8文字以上であり、かつ半角英数字を含む必要がある
-  validates :password, length: { minimum: 8 }, format: { with: /\A[a-zA-Z0-9]+\z/, message: "は半角英数字である必要があります" }, if: -> { new_record? || changes[:crypted_password] }
+ validates :password, length: { minimum: 8, message: :too_short }, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+\z/, message: :not_alphanumeric }, if: -> { new_record? || changes[:crypted_password] }
 
   # パスワードの確認が必要
   # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
