@@ -9,15 +9,16 @@ class ProfilesController < ApplicationController
   def update
     @user = current_user
     if @user.update(profile_params)
-      redirect_to profile_path(@user.username_slug), notice: 'プロフィールが更新されました。'
+      redirect_to profile_path, notice: 'プロファイルが更新されました。'
     else
-      render :edit
+      flash.now[:error] = 'プロファイルの更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 
   private
 
   def profile_params
-    params.require(:user).permit(:username_slug, :email, :password, :password_confirmation)
+    params.require(:user).permit(:display_name, :username_slug, :self_introduction)
   end
 end

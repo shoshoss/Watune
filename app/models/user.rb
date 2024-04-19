@@ -1,7 +1,18 @@
 class User < ApplicationRecord
   # Sorceryによる認証機能を有効化
   authenticates_with_sorcery!
+  # 認証情報を複数保持するための関連付け。ユーザー削除時に認証情報も削除される。
+  has_many :authentications, dependent: :destroy
+  # ネストされた属性として認証情報を受け入れる
+  accepts_nested_attributes_for :authentications
 
+  attr_accessor :external_auth # 外部認証フラグを追加
+
+  has_secure_password validations: false # バリデーションを手動で制御
+
+  validates :password, presence: true, confirmation: true, if: :password_required?
+
+  # ユーザー作成時にユーザー名スラグを自動生成する
   before_validation :generate_username_slug, on: :create
 
   # メールアドレスは一意であり、存在が必要で、最大255文字
@@ -40,6 +51,16 @@ class User < ApplicationRecord
   # mount_uploader :avatar, AvatarUploader
 
   private
+
+  def password_required?
+    # 外部認証がtrueで、かつパスワードが存在しない、または確認用のパスワードが存在しない場合は、
+    # パスワードのバリデーションはスキップする
+    return false if external_auth && password.blank? && password_confirmation.blank?
+
+    # 新規レコードであるか、パスワードまたはパスワード確認フィールドが存在する場合は
+    # バリデーションが必要
+    new_record? || password.present? || password_confirmation.present?
+  end
 
   def generate_username_slug
     return if username_slug.present?
