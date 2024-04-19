@@ -56,12 +56,11 @@ class User < ApplicationRecord
     # 外部認証がtrueで、かつパスワードが存在しない、または確認用のパスワードが存在しない場合は、
     # パスワードのバリデーションはスキップする
     return false if external_auth && password.blank? && password_confirmation.blank?
-  
+
     # 新規レコードであるか、パスワードまたはパスワード確認フィールドが存在する場合は
     # バリデーションが必要
     new_record? || password.present? || password_confirmation.present?
   end
-  
 
   def generate_username_slug
     return if username_slug.present?

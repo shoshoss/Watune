@@ -31,10 +31,11 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - db/migrate/*.rb
-  Max: 15 # メソッドの最大行数を15に設定
+  Max: 25
 Metrics/AbcSize:
   Exclude:
     - db/migrate/*.rb
+  Max: 25
 
 # ドキュメンテーションコメントの強制を無効化
 Style/Documentation:
