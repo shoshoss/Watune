@@ -51,18 +51,14 @@ gem 'bootsnap', require: false
 
 gem 'sorcery', '~> 0.17'
 
-gem 'rails-i18n', '~> 7'
+gem 'rails-i18n', '~> 7.0'
 
 gem 'config', '~> 5.4'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri windows]
-  gem 'rspec-rails', '>= 6.1'
-  gem 'rubocop', '>= 1.63', require: false
-  gem 'rubocop-capybara', '>= 2.20', require: false
-  gem 'rubocop-rails', '>= 2.24', require: false
-  gem 'rubocop-rspec', '>= 2.28', require: false
+  gem 'faker', '>= 3.3'
 end
 
 group :development do
@@ -70,15 +66,22 @@ group :development do
   gem 'web-console'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
-  gem 'rack-mini-profiler'
+  # gem 'rack-mini-profiler'
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  gem 'spring'
+  # gem 'spring'
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem 'capybara'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
+  gem 'capybara', '>= 3.4'
+  gem 'factory_bot_rails', '>= 6.4'
+  gem 'rspec-rails', '>= 6.1'
+  gem 'rubocop', '>= 1.63', require: false
+  gem 'rubocop-capybara', '>= 2.20', require: false
+  gem 'rubocop-factory_bot', '>= 2.25'
+  gem 'rubocop-rails', '>= 2.24', require: false
+  gem 'rubocop-rspec', '>= 2.28', require: false
+  gem 'selenium-webdriver', '>= 4.10'
+  gem 'webdrivers', '>= 5.3'
 end

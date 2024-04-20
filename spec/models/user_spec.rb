@@ -11,13 +11,13 @@ RSpec.describe User do
     user2 = build(:user)
     user2.email = user1.email
     user2.valid? # 同じメールアドレスを持つ他のユーザーがすでに存在する場合、エラーメッセージが生成
-    expect(user2.errors[:email]).to include('has already been taken')
+    expect(user2.errors[:email]).to include('はすでに存在します')
   end
 
   it 'メールアドレスは必須項目であること' do
     user = build(:user)
     user.email = nil
     user.valid?
-    expect(user.errors[:email]).to include("can't be blank")
+    expect(user.errors[:email]).to include('を入力してください')
   end
 end

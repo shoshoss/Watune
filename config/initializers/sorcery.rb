@@ -159,7 +159,9 @@ Rails.application.config.sorcery.configure do |config|
   # config.auth0.site = "https://example.auth0.com"
   #
   config.google.key = ENV.fetch('GOOGLE_CLIENT_ID') { Rails.application.credentials.dig(:google, :google_client_id) }
-  config.google.secret = ENV.fetch('GOOGLE_CLIENT_SECRET') { Rails.application.credentials.dig(:google, :google_client_secret) }
+  config.google.secret = ENV.fetch('GOOGLE_CLIENT_SECRET') do
+    Rails.application.credentials.dig(:google, :google_client_secret)
+  end
   config.google.callback_url = Settings.sorcery[:google_callback_url]
   config.google.user_info_mapping = { email: 'email', username: 'display_name' }
 

@@ -28,4 +28,16 @@ RSpec.describe '共通系' do
       expect(page).to have_content('©'), '「©」というテキストが表示されていません'
     end
   end
+
+  context 'ログイン後' do
+    before do
+      login_as_general
+    end
+
+    describe 'ヘッダー' do
+      it 'ログアウトが正しく表示されていること', :js do
+        expect(page).to have_content('ログアウト'), 'ヘッダーに「ログアウト」というテキストが表示されていません'
+      end
+    end
+  end
 end

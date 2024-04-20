@@ -18,8 +18,11 @@ class User < ApplicationRecord
   # メールアドレスは一意であり、存在が必要で、最大255文字
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
- # パスワードは新規作成または変更時に8文字以上であり、かつ半角英数字を含む必要がある
- validates :password, length: { minimum: 8, message: :too_short }, format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+\z/, message: :not_alphanumeric }, if: -> { new_record? || changes[:crypted_password] }
+  # パスワードは新規作成または変更時に8文字以上であり、かつ半角英数字を含む必要がある
+  validates :password,
+            length: { minimum: 8, message: :too_short },
+            format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+\z/, message: :not_alphanumeric },
+            if: -> { new_record? || changes[:crypted_password] }
 
   # パスワードの確認が必要
   # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -31,7 +34,7 @@ class User < ApplicationRecord
   # validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
   # 最大50文字
-  # validates :display_name, length: { maximum: 50 }
+  validates :display_name, length: { maximum: 50 }
 
   # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
   validates :username_slug, presence: true, uniqueness: true,
