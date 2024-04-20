@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'StaticPages' do
-  describe 'GET /top' do
+  describe 'GET /' do
     it 'returns http success' do
-      get '/static_pages/top'
+      get '/'
       expect(response).to have_http_status(:success)
     end
   end
