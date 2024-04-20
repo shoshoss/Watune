@@ -23,7 +23,7 @@ class OauthsController < ApplicationController
     @user = login_from(provider)
     if @user
       # ログインに成功した場合はトップページにリダイレクト
-      redirect_to root_path, notice: "#{provider.titleize} アカウントでログインしました"
+      redirect_to root_path, status: :see_other, notice: "#{provider.titleize} アカウントでログインしました"
     else
       # ユーザーが見つからない場合は、ユーザーを検索または初期化
       @user = find_or_initialize_user(provider)
@@ -41,11 +41,11 @@ class OauthsController < ApplicationController
                                         [root_path, 'アカウントでログインしました']
                                       end
       # リダイレクト実行
-      redirect_to redirect_path, notice: "#{provider.titleize} #{notice_message}"
+      redirect_to redirect_path, status: :see_other, notice: "#{provider.titleize} #{notice_message}"
     end
   rescue ActiveRecord::RecordInvalid => e
     # レコードの保存に失敗した場合はログインページにリダイレクト
-    redirect_to login_path, error: "アカウントの作成に失敗しました。エラー: #{e.message}"
+    redirect_to login_path, status: :unprocessable_entity, error: "アカウントの作成に失敗しました。エラー: #{e.message}"
   end
 
   private
@@ -62,7 +62,7 @@ class OauthsController < ApplicationController
       display_name: @user_hash[:user_info]['name'].presence || 'Default Name',
       external_auth: true
     )
-    user.password = user.password_confirmation = SecureRandom.hex(10)
+    user.password = SecureRandom.alphanumeric(10)
     user.save!
   end
 end

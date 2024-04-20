@@ -53,7 +53,7 @@ module App
                        helper_specs: true,
                        model_specs: true,
                        request_spec: true,
-                       routing_specs: false,
+                       routing_specs: true,
                        view_specs: false
     end
   end
