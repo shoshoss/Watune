@@ -1,2 +1,15 @@
-<h1>PasswordResets#new</h1>
-<p>Find me in app/views/password_resets/new.html.erb</p>
+<% content_for(:title, t('.title')) %>
+<div class="max-w-4xl mx-auto px-4">
+  <div class="flex justify-center">
+    <div class="w-full max-w-lg">
+      <h1 class="text-xl font-bold"><%= t('.title') %></h1>
+      <%= form_with url: password_resets_path do |f| %>
+        <div class="mb-4">
+          <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+          <%= f.email_field :email, class: 'input input-bordered w-full' %>
+        </div>
+        <%= f.submit t('.submit'), class: "btn btn-primary w-full" %>
+      <% end %>
+    </div>
+  </div>
+</div>
