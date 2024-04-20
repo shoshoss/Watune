@@ -10,4 +10,8 @@ Rails.application.routes.draw do
   get 'oauth/:provider' => 'oauths#oauth', :as => :auth_at_provider
   resources :users, only: %i[new create]
   resource :profile, only: %i[edit update]
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end
