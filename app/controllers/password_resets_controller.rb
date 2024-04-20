@@ -12,7 +12,7 @@ class PasswordResetsController < ApplicationController
     @user&.deliver_reset_password_instructions!
     # 「存在しないメールアドレスです」という旨の文言を表示すると、逆に存在するメールアドレスを特定されてしまうため、
     # あえて成功時のメッセージを送信させている
-    redirect_to login_path, status: :see_other, success: t('.success')
+    redirect_to login_path, status: :see_other, notice: t('.success')
   end
 
   # パスワードのリセットフォーム画面へ遷移するアクション
@@ -33,9 +33,9 @@ class PasswordResetsController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]
     # 次の行は一時トークンをクリアし、パスワードを更新します
     if @user.change_password(params[:user][:password])
-      redirect_to login_path, status: :see_other, success: t('.success')
+      redirect_to login_path, status: :see_other, notice: t('.success')
     else
-      flash.now[:danger] = t('.fail')
+      flash.now[:error] = t('.fail')
       render :edit, status: :unprocessable_entity
     end
   end
