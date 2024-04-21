@@ -70,7 +70,7 @@ ja:
       success: パスワードリセット手順を送信しました
     edit:
       title: パスワードリセット
-      submit: 送信
+      submit: 更新
     update:
       success: パスワードを変更しました
       fail: パスワード変更に失敗しました

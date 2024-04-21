@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def page_title(title = '')
+    base_title = 'ConGraWa APP'
+    title.present? ? "#{title} | #{base_title}" : base_title
+  end
+
   def flash_class(type)
     case type.to_sym
     when :notice

@@ -76,4 +76,4 @@ Capybara/ClickLinkOrButtonStyle:
   Enabled: false # Capybaraのクリックスタイルの強制を無効化
 
 RSpec/MultipleExpectations:
-  Max: 3 # 一つのitブロック内で許可するexpectationの最大数を3に設定
+  Max: 5 # 一つのitブロック内で許可するexpectationの最大数を5に設定

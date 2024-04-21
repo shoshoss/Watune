@@ -9,9 +9,9 @@ Rails.application.routes.draw do
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'
 
-  post 'oauth/callback' => 'oauths#callback'
-  get 'oauth/callback' => 'oauths#callback' # for use with Github, Facebook
-  get 'oauth/:provider' => 'oauths#oauth', :as => :auth_at_provider
+  # get と post のリクエストをまとめるために match を使用
+  match 'oauth/callback', to: 'oauths#callback', via: %i[get post]
+  get 'oauth/:provider', to: 'oauths#oauth', as: :auth_at_provider
 
   resources :users, only: %i[new create]
   resource :profile, only: %i[edit update]
