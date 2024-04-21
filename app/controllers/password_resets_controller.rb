@@ -8,7 +8,10 @@ class PasswordResetsController < ApplicationController
   def edit
     @token = params[:id]
     @user = User.load_from_reset_password_token(@token)
-    not_authenticated if @user.blank?
+    if @user.blank?
+      flash[:error] = "このリンクは無効です。再度パスワードリセットのリクエストをしてください。"
+      redirect_to new_password_reset_path
+    end
   end
 
   # パスワードのリセットを要求するアクション。
