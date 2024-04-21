@@ -50,10 +50,10 @@ module App
       g.test_framework :rspec,
                        controller_specs: true,
                        fixtures: false,
-                       helper_specs: true,
+                       helper_specs: false,
                        model_specs: true,
-                       request_spec: true,
-                       routing_specs: true,
+                       request_spec: false,
+                       routing_specs: false,
                        view_specs: false
     end
   end

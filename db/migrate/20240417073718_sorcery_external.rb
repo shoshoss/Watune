@@ -1,13 +1,14 @@
 class SorceryExternal < ActiveRecord::Migration[7.1]
   def change
     create_table :authentications do |t|
-      t.integer :user_id, null: false
-      t.string :provider, :uid, null: false
+      t.references :user, null: false, foreign_key: true # 外部キー制約とインデックスが自動的に追加される
+      t.string :provider, null: false
+      t.string :uid, null: false
 
-      t.timestamps null: false
+      t.timestamps
     end
 
-    add_index :authentications, %i[provider uid]
-    add_index :authentications, :user_id
+    # プロバイダーとUIDの組み合わせのユニークインデックスを追加
+    add_index :authentications, %i[provider uid], unique: true
   end
 end

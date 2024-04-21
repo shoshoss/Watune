@@ -24,6 +24,7 @@ services:
       - bundle_data:/usr/local/bundle:cached
       - node_modules:/app/node_modules
     environment:
+      TZ: Asia/Tokyo
       RAILS_ENV: test
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}

@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   private
 
   def not_authenticated
-    redirect_to login_path
+    flash[:error] = t('defaults.flash_message.require_login')
+    redirect_to login_path, status: :found
   end
 end
