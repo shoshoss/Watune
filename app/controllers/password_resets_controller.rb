@@ -4,6 +4,13 @@ class PasswordResetsController < ApplicationController
   # パスワードリセット申請画面へレンダリングするアクション
   def new; end
 
+  # パスワードのリセットフォーム画面へ遷移するアクション
+  def edit
+    @token = params[:id]
+    @user = User.load_from_reset_password_token(@token)
+    not_authenticated if @user.blank?
+  end
+
   # パスワードのリセットを要求するアクション。
   # ユーザーがパスワードのリセットフォームにメールアドレスを入力して送信すると、このアクションが実行される。
   def create
@@ -13,13 +20,6 @@ class PasswordResetsController < ApplicationController
     # 「存在しないメールアドレスです」という旨の文言を表示すると、逆に存在するメールアドレスを特定されてしまうため、
     # あえて成功時のメッセージを送信させている
     redirect_to login_path, status: :see_other, notice: t('.success')
-  end
-
-  # パスワードのリセットフォーム画面へ遷移するアクション
-  def edit
-    @token = params[:id]
-    @user = User.load_from_reset_password_token(@token)
-    not_authenticated if @user.blank?
   end
 
   # ユーザーがパスワードのリセットフォームを送信したときに発生
