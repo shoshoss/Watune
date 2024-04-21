@@ -8,10 +8,12 @@ Rails.application.routes.draw do
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'
+  
+  # get と post のリクエストをまとめるために match を使用
+  match 'oauth/callback', to: 'oauths#callback', via: [:get, :post]
 
-  post 'oauth/callback' => 'oauths#callback'
-  get 'oauth/callback' => 'oauths#callback' # for use with Github, Facebook
-  get 'oauth/:provider' => 'oauths#oauth', :as => :auth_at_provider
+  # モダンなRubyハッシュ構文
+  get 'oauth/:provider', to: 'oauths#oauth', as: :auth_at_provider
 
   resources :users, only: %i[new create]
   resource :profile, only: %i[edit update]
