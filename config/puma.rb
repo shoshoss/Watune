@@ -25,4 +25,3 @@ if ENV.fetch('RAILS_ENV', 'development') == 'production'
   # Preload the application before starting the workers; this is recommended for performance.
   preload_app!
 end
-

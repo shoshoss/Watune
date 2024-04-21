@@ -1,9 +1,11 @@
 class SorceryResetPassword < ActiveRecord::Migration[7.1]
   def change
-    add_column :users, :reset_password_token, :string, default: nil
-    add_column :users, :reset_password_token_expires_at, :datetime, default: nil
-    add_column :users, :reset_password_email_sent_at, :datetime, default: nil
-    add_column :users, :access_count_to_reset_password_page, :integer, default: 0
+    change_table :users, bulk: true do |t|
+      t.string :reset_password_token, default: nil
+      t.datetime :reset_password_token_expires_at, default: nil
+      t.datetime :reset_password_email_sent_at, default: nil
+      t.integer :access_count_to_reset_password_page, default: 0
+    end
 
     add_index :users, :reset_password_token, unique: true
   end
