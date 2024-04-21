@@ -1,1 +1,76 @@
 ja:
+  helpers:
+    submit:
+      create: 登録
+      submit: 保存
+      update: 更新
+    label:
+      email: メールアドレス
+      password: パスワード
+  defaults:
+    create: 作成
+    post: 投稿
+    edit: 編集
+    show: "詳細"
+    delete: "削除"
+    unspecified: "指定なし"
+    delete_confirm: 本当に削除しますか？
+    search_word: 検索ワード
+    password_reset: パスワードリセット
+    flash_message:
+      require_login: ログインしてください
+  user_sessions:
+    new:
+      title: ログイン
+      login: ログイン
+      to_register_page: 登録ページへ
+      password_forget: パスワードをお忘れの方はこちら
+  users:
+    new:
+      title: ユーザー登録
+      to_login_page: ログインページへ
+  header:
+    login: ログイン
+    logout: ログアウト
+    audio: 音声
+    audio_index: 音声一覧
+    create_audio: 音声作成
+    bookmark_index: ブックマーク一覧
+    profile: プロフィール
+  flash_messages:
+    user_sessions:
+      login_success: "ログインしました"
+      login_failure: "ログインに失敗しました"
+      logout: "ログアウトしました"
+    users:
+      registration_success: "ユーザー登録が完了しました"
+      registration_failure: "ユーザー登録に失敗しました"
+  audios:
+    new:
+      title: 音声作成
+    show:
+      title: 音声詳細
+    index:
+      title: 音声一覧
+    edit:
+      title: 音声編集
+    bookmarks:
+      title: ブックマーク一覧
+      no_result: ブックマーク中の音声がありません
+  profiles:
+    show:
+      title: プロフィール
+    edit:
+      title: プロフィール編集
+  password_resets:
+    new:
+      title: パスワードリセット申請
+      submit: 送信
+    create:
+      success: パスワードリセット手順を送信しました
+    edit:
+      title: パスワードリセット
+      submit: 送信
+    update:
+      success: パスワードを変更しました
+      fail: パスワード変更に失敗しました

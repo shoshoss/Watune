@@ -6,6 +6,9 @@ max_threads_count = ENV.fetch('RAILS_MAX_THREADS', 5).to_i
 min_threads_count = ENV.fetch('RAILS_MIN_THREADS', max_threads_count).to_i
 threads min_threads_count, max_threads_count
 
+# Use the `worker_timeout` to wait before terminating a worker in development environments.
+worker_timeout 3600 if ENV.fetch('RAILS_ENV', 'development') == 'development'
+
 port        ENV.fetch('PORT', 3000)
 
 environment ENV.fetch('RAILS_ENV', 'development')
@@ -22,6 +25,3 @@ if ENV.fetch('RAILS_ENV', 'development') == 'production'
   # Preload the application before starting the workers; this is recommended for performance.
   preload_app!
 end
-
-# Use the `worker_timeout` to wait before terminating a worker in development environments.
-worker_timeout 3600 if ENV.fetch('RAILS_ENV', 'development') == 'development'

@@ -31,7 +31,7 @@ class User < ApplicationRecord
   # validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
 
   # リセットパスワードトークンは一意であり、存在することも許可される
-  # validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
+  validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
   # 最大50文字
   validates :display_name, length: { maximum: 50 }
