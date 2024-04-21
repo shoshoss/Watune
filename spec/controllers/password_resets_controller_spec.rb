@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe PasswordResetsController do
   describe 'GET #new' do
     it 'HTTP成功を返す' do
