@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   
   # get と post のリクエストをまとめるために match を使用
   match 'oauth/callback', to: 'oauths#callback', via: [:get, :post]
-
-  # モダンなRubyハッシュ構文
   get 'oauth/:provider', to: 'oauths#oauth', as: :auth_at_provider
 
   resources :users, only: %i[new create]
