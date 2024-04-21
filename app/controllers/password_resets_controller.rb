@@ -29,8 +29,6 @@ class PasswordResetsController < ApplicationController
 
     return not_authenticated if @user.blank?
 
-    # 次の行は、パスワード確認の検証を機能させます
-    @user.password_confirmation = params[:user][:password_confirmation]
     # 次の行は一時トークンをクリアし、パスワードを更新します
     if @user.change_password(params[:user][:password])
       redirect_to login_path, status: :see_other, notice: t('.success')

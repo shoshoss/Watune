@@ -16,7 +16,6 @@ ja:
               too_long: "は%{count}文字以内で入力してください"
             password:
               blank: "を入力してください"
-              confirmation: "が一致しません"
               too_short: "は%{count}文字以上で入力してください"
               not_alphanumeric: "は半角英数字をそれぞれ1文字以上含む必要があります"
             display_name:
