@@ -1,8 +1,0 @@
-services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      TZ: Asia/Tokyo
-      RAILS_ENV: production
