@@ -1,9 +1,8 @@
 <% content_for(:title, t('.title')) %>
 <div class="container mx-auto px-4">
-  <div class="max-w-xl mx-auto my-10 bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-4xl font-bold mb-12 text-center">ユーザー登録</h1>
+  <div class="max-w-xl mx-auto mb-5 bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold mb-8 text-center">ユーザー登録</h1>
     <%= form_with model: @user do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
       <div class="flex items-center justify-center mb-10">
         <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg" do %>
           <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
@@ -16,6 +15,8 @@
         <span class="flex-shrink mx-4 text-lg">または</span>
         <div class="flex-grow border-t border-gray-300"></div>
       </div>
+
+      <%= render 'shared/error_messages', object: f.object %>
 
       <div class="card-body mx-auto">
         <div class="form-control mt-2">

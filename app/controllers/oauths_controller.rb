@@ -23,7 +23,7 @@ class OauthsController < ApplicationController
     @user = login_from(provider)
     if @user
       # ログイン成功時、トップページにリダイレクト
-      redirect_to root_path, status: :see_other, notice: "#{provider.titleize} アカウントでログインしました"
+      redirect_to root_path, status: :see_other, notice: 'ログインしました'
     else
       # ユーザーが見つからない場合、新規作成または初期化
       @user = find_or_initialize_user(provider)
@@ -63,11 +63,11 @@ class OauthsController < ApplicationController
   end
 
   # リダイレクト先と通知メッセージを決定する
-  def determine_redirect(is_new_user, provider)
+  def determine_redirect(is_new_user, _provider)
     if is_new_user
-      [edit_profile_path, "#{provider.titleize} アカウントでユーザー登録に成功しました"]
+      [edit_profile_path, 'ユーザー登録に成功しました']
     else
-      [root_path, "#{provider.titleize} アカウントでログインしました"]
+      [root_path, 'ログインしました']
     end
   end
 end
