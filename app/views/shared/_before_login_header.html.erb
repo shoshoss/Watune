@@ -9,10 +9,10 @@
 
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center space-x-4">
-      <%= link_to 'ホーム', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to 'ConGraWaとは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
       <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
-      <%= link_to '新規登録', new_user_path, class: 'text-lg font-bold py-2' %>
       <%= link_to 'ログイン', login_path, class: 'hidden md:block text-lg font-bold py-2' %>
+      <%= link_to '新規登録', new_user_path, class: 'text-lg font-bold py-2' %>
 
       <!-- ユーザーメニュー -->
       <div class="dropdown dropdown-end ml-4">
@@ -22,22 +22,14 @@
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
           <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
           <li class="block md:hidden">
-            <%= link_to 'ホーム', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
+            <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
           <li class="block md:hidden">
             <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
-          <li class="block md:hidden">
-            <%= link_to '新規登録', new_user_path, class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
           <li class="block md:hidden">
             <%= link_to 'ログイン', login_path, class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-          <li>
-            <%= link_to 'プロフィール', profile_path, class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-          <li>
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
         </ul>
       </div>
