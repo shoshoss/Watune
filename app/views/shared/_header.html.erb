@@ -1,33 +1,37 @@
-<div class="navbar mx-auto">
-  <div class="flex justify-between items-center w-full">
-    <!-- ロゴはデスクトップサイズでのみ表示 -->
-    <div class="flex-0.2 px-4">
+<div class="navbar px-4">
+  <div class="flex items-center justify-between w-full">
+    <!-- ロゴ -->
+    <div class="shrink-0">
       <%= link_to '/' do %>
-        <%= image_tag 'logo.png', alt: 'ロゴのタイトル', class: "w-auto min-w-[60px] min-h-[40px]" %>
+        <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
 
     <!-- ナビゲーションリンク -->
-    <div class="flex flex-1 justify-end items-center px-2 space-x-4">
-      <%= link_to 'ホーム', '/', class: 'text-lg font-bold py-2 border-b-4 border-cyan-600 text-current' %>
-      <%= link_to 'みんなのWave', '#', class: 'text-lg font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
+    <div class="flex flex-1 justify-end items-center space-x-4">
+      <%= link_to 'ホーム', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
 
-      <!-- ドロップダウンメニュー -->
-      <div class="dropdown dropdown-end">
-        <%= link_to 'javascript:void(0)', class: 'dropdown-toggle btn btn-ghost rounded-btn flex items-center', data: { toggle: "dropdown" } do %>
-          <%= image_tag 'sample.jpg', class: 'rounded-full w-10 h-10 min-w-[40px] min-h-[40px]' %>
+      <!-- 投稿ボタン -->
+      <%= render 'shared/post_form' %>
+      <!-- ユーザーメニュー -->
+      <div class="dropdown dropdown-end ml-4">
+        <%= link_to "javascript:void(0)", class: 'btn btn-circle btn-ghost', "data-toggle" => "dropdown" do %>
+          <%= image_tag 'sample.jpg', class: 'rounded-full w-10 h-10' %>
         <% end %>
-        <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4 text-lg">
-          <li class="hover:bg-cyan-600 hover:text-white">
-            <span class="block px-4 py-2">
-              <%= current_user.display_name %>
-            </span>
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+          <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
+          <li class="block md:hidden">
+            <%= link_to 'ホーム', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
-          <li class="hover:bg-cyan-600 hover:text-white">
-            <%= link_to 'プロフィール', profile_path, class: 'block px-4 py-2' %>
+          <li class="block md:hidden">
+            <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
-          <li class="hover:bg-cyan-600 hover:text-white">
-            <%= link_to 'ログアウト', logout_path, class: 'block px-4 py-2', method: :delete, data: { turbo_method: :delete } %>
+          <li>
+            <%= link_to 'プロフィール', profile_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+          </li>
+          <li>
+            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
         </ul>
       </div>

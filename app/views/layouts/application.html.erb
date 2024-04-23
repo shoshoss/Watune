@@ -13,7 +13,7 @@
 </head>
 <body class="font-sans bg-white">
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-30 bg-white w-full shadow lg:max-w-screen-xl lg:mx-auto">
+  <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
@@ -22,9 +22,9 @@
   </header>
 
   <!-- コンテンツコンテナ -->
-  <div class="flex flex-col lg:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
+  <div class="flex flex-col md:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
     <!-- サイドバー -->
-    <aside class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden lg:block sticky top-0 h-screen overflow-y-auto">
+    <aside class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-0 h-screen overflow-y-auto">
       <% if logged_in? %>
         <%= render 'shared/sidebar' %>
       <% end %>
