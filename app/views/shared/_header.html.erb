@@ -1,21 +1,36 @@
-<header class="bg-cyan-600/10">
-  <div class="navbar">
-    <div class="flex-1 px-4">
+<div class="navbar mx-auto">
+  <div class="flex justify-between items-center w-full">
+    <!-- ロゴはデスクトップサイズでのみ表示 -->
+    <div class="flex-0.2 px-4">
       <%= link_to '/' do %>
-        <%= image_tag 'logo.png', alt: 'ロゴのタイトル', class: "h-14 w-auto max-w-full" %>
+        <%= image_tag 'logo.png', alt: 'ロゴのタイトル', class: "w-auto min-w-[60px] min-h-[40px]" %>
       <% end %>
     </div>
-    <div class=" items-center">
-      <ul class="menu menu-horizontal px-1 flex items-center text-lg">
-        <li class="border-b-2 border-cyan-600">
-          <%= link_to 'ホーム', '/', class: 'text-current font-bold' %>
-        </li>
-        <li class="border-b-2 border-transparent hover:border-cyan-300">
-          <%= link_to 'みんなのWave', '#', class: 'hover:text-current font-bold' %>
-        </li>
-        <li><%= link_to 'ログイン中', '#', class: 'font-bold' %></li>
-        <li><%= link_to 'ログアウト', logout_path, class: 'font-bold', data: { turbo_method: :delete } %></li>
-      </ul
+
+    <!-- ナビゲーションリンク -->
+    <div class="flex flex-1 justify-end items-center px-2 space-x-4">
+      <%= link_to 'ホーム', '/', class: 'text-lg font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to 'みんなのWave', '#', class: 'text-lg font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
+
+      <!-- ドロップダウンメニュー -->
+      <div class="dropdown dropdown-end">
+        <%= link_to '#', class: 'dropdown-toggle btn btn-ghost rounded-btn flex items-center', data: { toggle: "dropdown" } do %>
+          <%= image_tag 'sample.jpg', class: 'rounded-full w-10 h-10 min-w-[40px] min-h-[40px]' %>
+        <% end %>
+        <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4 text-lg">
+          <li class="hover:bg-cyan-600 hover:text-white">
+            <span class="block px-4 py-2">
+              <%= current_user.display_name %>
+            </span>
+          </li>
+          <li class="hover:bg-cyan-600 hover:text-white">
+            <%= link_to 'プロフィール', profile_path, class: 'block px-4 py-2' %>
+          </li>
+          <li class="hover:bg-cyan-600 hover:text-white">
+            <%= link_to 'ログアウト', logout_path, class: 'block px-4 py-2', method: :delete, data: { turbo_method: :delete } %>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</header>
+</div>
