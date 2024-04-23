@@ -11,24 +11,27 @@
     <div class="flex flex-1 justify-end items-center space-x-4">
       <%= link_to 'ConGraWaとは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
       <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
-      <%= link_to 'ログイン', login_path, class: 'hidden md:block text-lg font-bold py-2' %>
+      <%= render "shared/login_modal" %>
       <%= link_to '新規登録', new_user_path, class: 'text-lg font-bold py-2' %>
 
-      <!-- ユーザーメニュー -->
+      <!-- ハンバーガーメニュー -->
       <div class="dropdown dropdown-end ml-4">
-        <%= link_to "javascript:void(0)", class: 'btn btn-circle btn-ghost', "data-toggle" => "dropdown" do %>
-          <%= image_tag 'sample.jpg', class: 'rounded-full w-10 h-10' %>
-        <% end %>
+        <button class="btn btn-square btn-ghost md:hidden" tabindex="0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
           <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
-          <li class="block md:hidden">
+          <li class="block">
             <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
-          <li class="block md:hidden">
+          <li class="block">
             <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
           </li>
-          <li class="block md:hidden">
+          <li class="block">
             <%= link_to 'ログイン', login_path, class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
         </ul>
