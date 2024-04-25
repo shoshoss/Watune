@@ -7,11 +7,10 @@
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
-  <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css' %>
-  <%= stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css' %>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="font-sans bg-white">
+  <%= turbo_frame_tag 'register_modal' %>
+
   <!-- ヘッダー -->
   <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
     <% if logged_in? %>
@@ -32,7 +31,9 @@
 
     <!-- メインコンテンツ -->
     <main class="flex-1 p-2 overflow-auto">
-      <%= render 'shared/flash_message' %>
+      <div id="notification">
+        <%= render 'shared/flash_message' %>
+      </div>
       <%= yield %>
     </main>
 

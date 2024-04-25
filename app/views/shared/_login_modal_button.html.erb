@@ -1,0 +1,19 @@
+<!-- モーダルを開くボタン -->
+<button class="btn btn-primary" onclick="document.getElementById('loginModal').showModal()">
+  <%= t('header.login') %>
+</button>
+
+<!-- モーダルのHTML -->
+<dialog id="loginModal" class="modal" style="margin-left: auto; margin-right: auto;">
+  <div class="modal-box">
+
+    <%= render 'shared/login_form' %>
+
+    <!-- モーダルを閉じるボタン -->
+    <div class="modal-action">
+      <button class="btn" onclick="document.getElementById('loginModal').close()">
+        <%= t('defaults.close') %>
+      </button>
+    </div>
+  </div>
+</dialog>

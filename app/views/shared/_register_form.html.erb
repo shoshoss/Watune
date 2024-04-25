@@ -1,0 +1,42 @@
+<h1 class="text-4xl font-bold mt-4 mb-8 text-center">
+  <%= t('users.new.title') %>
+</h1>
+
+<%= form_with model: @user, url: create_modal_user_registration_path, method: :post, 
+    data: { controller: "modal", 
+            action: "turbo:submit-end->modal#redirectAfterClose", 
+            modal_redirect_path: edit_profile_path } do |f| %>
+  <!-- Googleで新規登録のボタン -->
+  <div class="flex items-center justify-center mb-8">
+      <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg" , data: { turbo: false } do %>
+        <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+        <span class="text-xl"><%= t('users.new.google_register') %></span>
+      <% end %>
+  </div>
+
+  <!-- または -->
+  <div class="divider"><%= t('defaults.or') %></div>
+
+  <!-- バリデーションエラーメッセージの表示エリア -->
+  <div id="user_form_errors">
+    <%= render 'shared/error_messages', object: f.object %>
+  </div>
+
+  <div class="card-body mx-auto">
+    <div class="form-control">
+      <%= f.label :email, class: "label-text mb-1" %>
+      <%= f.email_field :email, placeholder: "example@congrawa.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
+    </div>
+    <div class="form-control mt-2">
+      <%= f.label :password, 'パスワード　※半角英数・8文字～20文字で入力してください', class: "label-text mb-1" %>
+      <%= f.password_field :password, class: "input input-bordered text-lg", required: true, autocomplete: "password" %>
+    </div>
+    <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit "登録", class: "btn btn-primary w-full" %>
+    </div>
+  </div>
+<% end %>
+
+<div class='text-center text-base text-gray-600'>
+  <%= link_to 'ログインページへ', login_path, class: "text-blue-500 hover:text-blue-600 text-lg" %>
+</div>

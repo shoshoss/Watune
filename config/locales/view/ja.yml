@@ -13,6 +13,7 @@ ja:
     edit: 編集
     show: "詳細"
     delete: "削除"
+    or: "または"
     unspecified: "指定なし"
     delete_confirm: 本当に削除しますか？
     search_word: 検索ワード
@@ -23,15 +24,18 @@ ja:
     new:
       title: ログイン
       login: ログイン
-      to_register_page: 登録ページへ
+      google_login: Googleでログイン
+      to_register: 新規登録
       password_forget: パスワードをお忘れの方はこちら
   users:
     new:
       title: ユーザー登録
-      to_login_page: ログインページへ
+      to_login: ログイン
+      google_register: Googleで新規登録
   header:
     login: ログイン
     logout: ログアウト
+    register: 新規登録
     audio: 音声
     audio_index: 音声一覧
     create_audio: 音声作成
