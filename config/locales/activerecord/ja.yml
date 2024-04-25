@@ -1,11 +1,31 @@
 ja:
   activerecord:
+    models:
+      user: ユーザー
+      audio: 音声
+      comment: コメント
     attributes:
       user:
-        email: "メールアドレス"
-        password: "パスワード"
+        enum:
+          role:
+            general: 一般
+            admin: 管理者
+        id: ID
+        created_at: 作成日時
+        updated_at: 更新日時
+        email: メールアドレス
         display_name: "名前"
+        password: パスワード
+        avatar: アバター
+        role: 権限
         username_slug: "ユーザー名"
+      audio:
+        title: タイトル
+        body: 本文
+        board_image: サムネイル
+        user: 作成者
+      comment:
+        body: コメント
     errors:
       models:
         user:

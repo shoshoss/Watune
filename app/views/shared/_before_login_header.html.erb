@@ -1,21 +1,45 @@
-<header class="bg-cyan-600/10">
-  <div class="navbar">
-    <div class="flex-1 px-4">
+<div class="navbar px-4">
+  <div class="flex items-center justify-between w-full">
+    <!-- ロゴ -->
+    <div class="shrink-0">
       <%= link_to '/' do %>
-        <%= image_tag 'logo.png', alt: 'ロゴのタイトル', class: "h-14 w-auto max-w-full" %>
+        <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
-    <div class=" items-center">
-      <ul class="menu menu-horizontal px-1 flex items-center text-lg">
-        <li class="border-b-2 border-cyan-600">
-          <%= link_to 'ホーム', '/', class: 'text-current font-bold' %>
-        </li>
-        <li class="border-b-2 border-transparent hover:border-cyan-300">
-          <%= link_to 'みんなのWave', '#', class: 'hover:text-current font-bold' %>
-        </li>
-        <li><%= link_to 'ログイン', login_path, class: 'font-bold' %></li>
-        <li><%= link_to '新規登録', new_user_path, class: 'font-bold' %></li>
-      </ul>
+
+    <!-- ナビゲーションリンク -->
+    <div class="flex flex-1 justify-end items-center space-x-4">
+      <%= link_to 'ConGraWaとは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
+      <%= render "shared/login_modal_button" %>
+      <%= link_to '新規登録', new_user_path, class: 'text-lg font-bold py-2' %>
+      <!-- モーダルを開くリンク -->
+      <li class="block md:hidden">
+        <%= link_to t('header.register'), new_modal_user_registration_path, class: 'hover:bg-cyan-600 hover:text-white', data: { turbo_frame: "register_modal" } %>
+      </li>
+
+      <!-- ハンバーガーメニュー -->
+      <div class="dropdown dropdown-end ml-4">
+        <button class="btn btn-square btn-ghost md:hidden" tabindex="0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+          <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
+          <li class="block">
+            <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
+          </li>
+          <li class="block">
+            <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
+          </li>
+          </li>
+          <li class="block">
+            <%= link_to 'ログイン', login_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</header>
+</div>

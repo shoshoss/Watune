@@ -1,0 +1,21 @@
+<!-- モーダルを開くリンク -->
+<li class="block md:hidden">
+  <%= link_to 'javascript:void(0);', class: 'hover:bg-cyan-600 hover:text-white', onclick: "document.getElementById('loginModalLink').showModal()" do %>
+    <%= t('header.login') %>
+  <% end %>
+</li>
+
+<!-- モーダルのHTML -->
+<dialog id="loginModalLink" class="modal" style="margin-left: auto; margin-right: auto;">
+  <div class="modal-box">
+
+    <%= render 'shared/login_form' %>
+
+    <!-- モーダルを閉じるボタン -->
+    <div class="modal-action">
+      <button class="btn" onclick="document.getElementById('loginModalLink').close()">
+        <%= t('defaults.close') %>
+      </button>
+    </div>
+  </div>
+</dialog>

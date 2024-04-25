@@ -1,0 +1,19 @@
+<div class="flex flex-col items-center mb-10 pt-2">
+  <%= image_tag 'sample.jpg', alt: 'User icon', class: "w-24 h-24 rounded-full" %>
+  <h2 class="mt-4 text-xl font-semibold text-white">Username</h2>
+</div>
+<ul class="px-2 space-y-2">
+  <%= render 'shared/sidebar_option', text: 'ホーム', icon: 'fa-home', active: true %>
+  <%= render 'shared/sidebar_option', text: '話題を検索', icon: 'fa-search' %>
+  <%= render 'shared/sidebar_option', text: '通知', icon: 'fa-bell' %>
+  <%= render 'shared/sidebar_option', text: 'メッセージ', icon: 'fa-envelope' %>
+  <%= render 'shared/sidebar_option', text: 'ブックマーク', icon: 'fa-bookmark' %>
+  <%= render 'shared/sidebar_option', text: 'リスト', icon: 'fa-stream' %>
+  <%= render 'shared/sidebar_option', text: 'プロフィール', icon: 'fa-user' %>
+  <%= render 'shared/sidebar_option', text: 'もっとみる', icon: 'fa-ellipsis-h' %>
+</ul>
+<div class="mt-auto">
+  <button class="w-full bg-twitter text-white font-bold py-3 px-4 rounded-full transition-colors duration-300 hover:bg-twitter-dark">
+    ツイートする
+  </button>
+</div>

@@ -1,7 +1,7 @@
 <% if object.errors.any? %>
-  <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+  <div id="error_explanation" class="bg-red-100 border border-red-400 text-red-700 p-2 rounded relative" role="alert">
     <strong class="font-bold">エラーが発生しました:</strong>
-    <ul class="mb-0">
+    <ul>
       <% object.errors.each do |error| %>
         <li><%= error.full_message %></li>
       <% end %>

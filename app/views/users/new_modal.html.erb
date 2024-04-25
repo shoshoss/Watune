@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "register_modal" do %>
+  <dialog id="my_modal_1" class="modal" data-controller="modal" data-modal-target="dialog" >
+    <div class="modal-box">
+      <%= render 'shared/register_form' %>
+      <div class="modal-action">
+        <button class="btn" data-action="modal#closeModal">閉じる</button>
+      </div>
+    </div>
+  </dialog>
+<% end %>

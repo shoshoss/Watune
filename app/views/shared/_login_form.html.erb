@@ -1,0 +1,43 @@
+<h1 class="text-4xl font-bold mt-4 mb-8 text-center">
+  <%= t('user_sessions.new.title') %>
+</h1>
+
+<%= form_with url: login_path do |f| %>
+  <!-- Googleでログインのボタン -->
+  <div class="flex items-center justify-center mb-8">
+      <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg" do %>
+        <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+        <span class="text-xl"><%= t('user_sessions.new.google_login') %></span>
+      <% end %>
+  </div>
+
+  <!-- または -->
+  <div class="divider"><%= t('defaults.or') %></div>
+
+  <div class="card-body mx-auto">
+    <!-- メールアドレス入力 -->
+    <div class="form-control">
+      <%= f.label :email, t('helpers.label.email'), class: "label-text mb-1" %>
+      <%= f.email_field :email, placeholder: "example@congrawa.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
+    </div>
+
+    <!-- パスワード入力 -->
+    <div class="form-control mt-2">
+      <%= f.label :password, t('helpers.label.password'), class: "label-text mb-1" %>
+      <%= f.password_field :password, class: "input input-bordered text-lg", required: true, autocomplete: "current-password" %>
+    </div>
+
+    <!-- ログインボタン -->
+    <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit t('user_sessions.new.login'), class: "btn btn-primary w-full" %>
+    </div>
+  </div>
+<% end %>
+
+<!-- パスワードリセットと新規登録のリンク -->
+<div class="text-center text-base text-gray-600 mt-4">
+  <%= link_to t('user_sessions.new.password_forget'), new_password_reset_path, class: "link link-hover text-lg" %>
+</div>
+<div class="text-center text-base text-gray-600 mt-2">
+  <%= link_to t('user_sessions.new.to_register'), new_user_path, class: "link link-hover text-lg mt-2" %>
+</div>

@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   get 'oauth/:provider', to: 'oauths#oauth', as: :auth_at_provider
 
   resources :users, only: %i[new create]
+  # モーダル用の新規登録ルーティング
+  get 'register', to: 'users#new_modal', as: 'new_modal_user_registration'
+  post 'register', to: 'users#create_modal', as: 'create_modal_user_registration'
+
   resource :profile, only: %i[edit update]
   resources :password_resets, only: %i[new create edit update]
 end

@@ -1,31 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= page_title(yield(:title)) %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-    <%= stylesheet_link_tag 'https://cdn.jsdelivr.net/npm/daisyui@2.51.3/dist/full.css' %>
-  </head>
-  <body class="font-sans">
-    <!-- ヘッダー -->
+<head>
+  <title><%= page_title(yield(:title)) %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="font-sans bg-white">
+  <%= turbo_frame_tag 'register_modal' %>
+
+  <!-- ヘッダー -->
+  <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
       <%= render 'shared/before_login_header' %>
     <% end %>
+  </header>
 
-    <!-- フラッシュメッセージ -->
-    <%= render 'shared/flash_message' %>
+  <!-- コンテンツコンテナ -->
+  <div class="flex flex-col md:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
+    <!-- サイドバー -->
+      <% if logged_in? %>
+    <aside class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-0 h-screen overflow-y-auto">
+        <%= render 'shared/sidebar' %>
+    </aside>
+      <% end %>
 
     <!-- メインコンテンツ -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="flex-1 overflow-auto">
+      <div id="notification" class="p-2">
+        <%= render 'shared/flash_message' %>
+      </div>
       <%= yield %>
     </main>
 
-    <!-- フッター -->
+    <!-- ウィジェット -->
+    <% if logged_in? %>
+      <div class="w-64 p-4 hidden lg:block overflow-y-auto">
+        <%= render 'shared/widget' %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-gray-200 w-full md:max-w-screen-xl md:mx-auto mt-auto">
     <%= render 'shared/footer' %>
-  </body>
+  </footer>
+</body>
 </html>

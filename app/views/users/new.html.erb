@@ -1,13 +1,13 @@
 <% content_for(:title, t('.title')) %>
-<div class="container mx-auto px-4">
-  <div class="max-w-xl mx-auto my-10 bg-white p-8 rounded-lg shadow-lg">
-    <h1 class="text-4xl font-bold mb-12 text-center">ユーザー登録</h1>
+<div class="flex items-center justify-center min-h-screen">
+<div class="container mx-auto">
+  <div class="max-w-xl mx-auto py-5 bg-white rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold mb-8 text-center">ユーザー登録</h1>
     <%= form_with model: @user do |f| %>
-      <%= render 'shared/error_messages', object: f.object %>
-      <div class="flex items-center justify-center mb-10">
+      <div class="flex items-center justify-center mb-8">
         <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg" do %>
           <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
-          <span class="text-xl">Googleアカウントで新規登録</span>
+          <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
         <% end %>
       </div>
 
@@ -17,8 +17,10 @@
         <div class="flex-grow border-t border-gray-300"></div>
       </div>
 
+      <%= render 'shared/error_messages', object: f.object %>
+
       <div class="card-body mx-auto">
-        <div class="form-control mt-2">
+        <div class="form-control">
           <%= f.label :email, 'メールアドレス', class: "label-text mb-1" %>
           <%= f.email_field :email, placeholder: "example@congrawa.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
         </div>
@@ -32,8 +34,9 @@
       </div>
     <% end %>
 
-    <div class='mt-1 text-center text-base text-gray-600'>
+    <div class='text-center text-base text-gray-600'>
       <%= link_to 'ログインページへ', login_path, class: "text-blue-500 hover:text-blue-600 text-lg" %>
     </div>
   </div>
+</div>
 </div>
