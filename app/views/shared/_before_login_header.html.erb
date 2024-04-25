@@ -3,7 +3,7 @@
     <!-- ロゴ -->
     <div class="shrink-0">
       <%= link_to '/' do %>
-        <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto sm:h-6 sm:w-auto" %>
+        <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
 
@@ -15,7 +15,10 @@
       <%= render "shared/login_modal_button" %>
 
       <!-- モーダルを開くリンク -->
-      <%= link_to t('header.register'), new_modal_user_registration_path, class: 'md:text-lg sm:text-sm font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current', data: { turbo_frame: "register_modal" } %>
+      <%= link_to t('header.register'), 
+              new_modal_user_registration_path, 
+              class: 'btn btn-outline btn-accent md:text-lg sm:text-sm', 
+              data: { turbo_frame: "register_modal" } %>
 
       <!-- ハンバーガーメニュー -->
       <div class="dropdown dropdown-end">
