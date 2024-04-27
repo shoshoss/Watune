@@ -1,15 +1,16 @@
 <%= turbo_frame_tag "register_modal" do %>
-  <div class="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50" data-controller="modal" data-modal-target="backGround" data-action="click->modal#closeBackground">
-    <dialog id="my_modal_1" class="modal" data-controller="modal" data-modal-target="dialog" >
-      <div class="modal-box">
+  <dialog class="modal bg-gray-500 bg-opacity-50" data-controller="modal">
+    <div class="modal-box">
       <div class="flex justify-end items-center">
-        <i class="fa-solid fa-xmark h-6 w-6 hover:text-brue-500" data-action="click->modal#closeModal"></i>
+        <i class="fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->modal#closeModal"></i>
       </div>
-        <%= render 'shared/register_form' %>
-        <div class="modal-action">
-          <button class="btn" data-action="modal#closeModal">閉じる</button>
-        </div>
+      <%= render 'shared/register_form' %>
+      <div class="modal-action">
+        <button class="btn" data-action="modal#closeModal">閉じる</button>
       </div>
-    </dialog>
-  </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 <% end %>

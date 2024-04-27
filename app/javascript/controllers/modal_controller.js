@@ -1,29 +1,14 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["dialog"];
-
   connect() {
-    // モーダルを開く処理（例えばボタンクリック時などに実行される）
-    this.element.setAttribute("open", true); // モーダルを開く
-    // モーダルが開いたときにバックグラウンドをクリックして閉じるイベントを追加
-    this.element.addEventListener("click", this.closeBackground.bind(this));
+    // ボタンクリック時にモーダルを開く処理
+    this.element.setAttribute("open", true);
   }
 
   closeModal() {
-    this.element.removeAttribute("open"); // モーダルを閉じる
-  }
-
-  closeBackground(event) {
-    // バックグラウンドをクリックしたかどうかをチェック
-    if (
-      event.target === this.dialogTarget &&
-      this.dialogTarget.hasAttribute("open")
-    ) {
-      console.log("Dialog closed");
-      // モーダルを閉じる
-      this.closeModal();
-    }
+    // モーダルを閉じる
+    this.element.removeAttribute("open");
   }
 
   redirectAfterClose(event) {
