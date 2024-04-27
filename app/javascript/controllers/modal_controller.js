@@ -11,12 +11,7 @@ export default class extends Controller {
   }
 
   openModal() {
-    if (this.hasDialogTarget) {
-      this.dialogTarget.showModal(); // モーダルを開く
-      console.log("Dialog opened");
-    } else {
-      console.error("Dialog element not found");
-    }
+    this.dialogTarget.showModal(); // モーダルを開く
   }
 
   closeModal() {
@@ -45,8 +40,6 @@ export default class extends Controller {
       // フォームのバリデーションエラーの場合はここで何もしない
       return;
     }
-
-    this.closeModal(); // モーダルを閉じる
     // リダイレクトパスを取得してリダイレクトを実行する
     const redirectPath = this.data.get("redirectPath");
     window.location.href = redirectPath;

@@ -10,10 +10,6 @@ class UsersController < ApplicationController
     if @user.save
       login(user_params[:email], user_params[:password])
       respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('notification', partial: 'shared/flash_message',
-                                                                    locals: { notice: 'ユーザー登録に成功しました' })
-        end
         format.html { redirect_to edit_profile_path, notice: 'ユーザー登録に成功しました' }
       end
     else
