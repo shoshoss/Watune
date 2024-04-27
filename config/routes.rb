@@ -15,8 +15,8 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[new create]
   # モーダル用の新規登録ルーティング
-  get 'register', to: 'users#new_modal', as: 'new_modal_user_registration'
-  post 'register', to: 'users#create_modal', as: 'create_modal_user_registration'
+  get 'signup_modal', to: 'users#new_modal', as: 'new_signup_modal'
+  post 'signup_modal', to: 'users#create_modal', as: 'create_signup_modal'
 
   resource :profile, only: %i[edit update]
   resources :password_resets, only: %i[new create edit update]
