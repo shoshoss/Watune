@@ -5,22 +5,13 @@ export default class extends Controller {
 
   connect() {
     // モーダルを開く処理（例えばボタンクリック時などに実行される）
-    this.openModal();
+    this.element.setAttribute("open", true); // モーダルを開く
     // モーダルが開いたときにバックグラウンドをクリックして閉じるイベントを追加
     this.element.addEventListener("click", this.closeBackground.bind(this));
   }
 
-  openModal() {
-    this.dialogTarget.showModal(); // モーダルを開く
-  }
-
   closeModal() {
-    if (this.hasDialogTarget && this.dialogTarget.open) {
-      this.dialogTarget.close(); // モーダルを閉じる
-      console.log("Dialog closed");
-    } else {
-      console.error("Dialog element not found or dialog not open");
-    }
+    this.element.removeAttribute("open"); // モーダルを閉じる
   }
 
   closeBackground(event) {

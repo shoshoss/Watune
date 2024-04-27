@@ -7,9 +7,10 @@
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
+  <script src="https://kit.fontawesome.com/630314d173.js" crossorigin="anonymous"></script>
+  <%= turbo_frame_tag 'register_modal' %>
 </head>
 <body class="font-sans bg-white">
-  <%= turbo_frame_tag 'register_modal' %>
 
   <!-- ヘッダー -->
   <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
