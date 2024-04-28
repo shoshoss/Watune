@@ -1,0 +1,17 @@
+<%= turbo_frame_tag "login_modal" do %>
+  <% session[:previous_url] = request.fullpath %>
+  <dialog id="login_modal" class="modal bg-gray-500 bg-opacity-50" data-controller="login-modal">
+    <div class="modal-box">
+      <div class="flex justify-end items-center">
+        <i class="fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->login-modal#closeModal"></i>
+      </div>
+      <%= render 'shared/login_form' %>
+      <div class="modal-action">
+        <button class="btn" data-action="login-modal#closeModal">閉じる</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+<% end %>

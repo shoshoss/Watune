@@ -14,10 +14,9 @@ class User < ApplicationRecord
   # メールアドレスは一意であり、存在が必要で、最大255文字
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
-  # パスワードは新規作成または変更時に8文字以上であり、かつ半角英数字を含む必要がある
+  # パスワードは新規作成または変更時に8文字以上
   validates :password,
             length: { minimum: 8, message: :too_short },
-            format: { with: /\A(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+\z/, message: :not_alphanumeric },
             if: -> { new_record? || changes[:crypted_password] }
 
   # パスワードの確認が必要

@@ -1,9 +1,22 @@
 class UserSessionsController < ApplicationController
-  skip_before_action :require_login, only: %i[new create]
+  skip_before_action :require_login, only: %i[new_modal create_modal new create]
 
-  def new
-    @user = User.new
+  def new_modal; end
+
+  def create_modal
+    @user = login(params[:email], params[:password])
+
+    return if @user
+
+    respond_to do |format|
+      format.html do
+        flash.now[:error] = 'ログインに失敗しました'
+        render :new_modal, status: :unprocessable_entity
+      end
+    end
   end
+
+  def new; end
 
   def create
     @user = login(params[:email], params[:password])

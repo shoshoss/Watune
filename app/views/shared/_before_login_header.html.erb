@@ -11,17 +11,23 @@
     <div class="flex flex-1 justify-end items-center space-x-4">
       <%= link_to 'ConGraWaとは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
       <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
-      <%= render "shared/login_modal_button" %>
-      <%= link_to '新規登録', new_user_path, class: 'text-lg font-bold py-2' %>
-      <!-- モーダルを開くリンク -->
-      <li class="block md:hidden">
-        <%= link_to t('header.register'), new_modal_user_registration_path, class: 'hover:bg-cyan-600 hover:text-white', data: { turbo_frame: "register_modal" } %>
-      </li>
+
+      <!-- モーダル（ログインと新規登録）を開くリンク -->
+      <%= link_to t('header.login'), 
+              new_login_modal_path, 
+              class: 'btn btn-primary hidden md:block md:text-lg', 
+              data: { turbo_frame: "login_modal",
+                      controller: "login-modal", 
+            signup_modal_redirect_path: root_path } %>
+      <%= link_to t('header.signup'), 
+              new_signup_modal_path, 
+              class: 'btn btn-outline btn-accent md:text-lg sm:text-sm', 
+              data: { turbo_frame: "signup_modal" } %>
 
       <!-- ハンバーガーメニュー -->
-      <div class="dropdown dropdown-end ml-4">
+      <div class="dropdown dropdown-end">
         <button class="btn btn-square btn-ghost md:hidden" tabindex="0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>

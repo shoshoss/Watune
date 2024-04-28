@@ -1,0 +1,11 @@
+<%= turbo_stream.replace "header" do %>
+  <%= render 'shared/header' user: @user %>
+<% end %>
+  
+<%= turbo_stream.replace "sidebar" do %>
+  <%= render 'shared/sidebar' user: @user %>
+<% end %>
+
+<%= turbo_stream.replace "widget" do %>
+  <%= render 'shared/widget' user:  @user %>
+<% end %>

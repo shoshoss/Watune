@@ -7,40 +7,46 @@
   <%= csp_meta_tag %>
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
+  <script src="https://kit.fontawesome.com/630314d173.js" crossorigin="anonymous"></script>
+  <%= turbo_frame_tag 'signup_modal' %>
+  <%= turbo_frame_tag 'login_modal' %>
 </head>
 <body class="font-sans bg-white">
-  <%= turbo_frame_tag 'register_modal' %>
 
   <!-- ヘッダー -->
   <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
+      <div id="before_login_header">
       <%= render 'shared/before_login_header' %>
+      </div>
     <% end %>
   </header>
 
   <!-- コンテンツコンテナ -->
   <div class="flex flex-col md:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
     <!-- サイドバー -->
-      <% if logged_in? %>
-    <aside class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-0 h-screen overflow-y-auto">
-        <%= render 'shared/sidebar' %>
-    </aside>
-      <% end %>
+    <% if logged_in? %>
+      <%= render 'shared/sidebar' %>
+      <% else %>
+        <div id="sidebar">
+        </div>
+    <% end %>
 
     <!-- メインコンテンツ -->
     <main class="flex-1 overflow-auto">
-      <div id="notification" class="p-2">
+      <turbo-frame id="notification" >
         <%= render 'shared/flash_message' %>
-      </div>
+      </turbo-frame>
       <%= yield %>
     </main>
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-      <div class="w-64 p-4 hidden lg:block overflow-y-auto">
         <%= render 'shared/widget' %>
+    <% else %>
+      <div id="widget">
       </div>
     <% end %>
   </div>

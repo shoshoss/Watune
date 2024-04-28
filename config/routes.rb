@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   root 'static_pages#top'
 
+  # モーダル用のログインルーティング
+  get 'login_modal', to: 'user_sessions#new_modal', as: 'new_login_modal'
+  post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
+
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'
@@ -15,8 +19,8 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[new create]
   # モーダル用の新規登録ルーティング
-  get 'register', to: 'users#new_modal', as: 'new_modal_user_registration'
-  post 'register', to: 'users#create_modal', as: 'create_modal_user_registration'
+  get 'signup_modal', to: 'users#new_modal', as: 'new_signup_modal'
+  post 'signup_modal', to: 'users#create_modal', as: 'create_signup_modal'
 
   resource :profile, only: %i[edit update]
   resources :password_resets, only: %i[new create edit update]
