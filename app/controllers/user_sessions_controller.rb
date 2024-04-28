@@ -6,12 +6,19 @@ class UserSessionsController < ApplicationController
   def create_modal
     @user = login(params[:email], params[:password])
 
-    return if @user
+    if @user
+      respond_to do |format|
+        format.html do
+          flash[:notice] = 'ログインにしました'
+        end
+      end
+    else
 
-    respond_to do |format|
-      format.html do
-        flash.now[:error] = 'ログインに失敗しました'
-        render :new_modal, status: :unprocessable_entity
+      respond_to do |format|
+        format.html do
+          flash.now[:error] = 'ログインに失敗しました'
+          render :new_modal, status: :unprocessable_entity
+        end
       end
     end
   end

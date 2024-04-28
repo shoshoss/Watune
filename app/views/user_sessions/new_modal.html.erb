@@ -1,5 +1,4 @@
 <%= turbo_frame_tag "login_modal" do %>
-  <% session[:previous_url] = request.fullpath %>
   <dialog id="login_modal" class="modal bg-gray-500 bg-opacity-50" data-controller="login-modal">
     <div class="modal-box">
       <div class="flex justify-end items-center">
