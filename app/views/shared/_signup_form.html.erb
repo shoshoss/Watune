@@ -4,7 +4,8 @@
 
 <%= form_with model: @user, url: create_signup_modal_path, method: :post, 
     data: { controller: "signup-modal", 
-            action: "turbo:submit-end->signup-modal#redirectAfterClose" } do |f| %>
+            action: "turbo:submit-end->signup-modal#redirectAfterClose", 
+            signup_modal_redirect_path: edit_profile_path } do |f| %>
   <!-- Googleで新規登録のボタン -->
   <div class="flex items-center justify-center mb-8">
       <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg" , data: { turbo: false } do %>
