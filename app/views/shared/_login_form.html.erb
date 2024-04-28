@@ -6,7 +6,8 @@
   <%= render 'shared/flash_message' %>
 </div>
 <%= form_with url: create_login_modal_path,
-    data: { action: "turbo:submit-end->login-modal#afterCloseModal", 
+    data: { controller: "login-modal", 
+            action: "turbo:submit-end->login-modal#afterCloseModal", 
             signup_modal_redirect_path: edit_profile_path } do |f| %>
   <!-- Googleでログインのボタン -->
   <div class="flex items-center justify-center mb-8">

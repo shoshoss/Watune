@@ -11,7 +11,11 @@ export default class extends Controller {
     this.element.removeAttribute("open");
   }
 
-  afterCloseModal() {
+  afterCloseModal(event) {
+    if (!event.detail.success) {
+      // フォームのバリデーションエラーの場合はここで何もしない
+      return;
+    }
     // モーダルの要素を取得
     const modal = this.element;
 
@@ -22,5 +26,7 @@ export default class extends Controller {
       // モーダルがdialog要素でない場合、非表示にする他の方法を使用
       modal.style.display = "none";
     }
+
+    Turbo.visit(window.location.href, { action: "replace" });
   }
 }
