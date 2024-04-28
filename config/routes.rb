@@ -5,6 +5,10 @@ Rails.application.routes.draw do
 
   root 'static_pages#top'
 
+  # モーダル用のログインルーティング
+  get 'login_modal', to: 'user_sessions#new_modal', as: 'new_login_modal'
+  post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
+
   get 'login', to: 'user_sessions#new'
   post 'login', to: 'user_sessions#create'
   delete 'logout', to: 'user_sessions#destroy'

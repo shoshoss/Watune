@@ -25,17 +25,17 @@ ja:
       title: ログイン
       login: ログイン
       google_login: Googleでログイン
-      to_register: 新規登録
+      to_signup: 新規登録
       password_forget: パスワードをお忘れの方はこちら
   users:
     new:
       title: ユーザー登録
       to_login: ログイン
-      google_register: Googleで新規登録
+      google_signup: Googleで新規登録
   header:
     login: ログイン
     logout: ログアウト
-    register: 新規登録
+    signup: 新規登録
     audio: 音声
     audio_index: 音声一覧
     create_audio: 音声作成

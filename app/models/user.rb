@@ -16,8 +16,8 @@ class User < ApplicationRecord
 
   # パスワードは新規作成または変更時に8文字以上
   validates :password,
-          length: { minimum: 8, message: :too_short },
-          if: -> { new_record? || changes[:crypted_password] }
+            length: { minimum: 8, message: :too_short },
+            if: -> { new_record? || changes[:crypted_password] }
 
   # パスワードの確認が必要
   # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
