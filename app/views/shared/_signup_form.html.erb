@@ -4,7 +4,7 @@
 
 <%= form_with model: @user, url: create_signup_modal_path, method: :post, 
     data: { controller: "signup-modal", 
-            action: "turbo:submit-end->signup-modal#redirectAfterClose", 
+            action: "turbo:submit-end->signup-modal#redirectSubmit",
             signup_modal_redirect_path: edit_profile_path } do |f| %>
   <!-- Googleで新規登録のボタン -->
   <div class="flex items-center justify-center mb-8">

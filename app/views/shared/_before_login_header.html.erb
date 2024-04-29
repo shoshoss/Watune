@@ -16,9 +16,7 @@
       <%= link_to t('header.login'), 
               new_login_modal_path, 
               class: 'btn btn-primary hidden md:block md:text-lg', 
-              data: { turbo_frame: "login_modal",
-                      controller: "login-modal", 
-            signup_modal_redirect_path: root_path } %>
+              data: { turbo_frame: "login_modal" } %>
       <%= link_to t('header.signup'), 
               new_signup_modal_path, 
               class: 'btn btn-outline btn-accent md:text-lg sm:text-sm', 

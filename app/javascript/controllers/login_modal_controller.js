@@ -11,12 +11,18 @@ export default class extends Controller {
     this.element.close();
   }
 
-  afterCloseModal(event) {
+  afterClose(event) {
     if (!event.detail.success) {
       // フォームのバリデーションエラーの場合はここで何もしない
       return;
     }
 
     Turbo.visit(window.location.href, { action: "replace" });
+  }
+
+  redirectLink() {
+    // リダイレクトパスを取得してリダイレクトを実行する
+    const redirectPath = this.data.get("redirectPath");
+    Turbo.visit(redirectPath, { action: "replace" });
   }
 }
