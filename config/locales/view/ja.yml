@@ -25,7 +25,7 @@ ja:
       title: ログイン
       login: ログイン
       google_login: Googleでログイン
-      to_signup: 新規登録
+      to_signup_page: 新規登録ページへ
       password_forget: パスワードをお忘れの方はこちら
   users:
     new:
