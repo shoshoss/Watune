@@ -49,8 +49,10 @@
     <%= t('user_sessions.new.password_forget') %>
   </button>
 </div>
+
 <div class="text-center text-gray-600 mt-2">
-  <button class="text-lg text-gray-600 hover:underline" onclick="window.location.href='<%= new_login_modal_path %>'">
-    <%= t('user_sessions.new.to_signup_page') %>
-  </button>
+  <%= link_to t('user_sessions.new.to_signup_page'),
+              new_signup_modal_path,
+              class: 'text-lg text-gray-600 hover:underline',
+              data: { turbo_frame: "signup_modal", action: "click->login-modal#closeModal" } %>
 </div>
