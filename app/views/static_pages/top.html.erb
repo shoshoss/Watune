@@ -1,5 +1,16 @@
 <div class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url(<%= asset_path('top.jpg') %>)">
   <div class="container col-xxl-8">
     <h1>APP</h1>
+    <h3 class="font-bold text-lg">今どうしてる？</h3>
+<textarea class="textarea textarea-bordered w-full mt-4" placeholder="いまどうしてる？"></textarea>
+<div data-controller="audio-modal">
+  <button data-action="click->audio-modal#startRecording">録音開始</button>
+  <button data-action="click->audio-modal#stopRecording">録音停止</button>
+  <audio controls></audio>
+</div>
+<div class="modal-action">
+  <button class="btn">投稿</button>
+  <button class="btn btn-primary" onclick="document.getElementById('my_modal').close()">閉じる</button>
+</div>
   </div>
 </div>
