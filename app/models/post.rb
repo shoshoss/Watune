@@ -4,6 +4,5 @@ class Post < ApplicationRecord
   belongs_to :user
 
   # 最大1万文字
-  validates :content, length: { maximum: 10000 }
-
+  validates :content, length: { maximum: 10_000 }
 end

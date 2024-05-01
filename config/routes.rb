@@ -30,5 +30,4 @@ Rails.application.routes.draw do
 
   # 投稿のルーティング
   resources :posts, only: %i[new create edit update]
-
 end
