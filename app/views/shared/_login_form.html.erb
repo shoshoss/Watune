@@ -1,5 +1,5 @@
 <h1 class="text-4xl font-bold mt-4 mb-4 text-center">
-  <%= t('user_sessions.new.title') %>
+  <%= t('user_sessions.new_modal.title') %>
 </h1>
 
 <div id="notification" class="mb-4">
@@ -15,7 +15,7 @@
           class: "px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 dark:text-blue-200 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
           data: { turbo: false } do %>
         <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
-        <span class="text-xl"><%= t('user_sessions.new.google_login') %></span>
+        <span class="text-xl"><%= t('user_sessions.new_modal.google_login') %></span>
       <% end %>
   </div>
 
@@ -37,7 +37,7 @@
 
     <!-- ログインボタン -->
     <div class="form-control mt-4 lg:mt-6">
-      <%= f.submit t('user_sessions.new.login'),
+      <%= f.submit t('user_sessions.new_modal.login'),
           class: "btn btn-primary w-full" %>
     </div>
   </div>
@@ -46,13 +46,14 @@
 <!-- パスワードリセットと新規登録のリンク -->
 <div class="text-center text-gray-600">
   <button class="text-lg text-gray-600 hover:underline" onclick="window.location.href='<%= new_password_reset_path %>'">
-    <%= t('user_sessions.new.password_forget') %>
+    <%= t('user_sessions.new_modal.password_forget') %>
   </button>
 </div>
 
 <div class="text-center text-gray-600 mt-2">
-  <%= link_to t('user_sessions.new.to_signup_page'),
+  <%= link_to t('user_sessions.new_modal.to_signup_page'),
               new_signup_modal_path,
               class: 'text-lg text-gray-600 hover:underline',
-              data: { turbo_frame: "signup_modal", action: "click->login-modal#closeModal" } %>
+              data: { turbo_frame: "signup_modal",
+              action: "click->login-modal#closeModal" } %>
 </div>

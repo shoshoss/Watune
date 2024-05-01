@@ -40,7 +40,10 @@
           </li>
           </li>
           <li class="block">
-            <%= link_to 'ログイン', login_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+            <%= link_to t('header.login'),
+                  new_login_modal_path,
+                  class: 'hover:bg-cyan-600 hover:text-white',
+                  data: { turbo_frame: "login_modal" } %>
           </li>
         </ul>
       </div>

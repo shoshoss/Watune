@@ -1,7 +1,6 @@
 <% content_for(:title, t('.title')) %>
-<div class="flex items-center justify-center min-h-screen">
-<div class="container mx-auto">
-  <div class="max-w-xl mx-auto py-5 bg-white rounded-lg shadow-lg">
+<div class="flex justify-center min-h-screen p-5">
+  <div class="max-w-xl w-full py-5 bg-white rounded-lg shadow-lg">
     <h1 class="text-4xl font-bold mb-8 text-center">ユーザー登録</h1>
     <%= form_with model: @user do |f| %>
       <div class="flex items-center justify-center mb-8">
@@ -38,5 +37,4 @@
       <%= link_to 'ログインページへ', login_path, class: "text-blue-500 hover:text-blue-600 text-lg" %>
     </div>
   </div>
-</div>
 </div>

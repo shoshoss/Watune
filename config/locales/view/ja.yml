@@ -27,8 +27,18 @@ ja:
       google_login: Googleでログイン
       to_signup_page: 新規登録ページへ
       password_forget: パスワードをお忘れの方はこちら
+    new_modal:
+      title: ログイン
+      login: ログイン
+      google_login: Googleでログイン
+      to_signup_page: 新規登録ページへ
+      password_forget: パスワードをお忘れの方はこちら
   users:
     new:
+      title: ユーザー登録
+      to_login: ログイン
+      google_signup: Googleで新規登録
+    new_modal:
       title: ユーザー登録
       to_login: ログイン
       google_signup: Googleで新規登録
@@ -69,7 +79,7 @@ ja:
   password_resets:
     new:
       title: パスワードリセット申請
-      submit: 送信
+      submit: 変更手続きメールを送信
     create:
       success: パスワードリセット手順を送信しました
     edit:
