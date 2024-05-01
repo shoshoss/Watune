@@ -48,7 +48,7 @@ ja:
     signup: 新規登録
     audio: 音声
     audio_index: 音声一覧
-    create_audio: 音声作成
+    post_audio: Waveする
     bookmark_index: ブックマーク一覧
     profile: プロフィール
   flash_messages:

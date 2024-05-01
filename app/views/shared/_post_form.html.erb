@@ -1,19 +1,11 @@
-<!-- モーダルを開くボタン -->
-<button class="btn" onclick="document.getElementById('my_modal').showModal()">Waveする</button>
-
-<!-- モーダルの定義 -->
-<dialog id="my_modal" class="modal" style="margin-left: auto; margin-right: auto; left: 0; right: 0;">
-  <div class="modal-box">
-    <h3 class="font-bold text-lg">今どうしてる？</h3>
-    <textarea class="textarea textarea-bordered w-full mt-4" placeholder="いまどうしてる？"></textarea>
-    <div data-controller="audio-modal">
-      <button data-action="click->audio-modal#startRecording">録音開始</button>
-      <button data-action="click->audio-modal#stopRecording">録音停止</button>
-      <audio controls></audio>
-    </div>
-    <div class="modal-action">
-      <button class="btn">投稿</button>
-      <button class="btn btn-primary" onclick="document.getElementById('my_modal').close()">閉じる</button>
-    </div>
-  </div>
-</dialog>
+<h3 class="font-bold text-lg">今どうしてる？</h3>
+<textarea class="textarea textarea-bordered w-full mt-4" placeholder="いまどうしてる？"></textarea>
+<div data-controller="audio-modal">
+  <button data-action="click->audio-modal#startRecording">録音開始</button>
+  <button data-action="click->audio-modal#stopRecording">録音停止</button>
+  <audio controls></audio>
+</div>
+<div class="modal-action">
+  <button class="btn">投稿</button>
+  <button class="btn btn-primary" onclick="document.getElementById('my_modal').close()">閉じる</button>
+</div>
