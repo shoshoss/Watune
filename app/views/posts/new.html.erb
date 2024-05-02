@@ -1,31 +1,30 @@
 <%= turbo_frame_tag "post_modal" do %>
   <dialog id="post_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="audio-modal">
-    <div class="modal-box">
-      <div class="flex justify-end items-center">
-        <!-- 'post-modal' コントローラーで管理するモーダルの閉じるボタン -->
-        <i class="fa-solid fa-xmark h-6 w-6 hover:text-blue-500" data-action="click->audio-modal#closeModal"></i>
+    <div class="modal-box p-4">
+      <div class="flex justify-end items-center mb-2">
+        <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->audio-modal#closeModal">閉じる</button>
       </div>
       <!-- 録音コントロール -->
       <section class="my-4">
         <canvas class="visualizer w-full h-24 bg-black"></canvas>
       </section>
 
-      <div class="flex space-x-4">
-        <button class="record bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-action="click->audio-modal#startRecording">
-          録音
+      <div class="flex justify-around items-center">
+        <button class="record bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded disabled:opacity-50" data-action="click->audio-modal#startRecording">
+          録音開始
         </button>
-        <button class="stop bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50" data-action="click->audio-modal#stopRecording" disabled>
-          ストップ
+        <span class="timer text-gray-800 font-semibold sm:text-lg md:text-lg lg:text-xl">00:00</span>
+        <button class="stop bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded disabled:opacity-50" data-action="click->audio-modal#stopRecording" disabled>
+          録音終了
         </button>
       </div>
 
-      <section class="sound-clips mt-4 overflow-auto max-h-48">
-        <!-- Dynamically added clips will appear here -->
+      <section class="sound-clips flex justify-around items-center">
+        <!-- 音声クリップはここに表示 -->
       </section>
-
       <!-- モーダルを閉じるボタン -->
-      <div class="modal-action">
-        <button class="btn" data-action="click->audio-modal#closeModal">閉じる</button>
+      <div class="modal-action mt-4 flex justify-center">
+        <button class="btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded" data-action="click->audio-modal#closeModal">閉じる</button>
       </div>
     </div>
   </dialog>
