@@ -9,16 +9,47 @@ export default class extends Controller {
   startTime;
   recordingInterval;
 
-  // コントローラが接続されたときの初期設定
+  // 初期設定: コントローラが接続されたときに呼ばれる
   connect() {
     this.element.setAttribute("open", true);
+
+    // モーダルが開いたときにバックグラウンドをクリックして閉じるイベントを追加
+    // this.element.addEventListener("click", this.closeBackground.bind(this));
+
     this.canvasCtx = this.element.querySelector(".visualizer").getContext("2d");
     if (!this.audioCtx) {
       this.audioCtx = new AudioContext();
     }
   }
 
-  // 録音開始処理
+  closeModal() {
+    // モーダルを閉じる
+    this.element.close();
+  }
+
+  closeBackground(event) {
+    // バックグラウンドをクリックしたかどうかをチェック
+    if (
+      event.target === this.dialogTarget &&
+      this.dialogTarget.hasAttribute("open")
+    ) {
+      console.log("Dialog closed");
+      // モーダルを閉じる
+      this.closeModal();
+    }
+  }
+
+  redirectAfterClose(event) {
+    if (!event.detail.success) {
+      // フォームのバリデーションエラーの場合はここで何もしない
+      return;
+    }
+    // リダイレクトパスを取得してリダイレクトを実行する
+    const redirectPath = this.data.get("redirectPath");
+    window.location.href = redirectPath;
+  }
+
+  // 録音開始
   startRecording() {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
@@ -38,12 +69,12 @@ export default class extends Controller {
 
         this.visualize(stream);
       })
-      .catch((error) =>
-        console.error("マイクへのアクセス中にエラーが発生しました:", error)
-      );
+      .catch((error) => {
+        console.error("マイクへのアクセス中にエラーが発生しました:", error);
+      });
   }
 
-  // 録音停止処理
+  // 録音停止
   stopRecording() {
     this.mediaRecorder.stop();
     clearInterval(this.recordingInterval);
@@ -52,7 +83,7 @@ export default class extends Controller {
     cancelAnimationFrame(this.animationFrameRequest);
   }
 
-  // タイマー更新
+  // タイマーを更新
   updateTimer() {
     const elapsedTime = Date.now() - this.startTime;
     const seconds = Math.floor((elapsedTime / 1000) % 60);
@@ -74,31 +105,40 @@ export default class extends Controller {
     this.createSoundClip(audioURL);
   }
 
-  // 音声クリップの生成と表示
+  // 音声クリップを生成して表示するメソッド
   createSoundClip(audioURL) {
     const clipContainer = document.createElement("div");
     clipContainer.className =
-      "clip flex flex-col sm:flex-row justify-between items-center my-2 p-2 border border-gray-200 rounded";
+      "clip flex flex-col items-center w-full max-w-screen-lg mx-auto my-2 p-2 border border-gray-200 rounded overflow-hidden";
 
     const audio = document.createElement("audio");
     audio.controls = true;
     audio.src = audioURL;
+    audio.className = "w-full";
 
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "削除";
-    deleteButton.className =
-      "delete bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded";
-    deleteButton.onclick = () => {
-      clipContainer.remove();
-      this.element.querySelector(".record").disabled = false;
-      this.element.querySelector(".timer").textContent = "00:00"; // タイマーをリセット
-    };
+    // 削除ボタン
+    const deleteButton = this.createDeleteButton(clipContainer);
 
     clipContainer.appendChild(audio);
     clipContainer.appendChild(deleteButton);
 
     this.element.querySelector(".sound-clips").innerHTML = "";
     this.element.querySelector(".sound-clips").appendChild(clipContainer);
+  }
+
+  // 削除ボタンを生成するメソッド
+  createDeleteButton(clipContainer) {
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "削除";
+    deleteButton.className =
+      "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded mt-2 self-end"; // 右端に配置
+    deleteButton.onclick = () => {
+      clipContainer.remove();
+      this.element.querySelector(".record").disabled = false;
+      this.element.querySelector(".timer").textContent = "00:00"; // タイマーをリセット
+    };
+
+    return deleteButton;
   }
 
   // 可視化処理
