@@ -1,12 +1,27 @@
 <%= turbo_frame_tag "post_modal" do %>
-  <dialog id="post_modal_daialog" class="modal bg-gray-500 bg-opacity-50" data-controller="post-modal">
+  <dialog id="post_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="audio-modal">
     <div class="modal-box">
       <div class="flex justify-end items-center">
-        <i class="fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->post-modal#closeModal"></i>
+        <!-- 'post-modal' コントローラーで管理するモーダルの閉じるボタン -->
+        <i class="fa-solid fa-xmark h-6 w-6 hover:text-blue-500" data-action="click->audio-modal#closeModal"></i>
       </div>
-      <%= render 'shared/post_form' %>
+      <!-- 録音コントロール -->
+      <section class="main-controls">
+        <canvas class="visualizer" width="400" height="60"></canvas>
+        <div id="buttons">
+          <!-- 録音開始ボタン -->
+          <button class="record" data-action="click->audio-modal#startRecording">Record</button>
+          <!-- 録音停止ボタン -->
+          <button class="stop" data-action="click->audio-modal#stopRecording" disabled>Stop</button>
+        </div>
+      </section>
+
+      <!-- 録音されたクリップを表示するセクション -->
+      <section class="sound-clips"></section>
+
+      <!-- モーダルを閉じるボタン -->
       <div class="modal-action">
-        <button class="btn" data-action="post-modal#closeModal">閉じる</button>
+        <button class="btn" data-action="click->audio-modal#closeModal">閉じる</button>
       </div>
     </div>
   </dialog>
