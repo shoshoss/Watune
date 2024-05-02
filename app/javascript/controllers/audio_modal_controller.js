@@ -150,7 +150,7 @@ export default class extends Controller {
     const dataArray = new Uint8Array(bufferLength);
 
     source.connect(analyser);
-    analyser.smoothingTimeConstant = 0.85; // スムージングを適用
+    analyser.smoothingTimeConstant = 0.9; // スムージングを適用
 
     const WIDTH = this.element.querySelector(".visualizer").width;
     const HEIGHT = this.element.querySelector(".visualizer").height;
@@ -163,19 +163,6 @@ export default class extends Controller {
 
       analyser.getByteFrequencyData(dataArray); // 周波数データを取得
 
-      // 海色をイメージした背景グラデーションを設定
-      const gradient = this.canvasCtx.createRadialGradient(
-        centerX,
-        centerY,
-        0,
-        centerX,
-        centerY,
-        Math.max(WIDTH, HEIGHT)
-      );
-      gradient.addColorStop(0, "#0077CC"); // 浅い海の青
-      gradient.addColorStop(1, "#005499"); // 深い海の青
-
-      this.canvasCtx.fillStyle = gradient;
       this.canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
       let maxRadius = Math.max(WIDTH, HEIGHT) / 2;
@@ -183,9 +170,9 @@ export default class extends Controller {
 
       for (let i = 0; i < bufferLength; i++) {
         let radius = step * i;
-        let amplitude = dataArray[i] / 256.0;
+        let amplitude = dataArray[i] / 128.0;
         let color = `hsla(${200 + amplitude * 20}, 100%, 50%, ${
-          0.5 + 0.5 * amplitude // 透明度を動的に変更
+          0.75 + 0.25 * amplitude // 透明度を動的に変更
         })`; // 波紋の色をより海色に近づける
 
         this.canvasCtx.beginPath();
