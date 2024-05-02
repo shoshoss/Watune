@@ -4,11 +4,12 @@ export default class extends Controller {
   audioCtx;
   canvasCtx;
   mediaRecorder;
-  shouldStop = false;
+  chunks = [];
   animationFrameRequest;
 
   connect() {
     this.element.setAttribute("open", true); // モーダルを開く処理
+
     this.canvasCtx = this.element.querySelector(".visualizer").getContext("2d");
     if (!this.audioCtx) {
       this.audioCtx = new AudioContext();
@@ -24,19 +25,19 @@ export default class extends Controller {
       .getUserMedia({ audio: true })
       .then((stream) => {
         this.mediaRecorder = new MediaRecorder(stream);
-        let chunks = [];
+        this.mediaRecorder.ondataavailable = (event) =>
+          this.chunks.push(event.data);
+        this.mediaRecorder.onstop = () => this.handleRecordingStop();
+        this.mediaRecorder.start();
 
         this.element.querySelector(".record").disabled = true;
         this.element.querySelector(".stop").disabled = false;
-        this.shouldStop = false;
-
-        this.mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-        this.mediaRecorder.onstop = (e) => this.handleRecordingStop(chunks);
-        this.mediaRecorder.start();
 
         this.visualize(stream);
       })
-      .catch((error) => console.log("Error accessing the microphone:", error));
+      .catch((error) =>
+        console.error("Error accessing the microphone:", error)
+      );
   }
 
   stopRecording() {
@@ -45,33 +46,35 @@ export default class extends Controller {
     this.element.querySelector(".stop").disabled = true;
     this.shouldStop = true;
     cancelAnimationFrame(this.animationFrameRequest);
-    console.log("Recorder stopped and visualization stopped.");
   }
 
-  handleRecordingStop(chunks) {
-    const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-    const audioURL = window.URL.createObjectURL(blob);
+  handleRecordingStop() {
+    const audioURL = window.URL.createObjectURL(new Blob(this.chunks));
     this.createSoundClip(audioURL);
+    this.chunks = []; // Clear the chunks array
   }
 
   createSoundClip(audioURL) {
     const clipContainer = document.createElement("article");
     const audio = document.createElement("audio");
     const deleteButton = document.createElement("button");
+    const clipLabel = document.createElement("label");
 
-    clipContainer.classList.add("clip");
-    audio.setAttribute("controls", "");
-    audio.src = audioURL;
+    clipLabel.textContent =
+      prompt("Enter a name for your sound clip?", "My unnamed clip") ||
+      "My unnamed clip";
     deleteButton.textContent = "Delete";
     deleteButton.className = "delete";
+    audio.src = audioURL;
+    audio.controls = true;
 
+    clipContainer.classList.add("clip");
     clipContainer.appendChild(audio);
+    clipContainer.appendChild(clipLabel);
     clipContainer.appendChild(deleteButton);
     this.element.querySelector(".sound-clips").appendChild(clipContainer);
 
-    deleteButton.addEventListener("click", (e) => {
-      e.target.closest(".clip").remove();
-    });
+    deleteButton.onclick = () => clipContainer.remove();
   }
 
   visualize(stream) {
@@ -80,16 +83,15 @@ export default class extends Controller {
     analyser.fftSize = 2048;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-
     source.connect(analyser);
-
-    const WIDTH = this.element.querySelector(".visualizer").width;
-    const HEIGHT = this.element.querySelector(".visualizer").height;
 
     const draw = () => {
       if (this.shouldStop) return;
       this.animationFrameRequest = requestAnimationFrame(draw);
       analyser.getByteTimeDomainData(dataArray);
+
+      const WIDTH = this.canvasCtx.canvas.width;
+      const HEIGHT = this.canvasCtx.canvas.height;
 
       this.canvasCtx.fillStyle = "rgb(200, 200, 200)";
       this.canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -97,20 +99,17 @@ export default class extends Controller {
       this.canvasCtx.strokeStyle = "rgb(0, 0, 0)";
       this.canvasCtx.beginPath();
 
-      let sliceWidth = (WIDTH * 1.0) / bufferLength;
       let x = 0;
-
       for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 128.0;
-        let y = (v * HEIGHT) / 2;
+        const v = dataArray[i] / 128.0;
+        const y = (v * HEIGHT) / 2;
 
         if (i === 0) {
           this.canvasCtx.moveTo(x, y);
         } else {
           this.canvasCtx.lineTo(x, y);
         }
-
-        x += sliceWidth;
+        x += WIDTH / bufferLength;
       }
 
       this.canvasCtx.lineTo(WIDTH, HEIGHT / 2);
