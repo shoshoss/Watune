@@ -74,7 +74,7 @@ export default class extends Controller {
       });
   }
 
-  // 録音停止
+  // 録音を停止するメソッド
   stopRecording() {
     this.mediaRecorder.stop();
     clearInterval(this.recordingInterval);
@@ -83,7 +83,7 @@ export default class extends Controller {
     cancelAnimationFrame(this.animationFrameRequest);
   }
 
-  // タイマーを更新
+  // タイマー更新
   updateTimer() {
     const elapsedTime = Date.now() - this.startTime;
     const seconds = Math.floor((elapsedTime / 1000) % 60);
@@ -93,7 +93,7 @@ export default class extends Controller {
     )}:${this.pad(seconds)}`;
   }
 
-  // 数字を2桁に整形
+  // 数字を2桁に整形するメソッド
   pad(number) {
     return number < 10 ? "0" + number : number;
   }
@@ -150,37 +150,50 @@ export default class extends Controller {
     const dataArray = new Uint8Array(bufferLength);
 
     source.connect(analyser);
+    analyser.smoothingTimeConstant = 0.85; // スムージングを適用
 
     const WIDTH = this.element.querySelector(".visualizer").width;
     const HEIGHT = this.element.querySelector(".visualizer").height;
+    const centerX = WIDTH / 2;
+    const centerY = HEIGHT / 2;
 
     const draw = () => {
       if (this.shouldStop) return;
       this.animationFrameRequest = requestAnimationFrame(draw);
-      analyser.getByteTimeDomainData(dataArray);
 
-      this.canvasCtx.fillStyle = "rgb(200, 200, 200)";
+      analyser.getByteFrequencyData(dataArray); // 周波数データを取得
+
+      // 海色をイメージした背景グラデーションを設定
+      const gradient = this.canvasCtx.createRadialGradient(
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        Math.max(WIDTH, HEIGHT)
+      );
+      gradient.addColorStop(0, "#0077CC"); // 浅い海の青
+      gradient.addColorStop(1, "#005499"); // 深い海の青
+
+      this.canvasCtx.fillStyle = gradient;
       this.canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-      this.canvasCtx.beginPath();
 
-      let sliceWidth = WIDTH / bufferLength;
-      let x = 0;
+      let maxRadius = Math.max(WIDTH, HEIGHT) / 2;
+      let step = (maxRadius / bufferLength) * 2;
 
       for (let i = 0; i < bufferLength; i++) {
-        let v = dataArray[i] / 128.0;
-        let y = (v * HEIGHT) / 2;
+        let radius = step * i;
+        let amplitude = dataArray[i] / 256.0;
+        let color = `hsla(${200 + amplitude * 20}, 100%, 50%, ${
+          0.5 + 0.5 * amplitude // 透明度を動的に変更
+        })`; // 波紋の色をより海色に近づける
 
-        if (i === 0) {
-          this.canvasCtx.moveTo(x, y);
-        } else {
-          this.canvasCtx.lineTo(x, y);
-        }
-
-        x += sliceWidth;
+        this.canvasCtx.beginPath();
+        this.canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        this.canvasCtx.strokeStyle = color;
+        this.canvasCtx.lineWidth = 2;
+        this.canvasCtx.stroke();
       }
-
-      this.canvasCtx.lineTo(WIDTH, HEIGHT / 2);
-      this.canvasCtx.stroke();
     };
 
     draw();
