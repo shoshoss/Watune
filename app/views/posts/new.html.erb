@@ -6,18 +6,22 @@
         <i class="fa-solid fa-xmark h-6 w-6 hover:text-blue-500" data-action="click->audio-modal#closeModal"></i>
       </div>
       <!-- 録音コントロール -->
-      <section class="main-controls">
-        <canvas class="visualizer" width="400" height="60"></canvas>
-        <div id="buttons">
-          <!-- 録音開始ボタン -->
-          <button class="record" data-action="click->audio-modal#startRecording">Record</button>
-          <!-- 録音停止ボタン -->
-          <button class="stop" data-action="click->audio-modal#stopRecording" disabled>Stop</button>
-        </div>
+      <section class="my-4">
+        <canvas class="visualizer w-full h-24 bg-black"></canvas>
       </section>
 
-      <!-- 録音されたクリップを表示するセクション -->
-      <section class="sound-clips"></section>
+      <div class="flex space-x-4">
+        <button class="record bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" data-action="click->audio-modal#startRecording">
+          録音
+        </button>
+        <button class="stop bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50" data-action="click->audio-modal#stopRecording" disabled>
+          ストップ
+        </button>
+      </div>
+
+      <section class="sound-clips mt-4 overflow-auto max-h-48">
+        <!-- Dynamically added clips will appear here -->
+      </section>
 
       <!-- モーダルを閉じるボタン -->
       <div class="modal-action">
