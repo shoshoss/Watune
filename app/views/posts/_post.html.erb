@@ -5,13 +5,12 @@
   <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
     <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
     <% if post.audio.present? %>
-      <audio id="audio-<%= post.id %>" preload="none">
+      <audio controls preload="none" class="audio-player">
         <source src="<%= post.audio_url %>" type="audio/webm">
         お使いのブラウザはオーディオプレイヤーをサポートしていません。
       </audio>
-      <button class="play-audio-button" data-audio-id="audio-<%= post.id %>">
-        <i class="fas fa-play text-3xl"></i> <!-- 再生/停止ボタン -->
-      </button>
+      <!-- ダウンロードボタン -->
+      <%= link_to "ダウンロード", post.audio_url, download: "audio_file.webm", class: "ml-2 text-blue-500 hover:text-blue-700" %>
     <% end %>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
@@ -35,7 +34,7 @@
       <p class="text-lg mb-2 leading-relaxed"><%= post.body %></p>
     <% end %>
     <div class="flex justify-between items-center">
-      <span class="text-sm duration" id="duration-<%= post.id %>">--:--</span>
+      <span class="text-sm">01:46</span>
       <div>
         <button class="text-blue-500 hover:text-blue-700">
           <i class="fas fa-heart text-xl"></i>
@@ -50,23 +49,5 @@
 <% end %>
 
 
+
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll('.play-audio-button').forEach(button => {
-    button.addEventListener('click', function() {
-      const audioId = this.getAttribute('data-audio-id');
-      const audioElement = document.getElementById(audioId);
-      if (audioElement.paused) {
-        audioElement.play();
-        this.innerHTML = '<i class="fas fa-pause text-3xl"></i>'; // アイコンを一時停止に変更
-      } else {
-        audioElement.pause();
-        this.innerHTML = '<i class="fas fa-play text-3xl"></i>'; // アイコンを再生に変更
-      }
-    });
-  });
-});
-
-</script>
