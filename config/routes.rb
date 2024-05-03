@@ -29,5 +29,5 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]
 
   # 投稿のルーティング
-  resources :posts, only: %i[new create edit update]
+  resources :posts, only: %i[index new create edit update destroy]
 end

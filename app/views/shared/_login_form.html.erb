@@ -7,8 +7,7 @@
 </div>
 <%= form_with url: create_login_modal_path,
     data: { controller: "login-modal", 
-            action: "turbo:submit-end->login-modal#afterClose", 
-            signup_modal_redirect_path: edit_profile_path } do |f| %>
+            action: "turbo:submit-end->login-modal#afterClose" } do |f| %>
   <!-- Googleでログインのボタン -->
   <div class="flex items-center justify-center mb-8">
       <%= link_to auth_at_provider_path(provider: :google),

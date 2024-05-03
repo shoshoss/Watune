@@ -170,9 +170,9 @@ export default class extends Controller {
 
       for (let i = 0; i < bufferLength; i++) {
         let radius = step * i;
-        let amplitude = dataArray[i] / 128.0;
+        let amplitude = dataArray[i] / 128.0; // 初期256
         let color = `hsla(${200 + amplitude * 20}, 100%, 50%, ${
-          0.75 + 0.25 * amplitude // 透明度を動的に変更
+          0.75 + 0.25 * amplitude // 透明度を動的に変更 初期:0.5,0.5
         })`; // 波紋の色をより海色に近づける
 
         this.canvasCtx.beginPath();

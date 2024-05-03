@@ -1,8 +1,7 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %i[show edit update destroy]
 
   def index
-    @posts = Post.all
+    @posts = Post.order(created_at: :desc)
   end
 
   def show; end
@@ -14,11 +13,12 @@ class PostsController < ApplicationController
   def edit; end
 
   def create
-    @post = Post.new(post_params)
+    @post = current_user.posts.build(post_params)
     if @post.save
-      redirect_to @post, notice: 'Post was successfully created.'
+      flash[:notice] =  t('defaults.flash_message.created', item: Post.model_name.human)
     else
-      render :new
+      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human)
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -37,11 +37,7 @@ class PostsController < ApplicationController
 
   private
 
-  def set_post
-    @post = Post.find(params[:id])
-  end
-
   def post_params
-    params.require(:post).permit(:user_id, :content, :audio, :privacy)
+    params.require(:post).permit(:user_id, :body, :audio, :privacy)
   end
 end

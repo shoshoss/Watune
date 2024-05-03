@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      audio: 音声
+      post: Wave
       comment: コメント
     attributes:
       user:
@@ -19,10 +19,9 @@ ja:
         avatar: アバター
         role: 権限
         username_slug: "ユーザー名"
-      audio:
-        title: タイトル
-        body: 本文
-        board_image: サムネイル
+      post:
+        body: 投稿内容
+        post_image: サムネイル
         user: 作成者
       comment:
         body: コメント

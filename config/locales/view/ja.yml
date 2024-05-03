@@ -20,6 +20,14 @@ ja:
     password_reset: パスワードリセット
     flash_message:
       require_login: ログインしてください
+      created: "%{item}しました"
+      not_created: "%{item}できませんでした"
+      updated: "%{item}を更新しました"
+      not_updated: "%{item}を更新できませんでした"
+      deleted: "%{item}を削除しました"
+      bookmarks_created: ブックマークしました
+      bookmarks_destroy: ブックマークを外しました
+      not_authorized: 権限がありません
   user_sessions:
     new:
       title: ログイン
@@ -43,11 +51,12 @@ ja:
       to_login: ログイン
       google_signup: Googleで新規登録
   header:
+    about: WaveConGraとは
     login: ログイン
     logout: ログアウト
     signup: 新規登録
-    audio: 音声
-    audio_index: 音声一覧
+    post: みんなのWave
+    post_index: みんなのWave
     post_audio: Waveする
     bookmark_index: ブックマーク一覧
     profile: プロフィール

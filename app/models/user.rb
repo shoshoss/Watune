@@ -3,10 +3,13 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
   # 認証情報を複数保持するための関連付け。ユーザー削除時に認証情報も削除される。
   has_many :authentications, dependent: :destroy
+
+  # UserとPostの関連付け
+  has_many :posts, dependent: :destroy
+
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
 
-  validates :password, presence: true
 
   # ユーザー作成時にユーザー名スラグを自動生成する
   before_validation :generate_username_slug, on: :create
@@ -16,6 +19,7 @@ class User < ApplicationRecord
 
   # パスワードは新規作成または変更時に8文字以上
   validates :password,
+            presence: true,
             length: { minimum: 8, message: :too_short },
             if: -> { new_record? || changes[:crypted_password] }
 

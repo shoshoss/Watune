@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_01_091352) do
 
   create_table "posts", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.text "content"
+    t.text "body", null: false
     t.binary "audio"
     t.integer "privacy", default: 0, null: false
     t.datetime "created_at", null: false
