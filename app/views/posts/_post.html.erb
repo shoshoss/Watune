@@ -4,14 +4,25 @@
   <!-- 1列目: アバターと音声再生 -->
   <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
     <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
-    <% if post.audio.present? %>
-      <audio controls preload="none" class="audio-player">
-        <source src="<%= post.audio_url %>" type="audio/webm">
-        お使いのブラウザはオーディオプレイヤーをサポートしていません。
-      </audio>
-      <!-- ダウンロードボタン -->
-      <%= link_to "ダウンロード", post.audio_url, download: "audio_file.webm", class: "ml-2 text-blue-500 hover:text-blue-700" %>
-    <% end %>
+    <div class="audio-controller">
+  <% if post.audio.present? %>
+    <audio id="audio-<%= post.id %>" preload="metadata">
+      <source src="<%= post.audio_url %>" type="audio/webm">
+      Your browser does not support the audio element.
+    </audio>
+    <div class="controls">
+      <button class="toggle">Play</button>
+      <button class="mute">Mute</button>
+      <button class="loop">Loop</button>
+      <input type="range" name="vol" min="0" max="1" step="0.01" value="0.8">
+      <input type="range" name="seek" min="0" value="0" step="1">
+      <div class="time">
+        <span class="current-time">00:00</span> / 
+        <span class="duration">00:00</span>
+      </div>
+    </div>
+  <% end %>
+</div>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
   <div class="flex-grow p-4">
@@ -47,7 +58,72 @@
   </div>
 </div>
 <% end %>
-
-
-
 </div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const audioControllers = document.querySelectorAll('.audio-controller');
+
+  audioControllers.forEach((audioController) => {
+    const audio = audioController.querySelector('audio');
+    audio.volume = 0.8;  // 初期音量を設定
+    const toggleBtn = audioController.querySelector('.toggle');
+    const muteBtn = audioController.querySelector('.mute');
+    const loopBtn = audioController.querySelector('.loop');
+    const volumeBar = audioController.querySelector('input[name="vol"]');
+    const seekBar = audioController.querySelector('input[name="seek"]');
+    const ctSpan = audioController.querySelector('.current-time');
+    const durSpan = audioController.querySelector('.duration');
+
+    toggleBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          toggleBtn.textContent = 'Pause';
+        }).catch(error => {
+          console.error('Playback failed:', error);
+        });
+      } else {
+        audio.pause();
+        toggleBtn.textContent = 'Play';
+      }
+    });
+
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? 'Unmute' : 'Mute';
+    });
+
+    loopBtn.addEventListener('click', () => {
+      audio.loop = !audio.loop;
+      loopBtn.textContent = audio.loop ? 'Unloop' : 'Loop';
+    });
+
+    volumeBar.addEventListener('input', (e) => {
+      audio.volume = e.currentTarget.value;
+    });
+
+    seekBar.addEventListener('input', (e) => {
+      audio.currentTime = e.currentTarget.value;
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      durSpan.textContent = secToHMS(audio.duration);
+      seekBar.max = audio.duration;
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      ctSpan.textContent = secToHMS(audio.currentTime);
+      seekBar.value = audio.currentTime;
+    });
+  });
+
+  function secToHMS(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = Math.floor(sec % 60);
+    return [h, m, s].map(v => v < 10 ? '0' + v : v).join(':');
+  }
+});
+
+</script>
