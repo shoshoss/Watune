@@ -10,7 +10,6 @@ class User < ApplicationRecord
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
 
-
   # ユーザー作成時にユーザー名スラグを自動生成する
   before_validation :generate_username_slug, on: :create
 

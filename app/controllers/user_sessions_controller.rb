@@ -5,14 +5,14 @@ class UserSessionsController < ApplicationController
 
   def create_modal
     @user = login(params[:email], params[:password])
-  
+
     if @user
       flash[:notice] = 'ログインにしました'
     else
       flash.now[:error] = 'ログインに失敗しました'
       render :new_modal, status: :unprocessable_entity
     end
-  end  
+  end
 
   def new; end
 
