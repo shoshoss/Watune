@@ -1,9 +1,10 @@
 ja:
   helpers:
     submit:
-      create: 登録
-      submit: 保存
-      update: 更新
+      create: 登録する
+      submit: 保存する
+      post: 投稿する
+      update: 更新する
     label:
       email: メールアドレス
       password: パスワード
@@ -55,9 +56,9 @@ ja:
     login: ログイン
     logout: ログアウト
     signup: 新規登録
-    post: みんなのWave
-    post_index: みんなのWave
-    post_audio: Waveする
+    post: みんなの投稿
+    post_index: みんなの投稿
+    post_audio: 投稿する
     bookmark_index: ブックマーク一覧
     profile: プロフィール
   flash_messages:
@@ -68,15 +69,15 @@ ja:
     users:
       registration_success: "ユーザー登録が完了しました"
       registration_failure: "ユーザー登録に失敗しました"
-  audios:
+  posts:
     new:
-      title: 音声作成
+      title: 投稿作成
     show:
-      title: 音声詳細
+      title: 投稿詳細
     index:
-      title: 音声一覧
+      title: 投稿一覧
     edit:
-      title: 音声編集
+      title: 投稿編集
     bookmarks:
       title: ブックマーク一覧
       no_result: ブックマーク中の音声がありません

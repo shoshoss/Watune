@@ -1,45 +1,52 @@
 <div class="w-full mx-auto">
   <% @posts.each do |post| %>
-    <div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
-      <!-- 1列目: アバターと音声再生 -->
-      <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
-        <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
-        <button class="text-blue-500 hover:text-blue-700">
-          <i class="fas fa-play-circle text-3xl"></i> <!-- 音声再生ボタン -->
-        </button>
-      </div>
-      <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
-      <div class="flex-grow p-4">
-        <%= link_to post_path(post), class: "hover:text-blue-500" do %>
-          <div class="flex justify-between items-center mb-2">
-            <div>
-              <span class="text-lg font-semibold"><%= post.user.display_name %></span> <!-- ユーザー名 -->
-              <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span> <!-- ユーザースラグ -->
-              <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span> <!-- 投稿日時 -->
-            </div>
-            <div>
-              <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700" do %>
-                <i class="fas fa-pencil-alt text-lg"></i>
-              <% end %>
-              <%= link_to post_path(post), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "text-red-500 hover:text-red-700 ml-4" do %>
-                <i class="fas fa-trash-alt text-lg"></i>
-              <% end %>
-            </div>
-          </div>
-          <p class="text-lg mb-2 leading-relaxed"><%= post.body %></p> <!-- 投稿内容 -->
-        <% end %>
-        <div class="flex justify-between items-center">
-          <span class="text-sm">01:46</span> <!-- 音声の長さ -->
-          <div>
-            <button class="text-blue-500 hover:text-blue-700">
-              <i class="fas fa-heart text-xl"></i> <!-- いいねボタン -->
-            </button>
-            <button class="text-blue-500 hover:text-blue-700 ml-2">
-              <i class="fab fa-twitter text-xl"></i> <!-- Twitterシェアボタン -->
-            </button>
-          </div>
+<div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
+  <!-- 1列目: アバターと音声再生 -->
+  <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
+    <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
+    <% if post.audio.present? %>
+      <audio controls preload="none" class="audio-player">
+        <source src="<%= post.audio_url %>" type="audio/webm">
+        お使いのブラウザはオーディオプレイヤーをサポートしていません。
+      </audio>
+      <!-- ダウンロードボタン -->
+      <%= link_to "ダウンロード", post.audio_url, download: "audio_file.webm", class: "ml-2 text-blue-500 hover:text-blue-700" %>
+    <% end %>
+  </div>
+  <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
+  <div class="flex-grow p-4">
+    <%= link_to post_path(post), class: "hover:text-blue-500" do %>
+      <div class="flex justify-between items-center mb-2">
+        <div>
+          <span class="text-lg font-semibold"><%= post.user.display_name %></span>
+          <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
+          <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
+        </div>
+        <div>
+          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700" do %>
+            <i class="fas fa-pencil-alt text-lg"></i>
+          <% end %>
+          <%= link_to post_path(post), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "text-red-500 hover:text-red-700 ml-4" do %>
+            <i class="fas fa-trash-alt text-lg"></i>
+          <% end %>
         </div>
       </div>
+      <p class="text-lg mb-2 leading-relaxed"><%= post.body %></p>
+    <% end %>
+    <div class="flex justify-between items-center">
+      <span class="text-sm">01:46</span>
+      <div>
+        <button class="text-blue-500 hover:text-blue-700">
+          <i class="fas fa-heart text-xl"></i>
+        </button>
+        <button class="text-blue-500 hover:text-blue-700 ml-2">
+          <i class="fab fa-twitter text-xl"></i>
+        </button>
+      </div>
     </div>
-  <% end %>
+  </div>
 </div>
+<% end %>
+
+</div>
+

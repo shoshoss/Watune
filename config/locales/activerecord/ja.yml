@@ -2,7 +2,7 @@ ja:
   activerecord:
     models:
       user: ユーザー
-      post: Wave
+      post: 投稿
       comment: コメント
     attributes:
       user:
