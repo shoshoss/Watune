@@ -1,19 +1,19 @@
+<div data-controller="audio">
 <div class="w-full mx-auto">
-
 <div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
   <!-- 1列目: アバターと音声再生 -->
   <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
     <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
-      <% if post.audio.present? %>
-        <audio id="audio-<%= post.id %>" preload="metadata">
-          <source src="<%= post.audio_url %>" type="audio/webm">
-          Your browser does not support the audio element.
-        </audio>
-        <button class="play-audio-button " data-audio-id="audio-<%= post.id %>">
-          <i class="fas fa-play text-3xl text-blue-500 hover:text-blue-700"></i>
-        </button>
-      <% end %>
+    <% if post.audio.present? %>
+          <audio id="audio-<%= post.id %>" preload="metadata">
+            <source src="<%= post.audio_url %>" type="audio/webm">
+            Your browser does not support the audio element.
+          </audio>
+          <button class="play-audio-button fas fa-play text-3xl text-blue-500 hover:text-blue-700" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+  <i class="fas fa-play"></i>
+</button>
 
+        <% end %>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
   <div class="flex-grow p-4">
@@ -54,44 +54,5 @@
     </div>
   </div>
 </div>
-
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const buttons = document.querySelectorAll('.play-audio-button');
-
-  buttons.forEach(button => {
-    const audioId = button.getAttribute('data-audio-id');
-    const audioElement = document.getElementById(audioId);
-
-    audioElement.addEventListener('ended', () => {
-      // 音声が終了した際にアイコンを再生に戻す
-      button.innerHTML = '<i class="fas fa-play text-3xl text-blue-500 hover:text-blue-700"></i>';
-    });
-
-    button.addEventListener('click', () => {
-      if (audioElement.paused) {
-        // 他のすべての音声を停止し、そのボタンをリセット
-        buttons.forEach(otherButton => {
-          const otherAudio = document.getElementById(otherButton.getAttribute('data-audio-id'));
-          if (otherAudio !== audioElement && !otherAudio.paused) {
-            otherAudio.pause();
-            otherButton.innerHTML = '<i class="fas fa-play text-3xl text-blue-500 hover:text-blue-700"></i>';
-          }
-        });
-        // 選択された音声を再生
-        audioElement.play().then(() => {
-          button.innerHTML = '<i class="fas fa-pause text-3xl text-blue-500 hover:text-blue-700"></i>';
-        }).catch(error => {
-          console.error('Playback failed:', error);
-        });
-      } else {
-        // 音声を停止
-        audioElement.pause();
-        button.innerHTML = '<i class="fas fa-play text-3xl text-blue-500 hover:text-blue-700"></i>';
-      }
-    });
-  });
-});
-</script>
+</div>
