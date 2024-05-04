@@ -1,6 +1,6 @@
 <div class="container pt-3">
   <!-- 検索フォーム -->
-  <div class="w-10/12 mx-auto">
+  <div class="px-2 md:w-10/12 mx-auto">
     <form class="mb-3">
       <div class="flex items-center">
         <input class="w-full px-4 py-2 mr-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white" type="search" placeholder="検索ワード">
@@ -9,7 +9,7 @@
     </form>
   </div>
   <!-- 投稿一覧 -->
-  <div class="w-10/12 mx-auto">
+  <div class="px-2 md:w-10/12 mx-auto">
     <div class="grid grid-cols-1 gap-4">
       <% if @posts.present? %>
         <%= turbo_frame_tag "next-page" do %>
@@ -21,9 +21,6 @@
       <% else %>
         <div class="mb-3">投稿がありません</div>
       <% end %>
-
-
-
     </div>
   </div>
 </div>
