@@ -56,8 +56,6 @@ export default class extends Controller {
     if (button) {
       button.classList.toggle("fa-play", !isPlaying);
       button.classList.toggle("fa-pause", isPlaying);
-    } else {
-      console.error("Button element not found for updating icon.");
     }
   }
 }
