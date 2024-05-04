@@ -1,11 +1,11 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
-
+    @pagy, @posts = pagy_countless(Post.includes(:user).order(created_at: :desc), items: 10)
     respond_to do |format|
-      format.html # 通常のリクエストに対する応答
-      format.turbo_stream # JavaScriptによるリクエストに対する応答
+      format.html
+      format.turbo_stream
     end
+    # @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
   end
 
   def show; end

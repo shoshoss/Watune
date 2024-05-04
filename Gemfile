@@ -62,11 +62,11 @@ gem 'config', '~> 5.4'
 gem 'carrierwave', '~> 3.0'
 
 # ページネーションのためのpagy
-# gem 'pagy', '~> 8.3'
+gem 'pagy', '~> 8.3'
 
-gem 'kaminari', '~> 1.2'
+# gem 'kaminari', '~> 1.2'
 
-gem 'bootstrap5-kaminari-views'
+# gem 'bootstrap5-kaminari-views'
 
 group :development, :test do
   # デバッグ用のdebug

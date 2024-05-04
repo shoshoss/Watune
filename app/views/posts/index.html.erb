@@ -12,15 +12,16 @@
   <div class="w-10/12 mx-auto">
     <div class="grid grid-cols-1 gap-4">
       <% if @posts.present? %>
-        <%= turbo_frame_tag "posts-frame" do %>
+        <%= turbo_frame_tag "next-page" do %>
           <%= render @posts %>
-          <% if @posts.next_page %>
-            <%= link_to 'More Posts', path_to_next_page(@posts), id: 'pagination-link', remote: true, style: "display: none;" %>
+          <% if @pagy.next %>
+            <%= render 'posts/next_page' %>
           <% end %>
         <% end %>
       <% else %>
         <div class="mb-3">投稿がありません</div>
       <% end %>
+
 
 
     </div>
