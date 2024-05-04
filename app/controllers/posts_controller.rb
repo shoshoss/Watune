@@ -1,6 +1,11 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.order(created_at: :desc)
+    @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
+
+    respond_to do |format|
+      format.html # 通常のリクエストに対する応答
+      format.turbo_stream # JavaScriptによるリクエストに対する応答
+    end
   end
 
   def show; end

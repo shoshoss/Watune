@@ -8,14 +8,21 @@
       </div>
     </form>
   </div>
-  <!-- 掲示板一覧 -->
+  <!-- 投稿一覧 -->
   <div class="w-10/12 mx-auto">
     <div class="grid grid-cols-1 gap-4">
       <% if @posts.present? %>
-        <%= render @posts %>
+        <%= turbo_frame_tag "posts-frame" do %>
+          <%= render @posts %>
+          <% if @posts.next_page %>
+            <%= link_to 'More Posts', path_to_next_page(@posts), id: 'pagination-link', remote: true, style: "display: none;" %>
+          <% end %>
+        <% end %>
       <% else %>
         <div class="mb-3">投稿がありません</div>
       <% end %>
+
+
     </div>
   </div>
 </div>

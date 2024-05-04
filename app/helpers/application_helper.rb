@@ -20,4 +20,9 @@ module ApplicationHelper
       'alert alert-default'    # デフォルト（グレー）の背景
     end
   end
+
+  def path_to_next_page(posts)
+    return nil unless posts.next_page
+    posts_path(page: posts.next_page)  # これは実際のルーティングに合わせて変更してください
+  end
 end
