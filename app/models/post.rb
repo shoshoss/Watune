@@ -15,6 +15,7 @@ class Post < ApplicationRecord
   enum privacy: { only_me: 0, friends_only: 1, open: 2 }
 
   private
+
   def set_duration
     # durationフィールドが変更されていれば保存
     self.duration = duration if duration_changed?
