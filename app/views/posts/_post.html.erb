@@ -2,8 +2,10 @@
 <div class="w-full mx-auto">
 <div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
   <!-- 1列目: アバターと音声再生 -->
+
   <div class="flex flex-col items-center justify-between p-4 bg-gray-100 hover:bg-gray-200">
-    <img src="<%= post.user.avatar %>" alt="ユーザーアバター" class="rounded-full h-24 w-24"> <!-- アバター -->
+    <!-- アバター -->
+    <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-24 w-24") %>
     <% if post.audio.present? %>
           <audio id="audio-<%= post.id %>" preload="none">
     <source src="<%= post.audio_url %>" type="audio/webm">
