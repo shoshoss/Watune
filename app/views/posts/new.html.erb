@@ -44,6 +44,7 @@
             </section>
 
             <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+            <%= f.hidden_field :duration, class: "duration-field" %>
 
             <div class="form-control mt-4 lg:mt-6">
               <%= f.submit t('helpers.submit.post'), class: "btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>

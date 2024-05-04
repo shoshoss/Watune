@@ -87,6 +87,10 @@ export default class extends Controller {
     this.element.querySelector(".stop").disabled = true;
     this.shouldStop = true;
     cancelAnimationFrame(this.animationFrameRequest);
+
+    // 経過時間をミリ秒から秒に変換し、切り捨てを行う
+    const durationInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
+    document.querySelector(".duration-field").value = durationInSeconds;
   }
 
   // タイマー更新
