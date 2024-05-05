@@ -1,5 +1,4 @@
 <div data-controller="audio">
-<div class="w-full">
 <div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
   <!-- 1列目: アバターと音声再生 -->
 
@@ -7,10 +6,7 @@
     <!-- アバター -->
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio_url.present? %>
-      <audio id="audio-<%= post.id %>" preload="metadata">
-        <source src="<%= post.audio_url %>" type="audio/webm">
-        お使いのブラウザはオーディオプレイヤーをサポートしていません。
-      </audio>
+      <audio controls id="audio-<%= post.id %>" src="<%= post.audio_url %>" preload="metadata"></audio>
       <button class="pt-2 play-audio-button fas fa-play text-3xl text-blue-500 hover:text-blue-700" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
         <i class="fas fa-play"></i>
       </button>
@@ -55,6 +51,5 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 </div>
