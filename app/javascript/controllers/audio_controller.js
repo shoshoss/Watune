@@ -35,9 +35,7 @@ export default class extends Controller {
         })
         .catch((error) => {
           console.error("Playback failed:", error);
-          alert(
-            "音声の再生を開始できませんでした。画面をタップしてから再試行してください。"
-          );
+          alert(`音声の再生に失敗しました: ${error.message}`);
           this.updateIcon(button, false);
         });
     } else {

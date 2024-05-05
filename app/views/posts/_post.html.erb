@@ -6,7 +6,10 @@
     <!-- アバター -->
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio_url.present? %>
-      <audio controls id="audio-<%= post.id %>" src="<%= post.audio_url %>" preload="metadata"></audio>
+      <audio id="audio-<%= post.id %>" preload="metadata" controls>
+        <source src="<%= post.audio_url %>" type="audio/webm">
+        お使いのブラウザはオーディオプレイヤーをサポートしていません。
+      </audio>
       <button class="pt-2 play-audio-button fas fa-play text-3xl text-blue-500 hover:text-blue-700" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
         <i class="fas fa-play"></i>
       </button>
