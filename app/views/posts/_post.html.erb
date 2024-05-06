@@ -8,7 +8,7 @@
     <% if post.audio.attached? %>
       <audio id="audio-<%= post.id %>" preload="metadata" controls>
         <%# サポートされているフォーマットをループで処理 %>
-        <% ['audio/webm', 'audio/mp3', 'audio/mp4'].each do |format| %>
+        <% [ 'audio/mp3', 'audio/mp4', 'audio/webm' ].each do |format| %>
           <% if post.audio.content_type == format %>
             <source src="<%= url_for(post.audio) %>" type="<%= format %>">
           <% end %>
