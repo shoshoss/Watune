@@ -118,9 +118,15 @@ export default class extends Controller {
     const blob = new Blob(chunks, { type: this.mediaRecorder.mimeType });
     const audioURL = window.URL.createObjectURL(blob);
     this.createSoundClip(audioURL);
-    const file = new File([blob], "recording.webm", {
+
+    // MIMEタイプから適切なファイル拡張子を決定
+    const fileExtension =
+      this.mediaRecorder.mimeType.split("/")[1].split(";")[0] === "webm"
+        ? "webm"
+        : "mp4";
+
+    const file = new File([blob], `recording.${fileExtension}`, {
       type: this.mediaRecorder.mimeType,
-      lastModified: new Date(),
     });
 
     const dt = new DataTransfer();
