@@ -6,7 +6,7 @@
     <!-- アバター -->
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio.attached? %>
-      <audio id="audio-<%= post.id %>" preload="metadata" controls>
+      <audio id="audio-<%= post.id %>" preload="metadata">
         <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
         お使いのブラウザはオーディオプレイヤーをサポートしていません。
       </audio>
