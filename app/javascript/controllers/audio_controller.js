@@ -1,19 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["audio"];
-  lastPlayedAudio = null; // 最後に再生されたオーディオを記録
-
   connect() {
-    this.element.addEventListener(
+    document.addEventListener(
       "play",
       (event) => {
-        // 直前に再生していた音声を停止
-        if (this.lastPlayedAudio && this.lastPlayedAudio !== event.target) {
-          this.lastPlayedAudio.pause();
-          this.updateIconForAudio(this.lastPlayedAudio, false);
+        const audios = document.querySelectorAll("audio");
+        for (let audio of audios) {
+          if (audio !== event.target) {
+            audio.pause();
+            this.updateIconForAudio(audio, false);
+          }
         }
-        this.lastPlayedAudio = event.target; // 再生したオーディオを更新
       },
       true
     );
@@ -48,9 +46,7 @@ export default class extends Controller {
 
   updateIconForAudio(audio, isPlaying) {
     const audioId = audio.id.replace("audio-", "");
-    const button = this.element.querySelector(
-      `button[data-audio-id="${audioId}"]`
-    );
+    const button = this.element.querySelector(`[data-audio-id="${audioId}"]`);
     this.updateIcon(button, isPlaying);
   }
 

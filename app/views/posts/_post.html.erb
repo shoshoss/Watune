@@ -7,12 +7,15 @@
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio.attached? %>
       <audio id="audio-<%= post.id %>" preload="metadata" controls>
-        <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
-        お使いのブラウザはオーディオプレイヤーをサポートしていません。
+        <%# サポートされているフォーマットをループで処理 %>
+        <% ['audio/webm', 'audio/mp3', 'audio/mp4'].each do |format| %>
+          <% if post.audio.content_type == format %>
+            <source src="<%= url_for(post.audio) %>" type="<%= format %>">
+          <% end %>
+        <% end %>
+        お使いのブラウザーではオーディオ再生ができません。
       </audio>
-      <button class="pt-2 play-audio-button fas fa-play text-3xl text-blue-500 hover:text-blue-700" 
-              data-action="click->audio#playPause" 
-              data-audio-id="<%= post.id %>">
+      <button class="pt-2 play-audio-button-<%= post.id %> fas fa-play text-3xl text-blue-500 hover:text-blue-700" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
         <i class="fas fa-play"></i>
       </button>
     <% end %>
