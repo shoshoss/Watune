@@ -20,10 +20,13 @@ export default class extends Controller {
   playPause(event) {
     const button = event.currentTarget;
     const audioId = button.dataset.audioId;
-    const audio = this.element.querySelector(`audio[id="audio-${audioId}"]`);
+    const audio = document.getElementById(`audio-${audioId}`);
+    const icon = document.getElementById(`audio-icon-${audioId}`);
 
-    if (!audio) {
-      console.error(`Audio element with ID 'audio-${audioId}' not found.`);
+    if (!audio || !icon) {
+      console.error(
+        `Audio element with ID 'audio-${audioId}' or icon element with ID 'audio-icon-${audioId}' not found.`
+      );
       return;
     }
 
@@ -31,29 +34,29 @@ export default class extends Controller {
       audio
         .play()
         .then(() => {
-          this.updateIcon(button, true);
+          this.updateIcon(icon, true);
         })
         .catch((error) => {
           console.error("Playback failed:", error);
           alert(`音声の再生に失敗しました: ${error.message}`);
-          this.updateIcon(button, false);
+          this.updateIcon(icon, false);
         });
     } else {
       audio.pause();
-      this.updateIcon(button, false);
+      this.updateIcon(icon, false);
     }
   }
 
   updateIconForAudio(audio, isPlaying) {
     const audioId = audio.id.replace("audio-", "");
-    const button = this.element.querySelector(`[data-audio-id="${audioId}"]`);
-    this.updateIcon(button, isPlaying);
+    const icon = document.getElementById(`audio-icon-${audioId}`);
+    this.updateIcon(icon, isPlaying);
   }
 
-  updateIcon(button, isPlaying) {
-    if (button) {
-      button.classList.toggle("fa-play", !isPlaying);
-      button.classList.toggle("fa-pause", isPlaying);
+  updateIcon(icon, isPlaying) {
+    if (icon) {
+      icon.classList.toggle("fa-play", !isPlaying);
+      icon.classList.toggle("fa-pause", isPlaying);
     }
   }
 }

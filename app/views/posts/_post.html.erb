@@ -1,4 +1,4 @@
-<div data-controller="audio">
+<div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
 <div id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
   <!-- 1列目: アバターと音声再生 -->
 
@@ -10,16 +10,13 @@
         <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
         お使いのブラウザはオーディオプレイヤーをサポートしていません。
       </audio>
-      <button class="pt-2 play-audio-button fas fa-play text-3xl text-blue-500 hover:text-blue-700" 
-              data-action="click->audio#playPause" 
-              data-audio-id="<%= post.id %>">
-        <i class="fas fa-play"></i>
+      <button class="pt-2 play-audio-button" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+        <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl text-blue-500 hover:text-blue-700"></i>
       </button>
     <% end %>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
-  <div class="flex-grow p-1 md:p-4">
-    <%= link_to post_path(post), class: "hover:text-blue-500" do %>
+  <div class="flex-grow p-1 md:p-4" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
       <div class="flex justify-between items-center mb-2">
         <div>
           <span class="text-lg font-semibold"><%= post.user.display_name %></span>
@@ -37,7 +34,6 @@
         </div>
       </div>
       <p class="text-lg mb-2 leading-relaxed"><%= post.body %></p>
-    <% end %>
     <div class="flex justify-between items-center">
       <% if post.duration.present? %>
         <% duration_minutes = post.duration / 60 %>
