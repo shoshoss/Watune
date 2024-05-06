@@ -11,7 +11,7 @@ class Post < ApplicationRecord
 
   # 録音時間が59分59秒（3599秒）以下であることを保証するバリデーション
   validates :duration,
-            numericality: { less_than_or_equal_to: 3599}
+            numericality: { less_than_or_equal_to: 3599 }
 
   # 投稿のプライバシーレベル
   enum privacy: { only_me: 0, friends_only: 1, open: 2 }
