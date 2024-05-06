@@ -64,9 +64,7 @@ gem 'carrierwave', '~> 3.0'
 # ページネーションのためのpagy
 gem 'pagy', '~> 8.3'
 
-# gem 'kaminari', '~> 1.2'
-
-# gem 'bootstrap5-kaminari-views'
+gem 'aws-sdk-s3', '~> 1.1', require: false
 
 group :development, :test do
   # デバッグ用のdebug

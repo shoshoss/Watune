@@ -23,6 +23,7 @@ ja:
         body: 投稿内容
         post_image: サムネイル
         user: 作成者
+        duration: 録音時間
       comment:
         body: コメント
     errors:
@@ -44,3 +45,9 @@ ja:
               taken: "はすでに存在します"
               too_long: "は%{count}文字以内で入力してください"
               too_short: "は%{count}文字以上で入力してください"
+        post:
+          attributes:
+            body:
+              too_long: "は%{count}文字以内で入力してください"
+            duration:
+              numericality: "は1時間未満である必要があります"
