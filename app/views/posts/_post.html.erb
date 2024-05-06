@@ -7,12 +7,10 @@
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio.attached? %>
       <audio id="audio-<%= post.id %>" preload="metadata" controls>
-        <%# サポートされているフォーマットをループで処理 %>
-        <% [ 'audio/mp3', 'audio/mp4', 'audio/webm' ].each do |format| %>
-          <% if post.audio.content_type == format %>
-            <source src="<%= url_for(post.audio) %>" type="<%= format %>">
-          <% end %>
-        <% end %>
+        <%# コンテンツタイプに基づいて適切なソースを提供 %>
+        <% audio_formats = { 'audio/webm' => 'audio/webm;codecs=opus', 'audio/mp3' => 'audio/mpeg', 'audio/mp4' => 'audio/mp4' } %>
+        <% audio_format = audio_formats[post.audio.content_type] || post.audio.content_type %>
+        <source src="<%= url_for(post.audio) %>" type="<%= audio_format %>">
         お使いのブラウザーではオーディオ再生ができません。
       </audio>
       <button class="pt-2 play-audio-button-<%= post.id %> fas fa-play text-3xl text-blue-500 hover:text-blue-700" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
