@@ -28,4 +28,9 @@ module ApplicationHelper
       'alert alert-default'    # デフォルト（グレー）の背景
     end
   end
+
+  def nl2br(input)
+    # \nだけ置換
+    (sanitize input).gsub(/\n/, '<br>')
+  end
 end

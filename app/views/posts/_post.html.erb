@@ -32,9 +32,7 @@
           <% end %>
         </div>
       </div>
-      <p class="text-lg mb-2"><%= custom_simple_format(post.body) %></p>
-      <%= simple_format("This is a test.\n\nThis should be a new paragraph.") %>
-
+      <p class="text-lg mb-2"><%== nl2br post.body %></p>
       <div class="flex justify-between items-center">
         <% if post.duration.present? %>
           <% duration_minutes = post.duration / 60 %>
