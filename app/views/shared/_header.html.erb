@@ -19,26 +19,32 @@
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
-      <div class="dropdown dropdown-end dropdown-bottom ml-4">
-        <%= link_to "javascript:void(0)", class: 'btn btn-circle btn-ghost', "data-toggle" => "dropdown" do %>
-          <%= image_tag 'sample.jpg', class: 'rounded-full w-10 h-10' %>
-        <% end %>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-          <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
-          <li class="block md:hidden">
-            <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-          <li class="block md:hidden">
-            <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-          <li>
-            <%= link_to 'プロフィール', profile_path, class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-          <li>
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
-        </ul>
+      <div class="dropdown dropdown-end ml-4">
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="btn btn-ghost rounded-btn">
+            <% if current_user.avatar.present? %>
+              <%= image_tag current_user.avatar, class: 'rounded-full w-8 h-8' %>
+            <% else %>
+              <%= image_tag 'sample.jpg', class: 'rounded-full w-8 h-8' %>
+            <% end %>
+          </label>
+          <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+            <li>
+              <%= link_to '「Wこんぐら」とは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
+            </li>
+            <li class="block md:hidden">
+              <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
+            </li>
+            <li>
+              <%= link_to 'プロフィール', profile_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+            </li>
+            <li>
+              <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
+            </li>
+          </ul>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
