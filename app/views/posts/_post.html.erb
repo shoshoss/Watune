@@ -11,8 +11,18 @@
       </audio>
       <button class="mt-2 play-audio-button" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
         <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl text-blue-500 hover:text-blue-700"></i>
+        <span class="text-sm w-5 font-semibold">
+        <% if post.duration.present? %>
+          <% duration_minutes = post.duration / 60 %>
+          <% duration_seconds = post.duration % 60 %>
+          <br class="md:hidden">
+          <%= format('%02d:%02d', duration_minutes, duration_seconds) %>
+        <% end %>
+      </span>
       </button>
+      
     <% end %>
+    
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
   <div class="flex-grow p-1 md:p-4" >
@@ -42,15 +52,6 @@
     </div>
 
     <div class="flex justify-between items-center mt-2 px-2">
-      <span class="text-sm w-5 font-semibold">
-        <% if post.duration.present? %>
-          <% duration_minutes = post.duration / 60 %>
-          <% duration_seconds = post.duration % 60 %>
-          <%= format('%02d:%02d', duration_minutes, duration_seconds) %>
-        <% else %>
-          <span>00:00</span>
-        <% end %>
-      </span>
       <div>
         <%= link_to edit_post_path(post), id: "button-edit-#{post.id}" do %>
           <i class="fa-regular fa-comment text-lg text-gray-500 hover:text-blue-700"></i>
