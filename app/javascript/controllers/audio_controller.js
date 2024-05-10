@@ -23,27 +23,32 @@ export default class extends Controller {
     const audio = document.getElementById(`audio-${audioId}`);
     const icon = document.getElementById(`audio-icon-${audioId}`);
 
-    if (!audio || !icon) {
-      console.error(
-        `Audio element with ID 'audio-${audioId}' or icon element with ID 'audio-icon-${audioId}' not found.`
-      );
-      return;
-    }
+    // 再生中のすべての音声を停止する
+    const audios = document.querySelectorAll("audio");
+    audios.forEach((a) => {
+      if (!a.paused) {
+        a.pause();
+        this.updateIconForAudio(a, false);
+      }
+    });
 
-    if (audio.paused) {
-      audio
-        .play()
-        .then(() => {
-          this.updateIcon(icon, true);
-        })
-        .catch((error) => {
-          console.error("Playback failed:", error);
-          alert(`音声の再生に失敗しました: ${error.message}`);
-          this.updateIcon(icon, false);
-        });
-    } else {
-      audio.pause();
-      this.updateIcon(icon, false);
+    // 対象のaudioがある場合、再生状態を切り替える
+    if (audio && icon) {
+      if (audio.paused) {
+        audio
+          .play()
+          .then(() => {
+            this.updateIcon(icon, true);
+          })
+          .catch((error) => {
+            console.error("Playback failed:", error);
+            alert(`音声の再生に失敗しました: ${error.message}`);
+            this.updateIcon(icon, false);
+          });
+      } else {
+        audio.pause();
+        this.updateIcon(icon, false);
+      }
     }
   }
 

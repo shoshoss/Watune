@@ -1,6 +1,7 @@
 <div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
   <!-- 1列目: アバターと音声再生 -->
-  <div class="flex flex-col items-center justify-between p-1 md:p-4 bg-gray-100 hover:bg-gray-200 min-w-[10px] md:w-[15%] flex-shrink-0">
+  <div class="flex flex-col items-center justify-between p-1 md:p-4 bg-gray-100 hover:bg-gray-200 min-w-[10px] md:w-[15%] flex-shrink-0"
+       data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
     <!-- アバター -->
     <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
     <% if post.audio.attached? %>
@@ -14,7 +15,7 @@
     <% end %>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
-  <div class="flex-grow p-1 md:p-4" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+  <div class="flex-grow p-1 md:p-4" >
     <div class="flex justify-between items-center mb-2">
       <div>
         <span class="text-lg font-semibold"><%= post.user.display_name %></span>
@@ -31,10 +32,12 @@
         <% end %>
       </div>
     </div>
-    <div class="text-lg mb-2 overflow-y-auto max-h-[calc(1.5rem*5)] md:max-h-[calc(1.5rem*10)] p-2">
+    <div class="text-lg mb-2 overflow-y-auto max-h-[calc(1.5rem*5)] md:max-h-[calc(1.5rem*10)] p-2"
+         data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
       <%= simple_format(post.body.gsub(/\n/, '<br>')) %>
     </div>
-    <div class="flex justify-center">
+    <div class="flex justify-center"
+         data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
       <%= link_to '詳細を見る', post_path(post), class: "mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
     </div>
 
