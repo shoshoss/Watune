@@ -1,15 +1,15 @@
-<div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100">
+<div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4">
   <!-- 1列目: アバターと音声再生 -->
-  <div class="flex flex-col items-center justify-between p-1 md:p-4 bg-gray-100 hover:bg-gray-200 min-w-[10px] md:w-[15%] flex-shrink-0"
+  <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0"
        data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
     <!-- アバター -->
-    <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-8 w-8 md:h-14 md:w-14") %>
+    <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
     <% if post.audio.attached? %>
       <audio id="audio-<%= post.id %>" preload="metadata">
         <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
         お使いのブラウザはオーディオプレイヤーをサポートしていません。
       </audio>
-      <button class="pt-2 play-audio-button" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+      <button class="mt-2 play-audio-button" data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
         <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl text-blue-500 hover:text-blue-700"></i>
       </button>
     <% end %>
@@ -32,7 +32,7 @@
         <% end %>
       </div>
     </div>
-    <div class="text-lg mb-2 overflow-y-auto max-h-[calc(1.5rem*5)] md:max-h-[calc(1.5rem*10)] p-2"
+    <div class="text-lg mb-2 overflow-y-auto max-h-[calc(1.5rem*5)] md:max-h-[calc(1.5rem*10)]"
          data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
       <%= simple_format(post.body.gsub(/\n/, '<br>')) %>
     </div>
@@ -42,11 +42,13 @@
     </div>
 
     <div class="flex justify-between items-center mt-2 px-2">
-      <span class="text-sm w-5">
+      <span class="text-sm w-5 font-semibold">
         <% if post.duration.present? %>
           <% duration_minutes = post.duration / 60 %>
           <% duration_seconds = post.duration % 60 %>
           <%= format('%02d:%02d', duration_minutes, duration_seconds) %>
+        <% else %>
+          <span>00:00</span>
         <% end %>
       </span>
       <div>
