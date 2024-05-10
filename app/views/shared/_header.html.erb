@@ -21,11 +21,11 @@
       <!-- ユーザーメニュー -->
       <div class="dropdown dropdown-end ml-4">
         <div class="dropdown dropdown-end">
-          <label tabindex="0" class="btn btn-ghost rounded-btn">
+          <label tabindex="0" class="btn btn-ghost rounded-btn h-12 w-15 md:h-14 md:w-20">
             <% if current_user.avatar.present? %>
-              <%= image_tag current_user.avatar, class: 'rounded-full w-8 h-8' %>
+              <%= image_tag current_user.avatar, class: 'rounded-full h-10 w-10 md:h-12 md:w-12' %>
             <% else %>
-              <%= image_tag 'sample.jpg', class: 'rounded-full w-8 h-8' %>
+              <%= image_tag 'sample.jpg', class: 'rounded-full h-10 w-10 md:h-12 md:w-12' %>
             <% end %>
           </label>
           <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
