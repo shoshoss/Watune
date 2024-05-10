@@ -42,10 +42,22 @@
         <% end %>
       </div>
     </div>
-    <div class="text-lg mb-2 overflow-y-auto max-h-[calc(1.5rem*5)] md:max-h-[calc(1.5rem*10)]"
-         data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
-      <%= simple_format(post.body.gsub(/\n/, '<br>')) %>
+    <div class="text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]"
+     data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+      <%# 連続する改行に特別なクラスを適用する %>
+      <% post.body.split(/\r\n|\r|\n/).each do |line| %>
+        <% if line.empty? %>
+          <div class="text-sm"> <!-- 空白行用のスタイル -->
+            <br>
+          </div>
+        <% else %>
+          <div class="text-lg"> <!-- 通常の行用のスタイル -->
+            <%= line %><br>
+          </div>
+        <% end %>
+      <% end %>
     </div>
+
     <div class="flex justify-center"
          data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
       <%= link_to '詳細を見る', post_path(post), class: "mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
