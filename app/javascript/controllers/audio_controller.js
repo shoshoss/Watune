@@ -87,4 +87,14 @@ export default class extends Controller {
       .toString()
       .padStart(2, "0")}`;
   }
+
+  hoverEffect() {
+    this.playButtonTarget.classList.remove("text-blue-500");
+    this.playButtonTarget.classList.add("text-sky-400");
+  }
+
+  unhoverEffect() {
+    this.playButtonTarget.classList.remove("text-sky-400");
+    this.playButtonTarget.classList.add("text-blue-500");
+  }
 }
