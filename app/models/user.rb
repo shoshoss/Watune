@@ -51,6 +51,11 @@ class User < ApplicationRecord
   # アバター画像のアップローダーをマウント
   # mount_uploader :avatar, AvatarUploader
 
+  # ユーザーが引数で渡されたリソースの所有者かどうかを判断するメソッド
+  def own?(object)
+    id == object&.user_id
+  end
+
   private
 
   def generate_username_slug
@@ -62,4 +67,5 @@ class User < ApplicationRecord
       break unless User.exists?(username_slug:)
     end
   end
+  
 end

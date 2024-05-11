@@ -1,3 +1,4 @@
+<%= turbo_frame_tag dom_id(post) do %>
 <div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4">
   <!-- 1列目: アバターと音声再生 -->
   <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0"
@@ -14,14 +15,16 @@
         <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
         <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
       </div>
-      <div>
-        <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 px-2 mr-1" do %>
-            <i class="fas fa-pencil-alt text-lg"></i>
+      <% if current_user.own?(post) %>
+        <div>
+          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 px-2 mr-1" do %>
+              <i class="fas fa-pencil-alt text-lg"></i>
+            <% end %>
+          <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') }, class: "text-red-500 hover:text-red-700 px-2" do %>
+            <i class="fas fa-trash-alt text-lg"></i>
           <% end %>
-        <%= link_to post_path(post), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "text-red-500 hover:text-red-700 px-2" do %>
-          <i class="fas fa-trash-alt text-lg"></i>
-        <% end %>
-      </div>
+        </div>
+      <% end %>
     </div>
     <div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
       <div class="text-sm md:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]"
@@ -98,3 +101,4 @@
     </div>
   </div>
 </div>
+<% end %>

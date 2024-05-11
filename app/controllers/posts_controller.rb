@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  include ActionView::RecordIdentifier
+
   def index
     @pagy, @posts = pagy_countless(Post.includes(:user).order(created_at: :desc), items: 10)
     respond_to do |format|
@@ -35,9 +37,16 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
-    redirect_to posts_url, notice: 'Post was successfully destroyed.'
+    post = current_user.posts.find(params[:id])
+    post.destroy!
+    respond_to do |format|
+      format.html { redirect_to posts_path, success: t('defaults.flash_message.deleted', item: Post.model_name.human), status: :see_other }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.remove(dom_id(post))
+      end
+    end
   end
+  
 
   private
 
