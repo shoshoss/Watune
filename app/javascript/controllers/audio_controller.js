@@ -23,6 +23,12 @@ export default class extends Controller {
         a.pause();
         this.updateIcon(
           document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
+          false // 他の音声アイコンを「再生」状態に戻す
+        );
+      } else if (a.id !== `audio-${audioId}` && a.paused) {
+        // 再生されていない他の音声のアイコンも再生状態に戻す
+        this.updateIcon(
+          document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
           false
         );
       }
@@ -46,12 +52,6 @@ export default class extends Controller {
 
     audio.addEventListener("timeupdate", () => {
       this.updateCurrentTimeDisplay(audioId, audio.currentTime);
-    });
-
-    // 音声の再生が終了した時のイベントを追加
-    audio.addEventListener("ended", () => {
-      this.updateIcon(icon, false); // アイコンを再生から停止へ更新
-      this.updateCurrentTimeDisplay(audioId, audio.duration); // 最終再生時間を設定
     });
   }
 
