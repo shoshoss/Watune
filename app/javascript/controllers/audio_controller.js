@@ -17,6 +17,7 @@ export default class extends Controller {
     const audioId = button.dataset.audioId;
     const audio = document.getElementById(`audio-${audioId}`);
     const icon = document.getElementById(`audio-icon-${audioId}`);
+    const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
 
     document.querySelectorAll("audio").forEach((a) => {
       if (a.id !== `audio-${audioId}` && !a.paused) {
@@ -52,6 +53,16 @@ export default class extends Controller {
 
     audio.addEventListener("timeupdate", () => {
       this.updateCurrentTimeDisplay(audioId, audio.currentTime);
+      seekBar.value = audio.currentTime;
+    });
+
+    seekBar.addEventListener("input", () => {
+      audio.currentTime = seekBar.value;
+    });
+
+    audio.addEventListener("ended", () => {
+      this.updateCurrentTimeDisplay(audioId, 0);
+      seekBar.value = 0;
     });
   }
 
