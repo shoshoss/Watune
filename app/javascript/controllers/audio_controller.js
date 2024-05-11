@@ -1,21 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  connect() {
-    document.addEventListener(
-      "play",
-      (event) => {
-        const audios = document.querySelectorAll("audio");
-        for (let audio of audios) {
-          if (audio !== event.target) {
-            audio.pause();
-            this.updateIconForAudio(audio, false);
-          }
-        }
-      },
-      true
-    );
-  }
+  connect() {}
 
   playPause(event) {
     const button = event.currentTarget;
@@ -23,10 +9,10 @@ export default class extends Controller {
     const audio = document.getElementById(`audio-${audioId}`);
     const icon = document.getElementById(`audio-icon-${audioId}`);
 
-    // 再生中のすべての音声を停止する
+    // 再生中のすべての音声を停止する（現在のオーディオを除く）
     const audios = document.querySelectorAll("audio");
     audios.forEach((a) => {
-      if (!a.paused) {
+      if (a !== audio && !a.paused) {
         a.pause();
         this.updateIconForAudio(a, false);
       }
