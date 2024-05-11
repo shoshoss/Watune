@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+  static targets = ["playButton"];
+
   connect() {
     this.updateAllIconsToPlay(); // 初期化時に全アイコンを再生ボタンに設定
   }
