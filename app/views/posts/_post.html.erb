@@ -25,7 +25,8 @@
     </div>
     <div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
       <div class="text-sm md:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]"
-      data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+           data-action="click->audio#playPause"
+           data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
         <%# 連続する改行に特別なクラスを適用する %>
         <% post.body.split(/\r\n|\r|\n/).each do |line| %>
           <% if line.empty? %>

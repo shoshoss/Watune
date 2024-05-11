@@ -18,9 +18,8 @@ export default class extends Controller {
     const button = event.currentTarget;
     const audioId = button.dataset.audioId;
     const audio = document.getElementById(`audio-${audioId}`);
-    const icon = document.getElementById(`audio-icon-${audioId}`);
-    const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
 
+    // すべての他の音声を停止し、そのアイコンを更新
     document.querySelectorAll("audio").forEach((a) => {
       if (a.id !== `audio-${audioId}` && !a.paused) {
         a.pause();
@@ -37,6 +36,12 @@ export default class extends Controller {
       }
     });
 
+    // 音声が添付されていない場合はここで処理を終了
+    if (!audio) {
+      return;
+    }
+
+    // 音声の再生状態を切り替える
     if (audio.paused) {
       audio
         .play()
@@ -53,6 +58,8 @@ export default class extends Controller {
       this.updateIcon(icon, false);
     }
 
+    const icon = document.getElementById(`audio-icon-${audioId}`);
+    const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
     audio.addEventListener("timeupdate", () => {
       this.updateCurrentTimeDisplay(audioId, audio.currentTime);
       seekBar.value = audio.currentTime;
