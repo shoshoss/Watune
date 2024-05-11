@@ -18,6 +18,7 @@ export default class extends Controller {
     const button = event.currentTarget;
     const audioId = button.dataset.audioId;
     const audio = document.getElementById(`audio-${audioId}`);
+    const icon = document.getElementById(`audio-icon-${audioId}`); // ここに移動
 
     // すべての他の音声を停止し、そのアイコンを更新
     document.querySelectorAll("audio").forEach((a) => {
@@ -58,7 +59,6 @@ export default class extends Controller {
       this.updateIcon(icon, false);
     }
 
-    const icon = document.getElementById(`audio-icon-${audioId}`);
     const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
     audio.addEventListener("timeupdate", () => {
       this.updateCurrentTimeDisplay(audioId, audio.currentTime);
