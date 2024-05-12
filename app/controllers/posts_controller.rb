@@ -18,10 +18,6 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
-    respond_to do |format|
-      format.html # 通常のHTMLレスポンスの場合
-      format.json { render json: @post } # APIレスポンスの場合
-    end
   end
 
   def create
