@@ -20,7 +20,6 @@
               録音<br class="md:hidden">完了
             </button>
           </div>
-
           <%= form_with model: @post,
                         data: { controller: "post-modal", 
                         action: "turbo:submit-end->post-modal#afterClose" } do |f| %>
