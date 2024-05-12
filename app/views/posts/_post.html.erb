@@ -17,7 +17,7 @@
       </div>
       <% if current_user.own?(post) %>
         <div>
-          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 px-2 mr-1" do %>
+          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 px-2 mr-1", data: { turbo_frame: "edit_modal" } do %>
               <i class="fas fa-pencil-alt text-lg"></i>
             <% end %>
           <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') }, class: "text-red-500 hover:text-red-700 px-2" do %>
@@ -79,22 +79,22 @@
 
     <div class="flex justify-between items-center mt-2 px-2">
       <div>
-        <%= link_to edit_post_path(post), id: "button-edit-#{post.id}" do %>
+        <%= link_to "#", id: "#" do %>
           <i class="fa-regular fa-comment text-lg text-gray-500 hover:text-blue-700"></i>
         <% end %>
       </div>
       <div>
-        <%= link_to edit_post_path(post), id: "button-edit-#{post.id}" do %>
+        <%= link_to "#", id: "#" do %>
           <i class="fa-solid fa-retweet text-lg text-gray-500 hover:text-blue-700"></i>
         <% end %>
       </div>
       <div>
-        <%= link_to edit_post_path(post), id: "button-edit-#{post.id}" do %>
+        <%= link_to "#", id: "#" do %>
           <i class="fas fa-heart text-xl text-lg text-gray-500 hover:text-blue-700"></i>
         <% end %>
       </div>
       <div>
-        <%= link_to edit_post_path(post), id: "button-edit-#{post.id}" do %>
+        <%= link_to "#", id: "#" do %>
           <i class="fa-brands fa-x-twitter text-lg text-black-500 hover:text-black-700"></i>
         <% end %>
       </div>

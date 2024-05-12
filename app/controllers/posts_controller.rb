@@ -16,7 +16,9 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
-  def edit; end
+  def edit
+    @post = current_user.posts.find(params[:id])
+  end
 
   def create
     @post = current_user.posts.build(post_params)
@@ -29,10 +31,12 @@ class PostsController < ApplicationController
   end
 
   def update
+    @post = current_user.posts.find(params[:id])
     if @post.update(post_params)
-      redirect_to @post, notice: 'Post was successfully updated.'
+      flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human)
     else
-      render :edit
+      flash.now[:danger] = t('defaults.flash_message.not_updated', item: Post.model_name.human)
+      render :edit, status: :unprocessable_entity
     end
   end
 
