@@ -18,6 +18,10 @@ class PostsController < ApplicationController
 
   def edit
     @post = current_user.posts.find(params[:id])
+    respond_to do |format|
+      format.html # edit.html.erb
+      format.turbo_stream # 特にTurbo Streamsを使用する場合
+    end
   end
 
   def create
