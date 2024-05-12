@@ -18,10 +18,6 @@ class PostsController < ApplicationController
 
   def edit
     @post = current_user.posts.find(params[:id])
-    respond_to do |format|
-      format.html # edit.html.erb
-      format.turbo_stream # 特にTurbo Streamsを使用する場合
-    end
   end
 
   def create
@@ -47,13 +43,15 @@ class PostsController < ApplicationController
   def destroy
     post = current_user.posts.find(params[:id])
     post.destroy!
+    flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human)
+
     respond_to do |format|
-      format.html do
-        redirect_to posts_path, success: t('defaults.flash_message.deleted', item: Post.model_name.human),
-                                status: :see_other
-      end
+      format.html { redirect_to posts_path, status: :see_other }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.remove(dom_id(post))
+        render turbo_stream: [
+          turbo_stream.remove(dom_id(post)),
+          turbo_stream.update('flash', partial: 'shared/flash_message', locals: { flash: })
+        ]
       end
     end
   end

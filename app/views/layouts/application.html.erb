@@ -44,9 +44,9 @@
 
     <!-- メインコンテンツ -->
     <main class="flex-1 overflow-auto">
-      <turbo-frame id="notification" >
+      <div id="flash" >
         <%= render 'shared/flash_message' %>
-      </turbo-frame>
+      </div>
       <%= yield %>
     </main>
 
