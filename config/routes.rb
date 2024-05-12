@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
   root 'static_pages#top'
+  get 'privacy_policy', to: 'static_pages#privacy_policy'
+  get 'terms_of_use', to: 'static_pages#terms_of_use'
 
   resources :users, only: %i[new create]
   # モーダル用の新規登録ルーティング

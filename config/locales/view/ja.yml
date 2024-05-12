@@ -98,3 +98,10 @@ ja:
     update:
       success: パスワードを変更しました
       fail: パスワード変更に失敗しました
+  static_pages:
+    top:
+      title: トップページ
+    terms_of_use:
+      title: 利用規約
+    privacy_policy:
+      title: プライバシーポリシー
