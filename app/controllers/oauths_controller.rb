@@ -55,8 +55,7 @@ class OauthsController < ApplicationController
   # 新規ユーザーの設定と保存を行う
   def setup_new_user(user)
     user.assign_attributes(
-      display_name: @user_hash[:user_info]['name'].presence || 'Default Name',
-      external_auth: true
+      display_name: @user_hash[:user_info]['name'].presence || 'Default Name'
     )
     user.password = SecureRandom.alphanumeric(10)
     user.save!
