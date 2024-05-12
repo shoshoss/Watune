@@ -67,5 +67,4 @@ class User < ApplicationRecord
       break unless User.exists?(username_slug:)
     end
   end
-  
 end

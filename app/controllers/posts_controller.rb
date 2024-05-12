@@ -48,13 +48,15 @@ class PostsController < ApplicationController
     post = current_user.posts.find(params[:id])
     post.destroy!
     respond_to do |format|
-      format.html { redirect_to posts_path, success: t('defaults.flash_message.deleted', item: Post.model_name.human), status: :see_other }
+      format.html do
+        redirect_to posts_path, success: t('defaults.flash_message.deleted', item: Post.model_name.human),
+                                status: :see_other
+      end
       format.turbo_stream do
         render turbo_stream: turbo_stream.remove(dom_id(post))
       end
     end
   end
-  
 
   private
 

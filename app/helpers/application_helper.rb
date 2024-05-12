@@ -32,7 +32,7 @@ module ApplicationHelper
   # 投稿一覧
   # \nだけ置換
   def nl2br(input)
-    (sanitize input).gsub(/\n/, '<br>')
+    (sanitize input).gsub("\n", '<br>')
   end
 
   # 投稿内容の行数のカウント
