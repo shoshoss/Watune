@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   root 'static_pages#top'
   get 'privacy_policy', to: 'static_pages#privacy_policy'
   get 'terms_of_use', to: 'static_pages#terms_of_use'
+  # モーダル用のプライバシーと利用規約
+  get 'privacy_modal', to: 'static_pages#privacy_modal'
+  get 'tou_modal', to: 'static_pages#tou_modal'
 
   resources :users, only: %i[new create]
   # モーダル用の新規登録ルーティング
