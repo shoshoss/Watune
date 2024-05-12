@@ -16,12 +16,15 @@
         <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
       </div>
       <% if current_user.own?(post) %>
-        <div>
-          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 px-2 mr-1", data: { turbo_frame: "edit_modal" } do %>
-              <i class="fas fa-pencil-alt text-lg"></i>
-            <% end %>
-          <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') }, class: "text-red-500 hover:text-red-700 px-2" do %>
-            <i class="fas fa-trash-alt text-lg"></i>
+        <div class="flex space-x-3 sm:space-x-4 p-2">
+
+          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 md:px-2 mr-1", data: { turbo_frame: "edit_modal" } do %>
+            <i class="fas fa-pencil-alt text-lg"></i> 
+            <span class="hidden sm:inline">編集</span>
+          <% end %>
+          <%= link_to post_path(post), method: :delete, data: { confirm: t('defaults.delete_confirm') }, id: "button-delete-#{post.id}", class: "text-red-500 hover:text-red-700 flex items-center space-x-1" do %>
+            <i class="fas fa-trash-alt"></i>
+            <span class="hidden sm:inline">削除</span>
           <% end %>
         </div>
       <% end %>
