@@ -42,9 +42,11 @@ ja:
               too_long: "は%{count}文字以内で入力してください"
             username_slug:
               blank: "を入力してください"
-              taken: "はすでに存在します"
+              taken: "はすでに存在します。他の文字の組み合わせをお試しください。"
               too_long: "は%{count}文字以内で入力してください"
               too_short: "は%{count}文字以上で入力してください"
+              invalid_format: "は使用できません。他の文字の組み合わせをお試しください。"
+              reserved: "%{value}は使用できません。他の文字の組み合わせをお試しください。"
         post:
           attributes:
             body:
