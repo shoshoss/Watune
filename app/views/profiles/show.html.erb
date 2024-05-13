@@ -1,35 +1,61 @@
 <% content_for(:title, t('.title')) %>
+
 <div class="min-h-screen p-5">
   <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
     <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
     
-    <div>
-      <!-- アバター画像 -->
-      <div class="flex flex-col items-center">
-        <img src="<%= current_user.avatar.presence || "sample.jpg" %>" alt="<%=
-        User.human_attribute_name(:avatar) %>" class="w-30 h-30 rounded-full
-        border-2 border-gray-300 shadow-lg mt-4">
+    <div class="flex">
+      <div>
+        01
+      </div>
+      <div class="grow h-14 flex justify-center">
+        02
+      </div>
+      <div class="">
+        03
+      </div>
+    </div>
+    
+      <div class="mt-2 flex mx-auto items-center" style="max-width: 600px;">
+        <!-- 左側のダミー要素 -->
+        <div class="<%= 'invisible' unless current_user == @user %>">
+          <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
+        </div>
+
+        <!-- アバター画像 -->
+        <div class="flex justify-center flex-grow">
+          <%= image_tag(@user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-20 w-20 sm:h-30 sm:w-30") %>
+        </div>
+
+        <!-- 編集ボタン -->
+        <div class="flex justify-end items-end">
+          <% if current_user == @user %>
+            <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary' %>
+          <% else %>
+            <div class="invisible">
+              <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
+            </div>
+          <% end %>
+        </div>
       </div>
 
+
       <!-- ユーザー名と編集ボタン -->
-      <div class="mt-2 flex">
-        <div class="flex-none w-14 h-14">
-          <h1 class="text-lg font-semibold"><%= current_user.display_name %></h1>
-          <p class="text-gray-500">@<%= current_user.username_slug %></p>
+      
+        <div>
+
         </div>
-        <div class="grow h-14">
-          <h1 class="text-sm font-semibold"><%= current_user.display_name %></h1>
-          <p class="text-gray-500">@<%= current_user.username_slug %></p>
+        <div>
+          <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
+          <p class="text-gray-500">@<%= @user.username_slug %></p>
         </div>
-        <div class="flex-none w-14 h-14">
-          <%= link_to "プロフィールを編集する", edit_profile_path, class: 'btn btn-outline btn-secondary' %>
-        </div>
-      </div>
+
+        
 
       <!-- 自己紹介 -->
       <div class="bg-white p-4 w-full rounded-lg shadow mt-4 text-center">
-        <p><%= current_user.self_introduction %></p>
+        <p><%= @user.self_introduction %></p>
       </div>
-    </div>
+    
   </div>
 </div>

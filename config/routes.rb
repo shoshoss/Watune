@@ -27,13 +27,13 @@ Rails.application.routes.draw do
   get 'login_modal', to: 'user_sessions#new_modal', as: 'new_login_modal'
   post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
 
-  # プロフィールのルーティング
-  get '/:username_slug', to: 'profiles#show', as: :profile_show
-  resource :profile, only: %i[edit update]
-
   # パスワードリセットのルーティング
   resources :password_resets, only: %i[new create edit update]
 
   # 投稿のルーティング
   resources :posts, only: %i[index new create edit update destroy]
+
+  # プロフィールのルーティング
+  resource :profile, only: %i[edit update]
+  get '/:username_slug', to: 'profiles#show', as: :profile_show
 end

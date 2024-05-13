@@ -2,6 +2,10 @@
 class ProfilesController < ApplicationController
   before_action :set_user, only: %i[edit update]
 
+  def show
+    @user = User.find_by(username_slug: params[:username_slug])
+  end
+
   def edit
     @user = current_user
   end
