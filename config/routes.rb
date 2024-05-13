@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
 
   # プロフィールのルーティング
+  get '/:username_slug', to: 'profiles#show', as: :profile_show
   resource :profile, only: %i[edit update]
 
   # パスワードリセットのルーティング

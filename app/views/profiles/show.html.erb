@@ -1,23 +1,26 @@
 <% content_for(:title, t('.title')) %>
-<div class="container pt-3">
-  <div class="row">
-    <div class="col-md-10 offset-md-1">
-      <h1 class="float-left mb-5"><%= t('.title') %></h1>
-      <%= link_to t('defaults.edit'), edit_profile_path, class: 'btn btn-success float-right' %>
-      <table class="table">
-        <tr>
-          <th scope="row"><%= User.human_attribute_name(:email) %></th>
-          <td><%= current_user.email %></td>
-        </tr>
-        <tr>
-          <th scope="row"><%= User.human_attribute_name(:display_name) %></th>
-          <td><%= current_user.decorate.full_name %></td>
-        </tr>
-        <tr>
-          <th scope="row"><%= User.human_attribute_name(:avatar) %></th>
-          <td><%= image_tag current_user.avatar.url, class: 'rounded-circle', size: '50x50' %></td>
-        </tr>
-      </table>
+<div class="flex justify-center min-h-screen p-5">
+  <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
+    
+    <div class="flex flex-col items-center">
+      <!-- アバター画像 -->
+      <img src="<%= current_user.avatar.presence || "sample.jpg" %>" alt="<%=
+      User.human_attribute_name(:avatar) %>" class="w-24 h-24 rounded-full
+      border-2 border-gray-300 shadow-lg mt-4">
+
+      <!-- ユーザー名と編集ボタン -->
+      <div class="mt-2 flex flex-col items-center">
+        <h1 class="text-xl font-semibold"><%= current_user.display_name %></h1>
+        <p class="text-gray-500">@<%= current_user.username_slug %></p>
+        <%= link_to "プロフィールを編集する", edit_profile_path, class: 'btn btn-outline btn-secondary
+    float-left' %>
+      </div>
+
+      <!-- 自己紹介 -->
+      <div class="bg-white p-4 w-full rounded-lg shadow mt-4 text-center">
+        <p><%= current_user.self_introduction %></p>
+      </div>
     </div>
   </div>
 </div>
