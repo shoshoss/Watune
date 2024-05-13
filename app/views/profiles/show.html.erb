@@ -10,7 +10,7 @@
 
       <!-- アバター画像 -->
       <div class="flex justify-center flex-grow items-center">
-        <%= image_tag("sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-20 w-20 sm:h-30 sm:w-30 md:h-35 md:w-35") %>
+        <%= image_tag("sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-24 w-24 sm:h-30 sm:w-30 md:h-35 md:w-35") %>
       </div>
 
       <!-- 編集ボタン -->
@@ -30,7 +30,7 @@
       <p class="text-gray-500">@<%= @user.username_slug %></p>
     </div>
     <!-- 自己紹介 -->
-    <div class="flex flex-col items-center mx-15 sm:mx-30 sm:mx-5">
+    <div class="flex flex-col items-center mx-auto px-20">
       <div class="p-2 border-2 border-gray-200 rounded text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
         <%# 連続する改行に特別なクラスを適用する %>
         <% if @user.self_introduction.present? %>
@@ -45,7 +45,7 @@
               </div>
             <% end %>
           <% end %>
-          <% else %>
+        <% else %>
           <p>自己紹介文はありません。</p>
         <% end %>
       </div>
