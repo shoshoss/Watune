@@ -4,16 +4,11 @@ class User < ApplicationRecord
   # 認証情報を複数保持するための関連付け。ユーザー削除時に認証情報も削除される。
   has_many :authentications, dependent: :destroy
 
-  # 予約されたusername_slugを設定
-  RESERVED_USERNAMES = %w[admin support blog home user dashboard privacy_policy terms_of_use privacy_modal tou_modal signup_modal
-                          signup oauth login logout login_modal password_resets posts profile
-                          explore notification notifications message messages lists bookmarks communities premium_sign_up setting settings
-                          start spaces job jobs following followings follow follows follower followers verified_followers api about top help faq terms privacy
-                          register search account subscribe billing download feed audio modal movie movies film films image images
-                          photo photos photograph photographs picture pictures]
-
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
+
+  # UserとProfileの関連付け
+  has_many :profile, dependent: :destroy
 
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
@@ -42,6 +37,19 @@ class User < ApplicationRecord
   # 最大50文字
   validates :display_name, length: { maximum: 50 }
 
+  # 予約されたusername_slugを設定
+  RESERVED_USERNAMES = %w[
+    admin support blog home user dashboard privacy_policy terms_of_use
+    privacy_modal tou_modal signup_modal signup oauth login logout
+    login_modal password_resets posts profile explore notification
+    notifications message messages lists bookmarks communities
+    premium_sign_up setting settings start spaces job jobs following
+    followings follow follows follower followers verified_followers
+    api about top help faq terms privacy register search account
+    subscribe billing download feed audio modal movie movies film
+    films image images photo photos photograph photographs picture pictures
+  ].freeze
+
   # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
   validates :username_slug, presence: true,
                             uniqueness: { case_sensitive: false, message: :taken },
@@ -60,6 +68,9 @@ class User < ApplicationRecord
 
   # アバター画像のアップローダーをマウント
   # mount_uploader :avatar, AvatarUploader
+
+  # Active Storageを使って添付ファイルを管理する
+  has_one_attached :avatar
 
   # ユーザーが引数で渡されたリソースの所有者かどうかを判断するメソッド
   def own?(object)

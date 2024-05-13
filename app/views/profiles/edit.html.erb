@@ -9,6 +9,11 @@
 
       <div class="card-body mx-auto">
         <div class="form-control">
+          <%= f.label :avatar %>
+          <%= f.file_field :avatar, direct_upload: true %>
+        </div>
+
+        <div class="form-control">
           <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
           <%= f.text_field :display_name, class: "input input-bordered text-lg" %>
         </div>
