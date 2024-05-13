@@ -36,7 +36,7 @@
               <%= link_to 'みんなのWave', posts_path, class: 'hover:bg-cyan-600 hover:text-white' %>
             </li>
             <li>
-              <%= link_to 'プロフィール', profile_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+              <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: 'hover:bg-cyan-600 hover:text-white' %>
             </li>
             <li>
               <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
