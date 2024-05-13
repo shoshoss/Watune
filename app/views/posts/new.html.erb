@@ -25,18 +25,18 @@
                         action: "turbo:submit-end->post-modal#afterClose" } do |f| %>
             <%= render 'shared/error_messages', object: f.object %>
             <div class="card-body mx-auto">
-              <div class="form-control pt-2">
-                <%= f.label :body, class: "block text-lg font-semibold" %>
-                <%= f.text_area :body, class: "block mt-1 p-2 text-sm md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 resize-y", rows: "3", style: "resize: vertical;" %>
+                <div class="form-control pt-2">
+                  <%= f.label :body, class: "block text-lg font-semibold" %>
+                  <%= f.text_area :body, class: "block mt-1 p-2 text-sm md:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500 resize-y", rows: "3", style: "resize: vertical;" %>
 
-                <script>
-                  document.addEventListener('input', function (event) {
-                    if (event.target.tagName.toLowerCase() !== 'textarea') return;
-                    event.target.style.height = 'auto';
-                    event.target.style.height = (event.target.scrollHeight) + 'px';
-                  });
-                </script>
-              </div>
+                  <script>
+                    document.addEventListener('input', function (event) {
+                      if (event.target.tagName.toLowerCase() !== 'textarea') return;
+                      event.target.style.height = 'auto';
+                      event.target.style.height = (event.target.scrollHeight) + 'px';
+                    });
+                  </script>
+                </div>
 
               <section class="sound-clips">
                 <!-- 音声クリップはここに表示 -->

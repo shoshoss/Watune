@@ -8,8 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        twitter: "#50b7f5",
-        twitterBackground: "#e6ecf0",
+        custom_sky: "rgb(56 189 248)",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
