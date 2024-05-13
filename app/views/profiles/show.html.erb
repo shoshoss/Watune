@@ -1,62 +1,54 @@
 <% content_for(:title, t('.title')) %>
-
-<div class="p-5">
+<div class="flex justify-center min-h-screen p-5">
   <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
     <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
-    
-    <div class="flex">
-      <div>
-        01
+    <div class="mb-2 flex mx-auto items-stretch ">
+      <!-- 左側のダミー要素 -->
+      <div class="<%= 'invisible' unless current_user == @user %>">
+        <%= link_to "編集する", edit_profile_path, class: 'ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
       </div>
-      <div class="grow h-14 flex justify-center">
-        02
+
+      <!-- アバター画像 -->
+      <div class="flex justify-center flex-grow items-center">
+        <%= image_tag("sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-20 w-20 sm:h-30 sm:w-30 md:h-35 md:w-35") %>
       </div>
-      <div class="flex-none">
-        03
+
+      <!-- 編集ボタン -->
+      <div class="flex flex-grow-0 justify-end items-end">
+        <% if current_user == @user %>
+          <%= link_to "編集する", edit_profile_path, class: 'mr-2 sm:mr-5 btn btn-outline btn-secondary' %>
+        <% else %>
+          <div class="invisible">
+            <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
+          </div>
+        <% end %>
       </div>
     </div>
-    
-      <div class="mt-2 flex mx-auto items-stretch ">
-  <!-- 左側のダミー要素 -->
-  <div class="<%= 'invisible' unless current_user == @user %>">
-    <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
-  </div>
-
-  <!-- アバター画像 -->
-  <div class="flex justify-center flex-grow items-center">
-    <%= image_tag(@user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-20 w-20 sm:h-30 sm:w-30 md:h-35 md:w-35") %>
-  </div>
-
-  <!-- 編集ボタン -->
-  <div class="flex flex-grow-0 justify-end items-end">
-    <% if current_user == @user %>
-      <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary' %>
-    <% else %>
-      <div class="invisible">
-        <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
+    <!-- ユーザー名-->
+    <div class="mb-2 flex flex-col justify-center items-center">
+      <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
+      <p class="text-gray-500">@<%= @user.username_slug %></p>
+    </div>
+    <!-- 自己紹介 -->
+    <div class="flex flex-col items-center mx-15 sm:mx-30 sm:mx-5">
+      <div class="p-2 border-2 border-gray-200 rounded text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
+        <%# 連続する改行に特別なクラスを適用する %>
+        <% if @user.self_introduction.present? %>
+          <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
+            <% if line.empty? %>
+              <div class="text-xxs sm:text-xs"> <!-- 空白行用のスタイル -->
+                <br>
+              </div>
+            <% else %>
+              <div class="text-sm sm:text-lg"> <!-- 通常の行用のスタイル -->
+                <%= line %><br>
+              </div>
+            <% end %>
+          <% end %>
+          <% else %>
+          <p>自己紹介文はありません。</p>
+        <% end %>
       </div>
-    <% end %>
-  </div>
-</div>
-
-
-
-      <!-- ユーザー名と編集ボタン -->
-      
-        <div>
-
-        </div>
-        <div>
-          <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
-          <p class="text-gray-500">@<%= @user.username_slug %></p>
-        </div>
-
-        
-
-      <!-- 自己紹介 -->
-      <div class="bg-white p-4 w-full rounded-lg shadow mt-4 text-center">
-        <p><%= @user.self_introduction %></p>
-      </div>
-    
+    </div>
   </div>
 </div>

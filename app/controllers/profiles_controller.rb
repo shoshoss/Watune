@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
   def update
     @user = current_user
     if @user.update(user_params)
-      redirect_to profile_path, status: :see_other, notice: 'プロファイルが更新されました。'
+      redirect_to profile_show_path(username_slug: @user.username_slug), status: :see_other, notice: 'プロファイルが更新されました。'
     else
       flash.now[:error] = 'プロファイルの更新に失敗しました。'
       render :edit, status: :unprocessable_entity
