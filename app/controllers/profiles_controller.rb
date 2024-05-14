@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @user = current_user
+    @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
     if @user.update(user_params)
       redirect_to profile_show_path(username_slug: @user.username_slug), status: :see_other, notice: 'プロファイルが更新されました。'
     else
@@ -27,6 +27,6 @@ class ProfilesController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:display_name, :username_slug, :self_introduction)
+    params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 end

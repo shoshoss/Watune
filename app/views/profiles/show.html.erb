@@ -10,7 +10,11 @@
 
       <!-- アバター画像 -->
       <div class="flex justify-center flex-grow items-center">
-        <%= image_tag("sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-24 w-24 sm:h-30 sm:w-30 md:h-35 md:w-35") %>
+        <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "rounded-full object-cover h-32 w-32" %>
+          <% else %>
+            <%= image_tag 'sample.jpg', class: "rounded-full object-cover h-32 w-32" %>
+          <% end %>
       </div>
 
       <!-- 編集ボタン -->
