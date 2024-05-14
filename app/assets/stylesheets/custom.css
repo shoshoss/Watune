@@ -3,3 +3,7 @@
   margin-left: 24px; /* リストの左側に余白 */
   text-align: left;
 }
+
+.input-style {
+  @apply block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-y;
+}

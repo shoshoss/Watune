@@ -1,6 +1,6 @@
 <% content_for(:title, t('.title')) %>
-<div class="flex justify-center min-h-screen p-5">
-  <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
+<div class="flex justify-center min-h-screen">
+  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
     <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
     <div class="mb-2 flex mx-auto items-stretch ">
       <!-- 左側のダミー要素 -->
@@ -30,7 +30,7 @@
       <p class="text-gray-500">@<%= @user.username_slug %></p>
     </div>
     <!-- 自己紹介 -->
-    <div class="flex flex-col items-center mx-auto px-20">
+    <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
       <div class="p-2 border-2 border-gray-200 rounded text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
         <%# 連続する改行に特別なクラスを適用する %>
         <% if @user.self_introduction.present? %>

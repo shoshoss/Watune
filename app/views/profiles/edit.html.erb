@@ -8,38 +8,70 @@
       <%= render 'shared/error_messages', object: f.object %>
 
       <div class="card-body mx-auto">
-        <div class="form-control">
-          <%= f.label :avatar %>
-          <%= f.file_field :avatar, direct_upload: true %>
+        <div class="form-group">
+          <%= f.label :avatar, class: 'block text-sm font-medium text-gray-700' %>
+          <%= f.file_field :avatar, onchange: 'previewFileWithId("preview-avatar")', class: 'input-style w-full', accept: 'image/*' %>
+          <%= f.hidden_field :avatar_cache %>
+          <img id="preview-avatar" src="#" alt="your image" class="hidden mt-2 max-w-xs max-h-xs rounded" />
         </div>
 
         <div class="form-control">
           <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
-          <%= f.text_field :display_name, class: "input input-bordered text-lg" %>
+          <%= f.text_field :display_name, class: "input-style" %>
         </div>
 
         <div class="form-control mt-2">
           <%= f.label :username_slug, 'ユーザー名', class: "label-text text-lg font-semibold mb-1" %>
-          <%= f.text_field :username_slug, class: "input input-bordered text-lg" %>
+          <%= f.text_field :username_slug, class: "input-style" %>
         </div>
 
         <div class="form-control mt-2">
-          <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1" %>
-          <%= f.text_area :self_introduction, class: "input input-bordered mt-1 p-2 text-sm md:text-lg resize-y", rows: 3, style: "resize: vertical;" %>
-          <script>
-            document.addEventListener('input', function (event) {
-              if (event.target.tagName.toLowerCase() !== 'textarea') return;
-              event.target.style.height = 'auto';
-              event.target.style.height = (event.target.scrollHeight) + 'px';
-            });
-          </script>
+          <%= f.label :self_introduction, '自己紹介', class: "block text-lg font-semibold mb-1", for: "self_introduction" %>
+          <%= f.text_area :self_introduction, id: 'self_introduction', class: "input-style", rows: "8", style: "resize: vertical;" %>
         </div>
         
-
         <div class="form-control mt-4 lg:mt-6">
           <%= f.submit "プロファイル更新", class: "btn btn-primary text-lg w-full" %>
         </div>
       </div>
     <% end %>
+
   </div>
+
 </div>
+
+<script>
+  // プレビュー機能
+  function previewFileWithId(previewId) {
+    var file = document.querySelector('input[type=file]').files[0];
+    var preview = document.getElementById(previewId);
+    var reader = new FileReader();
+
+    reader.onloadend = function() {
+      preview.src = reader.result;
+      preview.classList.remove('hidden');
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = "";
+      preview.classList.add('hidden');
+    }
+  }
+
+  // 自動リサイズのテキストエリア
+  window.onload = function() {
+  const textarea = document.getElementById('self_introduction');
+  if (textarea) {
+    adjustTextareaHeight(textarea);
+  }
+};
+
+function adjustTextareaHeight(textarea) {
+  textarea.style.height = 'auto'; // Reset height to ensure proper adjustment
+  textarea.style.height = textarea.scrollHeight + 'px'; // Set new height based on content
+}
+
+
+</script>
