@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class OauthsController < ApplicationController
   # ログインが不要なアクションについてはログイン要求をスキップ
   skip_before_action :require_login
@@ -57,8 +59,28 @@ class OauthsController < ApplicationController
     user.assign_attributes(
       display_name: @user_hash[:user_info]['name'].presence || 'Default Name'
     )
+
+    # アバターの添付とエラーハンドリング
+    avatar_url = @user_hash[:user_info]['picture']
+    if avatar_url.present?
+      begin
+        user.avatar.attach(io: URI.open(avatar_url), filename: 'avatar.jpg')
+      rescue OpenURI::HTTPError => e
+        Rails.logger.error "Failed to attach avatar: #{e.message}"
+        attach_default_avatar(user)
+      end
+    else
+      attach_default_avatar(user)
+    end
+
     user.password = SecureRandom.alphanumeric(10)
     user.save!
+  end
+
+  # デフォルトアバターの添付
+  def attach_default_avatar(user)
+    default_avatar_path = Rails.root.join('app', 'assets', 'images', 'sample.jpg')
+    user.avatar.attach(io: File.open(default_avatar_path), filename: 'default_avatar.jpg')
   end
 
   # リダイレクト先と通知メッセージを決定する
