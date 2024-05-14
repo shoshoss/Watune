@@ -91,22 +91,16 @@ function setupFileInput() {
   }
 }
 
-
-
-
-  // 自動リサイズのテキストエリア
-  window.onload = function() {
-    const textarea = document.getElementById('self_introduction');
-    if (textarea) {
-      adjustTextareaHeight(textarea);
-    }
+document.addEventListener('input', function (event) {
+  if (event.target.tagName.toLowerCase() === 'textarea') {
+    adjustTextareaHeight(event.target);
   }
+});
 
-  function adjustTextareaHeight(textarea) {
-    if (!textarea) return;
-    textarea.style.height = 'auto'; // Reset height
-    textarea.style.height = textarea.scrollHeight + 'px'; // Set new height based on content
-  }
-
+function adjustTextareaHeight(textarea) {
+  if (!textarea) return;
+  textarea.style.height = 'auto'; // Reset height
+  textarea.style.height = textarea.scrollHeight + 'px'; // Set new height based on content
+}
 
 </script>
