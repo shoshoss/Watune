@@ -8,13 +8,18 @@
       <%= render 'shared/error_messages', object: f.object %>
 
       <div class="card-body mx-auto">
-        <label class="cursor-pointer">
           <div class="form-control">
+        <label class="cursor-pointer">
             <%= f.label :avatar, 'プロフィール画像', class: 'label-text text-lg font-semibold mb-2', for: "input-avatar" %>
-            <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "input-style", onchange: "previewFile(this)" %>
-            <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : 'sample.jpg' %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
-          </div>
+            <div class="mt-1 p-2 text-lg border-2 border-gray-300 rounded-lg">
+              <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "hidden", onchange: "previewFile(this)" %>
+              <span class="file-upload-label bg-gray-200 text-gray-700 p-2 sm:mb-2 rounded cursor-pointer">ファイルを選択</span>
+              <br class="block sm:hidden mb-2">
+              <span id="file-name" class="file-name text-gray-600 sm:ml-2">選択されていません</span>
+            </div>
+              <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : 'sample.jpg' %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
         </label>
+          </div>
 
         <div class="form-control">
           <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
@@ -44,39 +49,40 @@
 <script>
   // プレビュー機能
 document.addEventListener("DOMContentLoaded", function() {
+  const input = document.getElementById('input-avatar');
+  const fileNameDisplay = document.getElementById('file-name');
   const preview = document.getElementById('preview-avatar');
-  // 現在の画像のURLを保存
-  const currentAvatarSrc = preview.src;
+  const currentAvatarSrc = preview.src; // 現在の画像のURLを保存
 
-  document.getElementById('input-avatar').addEventListener('change', function() {
-    var file = this.files[0];
-
+  input.addEventListener('change', function() {
+    const file = this.files[0];
     if (!file) {
-      // ファイル選択がキャンセルされた場合、元の画像を表示
       preview.src = currentAvatarSrc;
+      fileNameDisplay.textContent = '選択されていません'; // ファイルが選択されていないときのテキスト
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
       alert("ファイルサイズは5MB以下にしてください。");
-      // サイズオーバーの場合も元の画像を表示
       preview.src = currentAvatarSrc;
+      fileNameDisplay.textContent = '選択されていません'; // サイズオーバーのときのテキスト
       return;
     }
 
     var reader = new FileReader();
     reader.onload = function(e) {
-      // ファイル読み込み成功時にプレビューを更新
       preview.src = e.target.result;
+      fileNameDisplay.textContent = file.name; // ファイル名を表示
     };
     reader.onerror = function() {
       alert("ファイルの読み込みに失敗しました。");
-      // 読み込み失敗時にも元の画像を表示
       preview.src = currentAvatarSrc;
+      fileNameDisplay.textContent = '選択されていません'; // 読み込み失敗時のテキスト
     };
     reader.readAsDataURL(file);
   });
 });
+
 
 
   // 自動リサイズのテキストエリア
