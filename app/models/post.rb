@@ -1,5 +1,6 @@
 class Post < ApplicationRecord
   belongs_to :user
+  has_many :likes, dependent: :destroy
 
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :audio

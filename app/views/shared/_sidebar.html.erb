@@ -1,6 +1,6 @@
 <aside class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-0 h-screen overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
-    <%= image_tag 'sample.jpg', alt: 'User icon', class: "w-24 h-24 rounded-full" %>
+    <%= image_tag (current_user.avatar.presence || 'sample.jpg'), class: 'rounded-full h-24 w-24' %>
     <h2 class="mt-4 text-xl font-semibold text-white">Username</h2>
   </div>
   <ul class="px-2 space-y-2">
