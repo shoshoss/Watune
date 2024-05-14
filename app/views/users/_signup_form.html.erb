@@ -31,11 +31,13 @@
       <%= f.email_field :email, placeholder: "example@congrawa.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
     </div>
     <div class="form-control mt-2">
-      <%= f.label :password, 'パスワード　※半角英数・8文字～20文字で入力してください', class: "label-text text-lg mb-1" %>
+      <%= f.label :password, class: "label-text text-lg mb-1" do %>
+        パスワード　<span class="block sm:inline text-base">※半角英数・8文字～20文字</span>
+      <% end %>
       <%= f.password_field :password, class: "input input-bordered text-lg", required: true, autocomplete: "password" %>
     </div>
     <div class="form-control mt-4 lg:mt-6">
-      <%= f.submit "登録", class: "btn btn-primary w-full" %>
+      <%= f.submit "登録", class: "btn btn-outline btn-accent text-xl" %>
     </div>
     <p class="text-sm mt-4">
       アカウントを登録することにより、
