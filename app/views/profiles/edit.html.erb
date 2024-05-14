@@ -8,15 +8,13 @@
       <%= render 'shared/error_messages', object: f.object %>
 
       <div class="card-body mx-auto">
-        <div class="form-control">
-          <%= f.label :avatar, 'プロフィール画像', class: 'block text-lg font-semibold mb-2' %>
-          <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "input-style", onchange: "previewFile(this)" %>
-          <div id="file-name" class="text-gray-600 text-xs mt-1">ファイルが選択されていません</div>
-          <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : 'sample.jpg' %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
-        </div>
-
-
-
+        <label class="cursor-pointer">
+          <div class="form-control">
+            <%= f.label :avatar, 'プロフィール画像', class: 'label-text text-lg font-semibold mb-2', for: "input-avatar" %>
+            <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "input-style", onchange: "previewFile(this)" %>
+            <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : 'sample.jpg' %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
+          </div>
+        </label>
 
         <div class="form-control">
           <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
