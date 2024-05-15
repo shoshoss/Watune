@@ -36,6 +36,6 @@ Rails.application.routes.draw do
   end
 
   # プロフィールのルーティング
-  resource :profile, only: %i[edit update]
+  resource :profile, only: %i[show edit update]
   get '/:username_slug', to: 'profiles#show', as: :profile_show
 end

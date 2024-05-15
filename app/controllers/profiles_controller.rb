@@ -1,9 +1,14 @@
 # app/controllers/profiles_controller.rb
 class ProfilesController < ApplicationController
-  before_action :set_user, only: %i[edit update]
+  before_action :set_user, only: %i[show edit update]
 
   def show
-    @user = User.find_by(username_slug: params[:username_slug])
+    params[:category] ||= "self"  # デフォルトで自分の投稿を表示する
+    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def edit
@@ -28,5 +33,18 @@ class ProfilesController < ApplicationController
 
   def user_params
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
+  end
+
+  def filtered_posts
+    base_scope = case params[:category]
+                 when "self"
+                   @user.posts
+                 when "likes"
+                   @user.liked_posts.visible_to(@user)
+                 else
+                   Post.open
+                 end
+
+    base_scope.includes(:user).order(created_at: :desc)
   end
 end

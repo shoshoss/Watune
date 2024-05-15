@@ -35,8 +35,8 @@ module ApplicationHelper
     (sanitize input).gsub("\n", '<br>')
   end
 
-  # 投稿内容の行数のカウント
-  # def line_count(text)
-  #   text.count("\n") + 1
-  # end
+  # プロフィール画面 現在のカテゴリに応じてクラスを適用
+  def active_tab(category)
+    category == params[:category] ? 'tab-active' : ''
+  end
 end
