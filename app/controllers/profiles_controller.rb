@@ -3,14 +3,15 @@ class ProfilesController < ApplicationController
   before_action :set_user, only: %i[show edit update]
 
   def show
-    Rails.logger.debug "Category param: #{params[:category]}"
-    params[:category] ||= "self"
+    Rails.logger.debug { "Category param: #{params[:category]}" }
+    params[:category] ||= 'self'
     @pagy, @posts = pagy_countless(filtered_posts, items: 10)
-    Rails.logger.debug("Filtered posts: #{@posts.inspect}") # デバッグ用ログ
+    Rails.logger.debug { "Filtered posts: #{@posts.inspect}" } # デバッグ用ログ
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('posts', partial: 'profiles/posts', locals: { posts: @posts, pagy: @pagy })
+        render turbo_stream: turbo_stream.replace('posts', partial: 'profiles/posts',
+                                                           locals: { posts: @posts, pagy: @pagy })
       end
     end
   end
@@ -48,8 +49,8 @@ class ProfilesController < ApplicationController
                  else
                    Post.open
                  end
-    
-                 Rails.logger.debug("Base scope: #{base_scope.to_sql}") # デバッグ用ログ
+
+    Rails.logger.debug { "Base scope: #{base_scope.to_sql}" } # デバッグ用ログ
     base_scope.includes(:user).order(created_at: :desc)
   end
 end
