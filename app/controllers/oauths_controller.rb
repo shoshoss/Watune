@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'tempfile'
 
 class OauthsController < ApplicationController
   # ログインが不要なアクションについてはログイン要求をスキップ
@@ -64,7 +65,7 @@ class OauthsController < ApplicationController
     avatar_url = @user_hash[:user_info]['picture']
     if avatar_url.present?
       begin
-        user.avatar.attach(io: URI.open(avatar_url), filename: 'avatar.jpg')
+        attach_avatar_from_url(user, avatar_url)
       rescue OpenURI::HTTPError => e
         Rails.logger.error "Failed to attach avatar: #{e.message}"
         attach_default_avatar(user)
@@ -77,9 +78,28 @@ class OauthsController < ApplicationController
     user.save!
   end
 
+  # リモートURLからアバターを添付する
+  def attach_avatar_from_url(user, avatar_url)
+    uri = URI.parse(avatar_url)
+    response = Net::HTTP.get_response(uri)
+
+    if response.is_a?(Net::HTTPSuccess)
+      # ファイル名をURLから取得し、適切な拡張子を保持する
+      filename = File.basename(uri.path)
+      Tempfile.open([filename, File.extname(filename)], binmode: true) do |file|
+        file.write(response.body)
+        file.rewind
+        user.avatar.attach(io: file, filename: filename)
+        file.close # ここでファイルを閉じる
+      end
+    else
+      raise "Failed to download avatar: #{response.message}"
+    end
+  end
+
   # デフォルトアバターの添付
   def attach_default_avatar(user)
-    default_avatar_path = Rails.root.join('app', 'assets', 'images', 'sample.jpg')
+    default_avatar_path = Rails.root.join('app/assets/images/sample.jpg')
     user.avatar.attach(io: File.open(default_avatar_path), filename: 'default_avatar.jpg')
   end
 

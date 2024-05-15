@@ -15,4 +15,8 @@ class Post < ApplicationRecord
 
   # 投稿のプライバシーレベル
   enum privacy: { only_me: 0, friends_only: 1, open: 2 }
+
+  scope :visible_to, lambda { |user|
+    where(privacy: %i[open friends_only]).or(where(user:))
+  }
 end

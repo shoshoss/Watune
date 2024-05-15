@@ -10,6 +10,9 @@ class User < ApplicationRecord
   # UserとProfileの関連付け
   has_many :profile, dependent: :destroy
 
+  # Active Storageを使って添付ファイルを管理する
+  has_one_attached :avatar
+
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
 
@@ -63,14 +66,24 @@ class User < ApplicationRecord
   # アバターURLはURL形式で、存在しなくても良い
   # validates :avatar_url, url: true, allow_blank: true
 
+  # いいね機能
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :post
+
+  def like(post)
+    likes.create(post:)
+  end
+
+  def unlike(post)
+    likes.find_by(post:)&.destroy
+  end
+
+  def like?(post)
+    liked_posts.include?(post)
+  end
+
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
-
-  # アバター画像のアップローダーをマウント
-  # mount_uploader :avatar, AvatarUploader
-
-  # Active Storageを使って添付ファイルを管理する
-  has_one_attached :avatar
 
   # ユーザーが引数で渡されたリソースの所有者かどうかを判断するメソッド
   def own?(object)

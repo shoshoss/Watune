@@ -77,3 +77,8 @@ Capybara/ClickLinkOrButtonStyle:
 
 RSpec/MultipleExpectations:
   Max: 5 # 一つのitブロック内で許可するexpectationの最大数を5に設定
+
+# Security/Openのチェックを無視
+Security/Open:
+  Exclude:
+    - "app/controllers/oauths_controller.rb"
