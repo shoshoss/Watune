@@ -37,6 +37,6 @@ module ApplicationHelper
 
   # プロフィール画面 現在のカテゴリに応じてクラスを適用
   def active_tab(category)
-    category == params[:category] ? 'tab-active' : ''
+    category == params[:category] ? 'c-tab-active' : ''
   end
 end

@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
   before_action :set_user, only: %i[show edit update]
 
   def show
+    Rails.logger.debug "Category param: #{params[:category]}"
     params[:category] ||= "self"
     @pagy, @posts = pagy_countless(filtered_posts, items: 10)
     Rails.logger.debug("Filtered posts: #{@posts.inspect}") # デバッグ用ログ

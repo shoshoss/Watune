@@ -6,9 +6,18 @@
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
 
-.tabs .tab {
-  @apply inline-block px-4 py-2 text-gray-600 hover:text-gray-800 border-b-2 border-transparent;
+.c-tabs {
+  @apply flex overflow-x-auto whitespace-nowrap border-b-2;
 }
-.tabs .tab-active {
-  @apply text-black border-black;
+
+.c-tab {
+  @apply flex-1 px-4 py-2 text-center text-gray-600 hover:bg-sky-100 border-b-2 border-transparent;
+}
+
+.c-tab-active {
+  @apply text-black border-sky-400;
+}
+
+.c-tab:hover {
+  @apply bg-sky-100;
 }
