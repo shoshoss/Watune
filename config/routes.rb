@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   # 投稿のルーティング
   resources :posts, only: %i[index new create edit update destroy]
 
+  resources :posts do
+    resources :likes, only: [:create, :destroy]
+  end
+
   # プロフィールのルーティング
   resource :profile, only: %i[edit update]
   get '/:username_slug', to: 'profiles#show', as: :profile_show

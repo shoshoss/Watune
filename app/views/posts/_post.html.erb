@@ -93,9 +93,9 @@
         <% end %>
       </div>
       <div>
-        <%= link_to "#", id: "#" do %>
-          <i class="fas fa-heart text-xl text-lg text-gray-500 hover:text-blue-700"></i>
-        <% end %>
+        <div id="post-<%= post.id %>-like">
+          <%= render partial: 'posts/like', locals: { post: post } %>
+        </div>
       </div>
       <div>
         <%= link_to "#", id: "#" do %>
