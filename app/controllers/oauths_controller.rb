@@ -99,8 +99,17 @@ class OauthsController < ApplicationController
 
   # デフォルトアバターの添付
   def attach_default_avatar(user)
-    default_avatar_path = Rails.root.join('app/assets/images/sample.jpg')
+    default_avatar_path = asset_path('sample.jpg')
     user.avatar.attach(io: File.open(default_avatar_path), filename: 'default_avatar.jpg')
+  end
+
+  # アセットパスを取得する
+  def asset_path(asset_name)
+    if Rails.env.development?
+      Rails.application.assets.find_asset(asset_name).filename
+    else
+      File.join(Rails.root, 'public', Rails.application.assets_manifest.files[asset_name]['path'])
+    end
   end
 
   # リダイレクト先と通知メッセージを決定する

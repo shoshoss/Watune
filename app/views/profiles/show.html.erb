@@ -13,7 +13,7 @@
         <% if @user.avatar.attached? %>
             <%= image_tag @user.avatar, class: "rounded-full object-cover h-32 w-32" %>
           <% else %>
-            <%= image_tag 'sample.jpg', class: "rounded-full object-cover h-32 w-32" %>
+            <%= image_tag asset_path('sample.jpg'), class: "rounded-full object-cover h-32 w-32" %>
           <% end %>
       </div>
 

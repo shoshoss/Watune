@@ -22,7 +22,7 @@
       <div class="dropdown dropdown-end ml-4">
         <div class="dropdown dropdown-end">
           <label tabindex="0" class="btn btn-ghost rounded-btn h-12 w-15 md:h-14 md:w-20">
-            <%= image_tag (current_user.avatar.presence || 'sample.jpg'), class: 'rounded-full h-10 w-10 md:h-12 md:w-12' %>
+            <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-10 w-10 md:h-12 md:w-12' %>
           </label>
           <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
             <li>

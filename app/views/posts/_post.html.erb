@@ -4,7 +4,7 @@
   <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0"
        data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
     <!-- アバター -->
-    <%= image_tag(post.user.avatar.presence || "sample.jpg", alt: "ユーザーアバター", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+    <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "ユーザーアバター", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
   </div>
   <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
   <div class="flex-grow p-1 md:p-4" >

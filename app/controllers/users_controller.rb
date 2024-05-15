@@ -14,8 +14,8 @@ class UsersController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.append("flash", partial: "shared/flash_message"),
-            turbo_stream.remove("signup_modal")
+            turbo_stream.append('flash', partial: 'shared/flash_message'),
+            turbo_stream.remove('signup_modal')
           ]
         end
         format.html { redirect_to edit_profile_path, status: :see_other, notice: 'ユーザー登録に成功しました' }
