@@ -1,14 +1,26 @@
 <%= turbo_stream.replace 'posts' do %>
   <% if @posts.present? %>
-        <%= turbo_frame_tag "next-page" do %>
-          <% @posts.each do |post| %>
-            <%= render partial: 'posts/post', locals: { post: post } %>
-          <% end %>
-          <% if @pagy.next %>
-            <%= render 'posts/next_page' %>
-          <% end %>
-        <% end %>
-      <% else %>
-        <div class="mb-3">投稿がありません</div>
+    <div class="tabs mt-4 mb-2">
+      <%= link_to profile_path(category: 'self'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('self')}" do %>
+        自分へ
       <% end %>
+      <%= link_to profile_path(category: 'all'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('all')}" do %>
+        全体へ
+      <% end %>
+      <%= link_to profile_path(category: 'likes'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('likes')}" do %>
+        いいね
+      <% end %>
+    </div>
+
+    <%= turbo_frame_tag "next-page" do %>
+      <% @posts.each do |post| %>
+        <%= render partial: 'posts/post', locals: { post: post } %>
+      <% end %>
+      <% if @pagy.next %>
+        <%= render 'posts/next_page' %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="mb-3">投稿がありません</div>
+  <% end %>
 <% end %>
