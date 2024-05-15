@@ -1,0 +1,14 @@
+<%= turbo_stream.replace 'posts' do %>
+  <% if @posts.present? %>
+        <%= turbo_frame_tag "next-page" do %>
+          <% @posts.each do |post| %>
+            <%= render partial: 'posts/post', locals: { post: post } %>
+          <% end %>
+          <% if @pagy.next %>
+            <%= render 'posts/next_page' %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="mb-3">投稿がありません</div>
+      <% end %>
+<% end %>

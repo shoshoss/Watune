@@ -1,5 +1,5 @@
 <% content_for(:title, t('.title')) %>
-<div class="flex justify-center min-h-screen" data-controller="profile" data-profile-username-slug="<%= @user.username_slug %>" data-profile-default-category="all">
+<div class="flex justify-center min-h-screen" >
   <div class="max-w-xl w-full bg-white border-2 border-gray-200">
     <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
     <div class="mb-2 flex mx-auto items-stretch ">
@@ -56,24 +56,25 @@
     </div>
 
     <!-- カテゴリータブ -->
-    <!-- カテゴリータブ -->
     <div class="tabs mt-4 mb-2">
-      <%= link_to profile_path(category: 'self'), data: { profile_target: "link", action: "click->profile#switch", category: "self" }, class: "tab #{active_tab('self')}" do %>
+      <%= link_to profile_path(category: 'self'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('self')}" do %>
         自分へ
       <% end %>
-      <%= link_to profile_path(category: 'all'), data: { profile_target: "link", action: "click->profile#switch", category: "all" }, class: "tab #{active_tab('all')}" do %>
+      <%= link_to profile_path(category: 'all'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('all')}" do %>
         全体へ
       <% end %>
-      <%= link_to profile_path(category: 'likes'), data: { profile_target: "link", action: "click->profile#switch", category: "likes" }, class: "tab #{active_tab('likes')}" do %>
+      <%= link_to profile_path(category: 'likes'), data: { turbo_frame: "posts" }, class: "tab #{active_tab('likes')}" do %>
         いいね
       <% end %>
     </div>
 
     <!-- 投稿一覧 -->
-    <div id="posts" data-profile-target="posts">
+    <%= turbo_frame_tag "posts" do %>
       <% if @posts.present? %>
         <%= turbo_frame_tag "next-page" do %>
-          <%= render @posts %>
+          <% @posts.each do |post| %>
+            <%= render partial: 'posts/post', locals: { post: post } %>
+          <% end %>
           <% if @pagy.next %>
             <%= render 'posts/next_page' %>
           <% end %>
@@ -81,7 +82,7 @@
       <% else %>
         <div class="mb-3">投稿がありません</div>
       <% end %>
-    </div>
+    <% end %>
 
 
   </div>

@@ -3,11 +3,14 @@ class ProfilesController < ApplicationController
   before_action :set_user, only: %i[show edit update]
 
   def show
-    params[:category] ||= "self"  # デフォルトで自分の投稿を表示する
+    params[:category] ||= "self"
     @pagy, @posts = pagy_countless(filtered_posts, items: 10)
+    Rails.logger.debug("Filtered posts: #{@posts.inspect}") # デバッグ用ログ
     respond_to do |format|
       format.html
-      format.turbo_stream
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('posts', partial: 'profiles/posts', locals: { posts: @posts, pagy: @pagy })
+      end
     end
   end
 
@@ -37,14 +40,15 @@ class ProfilesController < ApplicationController
 
   def filtered_posts
     base_scope = case params[:category]
-                 when "self"
+                 when 'self'
                    @user.posts
-                 when "likes"
+                 when 'likes'
                    @user.liked_posts.visible_to(@user)
                  else
                    Post.open
                  end
-
+    
+                 Rails.logger.debug("Base scope: #{base_scope.to_sql}") # デバッグ用ログ
     base_scope.includes(:user).order(created_at: :desc)
   end
 end
