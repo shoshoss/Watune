@@ -1,9 +1,12 @@
-<% if current_user.like?(post) %>
-  <%= link_to post_like_path(post), method: :delete, data: { turbo_method: :delete } do %>
-    <i class="fas fa-heart text-xl text-red-500 hover:text-red-700"></i>
-  <% end %>
-<% else %>
-  <%= link_to post_likes_path(post), method: :post, data: { turbo_method: :post } do %>
-    <i class="fas fa-heart text-xl text-gray-500 hover:text-red-700"></i>
+<%= turbo_frame_tag "post-#{post.id}-like" do %>
+  <% if current_user.like?(post) %>
+    <% like = current_user.likes.find_by(post: post) %>
+    <%= link_to post_like_path(post_id: post.id, id: like.id), method: :delete, data: { turbo_method: :delete } do %>
+      <i class="fas fa-heart text-xl text-red-500 hover:text-red-700"></i>
+    <% end %>
+  <% else %>
+    <%= link_to post_likes_path(post_id: post.id), method: :post, data: { turbo_method: :post } do %>
+      <i class="fas fa-heart text-xl text-gray-500 hover:text-red-700"></i>
+    <% end %>
   <% end %>
 <% end %>
