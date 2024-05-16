@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   include ActionView::RecordIdentifier
 
   def index
-    @pagy, @posts = pagy_countless(Post.includes(:user).order(created_at: :desc), items: 10)
+    @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
     respond_to do |format|
       format.html
       format.turbo_stream
