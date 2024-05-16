@@ -35,8 +35,13 @@ module ApplicationHelper
     (sanitize input).gsub("\n", '<br>')
   end
 
-  # プロフィール画面 現在のカテゴリに応じてクラスを適用
+  # プロフィール画面 paramsの値に応じてアクティブクラスを適用
   def active_tab(category)
-    category == params[:category] ? 'c-tab-active' : ''
+    params[:category] == category ? 'c-tab-active' : ''
+  end
+
+  # 投稿画面 paramsの値に応じてアクティブクラスを適用
+  def active_bottom(privacy_value)
+    params[:privacy] == privacy_value ? 'c-bottom-active' : ''
   end
 end

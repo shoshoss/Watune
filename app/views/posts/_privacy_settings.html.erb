@@ -1,0 +1,12 @@
+<!-- app/views/posts/_privacy_settings.html.erb -->
+<%= turbo_frame_tag "privacy-settings" do %>
+  <div id="privacy-settings" class="form-control pt-2">
+    <%= hidden_field_tag :privacy, @post.privacy, id: "privacy-field" %>
+    <%= label_tag :privacy, 'プライバシー設定', class: "block text-lg font-semibold" %>
+    <div class="flex space-x-4">
+      <%= link_to '自分のみ', privacy_settings_posts_path(privacy: 'only_me'), class: "link-button #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
+      <%= link_to '友達のみ', privacy_settings_posts_path(privacy: 'friends_only'), class: "link-button #{active_bottom('friends_only')}", data: { turbo_frame: "privacy-settings" } %>
+      <%= link_to '公開', privacy_settings_posts_path(privacy: 'open'), class: "link-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+    </div>
+  </div>
+<% end %>

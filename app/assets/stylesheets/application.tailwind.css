@@ -2,10 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 投稿内容などのインプットのレイアウト */
 .input-style {
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
 
+/* プロフィールなどのタブのレイアウト */
 .c-tabs {
   @apply flex overflow-x-auto whitespace-nowrap border-b-2;
 }
@@ -20,4 +22,17 @@
 
 .c-tab:hover {
   @apply bg-sky-100;
+}
+
+/* 投稿のプライバシー選択のボタンのレイアウト */
+.c-bottom-active {
+  @apply bg-blue-500 text-white;
+}
+
+.link-button {
+  @apply inline-block px-4 py-2 border border-blue-500 rounded text-blue-500 cursor-pointer;
+}
+
+.link-button:hover {
+  @apply bg-blue-100;
 }
