@@ -26,13 +26,13 @@
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
 .c-bottom-active {
-  @apply bg-blue-500 text-white;
+  @apply bg-sky-400 text-white font-semibold;
 }
 
 .link-button {
-  @apply inline-block px-4 py-2 border border-blue-500 rounded text-blue-500 cursor-pointer;
+  @apply inline-block px-4 py-2 border border-blue-500 rounded text-blue-500 cursor-pointer font-medium;
 }
 
 .link-button:hover {
-  @apply bg-blue-100;
+  @apply bg-sky-100;
 }

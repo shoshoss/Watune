@@ -35,12 +35,9 @@
 
             <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
             <%= f.hidden_field :duration, class: "duration-field" %>
-            <%= f.hidden_field :privacy, id: "post_privacy", value: params[:privacy] || @post.privacy %>
 
             <!-- プライバシー設定 -->
-            <%= turbo_frame_tag "privacy-settings" do %>
-              <%= render 'posts/privacy_settings', locals: { post: @post } %>
-            <% end %>
+            <%= render 'posts/privacy_settings', post: @post %>
 
             <div class="form-control mt-4 lg:mt-6">
               <%= f.submit t('helpers.submit.post'), class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
