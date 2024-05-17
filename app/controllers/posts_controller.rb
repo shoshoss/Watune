@@ -15,11 +15,18 @@ class PostsController < ApplicationController
 
   def privacy_settings
     @post = Post.new(privacy: params[:privacy])
-    Rails.logger.debug "Privacy parameter received: #{params[:privacy]}"
+    Rails.logger.debug { "Privacy parameter received: #{params[:privacy]}" }
     respond_to do |format|
       format.html { render partial: 'posts/privacy_settings', locals: { post: @post } }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace("privacy-settings", partial: "posts/privacy_settings", locals: { post: @post }) }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('privacy-settings', partial: 'posts/privacy_settings',
+                                                                      locals: { post: @post })
+      end
     end
+  end
+
+  def edit
+    @post = Post.find(params[:id])
   end
 
   def create
@@ -31,11 +38,7 @@ class PostsController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-  
-  def edit
-    @post = Post.find(params[:id])
-  end
-  
+
   def update
     @post = current_user.posts.find(params[:id])
     if @post.update(post_params)

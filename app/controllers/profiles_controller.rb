@@ -11,8 +11,7 @@ class ProfilesController < ApplicationController
   end
 
   # プロフィール編集アクション
-  def edit
-  end
+  def edit; end
 
   # プロフィール更新アクション
   def update
