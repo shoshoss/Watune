@@ -25,6 +25,8 @@ class ProfilesController < ApplicationController
         format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
         format.turbo_stream do
           render turbo_stream: [
+            turbo_stream.replace('after-sidebar', partial: 'shared/sidebar'),
+            turbo_stream.replace('after-header', partial: 'shared/header'),
             turbo_stream.replace('flash_messages', partial: 'shared/flash_message'),
             turbo_stream.replace('profile_edit_frame', partial: 'profiles/show', locals: { user: @user, posts: @posts, pagy: @pagy })
           ]
