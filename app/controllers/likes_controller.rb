@@ -3,14 +3,8 @@ class LikesController < ApplicationController
     @post = Post.find(params[:post_id])
     @like = current_user.likes.build(post: @post)
 
-    if @like.save
-      respond_to do |format|
-        format.turbo_stream
-      end
-    else
-      respond_to do |format|
-        format.turbo_stream
-      end
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 

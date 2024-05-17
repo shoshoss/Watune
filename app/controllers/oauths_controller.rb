@@ -83,17 +83,15 @@ class OauthsController < ApplicationController
     uri = URI.parse(avatar_url)
     response = Net::HTTP.get_response(uri)
 
-    if response.is_a?(Net::HTTPSuccess)
-      # ファイル名をURLから取得し、適切な拡張子を保持する
-      filename = File.basename(uri.path)
-      Tempfile.open([filename, File.extname(filename)], binmode: true) do |file|
-        file.write(response.body)
-        file.rewind
-        user.avatar.attach(io: file, filename: filename)
-        file.close # ここでファイルを閉じる
-      end
-    else
-      raise "Failed to download avatar: #{response.message}"
+    raise "Failed to download avatar: #{response.message}" unless response.is_a?(Net::HTTPSuccess)
+
+    # ファイル名をURLから取得し、適切な拡張子を保持する
+    filename = File.basename(uri.path)
+    Tempfile.open([filename, File.extname(filename)], binmode: true) do |file|
+      file.write(response.body)
+      file.rewind
+      user.avatar.attach(io: file, filename:)
+      file.close # ここでファイルを閉じる
     end
   end
 
@@ -108,7 +106,7 @@ class OauthsController < ApplicationController
     if Rails.env.development?
       Rails.application.assets.find_asset(asset_name).filename
     else
-      File.join(Rails.root, 'public', Rails.application.assets_manifest.files[asset_name]['path'])
+      Rails.public_path.join(Rails.application.assets_manifest.files[asset_name]['path']).to_s
     end
   end
 
