@@ -1,22 +1,23 @@
 class LikesController < ApplicationController
-  def create
-    @post = Post.find(params[:post_id])
-    @like = current_user.likes.build(post: @post)
+  before_action :set_post
 
-    if @like.save
-      respond_to do |format|
-        format.turbo_stream
-      end
+  def create
+    @like = current_user.like(@post)
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 
   def destroy
-    @like = current_user.likes.find(params[:id])
-    @post = @like.post
-    @like.destroy
-
+    @like = current_user.unlike(@post)
     respond_to do |format|
       format.turbo_stream
     end
+  end
+
+  private
+
+  def set_post
+    @post = Post.find(params[:post_id])
   end
 end
