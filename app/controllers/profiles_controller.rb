@@ -1,23 +1,22 @@
-# app/controllers/profiles_controller.rb
 class ProfilesController < ApplicationController
   before_action :set_user, only: %i[show edit update]
+  before_action :set_posts, only: %i[show update]
 
+  # プロフィール表示アクション
   def show
-    params[:category] ||= 'self'
-    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
     respond_to do |format|
       format.html
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('profile-posts', partial: 'profiles/show_posts',
-                                                           locals: { posts: @posts, pagy: @pagy })
+        render turbo_stream: turbo_stream.replace('profile-posts', partial: 'profiles/show_posts', locals: { posts: @posts, pagy: @pagy })
       end
     end
   end
 
+  # プロフィール編集アクション
   def edit
-    @user = current_user
   end
 
+  # プロフィール更新アクション
   def update
     @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
     if @user.update(user_params)
@@ -44,18 +43,26 @@ class ProfilesController < ApplicationController
       end
     end
   end
-  
 
   private
 
+  # 現在のユーザーを設定
   def set_user
-    @user = User.find(current_user.id)
+    @user = current_user
   end
 
+  # 投稿をフィルタリングして設定
+  def set_posts
+    params[:category] ||= 'self'
+    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
+  end
+
+  # 許可されたパラメータを設定
   def user_params
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
+  # フィルタリングされた投稿を取得
   def filtered_posts
     base_scope = case params[:category]
                  when 'self'
