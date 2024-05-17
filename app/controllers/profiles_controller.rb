@@ -15,30 +15,24 @@ class ProfilesController < ApplicationController
   end
 
   # プロフィール更新アクション
-def update
-  @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
-  if @user.update(user_params)
-    flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
-    params[:category] ||= 'self'
-    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
-    respond_to do |format|
-      format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
-      format.turbo_stream
-    end
-  else
-    flash.now[:danger] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
-    respond_to do |format|
-      format.html { render :edit, status: :unprocessable_entity }
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.replace('flash_messages', partial: 'shared/flash_message'),
-          turbo_stream.replace('error_messages_frame', partial: 'shared/error_messages', locals: { object: @user })
-        ]
+  def update
+    attach_avatar if avatar_params_present?
+    if @user.update(user_params)
+      flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
+      set_posts
+      # `update.turbo_stream.erb`が自動的にレンダリングされます
+    else
+      respond_to do |format|
+        format.html { render :edit, status: :unprocessable_entity }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('flash_messages', partial: 'shared/flash_message'),
+            turbo_stream.replace('error_messages_frame', partial: 'shared/error_messages', locals: { object: @user })
+          ]
+        end
       end
     end
   end
-end
-
 
   private
 
@@ -49,7 +43,6 @@ end
 
   # 投稿をフィルタリングして設定
   def set_posts
-    params[:category] ||= 'self'
     @pagy, @posts = pagy_countless(filtered_posts, items: 10)
   end
 
@@ -58,16 +51,26 @@ end
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
+  # アバターパラメータの存在チェック
+  def avatar_params_present?
+    params[:user][:avatar].present?
+  end
+
+  # アバターの添付処理
+  def attach_avatar
+    @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
+  end
+
   # フィルタリングされた投稿を取得
   def filtered_posts
-    base_scope = case params[:category]
-                 when 'self'
-                   @user.posts
-                 when 'likes'
-                   @user.liked_posts.visible_to(@user)
-                 else
-                   Post.open
-                 end
-    base_scope.includes(:user).order(created_at: :desc)
+    scope = case params[:category] ||= 'self'
+            when 'self'
+              @user.posts
+            when 'likes'
+              @user.liked_posts.visible_to(@user)
+            else
+              Post.open
+            end
+    scope.includes(:user).order(created_at: :desc)
   end
 end
