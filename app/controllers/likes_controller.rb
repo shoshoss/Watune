@@ -3,6 +3,7 @@ class LikesController < ApplicationController
 
   def create
     @like = current_user.like(@post)
+
     respond_to do |format|
       format.turbo_stream
     end
