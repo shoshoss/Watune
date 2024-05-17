@@ -41,15 +41,13 @@
     <% if logged_in? %>
       <%= render 'shared/sidebar' %>
       <% else %>
-        <div id="sidebar">
+        <div id="no-sidebar">
         </div>
     <% end %>
 
     <!-- メインコンテンツ -->
     <main class="flex-1 overflow-auto">
-      <div id="flash" >
-        <%= render 'shared/flash_message' %>
-      </div>
+      <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
 

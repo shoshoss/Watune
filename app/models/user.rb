@@ -79,7 +79,7 @@ class User < ApplicationRecord
   end
 
   def like?(post)
-    liked_posts.include?(post)
+    likes.exists?(post:)
   end
 
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1

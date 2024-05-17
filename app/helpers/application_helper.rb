@@ -35,8 +35,13 @@ module ApplicationHelper
     (sanitize input).gsub("\n", '<br>')
   end
 
-  # 投稿内容の行数のカウント
-  # def line_count(text)
-  #   text.count("\n") + 1
-  # end
+  # プロフィール画面 paramsの値に応じてアクティブクラスを適用
+  def active_tab(category)
+    params[:category] == category ? 'c-tab-active' : ''
+  end
+
+  # 投稿画面 paramsの値に応じてアクティブクラスを適用
+  def active_bottom(privacy_value)
+    params[:privacy] == privacy_value ? 'c-bottom-active' : ''
+  end
 end

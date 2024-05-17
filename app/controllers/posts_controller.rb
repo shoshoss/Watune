@@ -2,11 +2,7 @@ class PostsController < ApplicationController
   include ActionView::RecordIdentifier
 
   def index
-    @pagy, @posts = pagy_countless(Post.includes(:user).order(created_at: :desc), items: 10)
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
+    @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
     # @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
   end
 
@@ -14,6 +10,19 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    params[:privacy] ||= @post.privacy
+  end
+
+  def privacy_settings
+    @post = Post.new(privacy: params[:privacy])
+    Rails.logger.debug { "Privacy parameter received: #{params[:privacy]}" }
+    respond_to do |format|
+      format.html { render partial: 'posts/privacy_settings', locals: { post: @post } }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('privacy-settings', partial: 'posts/privacy_settings',
+                                                                      locals: { post: @post })
+      end
+    end
   end
 
   def edit
