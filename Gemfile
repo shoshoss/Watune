@@ -4,85 +4,110 @@ source 'https://rubygems.org'
 
 ruby '3.3.0'
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Railsのバージョンを指定
 gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
 
-# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+# Asset Pipelineを利用
 gem 'sprockets-rails'
 
-# Use postgresql as the database for Active Record
+# Active RecordのデータベースとしてPostgreSQLを使用
 gem 'pg', '~> 1.5'
 
-# Use the Puma web server [https://github.com/puma/puma]
+# WebサーバーにPumaを利用
 gem 'puma', '>= 5.0'
 
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
+# ESM import mapsでJavaScriptを使用
 gem 'importmap-rails'
 
-# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+# Turboを利用したSPA風のページアクセラレータ
 gem 'turbo-rails'
 
-# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+# Stimulus.jsを利用したJavaScriptフレームワーク
 gem 'stimulus-rails'
 
-# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+# CSSをバンドルおよび処理
 gem 'cssbundling-rails'
 
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+# JSON APIを簡単に構築
 gem 'jbuilder'
 
-# Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
+# 本番環境でAction Cableを実行するためにRedisアダプターを使用
+# gem 'redis', '>= 4.0.1'
 
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
+# Redisで高度なデータ型を取得するためのKredis
+# gem 'kredis'
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+# Active Modelでhas_secure_passwordを使用
+# gem 'bcrypt', '~> 3.1.7'
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+# Windowsにはzoneinfoファイルが含まれていないため、tzinfo-data gemをバンドル
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
-# Reduces boot times through caching; required in config/boot.rb
+# 起動時間を短縮するためのbootsnap
 gem 'bootsnap', require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+# Active Storageのバリアントを使用
+# gem 'image_processing', '~> 1.2'
 
+# ユーザー認証のためのsorcery
 gem 'sorcery', '~> 0.17'
 
+# ローカライズのためのrails-i18n
 gem 'rails-i18n', '~> 7.0'
 
+# 設定ファイルの管理のためのconfig
 gem 'config', '~> 5.4'
 
+# ファイルのアップロードのためのcarrierwave
+gem 'carrierwave', '~> 3.0'
+
+# ページネーションのためのpagy
+gem 'pagy', '~> 8.3'
+
+gem 'aws-sdk-s3', '~> 1.1', require: false
+
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  # デバッグ用のdebug
   gem 'debug', platforms: %i[mri windows]
+
+  # テスト用のダミーデータ生成のためのfaker
   gem 'faker', '>= 3.3'
+
+  # メールのプレビューのためのletter_opener_web
   gem 'letter_opener_web', '>= 2.0'
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  # 開発環境でのコンソール表示のためのweb-console
   gem 'web-console'
 
-  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  # リクエストの速度を表示するためのrack-mini-profiler
   # gem 'rack-mini-profiler'
 
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # 開発環境でのコマンドの高速化のためのspring
   # gem 'spring'
 end
 
 group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  # システムテストのためのcapybara
   gem 'capybara', '>= 3.4'
+
+  # テストデータの作成のためのfactory_bot_rails
   gem 'factory_bot_rails', '>= 6.4'
+
+  # テストフレームワークのRSpec
   gem 'rspec-rails', '>= 6.1'
+
+  # コードの静的解析のためのrubocop
   gem 'rubocop', '>= 1.63', require: false
   gem 'rubocop-capybara', '>= 2.20', require: false
   gem 'rubocop-factory_bot', '>= 2.25'
   gem 'rubocop-rails', '>= 2.24', require: false
   gem 'rubocop-rspec', '>= 2.28', require: false
+
+  # ブラウザテストのためのselenium-webdriver
   gem 'selenium-webdriver', '>= 4.10'
+
+  # ブラウザドライバの管理のためのwebdrivers
   gem 'webdrivers', '>= 5.3'
 end

@@ -1,3 +1,4 @@
+# app/controllers/users_controller.rb
 class UsersController < ApplicationController
   skip_before_action :require_login, only: %i[new_modal create_modal new create]
 
@@ -9,7 +10,14 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       login(user_params[:email], user_params[:password])
+      flash[:notice] = 'ユーザー登録に成功しました'
       respond_to do |format|
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append('flash', partial: 'shared/flash_message'),
+            turbo_stream.remove('signup_modal')
+          ]
+        end
         format.html { redirect_to edit_profile_path, status: :see_other, notice: 'ユーザー登録に成功しました' }
       end
     else

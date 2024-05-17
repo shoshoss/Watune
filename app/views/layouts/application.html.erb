@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= page_title(yield(:title)) %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= page_title(yield(:title)) %></title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+  
+  <!-- スタイルシートのリンク -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag 'custom', media: 'all', 'data-turbo-track': 'reload' %>
+  
+  <!-- JavaScriptの設定 -->
   <%= javascript_importmap_tags %>
   <script src="https://kit.fontawesome.com/630314d173.js" crossorigin="anonymous"></script>
+
+  <!-- Turboフレームタグ -->
   <%= turbo_frame_tag 'signup_modal' %>
+  <%= turbo_frame_tag 'tou_modal' %>
+  <%= turbo_frame_tag 'privacy_modal' %>
   <%= turbo_frame_tag 'login_modal' %>
+  <%= turbo_frame_tag 'post_modal' %>
+  <%= turbo_frame_tag 'edit_modal' %>
 </head>
 <body class="font-sans bg-white">
 
@@ -36,9 +47,9 @@
 
     <!-- メインコンテンツ -->
     <main class="flex-1 overflow-auto">
-      <turbo-frame id="notification" >
+      <div id="flash" >
         <%= render 'shared/flash_message' %>
-      </turbo-frame>
+      </div>
       <%= yield %>
     </main>
 

@@ -163,7 +163,7 @@ Rails.application.config.sorcery.configure do |config|
     Rails.application.credentials.dig(:google, :google_client_secret)
   end
   config.google.callback_url = Settings.sorcery[:google_callback_url]
-  config.google.user_info_mapping = { email: 'email', username: 'display_name' }
+  config.google.user_info_mapping = { email: 'email', username: 'display_name', picture: 'avatar'}
 
   # config.google.scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
   #

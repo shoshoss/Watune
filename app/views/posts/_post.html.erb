@@ -1,0 +1,107 @@
+<%= turbo_frame_tag dom_id(post) do %>
+<div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex cursor-pointer hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4">
+  <!-- 1列目: アバターと音声再生 -->
+  <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0"
+       data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+    <!-- アバター -->
+    <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "ユーザーアバター", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+  </div>
+  <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
+  <div class="flex-grow p-1 md:p-4" >
+    <div class="flex justify-between items-center mb-2">
+      <div>
+        <span class="text-lg font-semibold"><%= post.user.display_name %></span>
+        <br class="md:hidden">
+        <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
+        <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
+      </div>
+      <% if current_user.own?(post) %>
+        <div class="flex space-x-3 sm:space-x-4 p-2">
+          <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 md:px-2 mr-1", data: { turbo_frame: "edit_modal" } do %>
+            <i class="fas fa-pencil-alt text-lg"></i> 
+            <span class="hidden sm:inline">編集</span>
+          <% end %>
+          <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') },
+                                       class: "text-red-500 hover:text-red-700 flex items-center space-x-1" do %>
+            <i class="fas fa-trash-alt"></i>
+            <span class="hidden sm:inline">削除</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
+      <div class="text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]"
+           data-action="click->audio#playPause"
+           data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
+        <%# 連続する改行に特別なクラスを適用する %>
+        <% post.body.split(/\r\n|\r|\n/).each do |line| %>
+          <% if line.empty? %>
+            <div class="text-xxs sm:text-xs"> <!-- 空白行用のスタイル -->
+              <br>
+            </div>
+          <% else %>
+            <div class="text-sm sm:text-lg"> <!-- 通常の行用のスタイル -->
+              <%= line %><br>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-2 mr-5">
+      <% if post.audio.attached? %>
+      <audio id="audio-<%= post.id %>" preload="metadata">
+        <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
+        お使いのブラウザはオーディオプレイヤーをサポートしていません。
+      </audio>
+      <input type="range" min="0" max="<%= post.duration %>" value="0" step="1" class="range range-info range-sm md:range-md" data-action="input->audio#seek" data-audio-id="<%= post.id %>">
+      <div class="flex justify-between">
+        <div id="current-time-<%= post.id %>">00:00</div>
+              <div>                
+                <% duration_minutes = post.duration / 60 %>
+                <% duration_seconds = post.duration % 60 %>
+                <%= format('%02d:%02d', duration_minutes, duration_seconds) %>
+              </div>
+        </div>
+        <div class="text-center text-blue-500 hover:text-sky-400"
+                data-audio-target="playButton"
+                data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+          <button class="mt-2 play-audio-button transition duration-300 ease-in-out transform hover:scale-110">
+            <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl md:text-4xl"></i>
+          </button>
+        </div>
+      <% end %>
+
+      
+    </div>
+
+    <div class="flex justify-end">
+      <%= link_to '詳細を見る', post_path(post), class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+      <br>
+    </div>
+
+    <div class="flex justify-between items-center mt-2 px-2">
+      <div>
+        <%= link_to "#", id: "#" do %>
+          <i class="fa-regular fa-comment text-lg text-gray-500 hover:text-blue-700"></i>
+        <% end %>
+      </div>
+      <div>
+        <%= link_to "#", id: "#" do %>
+          <i class="fa-solid fa-retweet text-lg text-gray-500 hover:text-blue-700"></i>
+        <% end %>
+      </div>
+      <div>
+        <%= turbo_frame_tag "post-#{post.id}-like" do %>
+          <%= render partial: 'posts/like', locals: { post: post } %>
+        <% end %>
+      </div>
+      <div>
+        <%= link_to "#", id: "#" do %>
+          <i class="fa-brands fa-x-twitter text-lg text-black-500 hover:text-black-700"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

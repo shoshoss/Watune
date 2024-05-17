@@ -9,20 +9,18 @@
 
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center space-x-4">
-      <%= link_to 'ConGraWaとは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
-      <%= link_to 'みんなのWave', '#', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
+      <%= link_to '「Wこんぐら」とは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to 'みんなのWave', posts_path, class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
 
       <!-- モーダル（ログインと新規登録）を開くリンク -->
-      <%= link_to t('header.login'), 
-              new_login_modal_path, 
-              class: 'btn btn-primary hidden md:block md:text-lg', 
-              data: { turbo_frame: "login_modal",
-                      controller: "login-modal", 
-            signup_modal_redirect_path: root_path } %>
-      <%= link_to t('header.signup'), 
-              new_signup_modal_path, 
-              class: 'btn btn-outline btn-accent md:text-lg sm:text-sm', 
-              data: { turbo_frame: "signup_modal" } %>
+      <%= link_to t('header.login'),
+                  new_login_modal_path,
+                  class: 'btn btn-outline btn-primary hidden md:flex md:text-lg',
+                  data: { turbo_frame: "login_modal" } %>
+      <%= link_to t('header.signup'),
+                  new_signup_modal_path,
+                  class: 'btn btn-outline btn-accent md:text-lg sm:text-sm',
+                  data: { turbo_frame: "signup_modal" } %>
 
       <!-- ハンバーガーメニュー -->
       <div class="dropdown dropdown-end">
@@ -38,11 +36,14 @@
             <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
           <li class="block">
-            <%= link_to 'みんなのWave', '#', class: 'hover:bg-cyan-600 hover:text-white' %>
+            <%= link_to 'みんなのWave', posts_path, class: 'hover:bg-cyan-600 hover:text-white' %>
           </li>
           </li>
           <li class="block">
-            <%= link_to 'ログイン', login_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+            <%= link_to t('header.login'),
+                  new_login_modal_path,
+                  class: 'hover:bg-cyan-600 hover:text-white',
+                  data: { turbo_frame: "login_modal" } %>
           </li>
         </ul>
       </div>

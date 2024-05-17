@@ -1,15 +1,19 @@
 # app/controllers/profiles_controller.rb
 class ProfilesController < ApplicationController
-  before_action :require_login
+  before_action :set_user, only: %i[edit update]
+
+  def show
+    @user = User.find_by(username_slug: params[:username_slug])
+  end
 
   def edit
     @user = current_user
   end
 
   def update
-    @user = current_user
-    if @user.update(profile_params)
-      redirect_to profile_path, status: :see_other, notice: 'プロファイルが更新されました。'
+    @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
+    if @user.update(user_params)
+      redirect_to profile_show_path(username_slug: @user.username_slug), status: :see_other, notice: 'プロファイルが更新されました。'
     else
       flash.now[:error] = 'プロファイルの更新に失敗しました。'
       render :edit, status: :unprocessable_entity
@@ -18,7 +22,11 @@ class ProfilesController < ApplicationController
 
   private
 
-  def profile_params
-    params.require(:user).permit(:display_name, :username_slug, :self_introduction)
+  def set_user
+    @user = User.find(current_user.id)
+  end
+
+  def user_params
+    params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 end

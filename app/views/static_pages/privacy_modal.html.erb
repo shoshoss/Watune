@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "privacy_modal" do %>
+  <dialog id="privacy_modal_daialog" class="modal bg-gray-500 bg-opacity-50" data-controller="privacy-modal">
+    <div class="modal-box">
+      <div class="flex justify-end items-center">
+        <i class="fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->privacy-modal#closeModal"></i>
+      </div>
+      <%= render 'static_pages/privacy_form' %>
+      <div class="modal-action">
+        <button class="btn" data-action="privacy-modal#closeModal">閉じる</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+<% end %>
