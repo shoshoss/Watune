@@ -1,0 +1,89 @@
+<% content_for(:title, t('profile.show.title')) %>
+<div class="flex justify-center min-h-screen" >
+  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
+    <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
+    <div class="mb-2 flex mx-auto items-stretch ">
+      <!-- 左側のダミー要素 -->
+      <div class="<%= 'invisible' unless current_user == @user %>">
+        <%= link_to "編集する", edit_profile_path, class: 'ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
+      </div>
+
+      <!-- アバター画像 -->
+      <div class="flex justify-center flex-grow items-center">
+        <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar, class: "rounded-full object-cover h-32 w-32" %>
+          <% else %>
+            <%= image_tag asset_path('sample.jpg'), class: "rounded-full object-cover h-32 w-32" %>
+          <% end %>
+      </div>
+
+      <!-- 編集ボタン -->
+      <div class="flex flex-grow-0 justify-end items-end">
+        <% if current_user == @user %>
+          <%= link_to "編集する", edit_profile_path, class: 'mr-2 sm:mr-5 btn btn-outline btn-secondary' %>
+        <% else %>
+          <div class="invisible">
+            <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <!-- ユーザー名-->
+    <div class="mb-2 flex flex-col justify-center items-center">
+      <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
+      <p class="text-gray-500">@<%= @user.username_slug %></p>
+    </div>
+    <!-- 自己紹介 -->
+    <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
+      <div class="p-2 border-2 border-gray-200 rounded text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
+        <%# 連続する改行に特別なクラスを適用する %>
+        <% if @user.self_introduction.present? %>
+          <% @user.self_introduction.split(/\\r\\n|\\r|\\n/).each do |line| %>
+            <% if line.empty? %>
+              <div class="text-xxs sm:text-xs"> <!-- 空白行用のスタイル -->
+                <br>
+              </div>
+            <% else %>
+              <div class="text-sm sm:text-lg"> <!-- 通常の行用のスタイル -->
+                <%= line %><br>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <p>自己紹介文はありません。</p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- カテゴリータブ -->
+    <%= turbo_frame_tag "posts" do %>
+      <div class="c-tabs mt-4 mb-2">
+        <%= link_to profile_path(category: 'self'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('self')}" do %>
+          自分へ
+        <% end %>
+        <%= link_to profile_path(category: 'all'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all')}" do %>
+          全体へ
+        <% end %>
+        <%= link_to profile_path(category: 'likes'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('likes')}" do %>
+          いいね
+        <% end %>
+      </div>
+
+    <!-- 投稿一覧 -->
+      <% if @posts.present? %>
+        <%= turbo_frame_tag "next-page" do %>
+          <% @posts.each do |post| %>
+            <%= render partial: 'posts/post', locals: { post: post } %>
+          <% end %>
+          <% if @pagy.next %>
+            <%= render 'posts/next_page' %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="mb-3">投稿がありません</div>
+      <% end %>
+    <% end %>
+
+
+  </div>
+</div>
