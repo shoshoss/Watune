@@ -3,10 +3,6 @@ class PostsController < ApplicationController
 
   def index
     @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
     # @posts = Post.includes(:user).order(created_at: :desc).page(params[:page]).per(10)
   end
 
