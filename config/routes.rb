@@ -36,7 +36,7 @@ Rails.application.routes.draw do
       get :privacy_settings
     end
     resources :likes, only: %i[create destroy]
-    resources :bookmarks, only: [:create, :destroy]
+    resources :bookmarks, only: %i[create destroy]
   end
 
   # プロフィールのルーティング

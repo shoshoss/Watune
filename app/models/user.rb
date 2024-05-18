@@ -98,7 +98,6 @@ class User < ApplicationRecord
     bookmarks.exists?(post:)
   end
 
-
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
 
