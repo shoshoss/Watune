@@ -79,6 +79,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_18_045700) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "duration"
+    t.index ["privacy"], name: "index_posts_on_privacy"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 

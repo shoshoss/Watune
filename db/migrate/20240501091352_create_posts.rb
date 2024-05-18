@@ -8,5 +8,8 @@ class CreatePosts < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    add_index :posts, :user_id unless index_exists?(:posts, :user_id)
+    add_index :posts, :privacy unless index_exists?(:posts, :privacy)
   end
 end

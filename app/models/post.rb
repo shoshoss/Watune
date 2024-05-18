@@ -7,44 +7,42 @@ class Post < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
 
-  # Active Storageを使って添付ファイルを管理する
   has_one_attached :audio
 
   validates :body, length: { maximum: 10_000 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 }, allow_nil: true
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
+                       allow_nil: true
 
-  # 投稿のプライバシーレベル
   enum privacy: { only_me: 0, friends_only: 1, open: 2 }
 
-  # スコープ: 公開設定の投稿を表示
-  scope :visible_to, ->(user) { where(privacy: %i[open friends_only]).or(where(user: user)) }
+  # 公開設定の投稿を表示するスコープ
+  scope :visible_to, ->(user) { where(privacy: %i[open friends_only]).or(where(user:)) }
 
-  # スコープ: ユーザーがいいねしていない投稿を取得
-  scope :not_liked_by_user, ->(user) { where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil }) }
-
-  # スコープ: 自分の投稿で自分がいいねしていないもの、および他のユーザーの公開設定された投稿で、そのユーザー自身がいいねしていない、いいねの数が0のものを取得
-  scope :with_likes_count_all, ->(user) {
-    user_posts = Post.where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
-    open_posts = Post.where(privacy: 'open')
-                      .where.not(user_id: user.id)
-                      .left_joins(:likes)
-                      .group('posts.id')
-                      .having('COUNT(likes.id) = 0 OR (COUNT(likes.id) = 1 AND SUM(CASE WHEN likes.user_id = posts.user_id THEN 1 ELSE 0 END) = 0)')
-    Post.union_all(user_posts, open_posts)
+  # ユーザーがいいねしていない投稿を取得するスコープ
+  scope :not_liked_by_user, lambda { |user|
+    where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
   }
 
-  # スコープ: 自分以外のユーザーの公開設定された投稿を、いいねの数が0（投稿した本人のいいねを除く）で取得
-  scope :public_likes_chance, ->(user) {
+  # 自分の投稿で自分がいいねしていないもの、および他のユーザーの公開設定された投稿で、
+  # そのユーザー自身がいいねしていない、いいねの数が0のものを取得するスコープ
+  scope :with_likes_count_all, lambda { |user|
+    user_posts = where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
+    open_posts = where(privacy: 'open')
+                 .where.not(user_id: user.id)
+                 .where.missing(:likes)
+    user_posts.or(open_posts)
+  }
+
+  # 自分以外のユーザーの公開設定された投稿を、いいねの数が0（投稿した本人のいいねを除く）で取得するスコープ
+  scope :public_likes_chance, lambda { |user|
     where.not(user_id: user.id)
          .where(privacy: 'open')
-         .left_joins(:likes)
-         .group('posts.id')
-         .having('COUNT(likes.id) = 0 OR (COUNT(likes.id) = 1 AND SUM(CASE WHEN likes.user_id = posts.user_id THEN 1 ELSE 0 END) = 0)')
+         .where.missing(:likes)
   }
 
-  # スコープ: 自分だけの投稿を取得
+  # 自分だけの投稿を取得するスコープ
   scope :only_me, -> { where(privacy: 'only_me') }
 
-  # スコープ: 公開設定された自分の投稿を取得
+  # 公開設定された自分の投稿を取得するスコープ
   scope :my_posts_open, -> { where(privacy: 'open') }
 end

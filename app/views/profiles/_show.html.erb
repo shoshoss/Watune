@@ -55,58 +55,58 @@
       </div>
     </div>
 
-  <!-- カテゴリータブ -->
-  <%= turbo_frame_tag "posts" do %>
-    <div class="overflow-x-auto">
-    <table class="min-w-full  whitespace-nowrap">
-      <tr class="border-b border-gray-300">
-        <td colspan="2" class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'all_my_posts'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_my_posts', 'only_me', 'my_posts_open')}" do %>
-            My Waves
-          <% end %>
-        </td>
-        <td colspan="2" class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'all_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_likes_chance', 'my_likes_chance', 'public_likes_chance')}" do %>
-            いいねチャンス
-          <% end %>
-        </td>
-        <td rowspan="2" class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'bookmarked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('bookmarked')}" do %>
-            お気に入り
-          <% end %>
-        </td>
-        <td rowspan="2" class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'liked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('liked')}" do %>
-            いいね
-          <% end %>
-        </td>
-      </tr>
-      <tr class="border-b border-gray-300">
-        <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'only_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('only_me')}" do %>
-            自分へ
-          <% end %>
-        </td>
-        <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_posts_open')}" do %>
-            みんなへ
-          <% end %>
-        </td>
-        <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'my_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_likes_chance')}" do %>
-            自分の
-          <% end %>
-        </td>
-        <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'public_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('public_likes_chance')}" do %>
-            みんなの
-          <% end %>
-        </td>
-      </tr>
-    </table>
-  </div>
+    <!-- カテゴリータブ -->
+    <%= turbo_frame_tag "posts" do %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full  whitespace-nowrap">
+          <tr class="border-b border-gray-300">
+            <td colspan="2" class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_my_posts', 'only_me', 'my_posts_open')}" do %>
+                My Waves
+              <% end %>
+            </td>
+            <td colspan="2" class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_likes_chance', 'my_likes_chance', 'public_likes_chance')}" do %>
+                いいねチャンス
+              <% end %>
+            </td>
+            <td rowspan="2" class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'bookmarked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('bookmarked')}" do %>
+                お気に入り
+              <% end %>
+            </td>
+            <td rowspan="2" class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('liked')}" do %>
+                いいね
+              <% end %>
+            </td>
+          </tr>
+          <tr class="border-b border-gray-300">
+            <td class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'only_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('only_me')}" do %>
+                自分へ
+              <% end %>
+            </td>
+            <td class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_posts_open')}" do %>
+                みんなへ
+              <% end %>
+            </td>
+            <td class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_likes_chance')}" do %>
+                自分の
+              <% end %>
+            </td>
+            <td class="text-center align-middle py-2">
+              <%= link_to profile_path(username_slug: @user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('public_likes_chance')}" do %>
+                みんなの
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
 
-    <!-- 投稿一覧 -->
+      <!-- 投稿一覧 -->
       <% if @posts.present? %>
         <%= turbo_frame_tag "next-page" do %>
           <% @posts.each do |post| %>
@@ -120,7 +120,5 @@
         <div class="mb-3">投稿がありません</div>
       <% end %>
     <% end %>
-
-
   </div>
 </div>
