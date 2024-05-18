@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :set_user, only: %i[show edit update]
-  before_action :set_posts, only: %i[show update]
+  before_action :set_posts, only: %i[show]
+  before_action :set_current_user, only: %i[edit update]
 
   # プロフィール表示アクション
   def show
@@ -17,7 +18,8 @@ class ProfilesController < ApplicationController
   def update
     attach_avatar if avatar_params_present?
     if @user.update(user_params)
-      flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
+      flash.now[:notice] =
+        t('defaults.flash_message.updated', item: Profile.model_name.human, default: 'プロフィールが更新されました。')
       set_posts
       # `update.turbo_stream.erb`が自動的にレンダリングされます
     else
@@ -35,14 +37,18 @@ class ProfilesController < ApplicationController
 
   private
 
-  # 現在のユーザーを設定
+  # ユーザーを設定
   def set_user
-    @user = current_user
+    @user = User.find_by(username_slug: params[:username_slug]) || current_user
   end
 
   # 投稿をフィルタリングして設定
   def set_posts
     @pagy, @posts = pagy_countless(filtered_posts, items: 10)
+  end
+
+  def set_current_user
+    @user = current_user
   end
 
   # 許可されたパラメータを設定

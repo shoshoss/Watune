@@ -31,13 +31,14 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]
 
   # 投稿のルーティング
-  resources :waves, controller: 'posts', as: 'posts' do
+  resources :waves, controller: 'posts', as: 'posts', except: [:show] do
     collection do
       get :privacy_settings
     end
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]
   end
+  get '/:username_slug/status/:id', to: 'posts#show', as: :user_post
 
   # プロフィールのルーティング
   resource :profile, only: %i[show edit update]
