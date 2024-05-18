@@ -21,18 +21,23 @@ class Post < ApplicationRecord
     where(privacy: %i[open friends_only]).or(where(user:))
   }
 
-  # 自分がいいねをしていない自分の投稿
-  scope :not_liked_by_user, ->(user) {
+  scope :not_liked_by_user, lambda { |user|
     where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
   }
 
-  # みんなの投稿で0または1のいいねが付いているもの（自分の投稿を除く）
-  scope :with_likes_count_excluding_user, ->(user) {
-    where.not(user_id: user.id).left_joins(:likes).group('posts.id').having('COUNT(likes.id) <= 1')
+  scope :with_likes_count_excluding_user, lambda { |user|
+    where.not(user_id: user.id)
+         .left_joins(:likes)
+         .group('posts.id')
+         .having('COUNT(likes.id) <= 1')
   }
 
-  # みんなの投稿で0または1のいいねが付いているもの
-  scope :with_likes_count_all, -> {
-    left_joins(:likes).group('posts.id').having('COUNT(likes.id) <= 1')
+  scope :only_me, -> { where(privacy: 'only_me') }
+  scope :open, -> { where(privacy: 'open') }
+
+  scope :with_likes_count_all, lambda { |_user|
+    left_joins(:likes)
+      .group('posts.id')
+      .having('COUNT(likes.id) <= 1')
   }
 end
