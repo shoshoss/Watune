@@ -62,13 +62,19 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def filtered_posts
-    scope = case params[:category] ||= 'self'
-            when 'self'
+    scope = case params[:category] ||= 'all'
+            when 'all'
               @user.posts
+            when 'only_me'
+              @user.posts.only_me
+            when 'open'
+              @user.posts.open
             when 'likes'
               @user.liked_posts.visible_to(@user)
-            else
-              Post.open
+            when 'not_liked_by_me'
+              Post.not_liked_by_user(@user)
+            when 'with_likes_count'
+              Post.with_likes_count
             end
     scope.includes(:user).order(created_at: :desc)
   end

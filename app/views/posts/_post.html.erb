@@ -30,7 +30,7 @@
       </div>
       <!-- 投稿内容とオーディオプレイヤー -->
       <div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
-        <div class="cursor-pointer text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]"
+        <div class="cursor-pointer text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
              data-action="click->audio#playPause"
              data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
           <%# 連続する改行に特別なクラスを適用する %>

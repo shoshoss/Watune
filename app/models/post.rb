@@ -20,4 +20,14 @@ class Post < ApplicationRecord
   scope :visible_to, lambda { |user|
     where(privacy: %i[open friends_only]).or(where(user:))
   }
+
+  # 自分がいいねをしていない自分の投稿
+  scope :not_liked_by_user, ->(user) {
+    where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
+  }
+
+  # みんなの投稿で0または1のいいねが付いているもの
+  scope :with_likes_count, -> {
+    left_joins(:likes).group('posts.id').having('COUNT(likes.id) <= 1')
+  }
 end

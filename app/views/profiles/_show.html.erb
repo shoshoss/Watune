@@ -35,10 +35,10 @@
     </div>
     <!-- 自己紹介 -->
     <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
-      <div class="p-2 border-2 border-gray-200 rounded text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
+      <div class="p-2 text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
         <%# 連続する改行に特別なクラスを適用する %>
         <% if @user.self_introduction.present? %>
-          <% @user.self_introduction.split(/\\r\\n|\\r|\\n/).each do |line| %>
+          <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
             <% if line.empty? %>
               <div class="text-xxs sm:text-xs"> <!-- 空白行用のスタイル -->
                 <br>
@@ -58,11 +58,20 @@
     <!-- カテゴリータブ -->
     <%= turbo_frame_tag "posts" do %>
       <div class="c-tabs mt-4 mb-2">
-        <%= link_to profile_path(category: 'self'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('self')}" do %>
+        <%= link_to profile_path(category: 'all'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all')}" do %>
+          自分のWaves
+        <% end %>
+        <%= link_to profile_path(category: 'only_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('only_me')}" do %>
           自分へ
         <% end %>
-        <%= link_to profile_path(category: 'all'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all')}" do %>
-          全体へ
+        <%= link_to profile_path(category: 'open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('open')}" do %>
+          みんなへ
+        <% end %>
+        <%= link_to profile_path(category: 'not_liked_by_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('not_liked_by_me')}" do %>
+          自分の未いいね
+        <% end %>
+        <%= link_to profile_path(category: 'with_likes_count'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('with_likes_count')}" do %>
+          みんなの0-1いいね
         <% end %>
         <%= link_to profile_path(category: 'likes'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('likes')}" do %>
           いいね
