@@ -68,7 +68,7 @@ class ProfilesController < ApplicationController
       'my_posts_open' => @user.posts.open,
       'all_likes_chance' => Post.with_likes_count_all(@user),
       'my_likes_chance' => Post.not_liked_by_user(@user),
-      'public_likes_chance' => Post.with_likes_count_excluding_user(@user),
+      'public_likes_chance' => Post.public_likes_chance(@user),
       'bookmarked' => @user.bookmarked_posts,
       'liked' => @user.liked_posts.visible_to(@user)
     }
