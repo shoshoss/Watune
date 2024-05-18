@@ -82,6 +82,22 @@ class User < ApplicationRecord
     likes.exists?(post:)
   end
 
+  # ブックマーク機能
+  has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_posts, through: :bookmarks, source: :post
+
+  def bookmark(post)
+    bookmarks.create(post:)
+  end
+
+  def unbookmark(post)
+    bookmarks.find_by(post:)&.destroy
+  end
+
+  def bookmarked?(post)
+    bookmarks.exists?(post:)
+  end
+
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
 

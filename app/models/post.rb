@@ -2,6 +2,8 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
+  has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_users, through: :bookmarks, source: :user
 
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :audio
@@ -19,5 +21,25 @@ class Post < ApplicationRecord
 
   scope :visible_to, lambda { |user|
     where(privacy: %i[open friends_only]).or(where(user:))
+  }
+
+  scope :not_liked_by_user, lambda { |user|
+    where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
+  }
+
+  scope :with_likes_count_excluding_user, lambda { |user|
+    where.not(user_id: user.id)
+         .left_joins(:likes)
+         .group('posts.id')
+         .having('COUNT(likes.id) <= 1')
+  }
+
+  scope :only_me, -> { where(privacy: 'only_me') }
+  scope :open, -> { where(privacy: 'open') }
+
+  scope :with_likes_count_all, lambda { |_user|
+    left_joins(:likes)
+      .group('posts.id')
+      .having('COUNT(likes.id) <= 1')
   }
 end
