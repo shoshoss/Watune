@@ -26,8 +26,13 @@ class Post < ApplicationRecord
     where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
   }
 
+  # みんなの投稿で0または1のいいねが付いているもの（自分の投稿を除く）
+  scope :with_likes_count_excluding_user, ->(user) {
+    where.not(user_id: user.id).left_joins(:likes).group('posts.id').having('COUNT(likes.id) <= 1')
+  }
+
   # みんなの投稿で0または1のいいねが付いているもの
-  scope :with_likes_count, -> {
+  scope :with_likes_count_all, -> {
     left_joins(:likes).group('posts.id').having('COUNT(likes.id) <= 1')
   }
 end

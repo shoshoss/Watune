@@ -68,13 +68,17 @@ class ProfilesController < ApplicationController
             when 'only_me'
               @user.posts.only_me
             when 'open'
-              @user.posts.open
-            when 'likes'
-              @user.liked_posts.visible_to(@user)
-            when 'not_liked_by_me'
+              Post.open
+            when 'like_chance_all'
+              Post.with_likes_count_all
+            when 'like_chance_me'
               Post.not_liked_by_user(@user)
-            when 'with_likes_count'
-              Post.with_likes_count
+            when 'like_chance_other'
+              Post.with_likes_count_excluding_user(@user)
+            when 'bookmarked'
+              @user.bookmarked_posts
+            when 'like_chance_public'
+              @user.liked_posts.visible_to(@user)
             end
     scope.includes(:user).order(created_at: :desc)
   end

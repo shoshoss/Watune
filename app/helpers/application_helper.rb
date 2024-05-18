@@ -36,8 +36,8 @@ module ApplicationHelper
   end
 
   # プロフィール画面 paramsの値に応じてアクティブクラスを適用
-  def active_tab(category)
-    params[:category] == category ? 'c-tab-active' : ''
+  def active_tab(*categories)
+    categories.include?(params[:category]) ? 'c-tab-active' : ''
   end
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用
