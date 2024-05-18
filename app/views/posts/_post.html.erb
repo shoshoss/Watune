@@ -94,6 +94,9 @@
             <%= render partial: 'posts/like', locals: { post: post } %>
           <% end %>
         </div>
+        <div id="post-<%= post.id %>-bookmark">
+          <%= render partial: 'posts/bookmark', locals: { post: post } %>
+        </div>
         <div>
           <%= link_to "#", id: "#" do %>
             <i class="fa-brands fa-x-twitter text-lg text-black-500 hover:text-black-700"></i>
