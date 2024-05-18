@@ -43,7 +43,7 @@ class ProfilesController < ApplicationController
   end
 
   def set_current_user
-    @user =  current_user
+    @user = current_user
   end
 
   # 投稿をフィルタリングして設定
@@ -68,9 +68,7 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def filtered_posts
-    if @user.nil?
-      return Post.none
-    end
+    return Post.none if @user.nil?
 
     scopes = {
       'all_my_posts' => @user.posts,
