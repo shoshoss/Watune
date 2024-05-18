@@ -3,12 +3,6 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  # kaminari
-  # def path_to_next_page(posts)
-  #   return nil unless posts.next_page
-  #   posts_path(page: posts.next_page)  # これは実際のルーティングに合わせて変更してください
-  # end
-
   def page_title(title = '')
     base_title = 'ConGraWa APP'
     title.present? ? "#{title} | #{base_title}" : base_title
@@ -37,7 +31,8 @@ module ApplicationHelper
 
   # プロフィール画面 paramsの値に応じてアクティブクラスを適用
   def active_tab(*categories)
-    categories.include?(params[:category]) ? 'c-tab-active' : ''
+    active_category = params[:category] || 'all_my_posts'
+    categories.include?(active_category) ? 'c-tab-active' : ''
   end
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用

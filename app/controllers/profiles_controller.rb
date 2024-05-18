@@ -65,15 +65,15 @@ class ProfilesController < ApplicationController
     scopes = {
       'all_my_posts' => @user.posts,
       'only_me' => @user.posts.only_me,
-      'open' => Post.open,
-      'likes_chance_all' => Post.with_likes_count_all(@user),
-      'my_like_chance' => Post.not_liked_by_user(@user),
-      'public_like_chance' => Post.with_likes_count_excluding_user(@user),
+      'my_posts_open' => @user.posts.open,
+      'all_likes_chance' => Post.with_likes_count_all(@user),
+      'my_likes_chance' => Post.not_liked_by_user(@user),
+      'public_likes_chance' => Post.public_likes_chance(@user),
       'bookmarked' => @user.bookmarked_posts,
       'liked' => @user.liked_posts.visible_to(@user)
     }
 
-    scope = scopes[params[:category] || 'all'] || Post.none
+    scope = scopes[params[:category] || 'all_my_posts'] || Post.none
     scope.includes(:user).order(created_at: :desc)
   end
 end

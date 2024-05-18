@@ -66,6 +66,8 @@ gem 'pagy', '~> 8.3'
 
 gem 'aws-sdk-s3', '~> 1.1', require: false
 
+gem 'active_record_extended', '~> 3.2'
+
 group :development, :test do
   # デバッグ用のdebug
   gem 'debug', platforms: %i[mri windows]

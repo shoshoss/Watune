@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create edit update]
 
   # 投稿のルーティング
-  resources :posts, only: %i[index new create edit update destroy] do
+  resources :waves, controller: 'posts', as: 'posts' do
     collection do
       get :privacy_settings
     end
