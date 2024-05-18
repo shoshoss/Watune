@@ -1,109 +1,46 @@
-<%= turbo_frame_tag "profile_edit_frame" do %>
-  <% content_for(:title, t('profile.edit.title')) %>
-  <div class="flex justify-center min-h-screen p-5" data-controller="profile-edit">
-    <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
-      <h1 class="text-4xl font-bold mt-4 mb-4 sm:mb-8 text-center">
-        <%= t('.title') %>
-      </h1>
-      <%= form_with model: @user, url: profile_path, method: :patch, turbo_frame: "profile_edit_frame" do |f| %>
-        <%= turbo_frame_tag "error_messages_frame" do %>
-          <%= render 'shared/error_messages', object: f.object %>
-        <% end %>
-
-        <div class="card-body mx-auto">
-          <div class="form-control">
-            <label class="cursor-pointer">
-              <%= f.label :avatar, 'プロフィール画像', class: 'label-text text-lg font-semibold mb-2', for: "input-avatar" %>
-              <div class="mt-1 p-2 text-lg border-2 border-gray-300 rounded-lg">
-                <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "hidden" %>
-                <span class="file-upload-label bg-gray-200 text-gray-700 p-2 rounded cursor-pointer">ファイルを選択</span>
-                <br class="block sm:hidden mb-2">
-                <span id="file-name" class="file-name text-gray-600 sm:ml-2">選択されていません</span>
-                <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : asset_path('sample.jpg') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
-              </div>
-            </label>
-          </div>
-
-          <div class="form-control">
-            <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
-            <%= f.text_field :display_name, class: "input-style" %>
-          </div>
-
-          <div class="form-control mt-2">
-            <%= f.label :username_slug, 'ユーザー名', class: "label-text text-lg font-semibold mb-1" %>
-            <%= f.text_field :username_slug, class: "input-style" %>
-          </div>
-
-          <div class="form-control mt-2">
-            <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1" %>
-            <%= f.text_area :self_introduction, class: "input-style", rows: "8", style: "resize: vertical;" %>
-          </div>
-          
-          <div class="form-control mt-4 lg:mt-6">
-            <%= f.submit "プロファイル更新", class: "btn btn-primary text-lg w-full" %>
-          </div>
-        </div>
+<div id="profile_edit_frame" class="flex justify-center min-h-screen p-5" data-controller="profile-edit">
+  <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
+    <h1 class="text-4xl font-bold mt-4 mb-4 sm:mb-8 text-center">
+      <%= t('.title') %>
+    </h1>
+    <%= form_with model: @user, url: profile_path, method: :patch, turbo_frame: "profile_edit_frame" do |f| %>
+      <%= turbo_frame_tag "error_messages_frame" do %>
+        <%= render 'shared/error_messages', object: f.object %>
       <% end %>
-    </div>
+
+      <div class="card-body mx-auto">
+        <div class="form-control">
+          <label class="cursor-pointer">
+            <%= f.label :avatar, 'プロフィール画像', class: 'label-text text-lg font-semibold mb-2', for: "input-avatar" %>
+            <div class="mt-1 p-2 text-lg border-2 border-gray-300 rounded-lg">
+              <%= f.file_field :avatar, id: "input-avatar", accept: "image/jpeg,image/gif,image/png", class: "hidden", data: { profile_edit_target: "inputAvatar" } %>
+              <span class="file-upload-label bg-gray-200 text-gray-700 p-2 rounded cursor-pointer">ファイルを選択</span>
+              <br class="block sm:hidden mb-2">
+              <span id="file-name" class="file-name text-gray-600 sm:ml-2" data-profile-edit-target="fileName">選択されていません</span>
+              <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : asset_path('sample.jpg') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32" data-profile-edit-target="previewAvatar">
+            </div>
+          </label>
+        </div>
+
+        <div class="form-control">
+          <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1" %>
+          <%= f.text_field :display_name, class: "input-style" %>
+        </div>
+
+        <div class="form-control mt-2">
+          <%= f.label :username_slug, 'ユーザー名', class: "label-text text-lg font-semibold mb-1" %>
+          <%= f.text_field :username_slug, class: "input-style" %>
+        </div>
+
+        <div class="form-control mt-2">
+          <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1" %>
+          <%= f.text_area :self_introduction, class: "input-style", rows: "8", style: "resize: vertical;", data: { profile_edit_target: "selfIntroduction", action: "input->profile-edit#adjustHeight" } %>
+        </div>
+        
+        <div class="form-control mt-4 lg:mt-6">
+          <%= f.submit "プロファイル更新", class: "btn btn-primary text-lg w-full" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-<% end %>
-
-<script>
-document.addEventListener("turbo:load", function() {
-  if (document.querySelector('[data-controller="profile-edit"]')) {
-    setupFileInput();
-    adjustTextareaHeight(document.getElementById('self_introduction'));
-  }
-});
-
-function setupFileInput() {
-  const input = document.getElementById('input-avatar');
-  const fileNameDisplay = document.getElementById('file-name');
-  const preview = document.getElementById('preview-avatar');
-  if (!input || !fileNameDisplay || !preview) {
-    console.warn('Required elements are not found in the DOM');
-    return;
-  }
-  const currentAvatarSrc = preview.src;
-  input.addEventListener('change', handleFileSelect);
-  
-  function handleFileSelect() {
-    const file = this.files[0];
-    if (!file) {
-      preview.src = currentAvatarSrc;
-      fileNameDisplay.textContent = '選択されていません';
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      alert("ファイルサイズは5MB以下にしてください。");
-      preview.src = currentAvatarSrc;
-      fileNameDisplay.textContent = '選択されていません';
-      return;
-    }
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      preview.src = e.target.result;
-      fileNameDisplay.textContent = file.name;
-    };
-    reader.onerror = function() {
-      console.error("エラーが発生しました: ", reader.error);
-      alert("ファイルの読み込みに失敗しました。");
-      preview.src = currentAvatarSrc;
-      fileNameDisplay.textContent = '選択されていません';
-    };
-    reader.readAsDataURL(file);
-  }
-}
-
-document.addEventListener('input', function (event) {
-  if (event.target.tagName.toLowerCase() === 'textarea') {
-    adjustTextareaHeight(event.target);
-  }
-});
-
-function adjustTextareaHeight(textarea) {
-  if (!textarea) return;
-  textarea.style.height = 'auto'; // Reset height
-  textarea.style.height = textarea.scrollHeight + 'px'; // Set new height based on content
-}
-</script>
+</div>

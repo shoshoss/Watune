@@ -18,11 +18,14 @@ class ProfilesController < ApplicationController
   def update
     attach_avatar if avatar_params_present?
     if @user.update(user_params)
-      flash.now[:notice] =
-        t('defaults.flash_message.updated', item: Profile.model_name.human, default: 'プロフィールが更新されました。')
+      flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       set_posts
-      # `update.turbo_stream.erb`が自動的にレンダリングされます
+      respond_to do |format|
+        format.html { redirect_to profile_show_path(@user.username_slug) }
+        format.turbo_stream
+      end
     else
+      flash.now[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream do

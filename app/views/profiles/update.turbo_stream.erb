@@ -10,6 +10,6 @@
   <%= render 'shared/flash_message' %>
 <% end %>
 
-<%= turbo_stream.replace 'profile_edit_frame' do %>
+<%= turbo_stream.replace 'profile_edit_frame', data: { turbo_action: "advance" } do %>
   <%= render 'profiles/show', user: @user, posts: @posts, pagy: @pagy %>
 <% end %>
