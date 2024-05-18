@@ -3,12 +3,6 @@
 module ApplicationHelper
   include Pagy::Frontend
 
-  # kaminari
-  # def path_to_next_page(posts)
-  #   return nil unless posts.next_page
-  #   posts_path(page: posts.next_page)  # これは実際のルーティングに合わせて変更してください
-  # end
-
   def page_title(title = '')
     base_title = 'ConGraWa APP'
     title.present? ? "#{title} | #{base_title}" : base_title
