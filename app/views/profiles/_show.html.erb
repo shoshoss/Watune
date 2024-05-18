@@ -66,7 +66,7 @@
           <% end %>
         </td>
         <td colspan="2" class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'my_like_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_like_chance', 'my_like_chance', 'public_like_chance')}" do %>
+          <%= link_to profile_path(category: 'all_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_likes_chance', 'my_likes_chance', 'public_likes_chance')}" do %>
             いいねチャンス
           <% end %>
         </td>
@@ -88,17 +88,18 @@
           <% end %>
         </td>
         <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('open')}" do %>
+          <%= link_to profile_path(category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_posts_open')}" do %>
             みんなへ
           <% end %>
         </td>
         <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'my_like_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_like_chance')}" do %>
+          <%= link_to profile_path(category: 'm
+          '), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_likes_chance')}" do %>
             自分の
           <% end %>
         </td>
         <td class="text-center align-middle py-2">
-          <%= link_to profile_path(category: 'public_like_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('public_like_chance')}" do %>
+          <%= link_to profile_path(category: 'public_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('public_likes_chance')}" do %>
             みんなの
           <% end %>
         </td>

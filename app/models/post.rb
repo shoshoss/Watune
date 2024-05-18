@@ -35,7 +35,7 @@ class Post < ApplicationRecord
   }
 
   scope :only_me, -> { where(privacy: 'only_me') }
-  scope :open, -> { where(privacy: 'open') }
+  scope :my_posts_open, -> { where(privacy: 'open') }
 
   scope :with_likes_count_all, lambda { |_user|
     left_joins(:likes)
