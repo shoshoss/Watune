@@ -1,0 +1,13 @@
+<%= turbo_stream.replace 'flash_messages' do %>
+  <div id="flash_messages">
+    <div class="p-2 mx-2">
+      <div class="alert alert-success my-2 rounded-lg text-lg" role="alert">
+        <span><%= notice %></span>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= javascript_tag do %>
+  window.location.href = "<%= redirect_path %>";
+<% end %>

@@ -18,11 +18,11 @@ class ProfilesController < ApplicationController
   def update
     attach_avatar if avatar_params_present?
     if @user.update(user_params)
-      flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       set_posts
+      flash[:success] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       respond_to do |format|
-        format.html { redirect_to profile_show_path(@user.username_slug) }
-        format.turbo_stream
+        format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace('profile_edit_frame', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug), notice: t('defaults.flash_message.updated', item: Profile.model_name.human) }) }
       end
     else
       flash.now[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
@@ -37,6 +37,7 @@ class ProfilesController < ApplicationController
       end
     end
   end
+  
 
   private
 

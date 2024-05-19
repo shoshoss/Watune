@@ -1,23 +1,18 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = [
-    "inputAvatar",
-    "fileName",
-    "previewAvatar",
-    "selfIntroduction",
-  ];
-
   connect() {
     console.log("Profile edit controller connected");
     this.setupFileInput();
-    this.adjustTextareaHeight(this.selfIntroductionTarget);
+    this.adjustTextareaHeight(
+      document.getElementById("user_self_introduction")
+    );
   }
 
   setupFileInput() {
-    const input = this.inputAvatarTarget;
-    const fileNameDisplay = this.fileNameTargets[0];
-    const preview = this.previewAvatarTarget;
+    const input = document.getElementById("user_avatar");
+    const fileNameDisplay = document.getElementById("file-name");
+    const preview = document.getElementById("preview-avatar");
     const currentAvatarSrc = preview.src;
 
     if (!input || !fileNameDisplay || !preview) {
@@ -61,5 +56,21 @@ export default class extends Controller {
 
   adjustHeight(event) {
     this.adjustTextareaHeight(event.target);
+  }
+
+  submitEnd(event) {
+    console.log("submitEnd called");
+    if (event.detail.success) {
+      // 成功時にはTurboを無効化してリダイレクトを実行する
+      Turbo.session.drive = false;
+      const redirectPath =
+        event.detail.fetchResponse.response.headers.get("Location");
+      if (redirectPath) {
+        window.location.href = redirectPath;
+      }
+    } else {
+      // 失敗時にはTurboを有効にしてエラーメッセージを表示する
+      Turbo.session.drive = true;
+    }
   }
 }
