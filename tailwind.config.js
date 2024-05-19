@@ -9,6 +9,10 @@ module.exports = {
     extend: {
       colors: {
         custom_sky: "rgb(56 189 248)",
+        "yellow-400-accent": "#ffea00",
+        "yellow-700-accent": "#ffd600",
+        "deep-orange-400": "#ff7043",
+        "deep-orange-500": "#ff5722",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

@@ -16,28 +16,19 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    attach_avatar if avatar_params_present?
     if @user.update(user_params)
-      set_posts
       flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('profile_edit_modal', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug), notice: t('defaults.flash_message.updated', item: Profile.model_name.human) }) }
+        format.turbo_stream
       end
     else
-      flash.now[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('flash_messages', partial: 'shared/flash_message'),
-            turbo_stream.replace('error_messages_frame', partial: 'shared/error_messages', locals: { object: @user })
-          ]
-        end
+        format.turbo_stream
       end
     end
   end
-  
 
   private
 
@@ -60,19 +51,15 @@ class ProfilesController < ApplicationController
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
-  # アバターパラメータの存在チェック
-  def avatar_params_present?
-    params[:user][:avatar].present?
-  end
-
-  # アバターの添付処理
-  def attach_avatar
-    @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
-  end
-
   # フィルタリングされた投稿を取得
-  def filtered_posts
-    return Post.none if @user.nil?
+  def set_posts
+    initial_category = if current_user == @user
+                         'all_my_posts'
+                       else
+                         'my_posts_open'
+                       end
+
+    category = params[:category] || initial_category
 
     scopes = {
       'all_my_posts' => @user.posts,
@@ -85,7 +72,7 @@ class ProfilesController < ApplicationController
       'liked' => @user.liked_posts.visible_to(@user)
     }
 
-    scope = scopes[params[:category] || 'all_my_posts'] || Post.none
-    scope.includes(:user).order(created_at: :desc)
+    scope = scopes[category] || Post.none
+    @pagy, @posts = pagy_countless(scope.includes(:user).order(created_at: :desc), items: 10)
   end
 end
