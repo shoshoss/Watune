@@ -52,8 +52,14 @@ class ProfilesController < ApplicationController
   end
 
   # フィルタリングされた投稿を取得
-  def filtered_posts
-    return Post.none if @user.nil?
+  def set_posts
+    initial_category = if current_user == @user
+                         'all_my_posts'
+                       else
+                         'my_posts_open'
+                       end
+
+    category = params[:category] || initial_category
 
     scopes = {
       'all_my_posts' => @user.posts,
@@ -66,7 +72,7 @@ class ProfilesController < ApplicationController
       'liked' => @user.liked_posts.visible_to(@user)
     }
 
-    scope = scopes[params[:category] || 'all_my_posts'] || Post.none
-    scope.includes(:user).order(created_at: :desc)
+    scope = scopes[category] || Post.none
+    @pagy, @posts = pagy_countless(scope.includes(:user).order(created_at: :desc), items: 10)
   end
 end

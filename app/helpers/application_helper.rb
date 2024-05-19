@@ -31,7 +31,8 @@ module ApplicationHelper
 
   # プロフィール画面 paramsの値に応じてアクティブクラスを適用
   def active_tab(*categories)
-    active_category = params[:category] || 'all_my_posts'
+    initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open'
+    active_category = params[:category] || initial_category
     categories.include?(active_category) ? 'c-tab-active' : ''
   end
 
