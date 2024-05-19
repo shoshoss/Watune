@@ -13,7 +13,7 @@
 }
 
 .c-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 border-b-2 border-gray-300 hover:bg-sky-100; /* 文字の大きさをlgに */
+  @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 border-b-2 border-gray-300 hover:bg-sky-100 border-transparent hover:border-b-4 hover:border-sky-400; /* 文字の大きさをlgに */
 }
 
 .c-tab-active {
