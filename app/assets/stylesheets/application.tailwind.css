@@ -8,6 +8,10 @@
 }
 
 /* プロフィールなどのタブのレイアウト */
+.c-tabs {
+  @apply text-center align-middle border-b-2 border-gray-300 py-2;
+}
+
 .c-tab {
   @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 hover:bg-sky-100 border-b-2 border-transparent; /* 文字の大きさをlgに */
 }
@@ -18,10 +22,6 @@
 
 .c-tab:hover {
   @apply bg-sky-100;
-}
-
-.border-b {
-  @apply border-b-2 border-gray-300;
 }
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
