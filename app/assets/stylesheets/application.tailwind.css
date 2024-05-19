@@ -1,4 +1,5 @@
 @tailwind base;
+
 @tailwind components;
 @tailwind utilities;
 
@@ -18,7 +19,11 @@
 }
 
 .c-tab-active {
-  @apply text-black font-semibold border-b-2 border-sky-400;
+  @apply border-b-2 border-sky-400 font-semibold;
+}
+
+.c-tab-active span {
+  @apply text-black;
 }
 
 /* アクティブ状態のアイコンとテキストの色 */
