@@ -16,10 +16,7 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    attach_avatar if avatar_params_present?
-
     if @user.update(user_params)
-      set_posts
       flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
@@ -52,16 +49,6 @@ class ProfilesController < ApplicationController
   # 許可されたパラメータを設定
   def user_params
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
-  end
-
-  # アバターパラメータの存在チェック
-  def avatar_params_present?
-    params[:user][:avatar].present?
-  end
-
-  # アバターの添付処理
-  def attach_avatar
-    @user.avatar.attach(params[:user][:avatar]) if @user.avatar.blank?
   end
 
   # フィルタリングされた投稿を取得
