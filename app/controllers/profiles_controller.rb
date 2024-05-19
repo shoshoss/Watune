@@ -17,27 +17,21 @@ class ProfilesController < ApplicationController
   # プロフィール更新アクション
   def update
     attach_avatar if avatar_params_present?
+
     if @user.update(user_params)
       set_posts
       flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
-        format.turbo_stream { render turbo_stream: turbo_stream.replace('profile_edit_modal', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug), notice: t('defaults.flash_message.updated', item: Profile.model_name.human) }) }
+        format.turbo_stream
       end
     else
-      flash.now[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('flash_messages', partial: 'shared/flash_message'),
-            turbo_stream.replace('error_messages_frame', partial: 'shared/error_messages', locals: { object: @user })
-          ]
-        end
+        format.turbo_stream
       end
     end
   end
-  
 
   private
 
