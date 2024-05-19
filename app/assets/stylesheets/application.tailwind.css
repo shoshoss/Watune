@@ -7,25 +7,42 @@
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
 
-/* プロフィールなどのタブのレイアウト */
+/* プロフィールのタブのレイアウト */
+/* タブの基本スタイル */
 .c-tabs {
   @apply text-center align-middle py-2;
 }
 
 .c-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400; /* 文字の大きさをlgに */
+  @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400;
 }
 
 .c-tab-active {
-  @apply text-black border-sky-400 font-semibold; /* アクティブなタブをセミボールドに */
+  @apply text-black font-semibold border-b-2 border-sky-400;
 }
 
-.c-tab:hover {
-  @apply bg-sky-100;
+/* アクティブ状態のアイコンとテキストの色 */
+.c-tab-active-all-my-posts,
+.c-tab-active-only-me,
+.c-tab-active-my-posts-open {
+  @apply text-blue-500;
+}
+
+.c-tab-active-all-likes-chance,
+.c-tab-active-my-likes-chance,
+.c-tab-active-public-likes-chance {
+  @apply text-orange-400;
+}
+
+.c-tab-active-bookmarked {
+  @apply text-yellow-700-accent;
+}
+
+.c-tab-active-liked {
+  @apply text-red-500;
 }
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
-
 .c-button {
   @apply inline-block px-4 py-2 text-xl text-sky-400 bg-sky-100 cursor-pointer font-semibold rounded-full;
 }

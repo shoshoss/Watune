@@ -1,9 +1,9 @@
 <% content_for(:title, t('profile.show.title')) %>
-<div class="flex justify-center min-h-screen" >
+<div class="flex justify-center min-h-screen">
   <div class="max-w-xl w-full bg-white border-2 border-gray-200">
     <div id="flash_messages_show"></div>
     <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
-    <div class="mb-2 flex mx-auto items-stretch ">
+    <div class="mb-2 flex mx-auto items-stretch">
       <!-- 左側のダミー要素 -->
       <div class="<%= 'invisible' unless current_user == @user %>">
         <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
@@ -12,10 +12,10 @@
       <!-- アバター画像 -->
       <div class="flex justify-center flex-grow items-center">
         <% if @user.avatar.attached? %>
-            <%= image_tag @user.avatar, class: "rounded-full object-cover h-32 w-32" %>
-          <% else %>
-            <%= image_tag asset_path('sample.jpg'), class: "rounded-full object-cover h-32 w-32" %>
-          <% end %>
+          <%= image_tag @user.avatar, class: "rounded-full object-cover h-32 w-32" %>
+        <% else %>
+          <%= image_tag asset_path('sample.jpg'), class: "rounded-full object-cover h-32 w-32" %>
+        <% end %>
       </div>
 
       <!-- 編集ボタン -->
@@ -41,11 +41,11 @@
         <% if @user.self_introduction.present? %>
           <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
             <% if line.empty? %>
-              <div class="text-xxs sm:text-xs"> <!-- 空白行用のスタイル -->
+              <div class="text-xxs sm:text-xs">
                 <br>
               </div>
             <% else %>
-              <div class="text-sm sm:text-lg"> <!-- 通常の行用のスタイル -->
+              <div class="text-sm sm:text-lg">
                 <%= line %><br>
               </div>
             <% end %>
@@ -58,62 +58,59 @@
 
     <!-- カテゴリータブ -->
     <%= turbo_frame_tag "posts" do %>
-
-
       <% if current_user == @user %>
         <div class="overflow-x-auto">
-          <table class="min-w-full  whitespace-nowrap">
+          <table class="min-w-full whitespace-nowrap">
             <tr class="">
               <td colspan="2" class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_my_posts', 'only_me', 'my_posts_open')}" do %>
-                  My Waves
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('all_my_posts', 'only_me', 'my_posts_open')}" do %>
+                  <i class="fas fa-wave lg:mr-2"></i> My Waves
                 <% end %>
               </td>
               <td colspan="2" class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('all_likes_chance', 'my_likes_chance', 'public_likes_chance')}" do %>
-                  いいねチャンス
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance')}" do %>
+                  <i class="fas fa-thumbs-up lg:mr-2"></i> いいねチャンス
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'bookmarked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('bookmarked')}" do %>
-                  お気に入り
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'bookmarked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('bookmarked')}" do %>
+                  <i class="fas fa-bookmark lg:mr-2"></i> お気に入り
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('liked')}" do %>
-                  いいね
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('liked')}" do %>
+                  <i class="fas fa-heart lg:mr-2"></i> いいね
                 <% end %>
               </td>
             </tr>
             <tr class="">
               <td class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'only_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('only_me')}" do %>
-                  自分へ
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'only_me'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('only_me')}" do %>
+                  <i class="fas fa-user lg:mr-2"></i> 自分へ
                 <% end %>
               </td>
               <td class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_posts_open')}" do %>
-                  みんなへ
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('my_posts_open')}" do %>
+                  <i class="fas fa-globe lg:mr-2"></i> みんなへ
                 <% end %>
               </td>
               <td class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_likes_chance')}" do %>
-                  自分の
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('my_likes_chance')}" do %>
+                  <i class="fas fa-user-check lg:mr-2"></i> 自分の
                 <% end %>
               </td>
               <td class="c-tabs">
-                <%= link_to profile_path(username_slug: @user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('public_likes_chance')}" do %>
-                  みんなの
+                <%= link_to profile_path(username_slug: @user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('public_likes_chance')}" do %>
+                  <i class="fas fa-users lg:mr-2"></i> みんなの
                 <% end %>
               </td>
             </tr>
           </table>
         </div>
-
       <% else %>
         <div class="c-tabs flex overflow-x-auto whitespace-nowrap">
-          <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab('my_posts_open')}" do %>
-            みんなへ
+          <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" }, class: "c-tab #{active_tab_class('my_posts_open')}" do %>
+            <i class="fas fa-globe lg:mr-2"></i> みんなへ
           <% end %>
         </div>
       <% end %>
