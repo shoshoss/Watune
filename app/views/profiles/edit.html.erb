@@ -1,9 +1,9 @@
-<div id="profile_edit_frame" class="flex justify-center min-h-screen p-5" data-controller="profile-edit">
+<div id="profile_edit_frame" class="flex justify-center min-h-screen p-5" data-controller="profile-edit-modal">
   <div class="max-w-xl w-full bg-white rounded-lg shadow-lg">
     <h1 class="text-4xl font-bold mt-4 mb-4 sm:mb-8 text-center">
       <%= t('.title') %>
     </h1>
-    <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit", action: "turbo:submit-end->profile-edit#submitEnd" } do |f| %>
+    <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
       <%= turbo_frame_tag "error_messages_frame" do %>
         <%= render 'shared/error_messages', object: f.object %>
       <% end %>
@@ -34,7 +34,7 @@
 
         <div class="form-control mt-2">
           <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1", for: "user_self_introduction" %>
-          <%= f.text_area :self_introduction, id: "user_self_introduction", class: "input-style", rows: "8", style: "resize: vertical;", data: { action: "input->profile-edit#adjustHeight" } %>
+          <%= f.text_area :self_introduction, id: "user_self_introduction", class: "input-style", rows: "8", style: "resize: vertical;", data: { action: "input->profile-edit-modal#adjustHeight" } %>
         </div>
         
         <div class="form-control mt-4 lg:mt-6">

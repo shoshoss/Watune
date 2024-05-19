@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
     attach_avatar if avatar_params_present?
     if @user.update(user_params)
       set_posts
-      flash[:success] = t('defaults.flash_message.updated', item: Profile.model_name.human)
+      flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
       respond_to do |format|
         format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
         format.turbo_stream { render turbo_stream: turbo_stream.replace('profile_edit_frame', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug), notice: t('defaults.flash_message.updated', item: Profile.model_name.human) }) }
