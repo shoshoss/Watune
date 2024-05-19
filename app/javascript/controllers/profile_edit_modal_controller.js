@@ -2,11 +2,16 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   connect() {
-    console.log("Profile edit controller connected");
+    this.element.setAttribute("open", true);
     this.setupFileInput();
     this.adjustTextareaHeight(
       document.getElementById("user_self_introduction")
     );
+  }
+
+  closeModal() {
+    // モーダルを閉じる
+    this.element.close();
   }
 
   setupFileInput() {
