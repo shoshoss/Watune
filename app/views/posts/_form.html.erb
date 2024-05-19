@@ -1,6 +1,6 @@
 <%= form_with model: @post,
-              data: { controller: "edit-modal", 
-              action: "turbo:submit-end->edit-modal#afterClose" } do |f| %>
+              data: { controller: "post-edit-modal", 
+              action: "turbo:submit-end->post-edit-modal#afterClose" } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="card-body mx-auto">
     <div class="form-control pt-2">

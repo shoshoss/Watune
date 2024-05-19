@@ -16,7 +16,7 @@
         </div>
         <% if current_user.own?(post) %>
           <div class="flex sm:flex-wrap space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-2">
-            <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 ", data: { turbo_frame: "edit_modal" } do %>
+            <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 ", data: { turbo_frame: "post_edit_modal" } do %>
               <i class="fas fa-pencil-alt text-lg"></i>
               <span class="hidden sm:inline">編集</span>
             <% end %>
