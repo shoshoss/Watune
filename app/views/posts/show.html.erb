@@ -1,17 +1,39 @@
-<div class="container pt-5">
-  <div class="row mb-3">
-    <div class="col-lg-8 offset-lg-2">
-      <p><%= @post.body %></p>
-      <% if @post.audio.attached? %>
-        <audio controls>
-          <source src="<%= rails_blob_path(@post.audio) %>" type="<%= @post.audio.content_type %>">
-          お使いのブラウザはオーディオプレイヤーをサポートしていません。
-        </audio>
-      <% end %>
-      <%= render 'replies/form', post: @post, reply: @reply %>
-      <div class="mt-4">
-        <%= render @post.replies %>
+<%= turbo_frame_tag "post_show_modal" do %>
+  <dialog id="post_show_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="post-show-modal">
+    <div class="modal-box p-2">
+      <div class="flex justify-end items-center">
+        <button class="text-blue-500 hover:text-blue-700 font-semibold"
+                data-action="click->post-show-modal#closeModal">
+                閉じる
+        </button>
+      </div>
+
+
+  <div class="container pt-5">
+    <div class="row mb-3">
+      <div class="col-lg-8 offset-lg-2">
+        <p><%= @post.body %></p>
+        <% if @post.audio.attached? %>
+          <audio controls>
+            <source src="<%= rails_blob_path(@post.audio) %>" type="<%= @post.audio.content_type %>">
+            お使いのブラウザはオーディオプレイヤーをサポートしていません。
+          </audio>
+        <% end %>
+        <%= render 'replies/form', post: @post, reply: @reply %>
+        <div class="mt-4">
+          <%= render @post.replies %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+      <!-- モーダルを閉じるボタン -->
+      <div class="modal-action my-4 flex justify-center">
+        <button class="btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
+                data-action="click->post-show-modal#closeModal">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </dialog>
+<% end %>

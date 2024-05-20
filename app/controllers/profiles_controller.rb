@@ -12,7 +12,12 @@ class ProfilesController < ApplicationController
   end
 
   # プロフィール編集アクション
-  def edit; end
+  def edit
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
 
   # プロフィール更新アクション
   def update
