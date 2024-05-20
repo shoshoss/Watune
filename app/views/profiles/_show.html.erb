@@ -1,3 +1,4 @@
+<%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag "profile_edit_modal" %>
 <% content_for(:title, t('profile.show.title')) %>
 <div class="flex justify-center min-h-screen">
@@ -23,7 +24,7 @@
       <div class="flex flex-grow-0 justify-end items-end">
         <% if current_user == @user %>
           <%= link_to "編集する", edit_profile_path, class: 'text-lg mr-2 sm:mr-5 btn btn-outline btn-secondary',
-              data: { turbo_frame: "profile_edit_modal" }%>
+              data: { turbo_frame: "profile_edit_modal" } %>
         <% else %>
           <div class="invisible">
             <%= link_to "編集する", edit_profile_path, class: 'btn btn-outline btn-secondary invisible' %>
