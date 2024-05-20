@@ -15,11 +15,15 @@
 }
 
 .c-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg text-gray-600 border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400;
+  @apply flex-1 px-4 py-2 text-center text-lg border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400;
+}
+
+.c-tab span {
+  @apply text-gray-600s;
 }
 
 .c-tab-active {
-  @apply border-b-2 border-sky-400 font-semibold;
+  @apply border-b-4 border-sky-400 font-semibold;
 }
 
 .c-tab-active span {
@@ -36,7 +40,7 @@
 .c-tab-active-all-likes-chance,
 .c-tab-active-my-likes-chance,
 .c-tab-active-public-likes-chance {
-  @apply text-orange-400;
+  @apply text-orange-500;
 }
 
 .c-tab-active-bookmarked {
