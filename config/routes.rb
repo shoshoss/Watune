@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     collection do
       get :privacy_settings
     end
+    resources :replies, only: %i[create], controller: 'posts', action: 'create_reply'
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]
   end

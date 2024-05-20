@@ -2,10 +2,14 @@ class Post < ApplicationRecord
   extend ActiveRecordExtended::QueryMethods
 
   belongs_to :user
+  has_many :replies, class_name: "Post", foreign_key: :post_reply_id, dependent: :destroy
+  belongs_to :parent_post, class_name: "Post", foreign_key: :post_reply_id, optional: true
+
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
+
 
   has_one_attached :audio
 

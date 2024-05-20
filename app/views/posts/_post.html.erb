@@ -74,7 +74,7 @@
       </div>
       <!-- 詳細リンク -->
       <div class="flex justify-end">
-        <%= link_to '詳細を見る', post_path(post), class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+        <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id), class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
         <br>
       </div>
       <!-- コメント、リツイート、いいね、シェア -->

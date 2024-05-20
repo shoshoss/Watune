@@ -1,0 +1,17 @@
+<div class="container pt-5">
+  <div class="row mb-3">
+    <div class="col-lg-8 offset-lg-2">
+      <p><%= @post.body %></p>
+      <% if @post.audio.attached? %>
+        <audio controls>
+          <source src="<%= rails_blob_path(@post.audio) %>" type="<%= @post.audio.content_type %>">
+          お使いのブラウザはオーディオプレイヤーをサポートしていません。
+        </audio>
+      <% end %>
+      <%= render 'replies/form', post: @post, reply: @reply %>
+      <div class="mt-4">
+        <%= render @post.replies %>
+      </div>
+    </div>
+  </div>
+</div>
