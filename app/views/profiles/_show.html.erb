@@ -91,25 +91,25 @@
               <td class="c-tabs">
                 <%= link_to profile_path(username_slug: @user.username_slug, category: 'only_me'), data: { turbo_frame: "posts" },
                     class: "c-tab text-blue-400 #{active_tab_class('only_me')} hover:text-blue-500" do %>
-                  <i class="fas fa-user lg:mr-2"></i> 自分へ
+                  <i class="fas fa-user lg:mr-2"></i><span>自分へ</span>
                 <% end %>
               </td>
               <td class="c-tabs">
                 <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "posts" },
                     class: "c-tab text-blue-400 #{active_tab_class('my_posts_open')} hover:text-blue-500" do %>
-                  <i class="fas fa-globe lg:mr-2"></i> みんなへ
+                  <i class="fas fa-globe lg:mr-2"></i><span>みんなへ</span>
                 <% end %>
               </td>
               <td class="c-tabs">
                 <%= link_to profile_path(username_slug: @user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "posts" },
                     class: "c-tab text-orange-300 #{active_tab_class('my_likes_chance')} hover:text-orange-500" do %>
-                  <i class="fas fa-user-check lg:mr-2"></i> 自分の
+                  <i class="fas fa-user-check lg:mr-2"></i><span>自分の</span>
                 <% end %>
               </td>
               <td class="c-tabs">
                 <%= link_to profile_path(username_slug: @user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "posts" },
                     class: "c-tab text-orange-300 #{active_tab_class('public_likes_chance')} hover:text-orange-500" do %>
-                  <i class="fas fa-users lg:mr-2"></i> みんなの
+                  <i class="fas fa-users lg:mr-2"></i><span>みんなの</span>
                 <% end %>
               </td>
             </tr>

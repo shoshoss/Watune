@@ -19,7 +19,7 @@
 }
 
 .c-tab span {
-  @apply text-gray-600s;
+  @apply text-gray-600;
 }
 
 .c-tab-active {
