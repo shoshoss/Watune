@@ -5,13 +5,13 @@
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->profile-edit-modal#closeModal">閉じる</button>
       </div>
 
-      <h1 class="text-4xl font-bold mt-4 mb-4 sm:mb-8 text-center"><%= t('.title') %></h1>
+      <h1 class="text-4xl font-bold mt-4 mb-4  text-center"><%= t('profiles.edit.title') %></h1>
       <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
         <%= turbo_frame_tag "error_messages_frame" do %>
           <%= render 'shared/error_messages', object: f.object %>
         <% end %>
 
-        <div class="card-body mx-auto">
+        <div class="card-body mx-auto p-2">
           <div class="form-control">
             <label for="user_avatar" class="cursor-pointer label-text text-lg font-semibold mb-2">プロフィール画像</label>
             <div class="mt-1 p-2 text-lg border-2 border-gray-300 rounded-lg">
@@ -37,7 +37,7 @@
             <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1", for: "user_self_introduction" %>
             <%= f.text_area :self_introduction, id: "user_self_introduction", class: "input-style", rows: "8", style: "resize: vertical;", data: { action: "input->profile-edit-modal#adjustHeight" } %>
           </div>
-          
+
           <div class="form-control mt-4 lg:mt-6">
             <%= f.submit "プロファイル更新", class: "btn btn-primary text-lg w-full" %>
           </div>

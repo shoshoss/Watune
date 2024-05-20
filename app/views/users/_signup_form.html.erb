@@ -3,10 +3,7 @@
   <%= t('users.new_modal.title') %>
 </h1>
 
-<%= form_with model: @user, url: create_signup_modal_path, method: :post, 
-    data: { controller: "signup-modal", 
-            action: "turbo:submit-end->signup-modal#redirectSubmit",
-            signup_modal_redirect_path: edit_profile_path } do |f| %>
+<%= form_with model: @user, url: create_signup_modal_path, method: :post do |f| %>
   <!-- Googleで新規登録のボタン -->
   <div class="flex items-center justify-center mb-8">
     <%= link_to auth_at_provider_path(provider: :google),
