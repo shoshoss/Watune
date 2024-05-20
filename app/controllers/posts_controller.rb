@@ -9,6 +9,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
     @reply = Post.new
     params[:privacy] ||= @post.privacy
   end
