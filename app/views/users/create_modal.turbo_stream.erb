@@ -1,0 +1,7 @@
+<% if @user.errors.any? %>
+  <%= turbo_stream.replace 'flash_message_modal', partial: 'shared/flash_message' %>
+  <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
+  <% else %>
+  <%= turbo_stream.replace 'signup_modal', partial: 'profiles/edit_modal', locals: { user: @user } %>
+  <%= turbo_stream.replace 'flash_message_modal', partial: 'shared/flash_message' %>
+<% end %>

@@ -1,7 +1,6 @@
 <% if @user.errors.any? %>
-  <%= turbo_stream.replace 'error_messages_frame', partial: 'shared/error_messages', locals: { object: @user } %>
+  <%= turbo_stream.replace 'flash_message_modal', partial: 'shared/flash_message', locals: { error: t('defaults.flash_message.not_updated', item: Profile.model_name.human) } %>
+  <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
 <% else %>
-  <%= turbo_stream.replace 'profile_edit_modal', partial: 'shared/redirect', 
-                          locals: { redirect_path: profile_show_path(@user.username_slug),
-                          notice: t('defaults.flash_message.updated', item: Profile.model_name.human) } %>
+  <%= turbo_stream.replace 'profile_edit_modal', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug), notice: t('defaults.flash_message.updated', item: Profile.model_name.human) } %>
 <% end %>

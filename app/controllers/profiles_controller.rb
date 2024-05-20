@@ -23,15 +23,8 @@ class ProfilesController < ApplicationController
   def update
     if @user.update(user_params)
       flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
-      respond_to do |format|
-        format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
-        format.turbo_stream
-      end
     else
-      respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream
-      end
+      flash[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
     end
   end
 

@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
-            turbo_stream.append('flash', partial: 'shared/flash_message'),
+            turbo_stream.append('flash_messages', partial: 'shared/flash_message'),
             turbo_stream.replace('signup_modal', partial: 'profiles/edit_modal', locals: { user: @user })
           ]
         end
@@ -21,7 +21,6 @@ class UsersController < ApplicationController
       end
     else
       flash.now[:error] = 'ユーザー登録に失敗しました'
-      render :new_modal, status: :unprocessable_entity
     end
   end
 
