@@ -1,7 +1,6 @@
 <% if @user.errors.any? %>
-  <%= turbo_stream.replace 'flash_message_modal', partial: 'shared/flash_message' %>
+  <%= turbo_stream.replace 'signup_modal_flash', partial: 'shared/flash_message', locals: { flash: { error: 'ユーザー登録に失敗しました' } } %>
   <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
-  <% else %>
+<% else %>
   <%= turbo_stream.replace 'signup_modal', partial: 'profiles/edit_modal', locals: { user: @user } %>
-  <%= turbo_stream.replace 'flash_message_modal', partial: 'shared/flash_message' %>
 <% end %>

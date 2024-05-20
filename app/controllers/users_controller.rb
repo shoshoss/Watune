@@ -10,17 +10,6 @@ class UsersController < ApplicationController
     if @user.save
       login(user_params[:email], user_params[:password])
       flash[:notice] = 'ユーザー登録に成功しました'
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.append('flash_messages', partial: 'shared/flash_message'),
-            turbo_stream.replace('signup_modal', partial: 'profiles/edit_modal', locals: { user: @user })
-          ]
-        end
-        format.html { redirect_to edit_profile_path, status: :see_other, notice: 'ユーザー登録に成功しました' }
-      end
-    else
-      flash.now[:error] = 'ユーザー登録に失敗しました'
     end
   end
 

@@ -5,7 +5,7 @@
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->profile-edit-modal#closeModal">閉じる</button>
       </div>
       <h1 class="text-4xl font-bold mt-4 mb-4  text-center"><%= t('profiles.edit.title') %></h1>
-      <div id="flash_message_modal">
+      <div id="profile_edit_modal_flash">
         <%= render 'shared/flash_message' %>
       </div>
       <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>

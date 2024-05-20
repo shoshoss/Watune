@@ -23,8 +23,6 @@ class ProfilesController < ApplicationController
   def update
     if @user.update(user_params)
       flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
-    else
-      flash[:error] = t('defaults.flash_message.not_updated', item: Profile.model_name.human)
     end
   end
 

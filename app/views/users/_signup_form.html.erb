@@ -2,8 +2,9 @@
 <h1 class="text-4xl font-bold mt-4 mb-8 text-center">
   <%= t('users.new_modal.title') %>
 </h1>
-<div id="flash_message_modal"></div>
-<%= render 'shared/flash_message' %>
+<div id="signup_modal_flash">
+  <%= render 'shared/flash_message' %>
+</div>
 <%= form_with model: @user, url: create_signup_modal_path, method: :post do |f| %>
   <!-- Googleで新規登録のボタン -->
   <div class="flex items-center justify-center mb-8">
