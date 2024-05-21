@@ -1,6 +1,9 @@
 <% if @reply.errors.any? %>
-  <%= turbo_stream.replace "new_reply" do %>
-    <%= render 'replies/form', post: @post, reply: @reply %>
+  <%= turbo_stream.update "flash" do %>
+    <%= render 'shared/flash_message' %>
+  <% end %>
+  <%= turbo_stream.update "error_messages" do %>
+    <%= render 'shared/error_messages', object: @reply %>
   <% end %>
 <% else %>
   <%= turbo_stream.append "replies" do %>
