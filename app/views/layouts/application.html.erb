@@ -22,7 +22,7 @@
 <body class="font-sans bg-white h-screen overflow-auto">
 
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
+  <header class="sticky top-0 z-30 bg-white w-full shadow max-w-screen-xl mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
@@ -33,33 +33,30 @@
   </header>
 
   <!-- コンテンツコンテナ -->
-  <div class="flex flex-col md:flex-row max-w-screen-xl mx-auto">
+  <div class="flex flex-col md:flex-row  max-w-screen-xl mx-auto">
     <!-- サイドバー -->
     <% if logged_in? %>
-      <div class="sticky top-0 h-screen">
-        <%= render 'shared/sidebar' %>
-      </div>
-    <% else %>
-      <div id="no-sidebar">
-      </div>
+      <%= render 'shared/sidebar' %>
+      <% else %>
+        <div id="no-sidebar">
+        </div>
     <% end %>
 
     <!-- メインコンテンツ -->
-    <main class="flex-1" data-controller="scroll">
+    <div class="flex-1">
       <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-      <div class="sticky top-0 h-screen">
         <%= render 'shared/widget' %>
-      </div>
     <% else %>
       <div id="widget">
       </div>
     <% end %>
   </div>
+
 
 </body>
 </html>
