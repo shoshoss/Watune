@@ -13,6 +13,11 @@
   <!-- スタイルシートのリンク -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= stylesheet_link_tag 'custom', media: 'all', 'data-turbo-track': 'reload' %>
+
+  <!-- Turboフレームタグ -->
+  <%= turbo_frame_tag 'tou_modal' %>
+  <%= turbo_frame_tag 'privacy_modal' %>
+  <%= turbo_frame_tag 'post_modal' %>
 </head>
 <body class="font-sans bg-white flex flex-col min-h-screen">
   <!-- ヘッダー -->
@@ -37,7 +42,7 @@
     <% end %>
 
     <!-- メインコンテンツ -->
-    <main class="flex-1 p-4">
+    <main class="flex-1">
       <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
@@ -52,13 +57,6 @@
   </div>
 
   <!-- フッター -->
-  <footer class="bg-gray-100 text-center p-4 w-full">
-    <div class="flex justify-center items-center text-xs mb-2">
-      <%= link_to '利用規約', terms_of_use_path, class: "mx-2 sm:mx-4 hover:text-blue-500" %>
-      <%= link_to 'プライバシーポリシー', privacy_policy_path, class: "mx-2 sm:mx-4 hover:text-blue-500" %>
-      <%= link_to 'お問合せ', '#', class: "mx-2 sm:mx-4 hover:text-blue-500" %>
-    </div>
-    <p class="text-gray-600">© 2024 ConGraWa</p>
-  </footer>
+  <%= render 'shared/footer' %>
 </body>
 </html>
