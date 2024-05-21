@@ -1,6 +1,7 @@
 <%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag dom_id(post) do %>
-  <div data-controller="audio" id="post-id-<%= post.id %>" class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4">
+  <div data-controller="audio" id="post-id-<%= post.id %>"
+       class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if local_assigns[:reply] %>">
     <!-- 1列目: アバター -->
     <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0">
       <!-- アバター -->
@@ -72,14 +73,10 @@
           </div>
         <% end %>
       </div>
-      <!-- 詳細リンク（インデックス画面のみ表示） -->
-      <% unless local_assigns[:full_view] %>
-        <div class="flex justify-end">
-        <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id),
-            data: { turbo_frame: "_top" },
-            class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+      <!-- 詳細リンク -->
+      <div class="flex justify-end">
+        <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id), data: { turbo_frame: "_top" }, class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
       </div>
-      <% end %>
       <!-- 返信、リツイート、いいね、シェア -->
       <div class="flex justify-between items-center">
         <div id="post-<%= post.id %>-reply-icon">
@@ -92,11 +89,11 @@
         </div>
         <div>
           <%= turbo_frame_tag "post-#{post.id}-like" do %>
-            <%= render partial: 'posts/like', locals: { post: post } %>
+            <%= render 'posts/like', post: post %>
           <% end %>
         </div>
         <div id="post-<%= post.id %>-bookmark">
-          <%= render partial: 'posts/bookmark', locals: { post: post } %>
+          <%= render 'posts/bookmark', post: post %>
         </div>
         <div>
           <%= link_to "#", id: "#" do %>

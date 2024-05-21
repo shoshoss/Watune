@@ -63,3 +63,8 @@
 .c-button:hover {
   @apply bg-sky-200;
 }
+
+/* 返信投稿のスタイル */
+.reply-post {
+  @apply bg-gray-50 border-l-4 border-blue-500 ml-5 pl-3;
+}
