@@ -20,15 +20,15 @@ ja:
     search_word: 検索ワード
     password_reset: パスワードリセット
     flash_message:
-      require_login: ログインしてください
-      created: "%{item}しました"
-      not_created: "%{item}できませんでした"
-      updated: "%{item}を更新しました"
-      not_updated: "%{item}を更新できませんでした"
-      deleted: "%{item}を削除しました"
-      bookmarks_created: ブックマークしました
-      bookmarks_destroy: ブックマークを外しました
-      not_authorized: 権限がありません
+      require_login: ログインしてください。
+      created: "%{item}しました。"
+      not_created: "%{item}できませんでした。"
+      updated: "%{item}を更新しました。"
+      not_updated: "%{item}を更新できませんでした。"
+      deleted: "%{item}を削除しました。"
+      bookmarks_created: ブックマークしました。
+      bookmarks_destroy: ブックマークを外しました。
+      not_authorized: 権限がありません。
   user_sessions:
     new:
       title: ログイン
@@ -63,12 +63,12 @@ ja:
     profile: プロフィール
   flash_messages:
     user_sessions:
-      login_success: "ログインしました"
-      login_failure: "ログインに失敗しました"
-      logout: "ログアウトしました"
+      login_success: "ログインしました。"
+      login_failure: "ログインに失敗しました。"
+      logout: "ログアウトしました。"
     users:
-      registration_success: "ユーザー登録が完了しました"
-      registration_failure: "ユーザー登録に失敗しました"
+      registration_success: "ユーザー登録が完了しました。"
+      registration_failure: "ユーザー登録に失敗しました。"
   posts:
     new:
       title: 投稿作成
@@ -80,7 +80,7 @@ ja:
       title: 投稿編集
     bookmarks:
       title: ブックマーク一覧
-      no_result: ブックマーク中の音声がありません
+      no_result: ブックマーク中の音声がありません。
   profiles:
     show:
       title: プロフィール
@@ -91,13 +91,13 @@ ja:
       title: パスワードリセット申請
       submit: 変更手続きメールを送信
     create:
-      success: パスワードリセット手順を送信しました
+      success: パスワードリセット手順を送信しました。
     edit:
       title: パスワードリセット
       submit: 更新
     update:
-      success: パスワードを変更しました
-      fail: パスワード変更に失敗しました
+      success: パスワードを変更しました。
+      fail: パスワード変更に失敗しました。
   static_pages:
     top:
       title: トップページ
