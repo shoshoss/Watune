@@ -5,6 +5,7 @@ class RepliesController < ApplicationController
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
+      flash[:notice] = '返信が作成されました。'
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to user_post_path(@post.user.username_slug, @post), notice: '返信が作成されました。' }

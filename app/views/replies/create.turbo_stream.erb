@@ -1,10 +1,15 @@
 <% if @reply.errors.any? %>
   <%= turbo_stream.replace "new_reply" do %>
-    <%= render partial: "replies/form", locals: { post: @post, reply: @reply } %>
+    <%= render 'replies/form', post: @post, reply: @reply %>
   <% end %>
 <% else %>
-  <%= turbo_stream.prepend "replies", partial: "posts/post_content", locals: { post: @reply } %>
+  <%= turbo_stream.append "replies" do %>
+    <%= render 'posts/post', post: @reply %>
+  <% end %>
   <%= turbo_stream.replace "new_reply" do %>
-    <%= render partial: "replies/form", locals: { post: @post, reply: Post.new } %>
+    <%= render 'replies/form', post: @post, reply: Post.new %>
+  <% end %>
+  <%= turbo_stream.update "flash" do %>
+    <%= render 'shared/flash_message' %>
   <% end %>
 <% end %>
