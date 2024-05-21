@@ -24,10 +24,10 @@ class RepliesController < ApplicationController
   private
 
   def set_post
-    @post = Post.find(params[:post_id])
+    @post = Post.find(params[:id])
   end
 
   def reply_params
-    params.require(:reply).permit(:body)
+    params.require(:post).permit(:body)
   end
 end

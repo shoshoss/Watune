@@ -35,11 +35,12 @@ Rails.application.routes.draw do
     collection do
       get :privacy_settings
     end
-    resources :replies, only: %i[create]
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]
   end
   get '/:username_slug/status/:id', to: 'posts#show', as: :user_post
+
+  post '/:username_slug/status/:id/replies', to: 'replies#create', as: 'user_post_replies'
 
   # プロフィールのルーティング
   resource :profile, only: %i[show edit update]

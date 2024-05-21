@@ -1,2 +1,7 @@
-<%= turbo_stream.append "replies", partial: "replies/reply", locals: { reply: @reply } %>
-<%= turbo_stream.replace "new_reply", partial: "replies/form", locals: { post: @post, reply: Post.new } %>
+<%= turbo_stream.prepend "replies_for_post_#{@post.id}" do %>
+  <%= render @reply %>
+<% end %>
+
+<%= turbo_stream.replace "new_reply_#{@post.id}" do %>
+  <%= render 'replies/form', post: @post, reply: @post.replies.build %>
+<% end %>
