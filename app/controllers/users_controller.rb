@@ -7,10 +7,10 @@ class UsersController < ApplicationController
 
   def create_modal
     @user = User.new(user_params)
-    if @user.save
-      login(user_params[:email], user_params[:password])
-      flash[:notice] = 'ユーザー登録に成功しました'
-    end
+    return unless @user.save
+
+    login(user_params[:email], user_params[:password])
+    flash.now[:notice] = 'ユーザー登録に成功しました'
   end
 
   def new

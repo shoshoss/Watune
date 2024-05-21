@@ -21,9 +21,9 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    if @user.update(user_params)
-      flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
-    end
+    return unless @user.update(user_params)
+
+    flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
   end
 
   private

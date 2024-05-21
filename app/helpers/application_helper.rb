@@ -30,11 +30,11 @@ module ApplicationHelper
   end
 
   # プロフィール画面 paramsの値に応じてアクティブクラスを適用
-  
+
   def active_tab_class(*categories)
     initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open'
     active_category = params[:category] || initial_category
-    
+
     if categories.include?(active_category)
       case active_category
       when 'all_my_posts', 'only_me', 'my_posts_open'
@@ -52,7 +52,6 @@ module ApplicationHelper
       ''
     end
   end
-  
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用
   def active_bottom(privacy_value)
