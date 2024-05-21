@@ -1,11 +1,10 @@
-<%= form_with(model: [post, reply], url: post_replies_path(post), data: { turbo_frame: "new_reply" }) do |f| %>
-  <div class="mb-3">
-    <%= f.label :body, class: "form-label" %>
-    <%= f.text_area :body, class: "form-control", rows: 3 %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :audio, class: "form-label" %>
-    <%= f.file_field :audio, class: "form-control" %>
-  </div>
-  <%= f.submit '返信', class: "btn btn-primary" %>
+<%= turbo_frame_tag "new_reply" do %>
+  <%= form_with(model: [post, reply], url: post_replies_path(post), data: { turbo_frame: "replies" }) do |form| %>
+    <div class="mb-4">
+      <%= form.text_area :body, class: "w-full p-2 border rounded", placeholder: "返信を入力" %>
+    </div>
+    <div class="flex justify-end">
+      <%= form.submit "返信する", class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
+    </div>
+  <% end %>
 <% end %>

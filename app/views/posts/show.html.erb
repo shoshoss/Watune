@@ -1,1 +1,3 @@
-<%= render partial: 'posts/show_modal', locals: { user: @user, posts: @posts, pagy: @pagy } %>
+<%= turbo_frame_tag "posts_show" do %>
+  <%= render partial: 'posts/show', locals: { user: @user, post: @post, replies: @replies, pagy: @pagy } %>
+<% end %>

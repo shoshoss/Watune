@@ -1,0 +1,2 @@
+<%= turbo_stream.append "replies", partial: "replies/reply", locals: { reply: @reply } %>
+<%= turbo_stream.replace "new_reply", partial: "replies/form", locals: { post: @post, reply: Post.new } %>

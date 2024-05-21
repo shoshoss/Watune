@@ -10,7 +10,6 @@ class Post < ApplicationRecord
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
 
-
   has_one_attached :audio
 
   validates :body, length: { maximum: 10_000 }

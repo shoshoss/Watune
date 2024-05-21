@@ -9,8 +9,8 @@ class PostsController < ApplicationController
   end
 
   def show
-    @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
     @reply = Post.new
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
     params[:privacy] ||= @post.privacy
   end
 
@@ -42,18 +42,6 @@ class PostsController < ApplicationController
       flash.now[:danger] =
         t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
       render :new, status: :unprocessable_entity
-    end
-  end
-
-  def create_reply
-    @post = current_user.posts.build(post_params)
-    @post.post_reply_id = params[:post_reply_id]
-    if @post.save
-      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '返信が作成されました。')
-      redirect_to post_path(@post.parent_post)
-    else
-      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '返信の作成に失敗しました。')
-      render :show, status: :unprocessable_entity
     end
   end
 

@@ -7,26 +7,11 @@
                 閉じる
         </button>
       </div>
-
-
-  <div class="container pt-5">
-    <div class="row mb-3">
-      <div class="col-lg-8 offset-lg-2">
-        <p><%= @post.body %></p>
-        <% if @post.audio.attached? %>
-          <audio controls>
-            <source src="<%= rails_blob_path(@post.audio) %>" type="<%= @post.audio.content_type %>">
-            お使いのブラウザはオーディオプレイヤーをサポートしていません。
-          </audio>
-        <% end %>
-        <%= render 'replies/form', post: @post, reply: @reply %>
-        <div class="mt-4">
-          <%= render @post.replies %>
-        </div>
+      <%= render partial: 'posts/post_content', locals: { post: @post, full_view: true } %>
+      <%= render 'replies/form', post: @post, reply: @reply %>
+      <div class="mt-4">
+        <%= render @post.replies %>
       </div>
-    </div>
-  </div>
-
       <!-- モーダルを閉じるボタン -->
       <div class="modal-action my-4 flex justify-center">
         <button class="btn bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded"
