@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   end
   get '/:username_slug/status/:id', to: 'posts#show', as: :user_post
 
+  post '/:username_slug/status/:id/replies', to: 'replies#create', as: 'user_post_replies'
+
   # プロフィールのルーティング
   resource :profile, only: %i[show edit update]
   get '/:username_slug', to: 'profiles#show', as: :profile_show

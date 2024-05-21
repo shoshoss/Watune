@@ -1,0 +1,13 @@
+<%= turbo_frame_tag "post_show" do %>
+  <div class="container pt-3">
+    <div class="px-2 mx-auto">
+      <div class="grid grid-cols-1 gap-4">
+        <%= render partial: 'posts/post_content', locals: { post: @post, full_view: true } %>
+        <%= render 'replies/form', post: @post, reply: @reply %>
+        <div id="replies" class="mt-4">
+          <%= render @replies %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

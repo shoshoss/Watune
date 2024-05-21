@@ -9,7 +9,7 @@ class UserSessionsController < ApplicationController
     if @user
       flash[:notice] = 'ログインにしました'
     else
-      flash.now[:error] = 'ログインに失敗しました'
+      flash.now[:danger] = 'ログインに失敗しました'
       render :new_modal, status: :unprocessable_entity
     end
   end
@@ -22,7 +22,7 @@ class UserSessionsController < ApplicationController
     if @user
       redirect_to root_path, status: :see_other, notice: 'ログインしました'
     else
-      flash.now[:error] = 'ログインに失敗しました'
+      flash.now[:danger] = 'ログインに失敗しました'
       render :new, status: :unprocessable_entity
     end
   end

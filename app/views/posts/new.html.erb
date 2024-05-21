@@ -22,8 +22,8 @@
         </div>
 
         <%= form_with model: @post, data: { controller: "post-modal", action: "turbo:submit-end->post-modal#afterClose" } do |f| %>
-          <%= render 'shared/error_messages', object: f.object %>
           <div class="card-body p-2">
+            <%= render 'shared/error_messages', object: f.object %>
             <div class="form-control pt-2">
               <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
               <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-y", rows: "3", style: "resize: vertical;" %>

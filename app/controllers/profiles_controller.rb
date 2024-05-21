@@ -12,22 +12,18 @@ class ProfilesController < ApplicationController
   end
 
   # プロフィール編集アクション
-  def edit; end
+  def edit
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
 
   # プロフィール更新アクション
   def update
-    if @user.update(user_params)
-      flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
-      respond_to do |format|
-        format.html { redirect_to profile_show_path(@user.username_slug), status: :see_other }
-        format.turbo_stream
-      end
-    else
-      respond_to do |format|
-        format.html { render :edit, status: :unprocessable_entity }
-        format.turbo_stream
-      end
-    end
+    return unless @user.update(user_params)
+
+    flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
   end
 
   private
@@ -41,25 +37,19 @@ class ProfilesController < ApplicationController
     @user = current_user
   end
 
-  # 投稿をフィルタリングして設定
-  def set_posts
-    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
-  end
-
   # 許可されたパラメータを設定
   def user_params
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
-  # フィルタリングされた投稿を取得
-  def set_posts
-    initial_category = if current_user == @user
-                         'all_my_posts'
-                       else
-                         'my_posts_open'
-                       end
+  # 初期カテゴリを決定
+  def determine_initial_category
+    current_user == @user ? 'all_my_posts' : 'my_posts_open'
+  end
 
-    category = params[:category] || initial_category
+  # 投稿をフィルタリング
+  def filtered_posts
+    category = params[:category] || determine_initial_category
 
     scopes = {
       'all_my_posts' => @user.posts,
@@ -72,7 +62,11 @@ class ProfilesController < ApplicationController
       'liked' => @user.liked_posts.visible_to(@user)
     }
 
-    scope = scopes[category] || Post.none
-    @pagy, @posts = pagy_countless(scope.includes(:user).order(created_at: :desc), items: 10)
+    scopes[category] || Post.none
+  end
+
+  # フィルタリングされた投稿を取得
+  def set_posts
+    @pagy, @posts = pagy_countless(filtered_posts.includes(:user).order(created_at: :desc), items: 10)
   end
 end

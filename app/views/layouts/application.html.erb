@@ -15,39 +15,34 @@
   <%= stylesheet_link_tag 'custom', media: 'all', 'data-turbo-track': 'reload' %>
 
   <!-- Turboフレームタグ -->
-  <%= turbo_frame_tag 'signup_modal' %>
   <%= turbo_frame_tag 'tou_modal' %>
   <%= turbo_frame_tag 'privacy_modal' %>
-  <%= turbo_frame_tag 'login_modal' %>
   <%= turbo_frame_tag 'post_modal' %>
-  <%= turbo_frame_tag 'post_edit_modal' %>
-  <%= turbo_frame_tag 'profile_edit_modal' %>
 </head>
-<body class="font-sans bg-white">
-
+<body class="font-sans bg-white flex flex-col min-h-screen">
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
+  <header class="sticky top-0 z-50 bg-white w-full shadow max-w-screen-xl mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
       <div id="before_login_header">
-      <%= render 'shared/before_login_header' %>
+        <%= render 'shared/before_login_header' %>
       </div>
     <% end %>
   </header>
 
   <!-- コンテンツコンテナ -->
-  <div class="flex flex-col md:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
+  <div class="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
     <!-- サイドバー -->
     <% if logged_in? %>
-      <%= render 'shared/sidebar' %>
-      <% else %>
-        <div id="no-sidebar">
-        </div>
+        <%= render 'shared/sidebar' %>
+    <% else %>
+      <div id="no-sidebar">
+      </div>
     <% end %>
 
     <!-- メインコンテンツ -->
-    <main class="flex-1 overflow-auto">
+    <main class="flex-1">
       <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
@@ -62,8 +57,6 @@
   </div>
 
   <!-- フッター -->
-  <footer class="bg-gray-200 w-full md:max-w-screen-xl md:mx-auto mt-auto">
-    <%= render 'shared/footer' %>
-  </footer>
+  <%= render 'shared/footer' %>
 </body>
 </html>

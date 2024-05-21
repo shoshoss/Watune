@@ -10,7 +10,6 @@ export default class extends Controller {
   }
 
   closeModal() {
-    // モーダルを閉じる
     this.element.close();
   }
 
@@ -55,8 +54,8 @@ export default class extends Controller {
 
   adjustTextareaHeight(textarea) {
     if (!textarea) return;
-    textarea.style.height = "auto"; // Reset height
-    textarea.style.height = `${textarea.scrollHeight}px`; // Set new height based on content
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
   }
 
   adjustHeight(event) {
@@ -64,7 +63,6 @@ export default class extends Controller {
   }
 
   submitEnd(event) {
-    console.log("submitEnd called");
     if (event.detail.success) {
       // 成功時にはTurboを無効化してリダイレクトを実行する
       Turbo.session.drive = false;

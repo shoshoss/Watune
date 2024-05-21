@@ -2,11 +2,10 @@
 <h1 class="text-4xl font-bold mt-4 mb-8 text-center">
   <%= t('users.new_modal.title') %>
 </h1>
-
-<%= form_with model: @user, url: create_signup_modal_path, method: :post, 
-    data: { controller: "signup-modal", 
-            action: "turbo:submit-end->signup-modal#redirectSubmit",
-            signup_modal_redirect_path: edit_profile_path } do |f| %>
+<div id="signup_modal_flash">
+  <%= render 'shared/flash_message' %>
+</div>
+<%= form_with model: @user, url: create_signup_modal_path, method: :post do |f| %>
   <!-- Googleで新規登録のボタン -->
   <div class="flex items-center justify-center mb-8">
     <%= link_to auth_at_provider_path(provider: :google),
@@ -22,9 +21,7 @@
   <div class="divider"><%= t('defaults.or') %></div>
 
   <!-- バリデーションエラーメッセージの表示エリア -->
-  <div id="user_form_errors">
-    <%= render 'shared/error_messages', object: f.object %>
-  </div>
+  <%= render 'shared/error_messages', object: f.object %>
 
   <div class="card-body mx-auto">
     <div class="form-control">

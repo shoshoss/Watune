@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "new_reply" do %>
+  <%= form_with(model: [post, post.replies.build], url: user_post_replies_path(post.user.username_slug, post), local: false) do |form| %>
+    <div id="error_messages"></div>
+    <div class="mb-4">
+      <%= form.text_area :body, class: "w-full p-2 border rounded", placeholder: "返信を入力" %>
+    </div>
+    <%= form.submit "返信する", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
