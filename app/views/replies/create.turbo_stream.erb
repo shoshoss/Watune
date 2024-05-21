@@ -1,7 +1,10 @@
-<%= turbo_stream.prepend "replies_for_post_#{@post.id}" do %>
-  <%= render @reply %>
-<% end %>
-
-<%= turbo_stream.replace "new_reply_#{@post.id}" do %>
-  <%= render 'replies/form', post: @post, reply: @post.replies.build %>
+<% if @reply.errors.any? %>
+  <%= turbo_stream.replace "new_reply" do %>
+    <%= render partial: "replies/form", locals: { post: @post, reply: @reply } %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.prepend "replies", partial: "posts/post_content", locals: { post: @reply } %>
+  <%= turbo_stream.replace "new_reply" do %>
+    <%= render partial: "replies/form", locals: { post: @post, reply: Post.new } %>
+  <% end %>
 <% end %>
