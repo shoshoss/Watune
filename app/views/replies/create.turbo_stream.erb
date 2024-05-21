@@ -12,6 +12,9 @@
   <%= turbo_stream.replace "new_reply" do %>
     <%= render 'replies/form', post: @post, reply: Post.new %>
   <% end %>
+  <%= turbo_stream.replace "post-#{@post.id}-reply-icon" do %>
+    <%= render partial: 'posts/reply_icon', locals: { post: @post } %>
+  <% end %>
   <%= turbo_stream.update "flash" do %>
     <%= render 'shared/flash_message' %>
   <% end %>
