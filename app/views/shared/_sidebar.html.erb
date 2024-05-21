@@ -1,4 +1,4 @@
-<aside id="after-sidebar" class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-0 h-screen overflow-y-auto">
+<aside id="after-sidebar" class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
     <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-32 w-32' %>
   </div>
