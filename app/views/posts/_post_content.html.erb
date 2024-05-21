@@ -83,8 +83,11 @@
       <!-- 返信、リツイート、いいね、シェア -->
       <div class="flex justify-between items-center mt-2 px-2">
         <div>
-          <%= link_to "#", id: "#" do %>
-            <i class="fa-regular fa-comment text-lg text-gray-500 hover:text-blue-700"></i>
+          <%= link_to user_post_path(username_slug: post.user.username_slug, id: post.id),
+                      data: { turbo_frame: "_top" },
+                      class: "flex items-center space-x-1 text-lg text-gray-500 hover:text-blue-700" do %>
+            <i class="fa-regular fa-comment <%= 'text-blue-500' if post.replies.exists?(user: current_user) %>"></i>
+            <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
           <% end %>
         </div>
         <div>

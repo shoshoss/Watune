@@ -1,0 +1,19 @@
+rubocop: ヘルパー内のインスタンス変数使用の修正
+
+app/helpers/application_helper.rbにおけるRails/HelperInstanceVariableの修正
+
+ヘルパー内でインスタンス変数を使用せず、メソッド引数を使用するように変更
+
+このコミットにより、インスタンス変数の使用に関するrubocopの指摘が解消され、コードの可読性が向上しました。
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Tue May 21 19:51:47 2024 +0900
+#
+# On branch feature/09_02_post_reply
+# Changes to be committed:
+#	modified:   app/controllers/profiles_controller.rb
+#	modified:   app/helpers/application_helper.rb
+#	modified:   app/views/profiles/_show.html.erb
+#
