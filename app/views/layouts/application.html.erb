@@ -33,30 +33,33 @@
   </header>
 
   <!-- コンテンツコンテナ -->
-  <div class="flex flex-col md:flex-row  max-w-screen-xl mx-auto">
+  <div class="flex flex-col md:flex-row max-w-screen-xl mx-auto">
     <!-- サイドバー -->
     <% if logged_in? %>
       <%= render 'shared/sidebar' %>
-      <% else %>
-        <div id="no-sidebar">
-        </div>
+    <% else %>
+      <div id="no-sidebar">
+      </div>
     <% end %>
 
     <!-- メインコンテンツ -->
-    <div class="flex-1">
+    <main class="flex-1">
       <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-        <%= render 'shared/widget' %>
+      <%= render 'shared/widget' %>
     <% else %>
       <div id="widget">
       </div>
     <% end %>
   </div>
 
-
+  <!-- フッター -->
+  <footer class="bg-gray-200 w-full md:max-w-screen-xl md:mx-auto mt-auto">
+    <%= render 'shared/footer' %>
+  </footer>
 </body>
 </html>
