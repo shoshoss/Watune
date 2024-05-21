@@ -37,11 +37,6 @@ class ProfilesController < ApplicationController
     @user = current_user
   end
 
-  # 投稿をフィルタリングして設定
-  def set_posts
-    @pagy, @posts = pagy_countless(filtered_posts, items: 10)
-  end
-
   # 許可されたパラメータを設定
   def user_params
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
