@@ -3,7 +3,7 @@
   <div data-controller="audio" id="post-id-<%= post.id %>"
        class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if local_assigns[:reply] %>">
     <!-- 1列目: アバター -->
-    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0">
+    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0 border-r-2 border-gray-200">
       <!-- アバター -->
       <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
     </div>
@@ -18,21 +18,29 @@
         </div>
         <% if current_user.own?(post) %>
           <div class="flex sm:flex-wrap space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-2">
-            <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700 ", data: { turbo_frame: "post_edit_modal" } do %>
+            <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700", data: { turbo_frame: "post_edit_modal" } do %>
               <i class="fas fa-pencil-alt text-lg"></i>
               <span class="hidden sm:inline">編集</span>
             <% end %>
-            <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') },
-                                         class: "text-red-500 hover:text-red-700" do %>
+            <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') }, class: "text-red-500 hover:text-red-700" do %>
               <i class="fas fa-trash-alt"></i>
               <span class="hidden sm:inline">削除</span>
             <% end %>
           </div>
         <% end %>
       </div>
+      <!-- 返信先の表示 -->
+      <% if post.parent_post %>
+        <div class="text-sm text-gray-500 mb-2">
+          返信先: 
+          <% post.ancestors.each do |ancestor| %>
+            <%= link_to "@#{ancestor.user.username_slug}さん", user_post_path(username_slug: ancestor.user.username_slug, id: ancestor.id), class: "text-blue-500 hover:text-blue-700" %><% unless ancestor == post.ancestors.last %>、<% end %>
+          <% end %>
+        </div>
+      <% end %>
       <!-- 投稿内容とオーディオプレイヤー -->
       <div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
-        <div class="cursor-pointer text-sm sm:text-lg overflow-y-auto max-h-[<%= local_assigns[:full_view] ? 'none' : 'calc(1.5rem*10)' %>] md:max-h-[<%= local_assigns[:full_view] ? 'none' : 'calc(1.5rem*15)' %>] whitespace-normal break-words break-all"
+        <div class="cursor-pointer text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
              data-action="click->audio#playPause"
              data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
           <% post.body.split(/\r\n|\r|\n/).each do |line| %>
