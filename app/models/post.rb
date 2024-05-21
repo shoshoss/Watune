@@ -49,8 +49,14 @@ class Post < ApplicationRecord
   # 公開設定された自分の投稿を取得するスコープ
   scope :my_posts_open, -> { where(privacy: 'open') }
 
-  # 親投稿のすべての祖先を取得
+  # 親の投稿のユーザー名が重複しないように祖先を取得
   def ancestors
-    parent_post ? parent_post.ancestors + [parent_post] : []
+    parents = []
+    current_post = self
+    while current_post.parent_post
+      parents << current_post.parent_post
+      current_post = current_post.parent_post
+    end
+    parents.reverse
   end
 end

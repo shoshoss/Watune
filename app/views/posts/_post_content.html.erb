@@ -33,8 +33,8 @@
       <% if post.parent_post %>
         <div class="text-sm text-gray-500 mb-2">
           返信先: 
-          <% post.ancestors.each do |ancestor| %>
-            <%= link_to "@#{ancestor.user.username_slug}さん", user_post_path(username_slug: ancestor.user.username_slug, id: ancestor.id), class: "text-blue-500 hover:text-blue-700" %><% unless ancestor == post.ancestors.last %>、<% end %>
+          <% post.ancestors.map(&:user).uniq.each do |user| %>
+            <%= link_to "@#{user.username_slug}さん", profile_show_path(username_slug: user.username_slug), class: "text-blue-500 hover:text-blue-700" %><% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
           <% end %>
         </div>
       <% end %>
