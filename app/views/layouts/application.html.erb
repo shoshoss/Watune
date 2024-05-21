@@ -19,7 +19,7 @@
   <%= turbo_frame_tag 'privacy_modal' %>
   <%= turbo_frame_tag 'post_modal' %>
 </head>
-<body class="font-sans bg-white">
+<body class="font-sans bg-white h-screen overflow-auto">
 
   <!-- ヘッダー -->
   <header class="sticky top-0 z-30 bg-white w-full shadow md:max-w-screen-xl md:mx-auto">
@@ -33,33 +33,33 @@
   </header>
 
   <!-- コンテンツコンテナ -->
-  <div class="flex flex-col md:flex-row h-screen max-w-screen-xl mx-auto overflow-hidden">
+  <div class="flex flex-col md:flex-row max-w-screen-xl mx-auto">
     <!-- サイドバー -->
     <% if logged_in? %>
-      <%= render 'shared/sidebar' %>
-      <% else %>
-        <div id="no-sidebar">
-        </div>
+      <div class="sticky top-0 h-screen">
+        <%= render 'shared/sidebar' %>
+      </div>
+    <% else %>
+      <div id="no-sidebar">
+      </div>
     <% end %>
 
     <!-- メインコンテンツ -->
-    <main class="flex-1 overflow-auto data-controller="scroll"">
+    <main class="flex-1" data-controller="scroll">
       <%= render 'shared/flash_message' %>
       <%= yield %>
     </main>
 
     <!-- ウィジェット -->
     <% if logged_in? %>
+      <div class="sticky top-0 h-screen">
         <%= render 'shared/widget' %>
+      </div>
     <% else %>
       <div id="widget">
       </div>
     <% end %>
   </div>
 
-  <!-- フッター -->
-  <footer class="bg-gray-200 w-full md:max-w-screen-xl md:mx-auto mt-auto">
-    <%= render 'shared/footer' %>
-  </footer>
 </body>
 </html>
