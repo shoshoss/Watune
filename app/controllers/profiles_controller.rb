@@ -42,15 +42,14 @@ class ProfilesController < ApplicationController
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
-  # フィルタリングされた投稿を取得
-  def set_posts
-    initial_category = if current_user == @user
-                         'all_my_posts'
-                       else
-                         'my_posts_open'
-                       end
+  # 初期カテゴリを決定
+  def determine_initial_category
+    current_user == @user ? 'all_my_posts' : 'my_posts_open'
+  end
 
-    category = params[:category] || initial_category
+  # 投稿をフィルタリング
+  def filtered_posts
+    category = params[:category] || determine_initial_category
 
     scopes = {
       'all_my_posts' => @user.posts,
@@ -63,7 +62,11 @@ class ProfilesController < ApplicationController
       'liked' => @user.liked_posts.visible_to(@user)
     }
 
-    scope = scopes[category] || Post.none
-    @pagy, @posts = pagy_countless(scope.includes(:user).order(created_at: :desc), items: 10)
+    scopes[category] || Post.none
+  end
+
+  # フィルタリングされた投稿を取得
+  def set_posts
+    @pagy, @posts = pagy_countless(filtered_posts.includes(:user).order(created_at: :desc), items: 10)
   end
 end
