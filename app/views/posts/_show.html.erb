@@ -1,13 +1,14 @@
 <%= turbo_frame_tag "post_show" do %>
-<div class="container pt-3">
-  <div class="px-2 mx-auto">
-    <div class="grid grid-cols-1 gap-4">
-      <%= render partial: 'posts/post_content', locals: { post: @post, full_view: true } %>
-      <%= render 'replies/form', post: @post, reply: @reply %>
-      <div class="mt-4">
-        <%= render @post.replies %>
+  <div class="container pt-3">
+    <div class="px-2 mx-auto">
+      <div class="grid grid-cols-1 gap-4">
+        <%= link_to '戻る', javascript: "window.history.back();", class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50", data: { action: "scroll#handleBackClick" } %>
+        <%= render partial: 'posts/post_content', locals: { post: @post, full_view: true } %>
+        <%= render 'replies/form', post: @post, reply: @reply %>
+        <div class="mt-4">
+          <%= render @post.replies %>
+        </div>
       </div>
     </div>
   </div>
-</div>
 <% end %>

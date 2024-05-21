@@ -75,10 +75,10 @@
       <!-- 詳細リンク（インデックス画面のみ表示） -->
       <% unless local_assigns[:full_view] %>
         <div class="flex justify-end">
-          <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id),
-              data: { turbo_frame: "_top" },
-              class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
-        </div>
+        <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id),
+            data: { turbo_frame: "_top", post_id: dom_id(post), action: "scroll#handleDetailClick" },
+            class: "text-sm md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+      </div>
       <% end %>
       <!-- コメント、リツイート、いいね、シェア -->
       <div class="flex justify-between items-center mt-2 px-2">
