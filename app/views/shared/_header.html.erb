@@ -10,7 +10,7 @@
 
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.about'), '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
+      <%= link_to t('header.about'), '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-sky-400 text-current' %>
       <%= link_to t('header.post_index'), posts_path, class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
 
       <!-- 投稿ボタン -->
@@ -27,16 +27,16 @@
           </label>
           <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
             <li>
-              <%= link_to '「Wこんぐら」とは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
+              <%= link_to '「Wこんぐら」とは', '/', class: 'hover:bg-sky-400 hover:text-white' %>
             </li>
             <li class="block md:hidden">
-              <%= link_to 'みんなのWave', posts_path, class: 'hover:bg-cyan-600 hover:text-white' %>
+              <%= link_to 'みんなのWave', posts_path, class: 'hover:bg-sky-400 hover:text-white' %>
             </li>
             <li>
-              <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: 'hover:bg-cyan-600 hover:text-white' %>
+              <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: 'hover:bg-sky-400 hover:text-white' %>
             </li>
             <li>
-              <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-cyan-600 hover:text-white' %>
+              <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'hover:bg-sky-400 hover:text-white' %>
             </li>
           </ul>
         </div>

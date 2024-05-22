@@ -3,16 +3,21 @@
 <div class="navbar px-4">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
-    <div class="shrink-0">
-      <%= link_to '/' do %>
+    <div class="hidden sm:block shrink-0">
+      <%= link_to root_path do %>
         <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
+      <% end %>
+    </div>
+    <div class="sm:hidden">
+      <%= link_to root_path do %>
+        <%= image_tag asset_path('sample.jpg'), alt: 'ロゴ', class: "rounded-full h-10 w-10" %>
       <% end %>
     </div>
 
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center space-x-4">
-      <%= link_to '「Wこんぐら」とは', '/', class: 'hidden md:block text-md font-bold py-2 border-b-4 border-cyan-600 text-current' %>
-      <%= link_to 'みんなのWave', posts_path, class: 'hidden md:block text-md font-bold py-2 border-b-4 border-transparent hover:border-cyan-300 hover:text-current' %>
+      <%= link_to '「Wこんぐら」とは', root_path, class: "hidden md:block text-md py-2 #{active_if(root_path)}" %>
+      <%= link_to 'みんなのWave', posts_path, class: "block text-md py-2 #{active_if(posts_path)}" %>
 
       <!-- モーダル（ログインと新規登録）を開くリンク -->
       <%= link_to t('header.login'),
@@ -35,17 +40,16 @@
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
           <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
           <li class="block">
-            <%= link_to 'ConGraWaとは', '/', class: 'hover:bg-cyan-600 hover:text-white' %>
+            <%= link_to 'ConGraWaとは', root_path, class: "hover:bg-sky-100 #{active_if(root_path)}" %>
           </li>
           <li class="block">
-            <%= link_to 'みんなのWave', posts_path, class: 'hover:bg-cyan-600 hover:text-white' %>
-          </li>
+            <%= link_to 'みんなのWave', posts_path, class: "hover:bg-sky-100 #{active_if(posts_path)}" %>
           </li>
           <li class="block">
             <%= link_to t('header.login'),
-                  new_login_modal_path,
-                  class: 'hover:bg-cyan-600 hover:text-white',
-                  data: { turbo_frame: "login_modal" } %>
+                        new_login_modal_path,
+                        class: "hover:bg-sky-100 #{active_if(new_login_modal_path)}",
+                        data: { turbo_frame: "login_modal" } %>
           </li>
         </ul>
       </div>

@@ -8,7 +8,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        custom_sky: "rgb(56 189 248)",
         "yellow-400-accent": "#ffea00",
         "yellow-700-accent": "#ffd600",
         "deep-orange-400": "#ff7043",

@@ -61,4 +61,8 @@ module ApplicationHelper
   def active_bottom(privacy_value)
     params[:privacy] == privacy_value ? 'c-bottom-active' : ''
   end
+
+  def active_if(path)
+    current_page?(path) ? 'font-bold border-b-4 border-sky-400' : 'font-medium border-b-2 border-gray-400'
+  end
 end
