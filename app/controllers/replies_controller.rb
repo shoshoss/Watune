@@ -31,6 +31,6 @@ class RepliesController < ApplicationController
   end
 
   def reply_params
-    params.require(:post).permit(:body)
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy)
   end
 end
