@@ -21,7 +21,12 @@ class PostsController < ApplicationController
 
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
-    params[:privacy] ||= @post.privacy
+
+    if @post.parent_post.present?
+      @send_to_user = @post.parent_post.user
+    else
+      @send_to_user = @post.user
+    end
   end
 
   def new
