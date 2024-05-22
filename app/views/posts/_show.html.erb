@@ -14,23 +14,21 @@
         <% end %>
         <%= render 'posts/post_content', post: @post, reply: false %>
         <!-- 返信先の表示 -->
-        <% if @post.post_reply_id.present? %>
+        <div class="text-sm text-gray-500 mb-2">
+          送信先: 
           <% if @post.parent_post.present? %>
-            <div class="text-sm text-gray-500 mb-2">
-              返信先: 
-              <% @post.ancestors.map(&:user).uniq.each do |user| %>
-                <%= link_to "@#{user.username_slug}さん", profile_modal_path(username_slug: user.username_slug),
-                    class: "text-blue-500 hover:text-blue-700",
-                    data: { turbo_frame: "profile_modal" } %>
-                  <% unless user == @post.ancestors.map(&:user).uniq.last %>、<% end %>
-              <% end %>
-            </div>
+            <% @post.ancestors.map(&:user).uniq.each do |user| %>
+              <%= link_to "@#{user.username_slug}さん", profile_modal_path(username_slug: user.username_slug),
+                  class: "text-blue-500 hover:text-blue-700",
+                  data: { turbo_frame: "profile_modal" } %>
+                <% unless user == @post.ancestors.map(&:user).uniq.last %>、<% end %>
+            <% end %>
           <% else %>
-            <div class="text-sm text-gray-500 mb-2">
+            <div class="text-sm text-gray-500">
               返信先の投稿が削除されました。
             </div>
           <% end %>
-        <% end %>
+        </div>
         <%= render 'replies/form', post: @post, reply: @reply %>
         <div id="replies" class="mt-4">
           <% @replies.each do |reply| %>

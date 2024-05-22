@@ -12,7 +12,13 @@ class PostsController < ApplicationController
 
   def show
     # 投稿を取得し、返信のページネーションを設定
-    @post = Post.includes(:user).find(params[:id])
+    begin
+      @post = Post.includes(:user).find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: 'この投稿は削除されました。'
+      return
+    end
+
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
     params[:privacy] ||= @post.privacy
@@ -70,7 +76,10 @@ class PostsController < ApplicationController
 
   def set_post
     # 投稿を取得
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
+    if @post.nil?
+      redirect_to root_path, alert: 'この投稿は削除されました。'
+    end
   end
 
   def set_current_user_post
