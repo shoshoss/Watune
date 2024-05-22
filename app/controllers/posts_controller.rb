@@ -3,7 +3,7 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: %i[show]
   before_action :set_current_user_post, only: %i[edit update destroy]
-  before_action :authorize_show, only: %i[show]
+  before_action :set_send_to_user, only: [:show]
 
   def index
     # 投稿の一覧を取得し、ページネーションを設定
@@ -21,12 +21,6 @@ class PostsController < ApplicationController
 
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
-
-    if @post.parent_post.present?
-      @send_to_user = @post.parent_post.user
-    else
-      @send_to_user = @post.user
-    end
   end
 
   def new
@@ -51,7 +45,6 @@ class PostsController < ApplicationController
   end
 
   def update
-    # 投稿の更新
     if @post.update(post_params)
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
@@ -63,7 +56,6 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    # 投稿の削除
     @post.destroy!
     flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
@@ -80,7 +72,6 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    # 投稿を取得
     @post = Post.find_by(id: params[:id])
     if @post.nil?
       redirect_to root_path, alert: 'この投稿は削除されました。'
@@ -88,8 +79,15 @@ class PostsController < ApplicationController
   end
 
   def set_current_user_post
-    # 現在のユーザーの投稿を取得
     @post = current_user.posts.find(params[:id])
+  end
+
+  def set_send_to_user
+    if @post.parent_post.present?
+      @send_to_user = @post.parent_post.user
+    else
+      @send_to_user = @post.user
+    end
   end
 
   def authorize_show

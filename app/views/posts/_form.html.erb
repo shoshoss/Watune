@@ -13,5 +13,5 @@
   <%= f.hidden_field :duration, class: "duration-field" %>
 
   <!-- 送信先設定 -->
-  <%= render 'posts/privacy_settings', is_reply_form: local_assigns[:is_reply_form], send_to_user: local_assigns[:send_to_user] %>
+  <%= render 'posts/privacy_settings', is_reply_form: is_reply_form, send_to_user: send_to_user, post: post %>
 </div>

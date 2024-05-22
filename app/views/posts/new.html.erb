@@ -22,7 +22,7 @@
         </div>
 
         <%= form_with model: @post, data: { controller: "post-modal", action: "turbo:submit-end->post-modal#afterClose" } do |f| %>
-          <%= render partial: 'posts/form', locals: { f: f, is_reply_form: false, send_to_user: nil } %>
+          <%= render partial: 'posts/form', locals: { f: f, is_reply_form: false, send_to_user: nil, post: @post } %>
           <div class="form-control mt-4 lg:mt-6">
             <%= f.submit t('helpers.submit.post'), class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
           </div>
