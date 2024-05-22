@@ -10,7 +10,6 @@ class UsersController < ApplicationController
     return unless @user.save
 
     login(user_params[:email], user_params[:password])
-    flash.now[:notice] = 'ユーザー登録に成功しました'
   end
 
   def new
@@ -21,9 +20,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       login(user_params[:email], user_params[:password])
-      redirect_to edit_profile_path, status: :see_other, notice: 'ユーザー登録に成功しました'
+      redirect_to edit_profile_path, status: :see_other, notice: 'ユーザー登録に成功しました。'
     else
-      flash.now[:error] = 'ユーザー登録に失敗しました'
+      flash.now[:error] = 'ユーザー登録に失敗しました。'
       render :new, status: :unprocessable_entity
     end
   end

@@ -45,6 +45,9 @@
     <!-- メインコンテンツ -->
     <main class="flex-1">
       <%= render 'shared/flash_message' %>
+      <div id="before_profile_edit_flash">
+        <%= render 'shared/before_profile_edit_flash' %>
+      </div>
       <%= yield %>
     </main>
 

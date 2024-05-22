@@ -1,0 +1,24 @@
+<% before_profile_edit_flash.each do |message_type, message| %>
+  <div class="p-2 mx-2">
+    <div class="<%= flash_class(message_type) %> my-2 rounded-lg text-lg" role="alert">
+      <span><%= message %></span>
+    </div>
+    <div class="bg-gray-100 p-2 rounded-lg mt-2">
+      <p class="text-lg hidden sm:block">
+        プロフィールの編集は、画面右上のアイコンをクリックして
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+          「プロフィール」
+        </a>
+        の項目より、いつでも編集が行えます。
+      </p>
+      <p class="text-lg sm:hidden">
+        プロフィールの編集は、画面右上のアイコンをタップして
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+          「プロフィール」
+        </a>
+        の項目より、いつでも編集が行えます。
+      </p>
+    </div>
+  </div>
+<% end %>
+

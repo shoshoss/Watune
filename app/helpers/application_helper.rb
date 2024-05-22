@@ -8,6 +8,10 @@ module ApplicationHelper
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
+  def before_profile_edit_flash
+    flash[:before_profile_edit] || {}
+  end
+
   def flash_class(type)
     case type.to_sym
     when :notice
