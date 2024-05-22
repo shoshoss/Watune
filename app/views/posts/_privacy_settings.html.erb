@@ -1,10 +1,23 @@
 <%= turbo_frame_tag "privacy-settings" do %>
   <div id="privacy-settings" class="form-control pt-2">
-    <label for="post_privacy" class="block text-lg font-semibold">送信先設定</label>
-    <div class="flex space-x-4 pt-2">
-      <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "_self" }, data: { turbo_frame: "privacy-settings" } %>
-      <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "_self" }, data: { turbo_frame: "privacy-settings" } %>
-    </div>
-    <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
+    <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
+    <% if local_assigns[:is_reply_form] %>
+      <div class="text-sm text-gray-500 mb-2">
+        <% if local_assigns[:send_to_user].present? %>
+          <%= link_to "@#{local_assigns[:send_to_user].username_slug}さん", profile_modal_path(username_slug: local_assigns[:send_to_user].username_slug),
+              class: "text-lg text-blue-500 hover:text-blue-700",
+              data: { turbo_frame: "profile_modal" } %>
+        <% else %>
+          <span>送信先の投稿が削除されました。</span>
+        <% end %>
+      </div>
+      <input type="hidden" name="post[privacy]" id="post_privacy" value="reply">
+    <% else %>
+      <div class="flex space-x-4 pt-2">
+        <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "_self" }, data: { turbo_frame: "privacy-settings" } %>
+        <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "_self" }, data: { turbo_frame: "privacy-settings" } %>
+      </div>
+      <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
+    <% end %>
   </div>
 <% end %>
