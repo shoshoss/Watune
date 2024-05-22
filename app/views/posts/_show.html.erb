@@ -4,6 +4,10 @@
       <div class="grid grid-cols-1 gap-4">
         <% if @post.parent_post %>
           <%= render 'posts/post_content', post: @post.parent_post, reply: false %>
+        <% else %>
+          <div class="text-sm text-gray-500 mb-2">
+            親の投稿が削除されました。
+          </div>
         <% end %>
         <%= render 'posts/post_content', post: @post, reply: false %>
         <%= render 'replies/form', post: @post, reply: @reply %>
