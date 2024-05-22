@@ -1,4 +1,3 @@
-<%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag dom_id(post) do %>
   <div data-controller="audio" id="post-id-<%= post.id %>"
        class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if local_assigns[:reply] %>">
@@ -34,7 +33,10 @@
         <div class="text-sm text-gray-500 mb-2">
           返信先: 
           <% post.ancestors.map(&:user).uniq.each do |user| %>
-            <%= link_to "@#{user.username_slug}さん", profile_show_path(username_slug: user.username_slug), class: "text-blue-500 hover:text-blue-700" %><% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
+            <%= link_to "@#{user.username_slug}さん", profile_modal_path(username_slug: user.username_slug),
+                class: "text-blue-500 hover:text-blue-700",
+                data: { turbo_frame: "profile_modal" } %>
+              <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
           <% end %>
         </div>
       <% end %>

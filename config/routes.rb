@@ -44,5 +44,8 @@ Rails.application.routes.draw do
 
   # プロフィールのルーティング
   resource :profile, only: %i[show edit update]
+  # プロフィールモーダルのルーティング
+  get '/profiles/:username_slug/modal', to: 'profiles#modal', as: 'profile_modal'
+  # プロフィールの詳細のルーティング
   get '/:username_slug', to: 'profiles#show', as: :profile_show
 end
