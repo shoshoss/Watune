@@ -29,7 +29,9 @@
         <% end %>
         <%= render 'replies/form', post: @post, reply: @reply %>
         <div id="replies" class="mt-4">
-          <%= render @replies %>
+          <% @replies.each do |reply| %>
+            <%= render 'posts/post', post: reply %>
+          <% end %>
         </div>
       </div>
     </div>

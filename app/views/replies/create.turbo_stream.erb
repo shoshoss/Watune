@@ -6,7 +6,7 @@
     <%= render 'shared/error_messages', object: @reply %>
   <% end %>
 <% else %>
-  <%= turbo_stream.append "replies" do %>
+  <%= turbo_stream.prepend "replies" do %>
     <%= render 'posts/post', post: @reply %>
   <% end %>
   <%= turbo_stream.replace "new_reply" do %>
