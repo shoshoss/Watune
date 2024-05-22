@@ -82,3 +82,7 @@ RSpec/MultipleExpectations:
 Security/Open:
   Exclude:
     - "app/controllers/oauths_controller.rb"
+
+# Rails/HasManyOrHasOneDependentルールを無効
+Rails/HasManyOrHasOneDependent:
+  Enabled: false

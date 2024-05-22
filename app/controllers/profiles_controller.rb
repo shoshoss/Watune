@@ -36,14 +36,16 @@ class ProfilesController < ApplicationController
   # プロフィールモーダル表示アクション
   def modal
     if @user.nil?
-      render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message', locals: { message: 'ユーザーが見つかりません。' })
+      render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message',
+                                                         locals: { message: 'ユーザーが見つかりません。' })
       return
     end
 
     respond_to do |format|
       format.html { render partial: 'profiles/profile_modal', locals: { user: @user } }
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal', locals: { user: @user })
+        render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal',
+                                                                   locals: { user: @user })
       end
     end
   end

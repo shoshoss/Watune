@@ -73,9 +73,9 @@ class PostsController < ApplicationController
 
   def set_post
     @post = Post.find_by(id: params[:id])
-    if @post.nil?
-      redirect_to root_path, alert: 'この投稿は削除されました。'
-    end
+    return unless @post.nil?
+
+    redirect_to root_path, alert: 'この投稿は削除されました。'
   end
 
   def set_current_user_post
@@ -83,11 +83,11 @@ class PostsController < ApplicationController
   end
 
   def set_send_to_user
-    if @post.parent_post.present?
-      @send_to_user = @post.parent_post.user
-    else
-      @send_to_user = @post.user
-    end
+    @send_to_user = if @post.parent_post.present?
+                      @post.parent_post.user
+                    else
+                      @post.user
+                    end
   end
 
   def authorize_show

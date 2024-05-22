@@ -4,7 +4,6 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
-
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
   has_many :bookmarks, dependent: :destroy
