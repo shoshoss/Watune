@@ -4,15 +4,15 @@
       <label for="post_privacy" class="block text-lg font-semibold">返信先</label>
       <div class="text-lg text-gray-500 mb-2">
         <% if local_assigns[:send_to_user].present? %>
+          <%= link_to "@#{post.user.username_slug}さん", profile_modal_path(username_slug: post.user.username_slug),
+              class: "text-xl font-semibold text-blue-500 hover:text-blue-700",
+              data: { turbo_frame: "profile_modal" } %><br>
           <% post.ancestors.map(&:user).uniq.each do |user| %>
             <%= link_to "@#{user.username_slug}さん", profile_modal_path(username_slug: user.username_slug),
                 class: "text-blue-500 hover:text-blue-700",
                 data: { turbo_frame: "profile_modal" } %>
             <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
           <% end %>
-          <%= link_to "、@#{post.user.username_slug}さん", profile_modal_path(username_slug: post.user.username_slug),
-              class: "text-lg text-blue-500 hover:text-blue-700",
-              data: { turbo_frame: "profile_modal" } %>
         <% else %>
           <span>送信先の投稿が削除されました。</span>
         <% end %>
