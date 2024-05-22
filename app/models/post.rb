@@ -2,7 +2,7 @@ class Post < ApplicationRecord
   extend ActiveRecordExtended::QueryMethods
 
   belongs_to :user
-  has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, dependent: :destroy, inverse_of: :parent_post
+  has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
 
   has_many :likes, dependent: :destroy
@@ -16,7 +16,7 @@ class Post < ApplicationRecord
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
                        allow_nil: true
 
-  enum privacy: { only_me: 0, only_yours: 10, only_friends:20 , open: 100 }
+  enum privacy: { only_me: 0, reply: 1, open: 2, only_yours: 10, only_friends: 20 }
 
   # 公開設定の投稿を表示するスコープ
   scope :visible_to, ->(user) { where(privacy: %i[open only_yours only_friends]).or(where(user:)) }

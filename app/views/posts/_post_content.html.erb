@@ -1,10 +1,13 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <div data-controller="audio" id="post-id-<%= post.id %>"
-       class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if post.parent_post %>">
+       class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4">
     <!-- 1列目: アバター -->
-    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0">
+    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0 border-r-2 border-gray-200 relative">
       <!-- アバター -->
       <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% if post.replies.any? %>
+        <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-blue-500"></div>
+      <% end %>
     </div>
     <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
     <div class="flex-grow p-1 md:p-4" style="max-width: calc(100% - 15%);">
@@ -29,7 +32,7 @@
         <% end %>
       </div>
       <!-- 返信先の表示 -->
-      <% if post.parent_post %>
+      <% if post.parent_post.present? %>
         <div class="text-sm text-gray-500 mb-2">
           返信先: 
           <% post.ancestors.map(&:user).uniq.each do |user| %>
