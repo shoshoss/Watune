@@ -24,19 +24,6 @@ class PostsController < ApplicationController
     params[:privacy] ||= @post.privacy
   end
 
-  def privacy_settings
-    # プライバシー設定の部分テンプレートをレンダリング
-    @post = Post.new(privacy: params[:privacy])
-    Rails.logger.debug { "Privacy parameter received: #{params[:privacy]}" }
-    respond_to do |format|
-      format.html { render partial: 'posts/privacy_settings', locals: { post: @post } }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('privacy-settings', partial: 'posts/privacy_settings',
-                                                                      locals: { post: @post })
-      end
-    end
-  end
-
   def edit; end
 
   def create

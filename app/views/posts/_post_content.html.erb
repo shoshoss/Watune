@@ -1,8 +1,8 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <div data-controller="audio" id="post-id-<%= post.id %>"
-       class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if local_assigns[:reply] %>">
+       class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 <%= 'reply-post' if post.parent_post %>">
     <!-- 1列目: アバター -->
-    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0 border-r-2 border-gray-200">
+    <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0">
       <!-- アバター -->
       <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
     </div>

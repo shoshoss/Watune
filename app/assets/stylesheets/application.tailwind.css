@@ -66,5 +66,10 @@
 
 /* 返信投稿のスタイル */
 .reply-post {
-  @apply bg-gray-50 border-l-4 border-blue-500 ml-5 pl-3;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 100%;
+  background-color: blue;
+  transform: translateX(-50%);
 }

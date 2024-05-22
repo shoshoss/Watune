@@ -16,10 +16,10 @@ class Post < ApplicationRecord
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
                        allow_nil: true
 
-  enum privacy: { only_me: 0, friends_only: 1, open: 2 }
+  enum privacy: { only_me: 0, only_yours: 10, only_friends:20 , open: 100 }
 
   # 公開設定の投稿を表示するスコープ
-  scope :visible_to, ->(user) { where(privacy: %i[open friends_only]).or(where(user:)) }
+  scope :visible_to, ->(user) { where(privacy: %i[open only_yours only_friends]).or(where(user:)) }
 
   # ユーザーがいいねしていない投稿を取得するスコープ
   scope :not_liked_by_user, lambda { |user|
