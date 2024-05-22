@@ -66,8 +66,8 @@
 
 /* 返信投稿のスタイル */
 .reply-post {
+  top: calc(3.5rem + 0.25rem);
   left: 50%;
-  top: 100%;
   width: 2px;
   height: 100%;
   background-color: blue;
