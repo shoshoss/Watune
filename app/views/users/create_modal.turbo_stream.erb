@@ -2,5 +2,8 @@
   <%= turbo_stream.replace 'signup_modal_flash', partial: 'shared/flash_message', locals: { flash: { danger: 'ユーザー登録に失敗しました' } } %>
   <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
 <% else %>
-  <%= turbo_stream.replace 'signup_modal', partial: 'profiles/edit_modal', locals: { user: @user } %>
+<%= turbo_stream.replace 'signup_modal', partial: 'profiles/edit_modal', locals: { user: @user } %>
+<%= turbo_stream.replace 'no-sidebar', partial: 'shared/sidebar' %>
+<%= turbo_stream.replace 'no-widget', partial: 'shared/widget' %>
+<%= turbo_stream.replace 'before_login_header', partial: 'shared/header' %>
 <% end %>
