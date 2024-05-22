@@ -18,4 +18,7 @@
   <%= turbo_stream.update "flash" do %>
     <%= render 'shared/flash_message' %>
   <% end %>
+  <%= turbo_stream.update "post-#{@post.id}-reply-line" do %>
+    <div class="absolute left-1/2 transform -translate-x-1/2 top-[calc(3rem)] md:top-[calc(4.5rem)] bottom-0 w-0.5 bg-blue-500"></div>
+  <% end %>
 <% end %>

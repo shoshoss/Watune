@@ -63,13 +63,3 @@
 .c-button:hover {
   @apply bg-sky-200;
 }
-
-/* 返信投稿のスタイル */
-.reply-post {
-  top: calc(3.5rem + 0.25rem);
-  left: 50%;
-  width: 2px;
-  height: 100%;
-  background-color: blue;
-  transform: translateX(-50%);
-}
