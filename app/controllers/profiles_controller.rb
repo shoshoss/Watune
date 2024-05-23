@@ -30,7 +30,7 @@ class ProfilesController < ApplicationController
     return unless @user.update(user_params)
 
     if @user.display_name.blank?
-      @user.update(display_name: "ウェーブ#{@user.id}")
+      @user.update(display_name: "ウェーブ登録#{@user.id}")
       flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: Profile.model_name.human)
       return
     end

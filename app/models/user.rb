@@ -121,6 +121,6 @@ class User < ApplicationRecord
   end
 
   def set_default_display_name
-    update(display_name: "ウェーブ#{id}") if display_name.blank?
+    update(display_name: "ウェーブ登録#{id}") if display_name.blank?
   end
 end
