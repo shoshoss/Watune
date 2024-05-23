@@ -21,6 +21,10 @@ module.exports = {
       fontSize: {
         sm: "15px", // 15pxの文字サイズを設定
       },
+      screens: {
+        "lg-plus": "1200px", // ここでlgより少し大きいサイズを設定
+        "sm-plus": "720px",
+      },
     },
   },
   plugins: [require("daisyui")],
