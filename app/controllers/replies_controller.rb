@@ -6,13 +6,13 @@ class RepliesController < ApplicationController
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
-      flash[:notice] = '返信しました。'
+      flash[:notice] = '返信しました！'
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to user_post_path(@post.user.username_slug, @post), notice: '返信が作成されました。' }
       end
     else
-      flash.now[:danger] = '返信できませんでした。'
+      flash.now[:danger] = 'お手数をおかけします。返信できませんでした。'
       respond_to do |format|
         format.turbo_stream
         format.html { render 'posts/show', status: :unprocessable_entity }

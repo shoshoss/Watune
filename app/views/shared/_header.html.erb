@@ -13,6 +13,11 @@
       <% end %>
     </div>
 
+    <!-- ユーザー数の表示（デスクトップ） -->
+    <div class="hidden lg:block mx-2 text-lg">
+      <span>登録ユーザー数: <strong><%= @user_count %></strong></span>
+    </div>
+
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
       <%= link_to t('header.about'), root_path, class: "hidden sm:block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}" %>
@@ -29,12 +34,15 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
           <li class="block py-2">
             <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
           </li>
           <li class="block py-2">
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
+          </li>
+          <li class="lg:hidden block py-2 text-lg">
+            <span class="whitespace-nowrap">登録ユーザー数: <strong><%= @user_count %></strong></span>
           </li>
         </ul>
       </div>
@@ -55,7 +63,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
@@ -64,6 +72,9 @@
           </li>
           <li class="py-2">
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
+          </li>
+          <li class="block py-2 text-lg">
+            <span class="whitespace-nowrap">登録ユーザー数: <strong><%= @user_count %></strong></span>
           </li>
         </ul>
       </div>
