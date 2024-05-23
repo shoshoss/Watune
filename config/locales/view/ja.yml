@@ -20,6 +20,7 @@ ja:
     search_word: 検索ワード
     password_reset: パスワードリセット
     flash_message:
+      updated_with_default_name: "%{item}を初期の名前で更新しました。"
       require_login: ログインしてください。
       created: "%{item}しました。"
       not_created: "%{item}できませんでした。"

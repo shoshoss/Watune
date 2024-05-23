@@ -19,6 +19,8 @@ class User < ApplicationRecord
   # ユーザー作成時にユーザー名スラグを自動生成する
   before_validation :generate_username_slug, on: :create
 
+  after_create :set_default_display_name
+
   # メールアドレスは一意であり、存在が必要で、最大255文字
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
 
@@ -116,5 +118,9 @@ class User < ApplicationRecord
       self.username_slug = SecureRandom.alphanumeric(rand(3..15)).downcase
       break unless User.exists?(username_slug:)
     end
+  end
+
+  def set_default_display_name
+    update(display_name: "ウェーブ#{id}") if display_name.blank?
   end
 end
