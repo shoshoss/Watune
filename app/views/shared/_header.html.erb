@@ -1,13 +1,13 @@
 <%= turbo_frame_tag 'post_modal' %>
-<div id="after-header" class="navbar px-4">
+<div id="after-header" class="navbar">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
-    <div class="hidden sm:block shrink-0">
+    <div class="hidden sm:block shrink-0 mx-5">
       <%= link_to posts_path do %>
         <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
-    <div class="sm:hidden">
+    <div class="sm:hidden mx-2">
       <%= link_to posts_path do %>
         <%= image_tag asset_path('sample.jpg'), alt: 'ロゴ', class: "rounded-full h-10 w-10" %>
       <% end %>
@@ -51,9 +51,9 @@
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
-      <div class="dropdown dropdown-hover dropdown-end ml-2 shrink-0">
-        <label tabindex="0" class="btn btn-ghost rounded-btn">
-          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-8 w-8 min-w-[35px]" %>
+      <div class="dropdown dropdown-hover dropdown-end shrink-0">
+        <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
+          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
           <li class="py-2">
