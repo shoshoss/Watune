@@ -3,12 +3,12 @@
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="hidden sm:block shrink-0">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
     <div class="sm:hidden">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag asset_path('sample.jpg'), alt: 'ロゴ', class: "rounded-full h-10 w-10" %>
       <% end %>
     </div>
@@ -21,7 +21,7 @@
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "hidden sm:flex btn btn-outline btn-accent text-sm",
+                  class: "hidden sm:flex font-bold text-xl btn btn-outline btn-accent text-sm",
                   data: { turbo_frame: "post_modal" } %>
       
       <!-- ユーザーメニュー -->
@@ -47,7 +47,7 @@
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "btn btn-outline btn-accent btn-sm",
+                  class: "font-bold btn btn-outline btn-accent btn-sm",
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->

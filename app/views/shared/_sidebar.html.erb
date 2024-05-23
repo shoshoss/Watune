@@ -1,34 +1,28 @@
-<aside id="after-sidebar" class="bg-gradient-to-br from-blue-500 to-blue-900 p-5 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
+<aside id="after-sidebar" class="p-5 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
     <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-32 w-32' %>
   </div>
   <ul class="px-2 space-y-2">
     <!-- ホーム -->
     <li>
-      <%= link_to '#', class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300 bg-blue-100" do %>
-        <i class="fas fa-home text-2xl"></i>
+      <%= link_to posts_path, class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300 #{active_if(posts_path)}" do %>
+        <i class="fas fa-home text-2xl #{'text-blue-500' if current_page?(posts_path)}"></i>
         <h2 class="text-lg font-bold flex-grow">ホーム</h2>
-      <% end %>
-    </li>
-    <!-- 話題を検索 -->
-    <li>
-      <%= link_to '#', class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300" do %>
-        <i class="fas fa-search text-2xl"></i>
-        <h2 class="text-lg font-bold flex-grow">話題を検索</h2>
       <% end %>
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(current_user.username_slug), class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300" do %>
-        <i class="fas fa-user text-2xl"></i>
+      <%= link_to profile_show_path(current_user.username_slug), class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
+        <i class="fas fa-user text-2xl #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
         <h2 class="text-lg font-bold flex-grow">プロフィール</h2>
       <% end %>
     </li>
     <!-- 他のリンクも同様に追加 -->
   </ul>
-  <div class="mt-auto">
-    <button class="w-full bg-twitter text-white font-bold py-3 px-4 rounded-full transition-colors duration-300 hover:bg-twitter-dark">
-      ツイートする
-    </button>
+  <div class="mt-auto py-5">
+    <%= link_to t('header.post_audio'),
+                  new_post_path,
+                  class: "hidden sm:flex font-bold text-xl btn btn-outline btn-accent text-sm",
+                  data: { turbo_frame: "post_modal" } %>
   </div>
 </aside>

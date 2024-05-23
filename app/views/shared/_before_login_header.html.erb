@@ -3,12 +3,12 @@
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="hidden sm:block shrink-0">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag 'logo.png', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
       <% end %>
     </div>
     <div class="sm:hidden">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag asset_path('sample.jpg'), alt: 'ロゴ', class: "rounded-full h-10 w-10" %>
       <% end %>
     </div>
