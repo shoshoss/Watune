@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
 
   before_action :require_login
-  before_action :set_user_count
+  before_action :set_user_and_post_count
 
   private
 
@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
     redirect_to new_login_modal_path, status: :found
   end
 
-  def set_user_count
+  def set_user_and_post_count
     @user_count = User.count
+    @post_count = Post.count
   end
 end

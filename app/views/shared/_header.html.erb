@@ -13,9 +13,10 @@
       <% end %>
     </div>
 
-    <!-- ユーザー数の表示（デスクトップ） -->
-    <div class="hidden lg:block mx-2 text-lg">
+    <!-- ユーザー数と投稿数の表示（デスクトップ） -->
+    <div class="hidden lg:flex mx-2 text-lg space-x-4">
       <span>登録ユーザー数: <strong><%= @user_count %></strong></span>
+      <span>投稿数: <strong><%= @post_count %></strong></span>
     </div>
 
     <!-- ナビゲーションリンク（PC） -->
@@ -43,6 +44,9 @@
           </li>
           <li class="lg:hidden block py-2 text-lg">
             <span class="whitespace-nowrap">登録ユーザー数: <strong><%= @user_count %></strong></span>
+          </li>
+          <li class="lg:hidden block py-2 text-lg">
+            <span class="whitespace-nowrap">投稿数: <strong><%= @post_count %></strong></span>
           </li>
         </ul>
       </div>
@@ -75,6 +79,9 @@
           </li>
           <li class="block py-2 text-lg">
             <span class="whitespace-nowrap">登録ユーザー数: <strong><%= @user_count %></strong></span>
+          </li>
+          <li class="block py-2 text-lg">
+            <span class="whitespace-nowrap">ウェーブ数: <strong><%= @post_count %></strong></span>
           </li>
         </ul>
       </div>
