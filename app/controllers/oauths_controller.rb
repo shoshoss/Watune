@@ -17,29 +17,27 @@ class OauthsController < ApplicationController
 
   # OAuth認証からのコールバックを処理するアクション
   def callback
-    begin
-      # セッションからプロバイダーを取得し、削除
-      provider = session.delete(:provider) || 'google'
-      # プロバイダーからのデータを取得
-      sorcery_fetch_user_hash(provider)
+    # セッションからプロバイダーを取得し、削除
+    provider = session.delete(:provider) || 'google'
+    # プロバイダーからのデータを取得
+    sorcery_fetch_user_hash(provider)
 
-      # ユーザーでログインを試みる
-      @user = login_from(provider)
-      if @user
-        redirect_to root_path, status: :see_other, notice: I18n.t('flash_messages.user_sessions.login_success')
-      else
-        @user = find_or_initialize_user(provider)
-        is_new_user = @user.new_record?
-        setup_new_user(@user) if is_new_user
-        reset_session
-        auto_login(@user)
-        redirect_path, notice_message = determine_redirect(is_new_user, provider)
-        redirect_to redirect_path, status: :see_other, notice: notice_message
-      end
-    rescue ActiveRecord::RecordInvalid => e
-      flash[:error] = "#{I18n.t('flash_messages.users.registration_failure')} #{e.message}"
-      redirect_to login_path, status: :unprocessable_entity
+    # ユーザーでログインを試みる
+    @user = login_from(provider)
+    if @user
+      redirect_to root_path, status: :see_other, notice: I18n.t('flash_messages.user_sessions.login_success')
+    else
+      @user = find_or_initialize_user(provider)
+      is_new_user = @user.new_record?
+      setup_new_user(@user) if is_new_user
+      reset_session
+      auto_login(@user)
+      redirect_path, notice_message = determine_redirect(is_new_user, provider)
+      redirect_to redirect_path, status: :see_other, notice: notice_message
     end
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:error] = "#{I18n.t('flash_messages.users.registration_failure')} #{e.message}"
+    redirect_to login_path, status: :unprocessable_entity
   end
 
   private
