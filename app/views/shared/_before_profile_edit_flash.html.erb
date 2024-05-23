@@ -5,37 +5,45 @@
     </div>
     <div class="bg-gray-100 p-2 rounded-lg mt-2">
       <p class="text-lg hidden md:block">
-        プロフィールの編集は、画面右上のアイコンをクリックして
-        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、画面右上のアイコンの
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
-        の項目より、いつでも編集が行えます。<br>
-        また、画面左に表示されたサイドバーにある
-        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+        の項目、または、画面左側に表示されているサイドバーの
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
+          「自分のアイコン」
+        </a>
+        や
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
-        の項目からでも編集ができます。
+        の項目より、表示できます。
       </p>
       <p class="text-lg hidden sm:block md:hidden">
-        プロフィールの編集は、画面右上のアイコンをクリックして
-        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、画面右上のアイコンの
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
-        の項目より、いつでも編集が行えます。<br>
-        また、画面を横に広げることでサイドバーが表示され、
-        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+        の項目、または、画面を横に広げることで表示されたサイドバーの
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
+          「自分のアイコン」
+        </a>
+        や
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
-        の項目が表示されます、
+        の項目より、表示できます。
       </p>
       <p class="text-lg sm:hidden">
-        プロフィールの編集は、画面右上のアイコンをタップして
-        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700">
+        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、画面右上のアイコンの
+        <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
-        の項目より、いつでも編集が行えます。
+        の項目より、表示できます。
       </p>
     </div>
   </div>
 <% end %>
-
