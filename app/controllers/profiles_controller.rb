@@ -5,6 +5,7 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示アクション
   def show
+    @show_reply_line = false
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return

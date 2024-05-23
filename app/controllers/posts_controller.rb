@@ -6,12 +6,12 @@ class PostsController < ApplicationController
   before_action :set_send_to_user, only: [:show]
 
   def index
-    # 投稿の一覧を取得し、ページネーションを設定
+    @show_reply_line = false
     @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
   end
 
   def show
-    # 投稿を取得し、返信のページネーションを設定
+    @show_reply_line = true
     begin
       @post = Post.includes(:user).find(params[:id])
     rescue ActiveRecord::RecordNotFound
