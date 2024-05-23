@@ -1,108 +1,117 @@
 ja:
   helpers:
     submit:
-      create: 登録する
-      submit: 保存する
-      post: 投稿する
-      update: 更新する
+      create: "登録する"
+      submit: "保存する"
+      post: "ウェーブする"
+      update: "更新する"
     label:
-      email: メールアドレス
-      password: パスワード
+      email: "メールアドレス"
+      password: "パスワード"
+
   defaults:
-    create: 作成
-    post: 投稿
-    edit: 編集
+    create: "作成"
+    post: "投稿"
+    edit: "編集"
     show: "詳細"
     delete: "削除"
     or: "または"
     unspecified: "指定なし"
-    delete_confirm: 本当に削除しますか？
-    search_word: 検索ワード
-    password_reset: パスワードリセット
+    delete_confirm: "本当に削除しますか？"
+    search_word: "検索ワード"
+    password_reset: "パスワードリセット"
     flash_message:
-      updated_with_default_name: "%{item}を初期の名前で更新しました。"
-      require_login: ログインしてください。
-      created: "%{item}しました。"
-      not_created: "%{item}できませんでした。"
-      updated: "%{item}を更新しました。"
-      not_updated: "%{item}を更新できませんでした。"
-      deleted: "%{item}を削除しました。"
-      bookmarks_created: ブックマークしました。
-      bookmarks_destroy: ブックマークを外しました。
-      not_authorized: 権限がありません。
+      updated_with_default_name: "名前が未入力なので%{item}を初期の名前で更新しました。"
+      require_login: "お手数をおかけします。<br>ログインしてください。"
+      created: "ありがとうございます！<br>%{item}しました！<br>おめでとうございます！"
+      not_created: "お手数をおかけします。<br>%{item}できませんでした。"
+      updated: "ありがとうございます！<br>%{item}を更新しました！"
+      not_updated: "お手数をおかけします。<br>%{item}を更新できませんでした。"
+      deleted: "ありがとうございました！<br>%{item}を削除しました。"
+      bookmarks_created: "ありがとうございます！<br>ブックマークしました！"
+      bookmarks_destroy: "ありがとうございました！<br>ブックマークを外しました！"
+      not_authorized: "権限がありません。"
+
   user_sessions:
     new:
-      title: ログイン
-      login: ログイン
-      google_login: Googleでログイン
-      to_signup_page: 新規登録ページへ
-      password_forget: パスワードをお忘れの方はこちら
+      title: "ログイン"
+      login: "ログイン"
+      google_login: "Googleでログイン"
+      to_signup_page: "新規登録ページへ"
+      password_forget: "パスワードをお忘れの方はこちら"
     new_modal:
-      title: ログイン
-      login: ログイン
-      google_login: Googleでログイン
-      to_signup_page: 新規登録ページへ
-      password_forget: パスワードをお忘れの方はこちら
+      title: "ログイン"
+      login: "ログイン"
+      google_login: "Googleでログイン"
+      to_signup_page: "新規登録ページへ"
+      password_forget: "パスワードをお忘れの方はこちら"
+
   users:
     new:
-      title: ユーザー登録
-      to_login: ログイン
-      google_signup: Googleで新規登録
+      title: "ユーザー登録"
+      to_login: "ログイン"
+      google_signup: "Googleで新規登録"
     new_modal:
-      title: ユーザー登録
-      to_login: ログイン
-      google_signup: Googleで新規登録
+      title: "ユーザー登録"
+      to_login: "ログイン"
+      google_signup: "Googleで新規登録"
+
   header:
-    about: WaveConGraとは
-    login: ログイン
-    logout: ログアウト
-    signup: 新規登録
-    post: みんなの投稿
-    post_index: みんなのウェーブ
-    post_audio: ウェーブする
-    bookmark_index: ブックマーク一覧
-    profile: プロフィール
+    about: "WaveConGraとは"
+    login: "ログイン"
+    logout: "ログアウト"
+    signup: "新規登録"
+    post: "みんなの投稿"
+    post_index: "みんなのウェーブ"
+    post_audio: "ウェーブする"
+    bookmark_index: "ブックマーク一覧"
+    profile: "プロフィール"
+
   flash_messages:
     user_sessions:
-      login_success: "ログインしました。"
-      login_failure: "ログインに失敗しました。"
-      logout: "ログアウトしました。"
+      login_success: "今日もよろしくお願いします！<br>ログインしました！"
+      login_failure: "お手数をおかけします。<br>ログインに失敗しました。メールアドレスまたはパスワードが間違っている可能性があります。再度お試しください。"
+      logout: "おつかれさまでした！<br>ログアウトしました。<br>これからもよろしくお願いします！"
     users:
-      registration_success: "ユーザー登録が完了しました。"
+      registration_success: "ありがとうございます！<br>ユーザー登録が完了しました！<br>おめでとうございます！"
       registration_failure: "ユーザー登録に失敗しました。"
+
   posts:
     new:
-      title: 投稿作成
+      title: "投稿作成"
     show:
-      title: 投稿詳細
+      title: "投稿詳細"
     index:
-      title: 投稿一覧
+      title: "投稿一覧"
     edit:
-      title: 投稿編集
+      title: "投稿編集"
     bookmarks:
-      title: ブックマーク一覧
-      no_result: ブックマーク中の音声がありません。
+      title: "ブックマーク一覧"
+      no_result: "ブックマーク中の音声がありません。"
+
   profiles:
     show:
-      title: プロフィール
+      title: "プロフィール"
     edit:
-      title: プロフィール編集
+      title: "プロフィール編集"
+
   password_resets:
     new:
-      title: パスワードリセット申請
-      submit: 変更手続きメールを送信
+      title: "パスワードリセット申請"
+      submit: "変更手続きメールを送信"
     create:
-      success: パスワードリセット手順を送信しました。
+      success: "パスワードリセット手順を送信しました。"
     edit:
-      title: パスワードリセット
-      submit: 更新
+      title: "パスワードリセット"
+      submit: "更新"
     update:
-      success: パスワードを変更しました。
-      fail: パスワード変更に失敗しました。
+      success: "パスワードを変更しました。"
+      fail: "パスワード変更に失敗しました。"
+
   static_pages:
     top:
-      title: トップページ
+      title: "トップページ"
     terms_of_use:
-      title: 利用規約
+      title: "利用規約"
     privacy_policy:
-      title: プライバシーポリシー
+      title: "プライバシーポリシー"

@@ -7,9 +7,9 @@ class UserSessionsController < ApplicationController
     @user = login(params[:email], params[:password])
 
     if @user
-      flash[:notice] = 'ログインにしました'
+      flash[:notice] = t('flash_messages.user_sessions.login_success')
     else
-      flash.now[:danger] = 'ログインに失敗しました'
+      flash.now[:danger] = t('flash_messages.user_sessions.login_failure')
       render :new_modal, status: :unprocessable_entity
     end
   end
@@ -20,15 +20,15 @@ class UserSessionsController < ApplicationController
     @user = login(params[:email], params[:password])
 
     if @user
-      redirect_to root_path, status: :see_other, notice: 'ログインしました'
+      redirect_to root_path, status: :see_other, notice: t('flash_messages.user_sessions.login_success')
     else
-      flash.now[:danger] = 'ログインに失敗しました'
+      flash.now[:danger] = t('flash_messages.user_sessions.login_failure')
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
     logout
-    redirect_to root_path, status: :see_other, notice: 'ログアウトしました'
+    redirect_to root_path, status: :see_other, notice: t('flash_messages.user_sessions.logout')
   end
 end

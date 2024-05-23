@@ -27,14 +27,14 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    if @user.update(user_params)
-      if @user.display_name.blank?
-        @user.update(display_name: "ウェーブ#{@user.id}")
-        flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: Profile.model_name.human)
-        return
-      end
-      flash[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
+    return unless @user.update(user_params)
+
+    if @user.display_name.blank?
+      @user.update(display_name: "ウェーブ#{@user.id}")
+      flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: Profile.model_name.human)
+      return
     end
+    flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
   end
 
   # プロフィールモーダル表示アクション

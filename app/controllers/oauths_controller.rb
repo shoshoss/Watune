@@ -25,25 +25,11 @@ class OauthsController < ApplicationController
     # ユーザーでログインを試みる
     @user = login_from(provider)
     if @user
-      # ログイン成功時、トップページにリダイレクト
-      redirect_to root_path, status: :see_other, notice: 'ログインしました'
+      redirect_to root_path, status: :see_other, notice: I18n.t('flash_messages.user_sessions.login_success')
     else
-      # ユーザーが見つからない場合、新規作成または初期化
-      @user = find_or_initialize_user(provider)
-      is_new_user = @user.new_record?
-      # 新規ユーザーの場合、ユーザー情報を設定
-      setup_new_user(@user) if is_new_user
-      # セッションをリセットし、ユーザーでログイン
-      reset_session
-      auto_login(@user)
-      # リダイレクト先と通知メッセージを決定
-      redirect_path, notice_message = determine_redirect(is_new_user, provider)
-      # 最終的なリダイレクトを実行
-      redirect_to redirect_path, status: :see_other, notice: notice_message
-    end
+
   rescue ActiveRecord::RecordInvalid => e
-    # 保存失敗時はログインページにリダイレクトしエラーを表示
-    flash[:error] = "アカウントの作成に失敗しました。エラー: #{e.message}"
+    flash[:error] = "#{I18n.t('flash_messages.users.registration_failure')} #{e.message}"
     redirect_to login_path, status: :unprocessable_entity
   end
 
@@ -91,7 +77,7 @@ class OauthsController < ApplicationController
       file.write(response.body)
       file.rewind
       user.avatar.attach(io: file, filename:)
-      file.close # ここでファイルを閉じる
+      file.close
     end
   end
 
@@ -113,9 +99,9 @@ class OauthsController < ApplicationController
   # リダイレクト先と通知メッセージを決定する
   def determine_redirect(is_new_user, _provider)
     if is_new_user
-      [edit_profile_path, 'ユーザー登録に成功しました']
+      [edit_profile_path, I18n.t('flash_messages.users.registration_success')]
     else
-      [root_path, 'ログインしました']
+      [root_path, I18n.t('flash_messages.user_sessions.login_success')]
     end
   end
 end
