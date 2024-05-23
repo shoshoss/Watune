@@ -15,26 +15,26 @@
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-md py-2 #{active_if(root_path)}" %>
-      <%= link_to t('header.post_index'), posts_path, class: "block text-md py-2 #{active_if(posts_path)}" %>
+      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-sm sm:text-md md:text-lg py-2 #{active_if(root_path)}" %>
+      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 #{active_if(posts_path)}" %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: 'hidden sm:flex btn btn-outline btn-accent text-sm',
+                  class: "hidden sm:flex btn btn-outline btn-accent text-sm",
                   data: { turbo_frame: "post_modal" } %>
       
       <!-- ユーザーメニュー -->
       <div class="dropdown dropdown-end ml-2 shrink-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
-          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12' %>
+          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-          <li>
-            <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: 'text-md hover:bg-sky-100 #{active_if(profile_show_path(current_user.username_slug))}' %>
+          <li class="block py-2">
+            <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-md md:text-lg hover:bg-sky-100 #{active_if(profile_show_path(current_user.username_slug))}" %>
           </li>
-          <li>
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'text-md hover:bg-sky-100' %>
+          <li class="block py-2">
+            <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-md md:text-lg hover:bg-sky-100" %>
           </li>
         </ul>
       </div>
@@ -42,28 +42,28 @@
 
     <!-- ナビゲーションリンク（スマホ） -->
     <div class="sm:hidden flex flex-1 justify-end items-center space-x-2">
-      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:mx-2 sm:text-lg py-2 #{active_if(posts_path)}" %>
+      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-lg py-2 #{active_if(posts_path)}" %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: 'btn btn-outline btn-accent btn-sm',
+                  class: "btn btn-outline btn-accent btn-sm",
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
       <div class="dropdown dropdown-end ml-2 shrink-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
-          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12' %>
+          <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-          <li>
-            <%= link_to t('header.about'), root_path, class: "text-md hover:bg-sky-100 #{active_if(root_path)}" %>
+          <li class="py-2">
+            <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 #{active_if(root_path)}" %>
           </li>
-          <li>
-            <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: 'text-md hover:bg-sky-100 #{active_if(profile_show_path(current_user.username_slug))}' %>
+          <li class="py-2">
+            <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 #{active_if(profile_show_path(current_user.username_slug))}" %>
           </li>
-          <li>
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: 'text-md hover:bg-sky-100' %>
+          <li class="py-2">
+            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100" %>
           </li>
         </ul>
       </div>

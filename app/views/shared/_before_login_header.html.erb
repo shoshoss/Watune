@@ -1,5 +1,4 @@
 <%= turbo_frame_tag 'login_modal' %>
-
 <div class="navbar px-4">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
@@ -22,11 +21,11 @@
       <!-- モーダル（ログインと新規登録）を開くリンク -->
       <%= link_to t('header.login'),
                   new_login_modal_path,
-                  class: 'btn btn-outline btn-primary hidden sm:flex md:text-lg',
+                  class: 'btn btn-outline btn-primary hidden sm:flex text-lg',
                   data: { turbo_frame: "login_modal" } %>
       <%= link_to t('header.signup'),
                   new_signup_modal_path,
-                  class: 'btn btn-outline btn-accent sm:flex sm:text-lg',
+                  class: 'btn btn-outline btn-accent sm:flex text-lg',
                   data: { turbo_frame: "signup_modal" } %>
 
       <!-- ハンバーガーメニュー -->
@@ -39,13 +38,13 @@
 
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
           <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
-          <li class="block">
-            <%= link_to t('header.about'), root_path, class: "text-md hover:bg-sky-100 #{active_if(root_path)}" %>
+          <li class="block py-2">
+            <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 #{active_if(root_path)}" %>
           </li>
-          <li class="block">
+          <li class="block py-2">
             <%= link_to t('header.login'),
                         new_login_modal_path,
-                        class: "text-md hover:bg-sky-100 #{active_if(new_login_modal_path)}",
+                        class: "text-lg hover:bg-sky-100",
                         data: { turbo_frame: "login_modal" } %>
           </li>
         </ul>
