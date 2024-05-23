@@ -15,8 +15,8 @@
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-sm sm:text-md md:text-lg py-2 #{active_if(root_path)}" %>
-      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 #{active_if(posts_path)}" %>
+      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-sm sm:text-md md:text-lg py-2 hover:bg-sky-100 #{active_if(root_path)}" %>
+      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 hover:bg-sky-100 #{active_if(posts_path)}" %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),

@@ -15,8 +15,8 @@
 
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-md py-2 #{active_if(root_path)}" %>
-      <%= link_to t('header.post_index'), posts_path, class: "block text-md py-2 #{active_if(posts_path)}" %>
+      <%= link_to t('header.about'), root_path, class: "hidden sm:block text-md py-2 hover:bg-sky-100 #{active_if(root_path)}" %>
+      <%= link_to t('header.post_index'), posts_path, class: "block text-md py-2 hover:bg-sky-100 #{active_if(posts_path)}" %>
 
       <!-- モーダル（ログインと新規登録）を開くリンク -->
       <%= link_to t('header.login'),
