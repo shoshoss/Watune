@@ -5,14 +5,14 @@
   <ul class="px-2 space-y-2">
     <!-- ホーム -->
     <li>
-      <%= link_to posts_path, class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300 #{active_if(posts_path)}" do %>
+      <%= link_to posts_path, class: " flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" do %>
         <i class="fas fa-home text-2xl #{'text-blue-500' if current_page?(posts_path)}"></i>
         <h2 class="text-lg font-bold flex-grow">ホーム</h2>
       <% end %>
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(current_user.username_slug), class: "sidebarOption flex items-center space-x-4 p-3 hover:bg-blue-200 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
+      <%= link_to profile_show_path(current_user.username_slug), class: " flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
         <h2 class="text-lg font-bold flex-grow">プロフィール</h2>
       <% end %>
@@ -22,7 +22,7 @@
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "hidden sm:flex font-bold text-xl btn btn-outline btn-accent text-sm",
+                  class: "flex font-bold text-2xl btn btn-outline btn-accent rounded-full rounded-full transition-colors duration-300",
                   data: { turbo_frame: "post_modal" } %>
   </div>
 </aside>
