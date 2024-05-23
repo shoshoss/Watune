@@ -22,16 +22,26 @@ class Post < ApplicationRecord
 
   # ユーザーがいいねしていない投稿を取得するスコープ
   scope :not_liked_by_user, lambda { |user|
-    where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
+    where(user_id: user.id)
+      .left_joins(:likes)
+      .group('posts.id')
+      .having('COUNT(likes.id) = 0')
   }
 
   # 自分の投稿で自分がいいねしていないもの、および他のユーザーの公開設定された投稿で、
   # そのユーザー自身がいいねしていない、いいねの数が0のものを取得するスコープ
   scope :with_likes_count_all, lambda { |user|
-    user_posts = where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
+    user_posts = where(user_id: user.id)
+                 .left_joins(:likes)
+                 .group('posts.id')
+                 .having('COUNT(likes.id) = 0')
+
     open_posts = where(privacy: 'open')
                  .where.not(user_id: user.id)
-                 .where.missing(:likes)
+                 .left_joins(:likes)
+                 .group('posts.id')
+                 .having('COUNT(likes.id) = 0')
+
     user_posts.or(open_posts)
   }
 
@@ -39,7 +49,9 @@ class Post < ApplicationRecord
   scope :public_likes_chance, lambda { |user|
     where.not(user_id: user.id)
          .where(privacy: 'open')
-         .where.missing(:likes)
+         .left_joins(:likes)
+         .group('posts.id')
+         .having('COUNT(likes.id) = 0')
   }
 
   # 自分だけの投稿を取得するスコープ
