@@ -57,8 +57,8 @@ ja:
     logout: ログアウト
     signup: 新規登録
     post: みんなの投稿
-    post_index: みんなの投稿
-    post_audio: 投稿する
+    post_index: みんなのウェーブ
+    post_audio: ウェーブする
     bookmark_index: ブックマーク一覧
     profile: プロフィール
   flash_messages:

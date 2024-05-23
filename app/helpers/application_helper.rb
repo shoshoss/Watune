@@ -63,6 +63,6 @@ module ApplicationHelper
   end
 
   def active_if(path)
-    current_page?(path) ? 'font-bold border-b-4 border-sky-400' : 'font-medium border-b-2 border-gray-400'
+    current_page?(path) ? 'font-bold border-b-4 border-sky-400' : 'font-medium border-b-2 border-gray-300'
   end
 end
