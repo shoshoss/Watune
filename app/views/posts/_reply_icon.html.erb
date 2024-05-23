@@ -2,5 +2,7 @@
             data: { turbo_frame: "_top" },
             class: "text-lg text-gray-500 hover:text-blue-700" do %>
   <i class="fa-regular fa-comment <%= 'text-blue-500' if post.replies.exists?(user: current_user) %>"></i>
-  <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
+  <% if post.replies.count > 0 %>
+    <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
+  <% end %>
 <% end %>

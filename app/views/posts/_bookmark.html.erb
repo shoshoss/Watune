@@ -7,9 +7,16 @@
       <% end %>
     <% else %>
       <%= link_to post_bookmarks_path(post.id), method: :post, data: { turbo_method: :post }, id: "post-#{post.id}-bookmark-button" do %>
-        <i class="fas fa-bookmark text-xl text-gray-500 hover:tex-yellow-700-accent"></i>
+        <i class="fas fa-bookmark text-xl text-gray-500 hover:text-yellow-700-accent"></i>
       <% end %>
     <% end %>
-    <span class="ml-2 text-lg text-gray-500"><%= post.bookmarks.count %></span>
+    <% if post.user_id == current_user.id %>
+      <% bookmark_count = post.bookmarks.where.not(user_id: current_user.id).count %>
+    <% else %>
+      <% bookmark_count = post.bookmarks.count %>
+    <% end %>
+    <% if bookmark_count > 0 %>
+      <span class="ml-2 text-lg text-gray-500"><%= bookmark_count %></span>
+    <% end %>
   </div>
 <% end %>
