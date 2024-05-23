@@ -15,8 +15,8 @@
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="hidden lg-plus:flex mx-2 text-lg space-x-4">
-      <span>登録ユーザー数: <strong><%= @user_count %></strong></span>
-      <span>投稿数: <strong><%= @post_count %></strong></span>
+      <span>登録ユーザー数: <strong><%= format_count(@user_count) %></strong></span>
+      <span>投稿数: <strong><%= format_count(@post_count) %></strong></span>
     </div>
 
     <!-- ナビゲーションリンク（PC） -->
@@ -46,10 +46,10 @@
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= @user_count %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= format_count(@user_count) %></strong></span>
           </li>
           <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ数: <strong><%= @post_count %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ数: <strong><%= format_count(@post_count) %></strong></span>
           </li>
         </ul>
       </div>
@@ -81,10 +81,10 @@
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="block py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= @user_count %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= format_count(@user_count) %></strong></span>
           </li>
           <li class="block py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ数: <strong><%= @post_count %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ数: <strong><%= format_count(@post_count) %></strong></span>
           </li>
         </ul>
       </div>
