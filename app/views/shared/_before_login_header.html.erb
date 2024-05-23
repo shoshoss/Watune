@@ -29,17 +29,16 @@
                   data: { turbo_frame: "signup_modal" } %>
 
       <!-- ハンバーガーメニュー -->
-      <div class="dropdown dropdown-end">
+      <div class="dropdown dropdown-hover dropdown-end">
         <button class="btn btn-square btn-ghost sm:hidden" tabindex="0">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
           <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
           <li class="block py-2">
-            <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4  #{active_if(root_path)}" %>
+            <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
           <li class="block py-2">
             <%= link_to t('header.login'),
