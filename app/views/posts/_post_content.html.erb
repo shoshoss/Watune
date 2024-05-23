@@ -4,7 +4,9 @@
     <!-- 1列目: アバター -->
     <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0 relative">
       <!-- アバター -->
-      <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <%= link_to profile_show_path(username_slug: post.user.username_slug), data: { turbo_frame: "_top" } do %>
+        <%= image_tag(post.user.avatar.presence || asset_path('sample.jpg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% end %>
       <div id="post-<%= post.id %>-reply-line">
         <% if post.replies.any? %>
           <div class="absolute left-1/2 transform -translate-x-1/2 top-[calc(3rem)] md:top-[calc(4.5rem)] md:top-[calc(3.5rem+0.5rem)] bottom-0 w-0.5 bg-blue-500"></div>
@@ -15,7 +17,11 @@
     <div class="flex-grow p-1 md:p-4" style="max-width: calc(100% - 15%);">
       <div class="flex justify-between items-center mb-2">
         <div class="overflow-x-auto whitespace-nowrap" style="max-width:80%;">
-          <span class="text-lg font-semibold"><%= post.user.display_name %></span>
+          <div class="dropdown dropdown-hover">
+            <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline", data: { turbo_frame: "profile_modal" } do %>
+              <%= post.user.display_name %>
+            <% end %>
+          </div>
           <br>
           <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
           <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
