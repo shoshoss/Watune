@@ -8,9 +8,10 @@
       </div>
       <%= link_to '新規登録して今すぐ始める',
                   new_signup_modal_path,
-                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
+                  class: 'text-xl sm:text-3xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
                   data: { turbo_frame: "signup_modal" } %>
-      <br>
+      <%= link_to 'お試し~', posts_path, class: "block text-sm sm:text-lg py-2 px-2 rounded-full transition-colors duration-300" %>
+
       <a href="#next-section" class="text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
