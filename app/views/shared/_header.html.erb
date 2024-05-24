@@ -21,8 +21,7 @@
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.about'), root_path, class: "hidden sm-plus:block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}" %>
-      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
+      <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-xl hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
@@ -36,7 +35,10 @@
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
-          <li class="sm-plus:hidden py-2">
+          <li class="py-2">
+            <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
+          </li>
+          <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
           <li class="block py-2">
@@ -57,7 +59,7 @@
 
     <!-- ナビゲーションリンク（スマホ） -->
     <div class="sm:hidden flex flex-1 justify-end items-center space-x-2">
-      <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-lg py-2 px-2 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
+      <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-sm hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
@@ -73,6 +75,9 @@
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
+          </li>
+          <li class="py-2">
+            <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
           </li>
           <li class="py-2">
             <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>

@@ -36,10 +36,9 @@
   <div class="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
     <!-- サイドバー -->
     <% if logged_in? %>
-        <%= render 'shared/sidebar' %>
+      <%= render 'shared/sidebar' %>
     <% else %>
-      <div id="no-sidebar">
-      </div>
+      <div id="no-sidebar"></div>
     <% end %>
 
     <!-- メインコンテンツ -->
@@ -53,10 +52,9 @@
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-        <%= render 'shared/widget' %>
+      <%= render 'shared/widget' %>
     <% else %>
-      <div id="no-widget">
-      </div>
+      <div id="no-widget"></div>
     <% end %>
   </div>
 
