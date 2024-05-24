@@ -1,6 +1,12 @@
-<div class="hero min-h-custom-screen bg-base-200 flex items-center bg-cover bg-center" style="background-image: url(<%= asset_path('wave.webp') %>)">
-  <div class="hero-content text-center w-full bg-opacity-50 bg-blue-200 p-8 rounded">
+<div class="hero min-h-custom-screen relative">
+  <!-- コンテンツ -->
+  <div class="hero-content text-center w-full bg-opacity-50 bg-blue-200 p-8 rounded relative z-10">
     <div class="max-w-xl mx-auto">
+      <!-- 動画背景 -->
+      <video autoplay loop muted playsinline class="absolute w-full h-full object-cover">
+        <source src="/videos/153126-804706317_small.webm" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
       <h1 class="text-4xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
       <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
       <%= link_to '新規登録して今すぐ始める',
@@ -41,16 +47,16 @@
     min-height: calc(100vh - var(--header-height));
   }
   .header {
-    --header-height: 4rem; /* デフォルトの高さ */
+    --header-height: 4rem; /* 仮のヘッダー高さ */
   }
   .hero {
-    background-size: cover;
-    background-position: center;
+    position: relative;
   }
   .hero-content {
-    background-color: rgba(255, 255, 255, 0.5); /* 背景画像が見えるように半透明の背景を追加 */
+    background-color: rgba(255, 255, 255, 0.5); /* 半透明の背景色 */
     padding: 2rem;
     border-radius: 1rem;
+    z-index: 10; /* 背景動画より上に表示するためのz-index */
   }
   .btn {
     background-color: rgba(255, 255, 255, 0.8); /* ボタンの背景色 */
@@ -61,6 +67,15 @@
   }
   .btn-primary, .btn-outline {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンにシャドウを追加 */
+  }
+  video.absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
   }
 </style>
 
