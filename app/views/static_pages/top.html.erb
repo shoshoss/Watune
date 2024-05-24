@@ -5,10 +5,10 @@
       <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
       <%= link_to '新規登録して今すぐ始める',
                   new_signup_modal_path,
-                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2',
+                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
                   data: { turbo_frame: "signup_modal" } %>
       <br>
-      <a href="#next-section" class="btn btn-outline btn-primary mt-6">Next Section</a>
+      <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
     </div>
   </div>
 </div>
@@ -51,6 +51,16 @@
     background-color: rgba(255, 255, 255, 0.5); /* 背景画像が見えるように半透明の背景を追加 */
     padding: 2rem;
     border-radius: 1rem;
+  }
+  .btn {
+    background-color: rgba(255, 255, 255, 0.8); /* ボタンの背景色 */
+    color: #000; /* ボタンのテキスト色 */
+  }
+  .btn:hover {
+    background-color: rgba(255, 255, 255, 1); /* ホバー時の背景色 */
+  }
+  .btn-primary, .btn-outline {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンにシャドウを追加 */
   }
 </style>
 
