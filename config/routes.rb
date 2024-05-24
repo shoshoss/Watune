@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   get 'tou_modal', to: 'static_pages#tou_modal'
 
   resources :users, only: %i[new create]
+  get 'guest_login', to: 'users#guest_login', as: 'guest_login'
   # モーダル用の新規登録ルーティング
   get 'signup_modal', to: 'users#new_modal', as: 'new_signup_modal'
   post 'signup_modal', to: 'users#create_modal', as: 'create_signup_modal'
