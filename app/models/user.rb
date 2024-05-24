@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
 
   # UserとProfileの関連付け
-  has_many :profile, dependent: :destroy
+  has_one :profile, dependent: :destroy
 
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :avatar
@@ -29,12 +29,6 @@ class User < ApplicationRecord
             presence: true,
             length: { minimum: 8, message: :too_short },
             if: -> { new_record? || changes[:crypted_password] }
-
-  # パスワードの確認が必要
-  # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
-
-  # パスワード確認フィールドの存在確認
-  # validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
 
   # リセットパスワードトークンは一意であり、存在することも許可される
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
@@ -65,8 +59,6 @@ class User < ApplicationRecord
   # 自己紹介は最大500文字まで
   # validates :self_introduction, length: { maximum: 500 }
 
-  # アバターURLはURL形式で、存在しなくても良い
-  # validates :avatar_url, url: true, allow_blank: true
 
   # いいね機能
   has_many :likes, dependent: :destroy
@@ -77,11 +69,11 @@ class User < ApplicationRecord
   end
 
   def unlike(post)
-    likes.find_by(post:)&.destroy
+    likes.find_by(post: post)&.destroy
   end
 
   def like?(post)
-    likes.exists?(post:)
+    likes.exists?(post: post)
   end
 
   # ブックマーク機能
@@ -89,15 +81,15 @@ class User < ApplicationRecord
   has_many :bookmarked_posts, through: :bookmarks, source: :post
 
   def bookmark(post)
-    bookmarks.create(post:)
+    bookmarks.create(post: post)
   end
 
   def unbookmark(post)
-    bookmarks.find_by(post:)&.destroy
+    bookmarks.find_by(post: post)&.destroy
   end
 
   def bookmarked?(post)
-    bookmarks.exists?(post:)
+    bookmarks.exists?(post: post)
   end
 
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
@@ -108,6 +100,11 @@ class User < ApplicationRecord
     id == object&.user_id
   end
 
+  # ゲストユーザーかどうかを確認するメソッド
+  def guest?
+    guest
+  end
+
   private
 
   def generate_username_slug
@@ -116,7 +113,7 @@ class User < ApplicationRecord
     loop do
       # 3文字以上、15文字以内のランダムな文字列を生成
       self.username_slug = SecureRandom.alphanumeric(rand(3..15)).downcase
-      break unless User.exists?(username_slug:)
+      break unless User.exists?(username_slug: username_slug)
     end
   end
 

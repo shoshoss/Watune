@@ -25,6 +25,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
+      transfer_guest_data_to(@user) if current_user&.guest?
       login(user_params[:email], user_params[:password])
       redirect_to edit_profile_path, status: :see_other, notice: I18n.t('flash_messages.users.registration_success')
     else
@@ -36,7 +37,7 @@ class UsersController < ApplicationController
   def guest_login
     @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10), guest: true)
     auto_login(@user)
-    redirect_to posts_path, notice: 'お試しログインしました。'
+    redirect_to profile_show_path(@user.username_slug), notice: 'お試しログインしました。'
   end
 
   private
