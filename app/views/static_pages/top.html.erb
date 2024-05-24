@@ -2,39 +2,41 @@
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center w-full p-8 relative text-neutral-content">
     <div class="max-w-xl mx-auto">
-      <div class="rounded p-2 my-2 sm:my-4 bg-sky-400 bg-opacity-80">
+      <div class="rounded p-2 my-5 sm:my-8 bg-sky-400 bg-opacity-80">
         <h1 class="text-3xl sm:text-5xl font-bold text-black">声でつながる、<br>前向きなエネルギー</h1>
-        <p class="text-md mt-2 sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
+        <p class="text-md mt-2 sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>より喜び嬉しくて楽しいライフスタイルへ！</p>
       </div>
       <%= link_to '新規登録して今すぐ始める',
                   new_signup_modal_path,
                   class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
                   data: { turbo_frame: "signup_modal" } %>
       <br>
-      <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+      <a href="#next-section" class="text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
 </div>
 
-<div class="container mx-auto py-12" id="next-section" style="background-image: url('/images/wave.webp'); background-size: cover;">
+<div class="container px-2 sm:px5 py-12" id="next-section" style="background-image: url('/images/wave.webp'); background-size: cover; background-position: center;">
   <section class="mb-12">
     <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
-    <p>本アプリは、音声メッセージを通じて自己肯定感を高め、相互にポジティブなエネルギーを共有することができるプラットフォームです。</p>
+    <p class="rounded-full bg-sky-400 bg-opacity-80"> 本アプリは、音声メッセージを通じて自己肯定感を高め、相互にポジティブなエネルギーを共有することができるサービスです。</p>
   </section>
   <section class="mb-12">
     <h2 class="text-3xl font-bold mb-4">サービスへの思い</h2>
-    <p>以前、体調を崩し退職した後、約一年間鬱に近い状態で苦しんだ経験が、自己肯定感の重要性を深く認識させました。この経験は、自分自身への感謝がどれほど大切かを痛感しました。また、周りからの応援も私の力になった経験から、同じようなサポートを他の人にも提供したいと思い、このアプリを開発したいと考えています。</p>
+    <p class="rounded-full bg-sky-400 bg-opacity-80">　以前、体調を崩し退職した後、約一年間うつに近い状態で苦しんだ経験が、自己肯定感の重要性を深く認識させました。この経験は、自分自身への感謝がどれほど大切かを痛感しました。
+    <br>そして、周りからの応援も私の力になった経験から、同じようなサポートを他の人にも提供したいと思い、このアプリを開発させていただきました。</p>
   </section>
   <section class="mb-12">
     <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
-    <p>本アプリは、自己肯定感を高めたい人々、ポジティブな変化を求める人々を対象としています。自己改善に意欲的な個人や、コミュニティのサポートを求める人々にとって、有用なツールです。</p>
+    <p class="rounded-full bg-sky-400 bg-opacity-80">　本アプリは、自己肯定感を高めたい人々、ポジティブな変化を求める人々を対象としています。
+    <br>日報や日々の学びのアウトプットや思い出の記録としてもご利用いただけます。</p>
   </section>
   <section>
     <h2 class="text-3xl font-bold mb-4">特別な機能</h2>
-    <ul class="list-disc pl-5">
+    <ul class="list-disc pl-5 rounded-full bg-sky-400 bg-opacity-80">
       <li>音声による投稿</li>
       <li>自分のプロフィールで投稿のカテゴライズ</li>
-      <li>いいねし合う仕組み</li>
+      <li>自分を含め、10人からいいねをもらえる仕組み</li>
     </ul>
   </section>
 </div>
