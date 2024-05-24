@@ -1,11 +1,11 @@
-<div class="hero min-h-custom-screen bg-base-200">
-  <div class="hero-content text-center">
-    <div class="max-w-md">
+<div class="hero min-h-custom-screen bg-base-200 flex items-center">
+  <div class="hero-content text-center w-full">
+    <div class="max-w-xl mx-auto">
       <h1 class="text-4xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
-      <p class="py-6 text-lg sm:text-lg">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
+      <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
       <%= link_to '新規登録して今すぐ始める',
                   new_signup_modal_path,
-                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent sm:flex text-lg rounded-full transition-colors duration-300 px-4 py-2',
+                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2',
                   data: { turbo_frame: "signup_modal" } %>
       <br>
       <a href="#next-section" class="btn btn-outline btn-primary mt-6">Next Section</a>

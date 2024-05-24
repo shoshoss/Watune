@@ -25,6 +25,10 @@ module.exports = {
         "lg-plus": "1200px", // ここでlgより少し大きいサイズを設定
         "sm-plus": "720px",
       },
+      fontSize: {
+        "8xl": "6rem", // 96px
+        "10xl": "10rem", // 160px
+      },
     },
   },
   plugins: [require("daisyui")],
