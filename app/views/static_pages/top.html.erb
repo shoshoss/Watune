@@ -1,20 +1,21 @@
-<div class="hero min-h-custom-screen relative">
-  <img src="/videos/5s_sakura.gif" alt="Background GIF" class="absolute top-0 left-0 w-full h-full object-cover z-0">
-  <div class="hero-content text-center w-full p-8 relative ">
+<div class="hero min-h-custom-screen relative" style="background-image: url('/videos/5s_sakura.gif');">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center w-full p-8 relative text-neutral-content">
     <div class="max-w-xl mx-auto">
       <div class="rounded p-2 my-2 sm:my-4 bg-sky-400 bg-opacity-80">
-        <h1 class="text-3xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
-        <p class="text-md mt-2 sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
+        <h1 class="text-3xl sm:text-5xl font-bold text-black">声でつながる、<br>前向きなエネルギー</h1>
+        <p class="text-md mt-2 sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
       </div>
-        <%= link_to '新規登録して今すぐ始める',
-                    new_signup_modal_path,
-                    class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
-                    data: { turbo_frame: "signup_modal" } %>
-        <br>
-        <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
+      <%= link_to '新規登録して今すぐ始める',
+                  new_signup_modal_path,
+                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
+                  data: { turbo_frame: "signup_modal" } %>
+      <br>
+      <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
     </div>
   </div>
 </div>
+
 <div class="container mx-auto py-12" id="next-section">
   <section class="mb-12">
     <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
@@ -49,7 +50,6 @@
     position: relative;
   }
   .hero-content {
-    background-color: rgba(255, 255, 255, 0.5); /* 半透明の背景色 */
     padding: 2rem;
     border-radius: 1rem;
     z-index: 10; /* 背景動画より上に表示するためのz-index */
@@ -64,13 +64,22 @@
   .btn-primary, .btn-outline {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンにシャドウを追加 */
   }
-  video.absolute {
+  img.absolute {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    z-index: -1;
+  }
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 半透明の黒色オーバーレイ */
     z-index: -1;
   }
 </style>
