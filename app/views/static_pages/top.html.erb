@@ -1,24 +1,20 @@
 <div class="hero min-h-custom-screen relative">
-  <!-- コンテンツ -->
-  <div class="hero-content text-center w-full bg-opacity-50 bg-blue-200 p-8 rounded relative z-10">
+  <img src="/videos/5s_sakura.gif" alt="Background GIF" class="absolute top-0 left-0 w-full h-full object-cover z-0">
+  <div class="hero-content text-center w-full p-8 relative ">
     <div class="max-w-xl mx-auto">
-      <!-- 動画背景 -->
-      <video autoplay loop muted playsinline class="absolute object-cover">
-        <source src="/videos/153126-804706317_small.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-      <h1 class="text-4xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
-      <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
-      <%= link_to '新規登録して今すぐ始める',
-                  new_signup_modal_path,
-                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
-                  data: { turbo_frame: "signup_modal" } %>
-      <br>
-      <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
+      <div class="rounded p-2 my-2 sm:my-4 bg-sky-400 bg-opacity-80">
+        <h1 class="text-3xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
+        <p class="text-md mt-2 sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
+      </div>
+        <%= link_to '新規登録して今すぐ始める',
+                    new_signup_modal_path,
+                    class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
+                    data: { turbo_frame: "signup_modal" } %>
+        <br>
+        <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
     </div>
   </div>
 </div>
-
 <div class="container mx-auto py-12" id="next-section">
   <section class="mb-12">
     <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
