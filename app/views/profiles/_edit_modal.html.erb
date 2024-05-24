@@ -1,12 +1,16 @@
+<!-- app/views/profiles/_edit_modal.html.erb -->
 <%= turbo_frame_tag "profile_edit_modal" do %>
   <dialog id="profile_edit_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="profile-edit-modal">
     <div class="modal-box p-2">
       <div class="flex justify-end items-center">
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->profile-edit-modal#closeModal">閉じる</button>
       </div>
-      <h1 class="text-4xl font-bold mt-4 mb-4  text-center"><%= t('profiles.edit.title') %></h1>
+      <h1 class="text-4xl font-bold mt-4 mb-4 text-center"><%= t('profiles.edit.title') %></h1>
       <div id="profile_edit_modal_flash">
         <%= render 'shared/flash_message' %>
+      </div>
+      <div id="before_profile_edit_flash_modal">
+        <%= render 'shared/before_profile_edit_flash' %>
       </div>
       <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
@@ -25,7 +29,7 @@
 
           <div class="form-control">
             <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1", for: "user_display_name" %>
-            <%= f.text_field :display_name, id: "user_display_name", class: "input-style" %>
+            <%= f.text_field :display_name, id: "user_display_name", class: "input-style", placeholder: "ウェーブ登録#{@user.id}", value: (@user.display_name if @user.display_name.present? && @user.display_name != "ウェーブ登録#{@user.id}") %>
           </div>
 
           <div class="form-control mt-2">

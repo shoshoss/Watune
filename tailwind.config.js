@@ -8,7 +8,6 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        custom_sky: "rgb(56 189 248)",
         "yellow-400-accent": "#ffea00",
         "yellow-700-accent": "#ffd600",
         "deep-orange-400": "#ff7043",
@@ -21,6 +20,14 @@ module.exports = {
       },
       fontSize: {
         sm: "15px", // 15pxの文字サイズを設定
+      },
+      screens: {
+        "lg-plus": "1200px", // ここでlgより少し大きいサイズを設定
+        "sm-plus": "720px",
+      },
+      fontSize: {
+        "8xl": "6rem", // 96px
+        "10xl": "10rem", // 160px
       },
     },
   },

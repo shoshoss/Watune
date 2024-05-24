@@ -15,6 +15,7 @@
   <%= stylesheet_link_tag 'custom', media: 'all', 'data-turbo-track': 'reload' %>
 
   <!-- Turboフレームタグ -->
+  <%= turbo_frame_tag 'signup_modal' %>
   <%= turbo_frame_tag 'tou_modal' %>
   <%= turbo_frame_tag 'privacy_modal' %>
   <%= turbo_frame_tag 'post_modal' %>
@@ -44,6 +45,9 @@
     <!-- メインコンテンツ -->
     <main class="flex-1">
       <%= render 'shared/flash_message' %>
+      <div id="before_profile_edit_flash">
+        <%= render 'shared/before_profile_edit_flash' %>
+      </div>
       <%= yield %>
     </main>
 
@@ -51,7 +55,7 @@
     <% if logged_in? %>
         <%= render 'shared/widget' %>
     <% else %>
-      <div id="widget">
+      <div id="no-widget">
       </div>
     <% end %>
   </div>

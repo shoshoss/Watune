@@ -8,6 +8,10 @@ module ApplicationHelper
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
+  def before_profile_edit_flash
+    flash[:before_profile_edit] || {}
+  end
+
   def flash_class(type)
     case type.to_sym
     when :notice
@@ -56,5 +60,20 @@ module ApplicationHelper
   # 投稿画面 paramsの値に応じてアクティブクラスを適用
   def active_bottom(privacy_value)
     params[:privacy] == privacy_value ? 'c-bottom-active' : ''
+  end
+
+  def active_if(path)
+    current_page?(path) ? 'font-bold border-b-4 border-sky-400 text-blue-500' : 'font-medium border-b-2 border-gray-300'
+  end
+
+  # ユーザー数と投稿数を表示
+  def format_count(count)
+    if count >= 1_000_000
+      "#{(count / 1_000_000.0).round(1)}M"
+    elsif count >= 1_000
+      "#{(count / 1_000.0).round(1)}K"
+    else
+      count.to_s
+    end
   end
 end

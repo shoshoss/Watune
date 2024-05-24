@@ -1,10 +1,16 @@
 class ProfilesController < ApplicationController
   before_action :set_current_user, only: %i[edit update]
-  before_action :set_user, only: %i[show]
-  before_action :set_posts, only: %i[show]
+  before_action :set_user, only: %i[show modal]
+  before_action :set_posts, only: %i[show], if: -> { @user.present? }
 
   # プロフィール表示アクション
   def show
+    @show_reply_line = false
+    if @user.nil?
+      redirect_to root_path, alert: 'ユーザーが見つかりません。'
+      return
+    end
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -23,7 +29,29 @@ class ProfilesController < ApplicationController
   def update
     return unless @user.update(user_params)
 
+    if @user.display_name.blank?
+      @user.update(display_name: "ウェーブ登録#{@user.id}")
+      flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: Profile.model_name.human)
+      return
+    end
     flash.now[:notice] = t('defaults.flash_message.updated', item: Profile.model_name.human)
+  end
+
+  # プロフィールモーダル表示アクション
+  def modal
+    if @user.nil?
+      render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message',
+                                                         locals: { message: 'ユーザーが見つかりません。' })
+      return
+    end
+
+    respond_to do |format|
+      format.html { render partial: 'profiles/profile_modal', locals: { user: @user } }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal',
+                                                                   locals: { user: @user })
+      end
+    end
   end
 
   private

@@ -3,38 +3,30 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: %i[show]
   before_action :set_current_user_post, only: %i[edit update destroy]
-  before_action :authorize_show, only: %i[show]
+  before_action :set_send_to_user, only: [:show]
 
   def index
-    # 投稿の一覧を取得し、ページネーションを設定
+    @show_reply_line = false
     @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
   end
 
   def show
-    # 投稿を取得し、返信のページネーションを設定
-    @post = Post.includes(:user).find(params[:id])
+    @show_reply_line = true
+    begin
+      @post = Post.includes(:user).find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: 'この投稿は削除されました。'
+      return
+    end
+
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
-    params[:privacy] ||= @post.privacy
   end
 
   def new
     # 新規投稿フォームの設定
     @post = Post.new
     params[:privacy] ||= @post.privacy
-  end
-
-  def privacy_settings
-    # プライバシー設定の部分テンプレートをレンダリング
-    @post = Post.new(privacy: params[:privacy])
-    Rails.logger.debug { "Privacy parameter received: #{params[:privacy]}" }
-    respond_to do |format|
-      format.html { render partial: 'posts/privacy_settings', locals: { post: @post } }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('privacy-settings', partial: 'posts/privacy_settings',
-                                                                      locals: { post: @post })
-      end
-    end
   end
 
   def edit; end
@@ -53,7 +45,6 @@ class PostsController < ApplicationController
   end
 
   def update
-    # 投稿の更新
     if @post.update(post_params)
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
@@ -65,7 +56,6 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    # 投稿の削除
     @post.destroy!
     flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
@@ -82,13 +72,22 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    # 投稿を取得
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
+    return unless @post.nil?
+
+    redirect_to root_path, alert: 'この投稿は削除されました。'
   end
 
   def set_current_user_post
-    # 現在のユーザーの投稿を取得
     @post = current_user.posts.find(params[:id])
+  end
+
+  def set_send_to_user
+    @send_to_user = if @post.parent_post.present?
+                      @post.parent_post.user
+                    else
+                      @post.user
+                    end
   end
 
   def authorize_show

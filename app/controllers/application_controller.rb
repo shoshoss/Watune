@@ -4,11 +4,17 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
 
   before_action :require_login
+  before_action :set_user_and_post_count
 
   private
 
   def not_authenticated
     flash[:error] = t('defaults.flash_message.require_login')
-    redirect_to login_path, status: :found
+    redirect_to new_login_modal_path, status: :found
+  end
+
+  def set_user_and_post_count
+    @user_count = User.count
+    @post_count = Post.count
   end
 end

@@ -43,6 +43,9 @@ Rails.application.routes.draw do
   post '/:username_slug/status/:id/replies', to: 'replies#create', as: 'user_post_replies'
 
   # プロフィールのルーティング
-  resource :profile, only: %i[show edit update]
+  resource :profile, only: %i[edit update]
+  # プロフィールモーダルのルーティング
+  get '/profiles/:username_slug/modal', to: 'profiles#modal', as: 'profile_modal'
+  # プロフィールの詳細のルーティング
   get '/:username_slug', to: 'profiles#show', as: :profile_show
 end

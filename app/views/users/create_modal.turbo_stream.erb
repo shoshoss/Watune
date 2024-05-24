@@ -1,6 +1,11 @@
 <% if @user.errors.any? %>
-  <%= turbo_stream.replace 'signup_modal_flash', partial: 'shared/flash_message', locals: { flash: { danger: 'ユーザー登録に失敗しました' } } %>
+  <%= turbo_stream.replace 'signup_modal_flash', partial: 'shared/flash_message', locals: { flash: { danger: I18n.t('flash_messages.users.registration_failure') } } %>
   <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
 <% else %>
   <%= turbo_stream.replace 'signup_modal', partial: 'profiles/edit_modal', locals: { user: @user } %>
+  <%= turbo_stream.replace 'no-sidebar', partial: 'shared/sidebar' %>
+  <%= turbo_stream.replace 'no-widget', partial: 'shared/widget' %>
+  <%= turbo_stream.replace 'before_login_header', partial: 'shared/header' %>
+  <%= turbo_stream.update 'before_profile_edit_flash', partial: 'shared/before_profile_edit_flash', locals: { before_profile_edit_flash: { notice: I18n.t('flash_messages.users.registration_success') } } %>
+  <%= turbo_stream.update 'before_profile_edit_flash_modal', partial: 'shared/before_profile_edit_flash', locals: { before_profile_edit_flash: { notice: I18n.t('flash_messages.users.registration_success') } } %>
 <% end %>

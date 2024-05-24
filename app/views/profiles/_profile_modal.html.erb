@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "profile_modal" do %>
+  <dialog id="profile_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="profile-modal">
+    <div class="modal-box px-2">
+      <div class="flex justify-end items-center">
+        <i class="fa-solid fa-xmark h-6 w-6 hover:text-blue-500" data-action="click->profile-modal#closeModal"></i>
+      </div>
+      <%= render 'profiles/profile_info', user: @user %>
+      <div class="modal-action">
+        <button class="btn" data-action="profile-modal#closeModal">閉じる</button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+<% end %>
