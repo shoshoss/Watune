@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def create_modal
     @user = User.new(user_params)
     if @user.save
-      transfer_guest_data_to(@user) if current_user&.guest?
+      transfer_guest_data(@user) if current_user&.guest?
       login(user_params[:email], user_params[:password])
     else
       flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      transfer_guest_data_to(@user) if current_user&.guest?
+      transfer_guest_data(@user) if current_user&.guest?
       login(user_params[:email], user_params[:password])
       redirect_to edit_profile_path, status: :see_other, notice: I18n.t('flash_messages.users.registration_success')
     else
@@ -46,11 +46,8 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :password)
   end
 
-  def transfer_guest_data_to(user)
+  def transfer_guest_data(user)
     guest_user = current_user
-    guest_user.posts.update_all(user_id: user.id)
-    guest_user.likes.update_all(user_id: user.id)
-    guest_user.bookmarks.update_all(user_id: user.id)
-    guest_user.destroy
+    user.transfer_data_from_guest(guest_user)
   end
 end

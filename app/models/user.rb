@@ -7,9 +7,6 @@ class User < ApplicationRecord
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
 
-  # UserとProfileの関連付け
-  has_one :profile, dependent: :destroy
-
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :avatar
 
@@ -103,6 +100,29 @@ class User < ApplicationRecord
   # ゲストユーザーかどうかを確認するメソッド
   def guest?
     guest
+  end
+
+  # データ引き継ぎメソッド
+  def transfer_data_from_guest(guest_user)
+    # 関連付けられたオブジェクトを一括更新
+    guest_user.posts.update_all(user_id: id)
+    guest_user.likes.update_all(user_id: id)
+    guest_user.bookmarks.update_all(user_id: id)
+    
+    # 自己紹介文、アバター、表示名を個別に更新
+    self.update(
+      self_introduction: guest_user.self_introduction.presence || self_introduction,
+      display_name: guest_user.display_name.presence || display_name,
+      username_slug: guest_user.username_slug.presence || username_slug
+    )
+
+    # アバターを引き継ぐ
+    if guest_user.avatar.attached?
+      self.avatar.attach(guest_user.avatar.blob)
+    end
+
+    # ゲストユーザーを削除
+    guest_user.destroy
   end
 
   private
