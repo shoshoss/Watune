@@ -8,7 +8,10 @@ class UsersController < ApplicationController
   def create_modal
     @user = User.new(user_params)
     if @user.save
-      transfer_guest_data(@user) if current_user&.guest?
+      if current_user&.guest?
+        transfer_guest_data(@user)
+        update_username_slug(@user, current_user.username_slug)
+      end
       login(user_params[:email], user_params[:password])
     else
       flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
@@ -25,7 +28,10 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      transfer_guest_data(@user) if current_user&.guest?
+      if current_user&.guest?
+        transfer_guest_data(@user)
+        update_username_slug(@user, current_user.username_slug)
+      end
       login(user_params[:email], user_params[:password])
       redirect_to edit_profile_path, status: :see_other, notice: I18n.t('flash_messages.users.registration_success')
     else
@@ -49,5 +55,11 @@ class UsersController < ApplicationController
   def transfer_guest_data(user)
     guest_user = current_user
     user.transfer_data_from_guest(guest_user)
+  end
+
+  def update_username_slug(user, new_slug)
+    user.update(username_slug: new_slug)
+  rescue ActiveRecord::RecordInvalid
+    flash.now[:error] = "ユーザー名の引き継ぎに失敗しました。他のユーザー名を選択してください。"
   end
 end

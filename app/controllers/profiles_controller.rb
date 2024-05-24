@@ -33,9 +33,7 @@ class ProfilesController < ApplicationController
         flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
         return
       end
-      flash.now[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
-    else
-      flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
+      flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
     end
   end
 

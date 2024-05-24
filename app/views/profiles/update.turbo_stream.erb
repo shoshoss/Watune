@@ -1,5 +1,5 @@
 <% if @user.errors.any? %>
-  <%= turbo_stream.replace 'profile_edit_modal_flash', partial: 'shared/flash_message', locals: { flash: { error: t('defaults.flash_message.not_updated', item: Profile.model_name.human) } } %>
+  <%= turbo_stream.replace 'profile_edit_modal_flash', partial: 'shared/flash_message', locals: { flash: { error: t('defaults.flash_message.not_updated', item: 'プロフィール') } } %>
   <%= turbo_stream.replace 'error_messages', partial: 'shared/error_messages', locals: { object: @user } %>
 <% else %>
 <%= turbo_stream.replace 'profile_edit_modal', partial: 'shared/redirect', locals: { redirect_path: profile_show_path(@user.username_slug) } %>

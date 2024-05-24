@@ -12,10 +12,7 @@ class User < ApplicationRecord
 
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
-
-  # ユーザー作成時にユーザー名スラグを自動生成する
-  before_validation :generate_username_slug, on: :create
-
+  before_validation :generate_username_slug, on: :create, unless: :username_slug?
   after_create :set_default_display_name
 
   # メールアドレスは一意であり、存在が必要で、最大255文字
@@ -30,7 +27,7 @@ class User < ApplicationRecord
   # リセットパスワードトークンは一意であり、存在することも許可される
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
-  # 最大50文字
+  # 表示名は最大50文字
   validates :display_name, length: { maximum: 50 }
 
   # 予約されたusername_slugを設定
@@ -54,7 +51,9 @@ class User < ApplicationRecord
                             exclusion: { in: RESERVED_USERNAMES, message: :reserved }
 
   # 自己紹介は最大500文字まで
-  # validates :self_introduction, length: { maximum: 500 }
+  validates :self_introduction, length: { maximum: 500 }
+
+
 
 
   # いいね機能
@@ -102,31 +101,33 @@ class User < ApplicationRecord
     guest
   end
 
-  # データ引き継ぎメソッド
+  # ゲストユーザーからデータを引き継ぐメソッド
   def transfer_data_from_guest(guest_user)
-    # 関連付けられたオブジェクトを一括更新
-    guest_user.posts.update_all(user_id: id)
-    guest_user.likes.update_all(user_id: id)
-    guest_user.bookmarks.update_all(user_id: id)
-    
-    # 自己紹介文、アバター、表示名を個別に更新
-    self.update(
-      self_introduction: guest_user.self_introduction.presence || self_introduction,
-      display_name: guest_user.display_name.presence || display_name,
-      username_slug: guest_user.username_slug.presence || username_slug
-    )
+    ActiveRecord::Base.transaction do
+      # 関連付けられたオブジェクトを一括更新
+      guest_user.posts.update_all(user_id: id)
+      guest_user.likes.update_all(user_id: id)
+      guest_user.bookmarks.update_all(user_id: id)
 
-    # アバターを引き継ぐ
-    if guest_user.avatar.attached?
-      self.avatar.attach(guest_user.avatar.blob)
+      # 自己紹介文、表示名を個別に更新
+      self.update!(
+        self_introduction: guest_user.self_introduction.presence || self_introduction,
+        display_name: guest_user.display_name.presence || display_name
+      )
+
+      # アバターを引き継ぐ
+      if guest_user.avatar.attached?
+        self.avatar.attach(guest_user.avatar.blob)
+      end
+
+      # ゲストユーザーを削除
+      guest_user.destroy
     end
-
-    # ゲストユーザーを削除
-    guest_user.destroy
   end
 
   private
 
+  # ユーザー名スラグを生成するメソッド
   def generate_username_slug
     return if username_slug.present?
 
@@ -137,6 +138,7 @@ class User < ApplicationRecord
     end
   end
 
+  # デフォルトの表示名を設定するメソッド
   def set_default_display_name
     update(display_name: "ウェーブ登録#{id}") if display_name.blank?
   end
