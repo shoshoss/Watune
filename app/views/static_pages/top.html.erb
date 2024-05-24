@@ -1,5 +1,5 @@
-<div class="hero min-h-custom-screen bg-base-200 flex items-center">
-  <div class="hero-content text-center w-full">
+<div class="hero min-h-custom-screen bg-base-200 flex items-center bg-cover bg-center" style="background-image: url(<%= asset_path('wave.webp') %>)">
+  <div class="hero-content text-center w-full bg-opacity-50 bg-blue-200 p-8 rounded">
     <div class="max-w-xl mx-auto">
       <h1 class="text-4xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
       <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
@@ -42,6 +42,15 @@
   }
   .header {
     --header-height: 4rem; /* デフォルトの高さ */
+  }
+  .hero {
+    background-size: cover;
+    background-position: center;
+  }
+  .hero-content {
+    background-color: rgba(255, 255, 255, 0.5); /* 背景画像が見えるように半透明の背景を追加 */
+    padding: 2rem;
+    border-radius: 1rem;
   }
 </style>
 
