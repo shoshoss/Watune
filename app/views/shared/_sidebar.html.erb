@@ -1,22 +1,22 @@
-<aside id="after-sidebar" class="p-5 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
+<aside id="after-sidebar" class="p-3 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
     <%= link_to profile_show_path(current_user.username_slug), data: { turbo_frame: "_top" } do %>
       <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
-  <ul class="px-2 space-y-2">
-    <!-- ホーム -->
-    <li>
-      <%= link_to posts_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" do %>
-        <i class="fas fa-home text-2xl #{'text-blue-500' if current_page?(posts_path)}"></i>
-        <h2 class="text-lg font-bold flex-grow">ホーム</h2>
-      <% end %>
-    </li>
+  <ul class="space-y-2">
     <!-- プロフィール -->
     <li>
       <%= link_to profile_show_path(current_user.username_slug), class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
         <h2 class="text-lg font-bold flex-grow">プロフィール</h2>
+      <% end %>
+    </li>
+    <!-- みんなのWave -->
+    <li>
+      <%= link_to posts_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" do %>
+        <i class="fas fa-globe text-2xl #{'text-blue-500' if current_page?(posts_path)}"></i>
+        <h2 class="text-lg font-bold flex-grow">みんなのウェーブ</h2>
       <% end %>
     </li>
     <!-- 他のリンクも同様に追加 -->
