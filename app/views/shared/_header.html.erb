@@ -21,14 +21,14 @@
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
-      <%= link_to t('header.signup'),
+      <%= link_to '引き継ぎ登録',
                   new_signup_modal_path,
                   class: 'btn btn-outline btn-accent flex text-lg rounded-full transition-colors duration-300 px-4 py-2',
                   data: { turbo_frame: "signup_modal" } %>
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "hidden sm:flex font-bold text-xl btn btn-outline btn-accent rounded-full transition-colors duration-300 px-4 py-2",
+                  class: "hidden sm:flex font-bold text-xl btn btn-info rounded-full transition-colors duration-300 px-4 py-2",
                   data: { turbo_frame: "post_modal" } %>
       
       <!-- ユーザーメニュー -->
@@ -38,7 +38,7 @@
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
           <li class="py-2">
-            <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
+            <%= link_to t('header.post_index'), posts_path, class: "text-lg md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
           </li>
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
@@ -61,7 +61,7 @@
 
     <!-- ナビゲーションリンク（スマホ） -->
     <div class="sm:hidden flex flex-1 justify-end items-center space-x-2">
-      <%= link_to t('header.signup'),
+      <%= link_to '引き継ぎ登録',
                   new_signup_modal_path,
                   class: 'btn btn-outline btn-accent flex text-lg rounded-full transition-colors duration-300 px-4 py-2',
                   data: { turbo_frame: "signup_modal" } %>
@@ -69,7 +69,7 @@
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "font-bold btn btn-outline btn-accent btn-sm rounded-full transition-colors duration-300 py-2",
+                  class: "font-bold text-xl btn btn-info rounded-full transition-colors duration-300 py-2",
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
