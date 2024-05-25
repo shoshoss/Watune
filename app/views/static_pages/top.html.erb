@@ -2,21 +2,21 @@
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
     <div class="max-w-xl">
-      <div class="rounded p-2 my-5 sm:my-8 bg-orange-500 bg-opacity-80">
+      <div class="rounded-full p-2 my-5 sm:my-8 bg-orange-500 bg-opacity-80">
         <h1 class="text-3xl sm:text-5xl font-bold text-black">声でつながる、<br>前向きなエネルギー</h1>
         <p class="text-md mt-2 text-md sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>より喜び嬉しくて楽しいライフスタイルへ！</p>
       </div>
       <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl' do %>
         お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
       <% end %>
-      <a href="#next-section" class="text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+      <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
 </div>
 
 <div class="container mx-auto py-12" id="next-section" style="background-image: url('/images/wave.webp'); background-size: cover; background-position: center;">
   <section class="mb-12 text-center">
-    <div class="rounded bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-4xl">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
       <p class="text-lg font-semibold">
       本アプリは、音声メッセージを通じて自己肯定感を高め、
@@ -24,7 +24,7 @@
     </div>
   </section>
   <section class="mb-12 text-center">
-    <div class="rounded bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-4xl">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">サービスへの思い</h2>
       <p class="text-lg font-semibold">
       以前、体調を崩して退職した後、
@@ -37,7 +37,7 @@
     </div>
   </section>
   <section class="mb-12 text-center">
-    <div class="rounded bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-4xl">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
       <p class="text-lg font-semibold">
       本アプリは、自己肯定感を高めたい人々、
@@ -45,15 +45,20 @@
       <br>日々の日報や学びのアウトプットや思い出の記録としてもご利用いただけます。</p>
     </div>
   </section>
-  <section class="text-center">
-    <div class="rounded bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-4xl">
-      <h2 class="text-3xl font-bold mb-4">特別な機能</h2>
+  <section class="mb-8 text-center">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">こだわりポイント</h2>
       <ul class="list-none p-0 text-lg font-semibold text-center">
         <li class="leading-none mb-2">・音声による投稿</li>
         <li class="leading-none mb-2">・自分のプロフィールで投稿のメニュー表示</li>
         <li class="leading-none">・自分を含め、10人からいいねをもらえる仕組み</li>
       </ul>
     </div>
+  </section>
+  <section class="text-center">
+    <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl' do %>
+          お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+    <% end %>
   </section>
 </div>
 
