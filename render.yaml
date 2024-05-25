@@ -1,12 +1,12 @@
 databases:
-  - name: ConGraWa
-    databaseName: dbcongrawa
+  - name: WaveConGra
+    databaseName: dbcongra
     user: shonosuke
     region: singapore
 
 services:
   - type: web
-    name: ConGraWa
+    name: WaveConGra
     runtime: ruby
     region: singapore
     plan: free
@@ -15,7 +15,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: ConGraWa
+          name: WaveConGra
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
