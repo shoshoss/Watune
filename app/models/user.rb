@@ -7,18 +7,12 @@ class User < ApplicationRecord
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
 
-  # UserとProfileの関連付け
-  has_many :profile, dependent: :destroy
-
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :avatar
 
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
-
-  # ユーザー作成時にユーザー名スラグを自動生成する
-  before_validation :generate_username_slug, on: :create
-
+  before_validation :generate_username_slug, on: :create, unless: :username_slug?
   after_create :set_default_display_name
 
   # メールアドレスは一意であり、存在が必要で、最大255文字
@@ -30,16 +24,10 @@ class User < ApplicationRecord
             length: { minimum: 8, message: :too_short },
             if: -> { new_record? || changes[:crypted_password] }
 
-  # パスワードの確認が必要
-  # validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
-
-  # パスワード確認フィールドの存在確認
-  # validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
-
   # リセットパスワードトークンは一意であり、存在することも許可される
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
-  # 最大50文字
+  # 表示名は最大50文字
   validates :display_name, length: { maximum: 50 }
 
   # 予約されたusername_slugを設定
@@ -63,10 +51,7 @@ class User < ApplicationRecord
                             exclusion: { in: RESERVED_USERNAMES, message: :reserved }
 
   # 自己紹介は最大500文字まで
-  # validates :self_introduction, length: { maximum: 500 }
-
-  # アバターURLはURL形式で、存在しなくても良い
-  # validates :avatar_url, url: true, allow_blank: true
+  validates :self_introduction, length: { maximum: 500 }
 
   # いいね機能
   has_many :likes, dependent: :destroy
@@ -108,8 +93,42 @@ class User < ApplicationRecord
     id == object&.user_id
   end
 
+  # ゲストユーザーかどうかを確認するメソッド
+  def guest?
+    guest
+  end
+
+  # ゲストユーザーからデータを引き継ぐメソッド
+  def transfer_data_from_guest(guest_user)
+    ActiveRecord::Base.transaction do
+      guest_user.posts.find_each do |post|
+        post.update!(user_id: id)
+      end
+
+      guest_user.likes.find_each do |like|
+        like.update!(user_id: id)
+      end
+
+      guest_user.bookmarks.find_each do |bookmark|
+        bookmark.update!(user_id: id)
+      end
+
+      update!(
+        self_introduction: guest_user.self_introduction.presence || self_introduction,
+        display_name: guest_user.display_name.presence || display_name
+      )
+
+      # アバターを引き継ぐ
+      avatar.attach(guest_user.avatar.blob) if guest_user.avatar.attached?
+
+      # ゲストユーザーを削除
+      guest_user.destroy
+    end
+  end
+
   private
 
+  # ユーザー名スラグを生成するメソッド
   def generate_username_slug
     return if username_slug.present?
 
@@ -120,6 +139,7 @@ class User < ApplicationRecord
     end
   end
 
+  # デフォルトの表示名を設定するメソッド
   def set_default_display_name
     update(display_name: "ウェーブ登録#{id}") if display_name.blank?
   end

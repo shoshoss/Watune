@@ -1,45 +1,68 @@
-<div class="hero min-h-custom-screen relative">
-  <!-- コンテンツ -->
-  <div class="hero-content text-center w-full bg-opacity-50 bg-blue-200 p-8 rounded relative z-10">
-    <div class="max-w-xl mx-auto">
-      <!-- 動画背景 -->
-      <video autoplay loop muted playsinline class="absolute w-full h-full object-cover">
-        <source src="/videos/153126-804706317_small.webm" type="video/webm">
-        Your browser does not support the video tag.
-      </video>
-      <h1 class="text-4xl sm:text-5xl font-bold">声でつながる、<br>前向きなエネルギー</h1>
-      <p class="py-6 text-md sm:text-2xl">音声メッセージで自己肯定感を高め、<br>ポジティブなエネルギーを共有しましょう。</p>
-      <%= link_to '新規登録して今すぐ始める',
-                  new_signup_modal_path,
-                  class: 'text-lg sm:text-2xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 px-4 py-2 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
-                  data: { turbo_frame: "signup_modal" } %>
-      <br>
-      <a href="#next-section" class="btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">Next Section</a>
+<div class="hero min-h-custom-screen relative" style="background-image: url('/videos/5s_sakura.gif');">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center relative text-neutral-content">
+    <div class="flex flex-col justify-center max-w-xl mx-auto">
+      <%= link_to guest_login_path, class: "#{current_user ? 'invisible' : ''} trial-btn text-xl sm:text-2xl mb-6" do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
+      <div class="max-w-lg rounded-full py-16 sm:py-28 bg-orange-500 bg-opacity-80">
+        <h1 class="text-2xl sm:text-4xl font-bold text-black leading-tight">声でつながる<br>前向きなエネルギー</h1>
+        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">音声メッセージで<br>自己肯定感を高め、<br>より喜び嬉しくて楽しい<br>ライフスタイルへ！</p>
+      </div>
+      <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
 </div>
 
-<div class="container mx-auto py-12" id="next-section">
-  <section class="mb-12">
-    <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
-    <p>本アプリは、音声メッセージを通じて自己肯定感を高め、相互にポジティブなエネルギーを共有することができるプラットフォームです。</p>
+<div class="container mx-auto py-12" id="next-section" style="background-image: url('/images/wave.webp'); background-size: cover; background-position: center;">
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
+      <p class="text-lg font-semibold">
+      本アプリは、<br class="sm:hidden">音声メッセージを通じて<br class="sm:hidden">自己肯定感を高め、
+      <br>お互いにポジティブなエネルギーを<br class="sm:hidden">共有しあったりするサービスです。</p>
+    </div>
   </section>
-  <section class="mb-12">
-    <h2 class="text-3xl font-bold mb-4">サービスへの思い</h2>
-    <p>以前、体調を崩し退職した後、約一年間鬱に近い状態で苦しんだ経験が、自己肯定感の重要性を深く認識させました。この経験は、自分自身への感謝がどれほど大切かを痛感しました。また、周りからの応援も私の力になった経験から、同じようなサポートを他の人にも提供したいと思い、このアプリを開発したいと考えています。</p>
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">サービスへの思い</h2>
+      <p class="text-lg font-semibold">
+      以前、体調を崩して退職した後、
+      <br>約一年間うつに近い状態で<br class="sm:hidden">苦しんだ経験から
+      <br>自己肯定の重要性を認識しました。
+      <br>この経験は、自分自身への感謝が<br class="sm:hidden">どれほど大切かを痛感しました。
+      <br>そして、大切な人からの応援や支えは<br class="sm:hidden">かけがえのないものでした。
+      <br>そこで自分や仲間の声を通じて<br class="sm:hidden">少しでも自分を好きでいられるように、<br class="sm:hidden">少しでも前向きになれるサービスを<br class="sm:hidden">提供したいと思い、
+      <br>本アプリを<br class="sm:hidden">開発させていただきました。</p>
+    </div>
   </section>
-  <section class="mb-12">
-    <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
-    <p>本アプリは、自己肯定感を高めたい人々、ポジティブな変化を求める人々を対象としています。自己改善に意欲的な個人や、コミュニティのサポートを求める人々にとって、有用なツールです。</p>
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-12 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
+      <p class="text-lg font-semibold">
+      本アプリは、<br class="sm:hidden">自己肯定感を高めたい人々、
+      <br>ポジティブな変化を求める人々などを<br class="sm:hidden">対象としています。
+      <br>日々の日報や学びのアウトプットや<br class="sm:hidden">思い出の記録としても
+      <br>ご利用いただけます。</p>
+    </div>
   </section>
-  <section>
-    <h2 class="text-3xl font-bold mb-4">特別な機能</h2>
-    <ul class="list-disc pl-5">
-      <li>音声による投稿</li>
-      <li>自分のプロフィールで投稿のカテゴライズ</li>
-      <li>いいねし合う仕組み</li>
-    </ul>
+  <section class="mb-8 text-center">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">こだわりポイント</h2>
+      <ul class="list-none p-0 text-lg font-semibold text-center">
+        <li class="leading-none mb-2">・音声による投稿</li>
+        <li class="leading-none mb-2">・自分のプロフィールで<br class="sm:hidden">投稿のメニュー表示</li>
+        <li class="leading-none">・自分を含め、<br class="sm:hidden">10人からいいねをもらえる仕組み</li>
+      </ul>
+    </div>
   </section>
+  <% unless current_user %>
+    <section class="text-center">
+      <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl mt-6' do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
+    </section>
+  <% end %>
 </div>
 
 <style>
@@ -53,22 +76,11 @@
     position: relative;
   }
   .hero-content {
-    background-color: rgba(255, 255, 255, 0.5); /* 半透明の背景色 */
     padding: 2rem;
     border-radius: 1rem;
     z-index: 10; /* 背景動画より上に表示するためのz-index */
   }
-  .btn {
-    background-color: rgba(255, 255, 255, 0.8); /* ボタンの背景色 */
-    color: #000; /* ボタンのテキスト色 */
-  }
-  .btn:hover {
-    background-color: rgba(255, 255, 255, 1); /* ホバー時の背景色 */
-  }
-  .btn-primary, .btn-outline {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンにシャドウを追加 */
-  }
-  video.absolute {
+  img.absolute {
     position: absolute;
     top: 0;
     left: 0;
@@ -77,6 +89,20 @@
     object-fit: cover;
     z-index: -1;
   }
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 半透明の黒色オーバーレイ */
+    z-index: -1;
+  }
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
 </style>
 
 <script>

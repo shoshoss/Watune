@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   private
 
   def not_authenticated
-    flash[:error] = t('defaults.flash_message.require_login')
+    flash[:danger] = t('defaults.flash_message.require_login')
     redirect_to new_login_modal_path, status: :found
   end
 
