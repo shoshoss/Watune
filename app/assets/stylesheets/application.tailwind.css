@@ -63,3 +63,13 @@
 .c-button:hover {
   @apply bg-sky-200;
 }
+
+.trial-btn {
+  @apply bg-white bg-opacity-80 text-pink-500 font-bold py-4 px-6 rounded-full border-2 border-pink-500 transition-colors duration-300;
+  display: inline-block;
+  text-align: center;
+  white-space: normal;
+}
+.trial-btn:hover {
+  @apply bg-pink-500 text-white;
+}

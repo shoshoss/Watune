@@ -1,16 +1,14 @@
 <div class="hero min-h-custom-screen relative" style="background-image: url('/videos/5s_sakura.gif');">
   <div class="hero-overlay bg-opacity-60"></div>
-  <div class="hero-content text-center w-full p-8 relative text-neutral-content">
-    <div class="max-w-xl mx-auto">
+  <div class="hero-content text-center relative text-neutral-content">
+    <div class="max-w-xl">
       <div class="rounded p-2 my-5 sm:my-8 bg-orange-500 bg-opacity-80">
         <h1 class="text-3xl sm:text-5xl font-bold text-black">声でつながる、<br>前向きなエネルギー</h1>
-        <p class="text-md mt-2 sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>より喜び嬉しくて楽しいライフスタイルへ！</p>
+        <p class="text-md mt-2 text-md sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>より喜び嬉しくて楽しいライフスタイルへ！</p>
       </div>
-      <%= link_to '新規登録して今すぐ始める',
-                  new_signup_modal_path,
-                  class: 'text-xl sm:text-3xl btn btn-outline btn-accent flex rounded-full transition-colors duration-300 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg',
-                  data: { turbo_frame: "signup_modal" } %>
-      <%= link_to 'お試しでログイン', guest_login_path, class: "block text-sm sm:text-lg py-2 px-2 rounded-full transition-colors duration-300" %>
+      <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl' do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
       <a href="#next-section" class="text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
@@ -74,16 +72,6 @@
     border-radius: 1rem;
     z-index: 10; /* 背景動画より上に表示するためのz-index */
   }
-  .btn {
-    background-color: rgba(255, 255, 255, 0.8); /* ボタンの背景色 */
-    color: #000; /* ボタンのテキスト色 */
-  }
-  .btn:hover {
-    background-color: rgba(255, 255, 255, 1); /* ホバー時の背景色 */
-  }
-  .btn-primary, .btn-outline {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ボタンにシャドウを追加 */
-  }
   img.absolute {
     position: absolute;
     top: 0;
@@ -105,6 +93,10 @@
   .container {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+  }
+  .btn-lg-custom {
+    padding: 1rem 2rem; /* 大きなパディングを設定 */
+    font-size: 1.25rem; /* フォントサイズを大きく */
   }
 </style>
 

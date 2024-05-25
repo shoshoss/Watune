@@ -10,11 +10,6 @@ class ProfilesController < ApplicationController
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return
     end
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   # プロフィール編集アクション
