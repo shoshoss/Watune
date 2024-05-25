@@ -1,13 +1,15 @@
 <div class="hero min-h-custom-screen relative" style="background-image: url('/videos/5s_sakura.gif');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
-    <div class="max-w-xl">
-      <div class="rounded-full p-2 my-5 sm:my-8 bg-orange-500 bg-opacity-80">
-        <h1 class="text-3xl sm:text-5xl font-bold text-black">声でつながる、<br>前向きなエネルギー</h1>
-        <p class="text-md mt-2 text-md sm:text-2xl font-semibold text-black">音声メッセージで自己肯定感を高め、<br>より喜び嬉しくて楽しいライフスタイルへ！</p>
+    <div class="max-w-2xl mx-auto">
+      <div class="rounded-full p-8 sm:p-16 bg-orange-500 bg-opacity-80">
+        <h1 class="text-2xl sm:text-5xl font-bold text-black leading-tight">声でつながる<br>前向きなエネルギー</h1>
+        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">音声メッセージで<br>自己肯定感を高め、<br>より喜び嬉しくて楽しい<br>ライフスタイルへ！</p>
       </div>
-      <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl' do %>
-        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% unless current_user %>
+        <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl mt-6' do %>
+          お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+        <% end %>
       <% end %>
       <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
@@ -37,7 +39,7 @@
     </div>
   </section>
   <section class="mb-12 text-center">
-    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
+    <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-12 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
       <p class="text-lg font-semibold">
       本アプリは、自己肯定感を高めたい人々、
@@ -55,11 +57,13 @@
       </ul>
     </div>
   </section>
-  <section class="text-center">
-    <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl' do %>
-          お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
-    <% end %>
-  </section>
+  <% unless current_user %>
+    <section class="text-center">
+      <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl mt-6' do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
+    </section>
+  <% end %>
 </div>
 
 <style>
@@ -99,10 +103,7 @@
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
-  .btn-lg-custom {
-    padding: 1rem 2rem; /* 大きなパディングを設定 */
-    font-size: 1.25rem; /* フォントサイズを大きく */
-  }
+
 </style>
 
 <script>
