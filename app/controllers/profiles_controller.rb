@@ -22,8 +22,6 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    return unless 
-
     if @user.display_name.blank?
       @user.update(display_name: "ウェーブ登録#{@user.id}")
       flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
