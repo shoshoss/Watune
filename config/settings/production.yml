@@ -1,5 +1,5 @@
 default_url_options:
   protocol: "https"
-  host: "congrawa.onrender.com"
+  host: "wavecongra.onrender.com"
 sorcery:
-  google_callback_url: "https://congrawa.onrender.com/oauth/callback"
+  google_callback_url: "https://wavecongra.onrender.com/oauth/callback"
