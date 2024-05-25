@@ -22,14 +22,19 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    if @user.display_name.blank?
+    display_name_param = user_params[:display_name]
+    if @user.update(user_params) && display_name_param.blank?
       @user.update(display_name: "ウェーブ登録#{@user.id}")
       flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
-      nil
     elsif @user.update(user_params)
       flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
     else
-      flash.now[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
+      flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
+    end
+  
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to profile_show_path(@user.username_slug) }
     end
   end
 
