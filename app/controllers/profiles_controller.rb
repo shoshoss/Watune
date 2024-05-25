@@ -6,10 +6,10 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @show_reply_line = false
-    if @user.nil?
-      redirect_to root_path, alert: 'ユーザーが見つかりません。'
-      return
-    end
+    return unless @user.nil?
+
+    redirect_to root_path, alert: 'ユーザーが見つかりません。'
+    nil
   end
 
   # プロフィール編集アクション
@@ -22,14 +22,14 @@ class ProfilesController < ApplicationController
 
   # プロフィール更新アクション
   def update
-    if @user.update(user_params)
-      if @user.display_name.blank?
-        @user.update(display_name: "ウェーブ登録#{@user.id}")
-        flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
-        return
-      end
-      flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
+    return unless @user.update(user_params)
+
+    if @user.display_name.blank?
+      @user.update(display_name: "ウェーブ登録#{@user.id}")
+      flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
+      return
     end
+    flash.now[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
   end
 
   # プロフィールモーダル表示アクション

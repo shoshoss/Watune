@@ -53,9 +53,6 @@ class User < ApplicationRecord
   # 自己紹介は最大500文字まで
   validates :self_introduction, length: { maximum: 500 }
 
-
-
-
   # いいね機能
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
@@ -65,11 +62,11 @@ class User < ApplicationRecord
   end
 
   def unlike(post)
-    likes.find_by(post: post)&.destroy
+    likes.find_by(post:)&.destroy
   end
 
   def like?(post)
-    likes.exists?(post: post)
+    likes.exists?(post:)
   end
 
   # ブックマーク機能
@@ -77,15 +74,15 @@ class User < ApplicationRecord
   has_many :bookmarked_posts, through: :bookmarks, source: :post
 
   def bookmark(post)
-    bookmarks.create(post: post)
+    bookmarks.create(post:)
   end
 
   def unbookmark(post)
-    bookmarks.find_by(post: post)&.destroy
+    bookmarks.find_by(post:)&.destroy
   end
 
   def bookmarked?(post)
-    bookmarks.exists?(post: post)
+    bookmarks.exists?(post:)
   end
 
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
@@ -110,15 +107,13 @@ class User < ApplicationRecord
       guest_user.bookmarks.update_all(user_id: id)
 
       # 自己紹介文、表示名を個別に更新
-      self.update!(
+      update!(
         self_introduction: guest_user.self_introduction.presence || self_introduction,
         display_name: guest_user.display_name.presence || display_name
       )
 
       # アバターを引き継ぐ
-      if guest_user.avatar.attached?
-        self.avatar.attach(guest_user.avatar.blob)
-      end
+      avatar.attach(guest_user.avatar.blob) if guest_user.avatar.attached?
 
       # ゲストユーザーを削除
       guest_user.destroy
@@ -134,7 +129,7 @@ class User < ApplicationRecord
     loop do
       # 3文字以上、15文字以内のランダムな文字列を生成
       self.username_slug = SecureRandom.alphanumeric(rand(3..15)).downcase
-      break unless User.exists?(username_slug: username_slug)
+      break unless User.exists?(username_slug:)
     end
   end
 

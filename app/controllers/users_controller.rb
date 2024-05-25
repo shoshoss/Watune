@@ -41,7 +41,8 @@ class UsersController < ApplicationController
   end
 
   def guest_login
-    @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10), guest: true)
+    @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10),
+                         guest: true)
     auto_login(@user)
     redirect_to profile_show_path(@user.username_slug), notice: 'お試しログインしました。'
   end
@@ -60,6 +61,6 @@ class UsersController < ApplicationController
   def update_username_slug(user, new_slug)
     user.update(username_slug: new_slug)
   rescue ActiveRecord::RecordInvalid
-    flash.now[:error] = "ユーザー名の引き継ぎに失敗しました。他のユーザー名を選択してください。"
+    flash.now[:error] = 'ユーザー名の引き継ぎに失敗しました。他のユーザー名を選択してください。'
   end
 end
