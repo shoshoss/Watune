@@ -1,16 +1,16 @@
 <div class="hero min-h-custom-screen relative" style="background-image: url('/videos/5s_sakura.gif');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
-    <div class="max-w-2xl mx-auto">
-      <div class="rounded-full p-8 sm:p-16 bg-orange-500 bg-opacity-80">
-        <h1 class="text-2xl sm:text-5xl font-bold text-black leading-tight">声でつながる<br>前向きなエネルギー</h1>
-        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">音声メッセージで<br>自己肯定感を高め、<br>より喜び嬉しくて楽しい<br>ライフスタイルへ！</p>
-      </div>
+    <div class="flex flex-col justify-center max-w-xl mx-auto flex justyify-content">
       <% unless current_user %>
-        <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl mt-6' do %>
+        <%= link_to guest_login_path, class: 'trial-btn text-xl sm:text-2xl mb-6' do %>
           お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
         <% end %>
       <% end %>
+      <div class="max-w-lg rounded-full py-16 sm:py-28 bg-orange-500 bg-opacity-80">
+        <h1 class="text-2xl sm:text-4xl font-bold text-black leading-tight">声でつながる<br>前向きなエネルギー</h1>
+        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">音声メッセージで<br>自己肯定感を高め、<br>より喜び嬉しくて楽しい<br>ライフスタイルへ！</p>
+      </div>
       <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>

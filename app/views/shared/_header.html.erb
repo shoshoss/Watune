@@ -65,14 +65,14 @@
       <% if current_user.guest %>
         <%= link_to '引き継ぎ登録',
                     new_signup_modal_path,
-                    class: 'btn btn-outline btn-accent flex text-lg rounded-full transition-colors duration-300 px-4 py-2',
+                    class: 'btn btn-outline btn-accent btn-sm rounded-full transition-colors duration-300',
                     data: { turbo_frame: "signup_modal" } %>
       <% end %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "font-bold text-xl btn btn-info rounded-full transition-colors duration-300 py-2",
+                  class: "font-bold btn btn-info btn-sm rounded-full transition-colors duration-300 py-2",
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
@@ -85,7 +85,7 @@
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
           <li class="py-2">
-            <%= link_to t('header.post_index'), posts_path, class: "block text-sm sm:text-md md:text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
+            <%= link_to t('header.post_index'), posts_path, class: "block text-lg py-2 px-4 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}" %>
           </li>
           <li class="py-2">
             <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
