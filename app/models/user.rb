@@ -101,12 +101,18 @@ class User < ApplicationRecord
   # ゲストユーザーからデータを引き継ぐメソッド
   def transfer_data_from_guest(guest_user)
     ActiveRecord::Base.transaction do
-      # 関連付けられたオブジェクトを一括更新
-      guest_user.posts.update_all(user_id: id)
-      guest_user.likes.update_all(user_id: id)
-      guest_user.bookmarks.update_all(user_id: id)
+      guest_user.posts.find_each do |post|
+        post.update!(user_id: id)
+      end
 
-      # 自己紹介文、表示名を個別に更新
+      guest_user.likes.find_each do |like|
+        like.update!(user_id: id)
+      end
+
+      guest_user.bookmarks.find_each do |bookmark|
+        bookmark.update!(user_id: id)
+      end
+
       update!(
         self_introduction: guest_user.self_introduction.presence || self_introduction,
         display_name: guest_user.display_name.presence || display_name
