@@ -14,8 +14,9 @@
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="hidden lg-plus:flex mx-2 text-lg space-x-4">
-      <span>ウェーブ登録数: <strong><%= format_count(@user_count) %></strong></span>
-      <span>ウェーブ数: <strong><%= format_count(@post_count) %></strong></span>
+      <span>ウェーブ数:</span>
+      <span>いいねチャンス数: </strong></span>
+      <%= link_to 'いいねをする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-primary' %>
     </div>
 
     <!-- ナビゲーションリンク（PC） -->
@@ -37,7 +38,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 200px; max-width: 400px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
@@ -51,10 +52,10 @@
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= format_count(@user_count) %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ登録数: <strong></strong></span>
           </li>
           <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ数: <strong><%= format_count(@post_count) %></strong></span>
+            <span class="whitespace-nowrap">ウェーブ数: <strong></strong></span>
           </li>
         </ul>
       </div>
@@ -80,7 +81,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: auto; max-width: 400px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 200px; max-width: 400px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
@@ -94,10 +95,10 @@
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="block py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ登録数: <strong><%= format_count(@user_count) %></strong></span>
+            <span class="whitespace-nowrap">いいねチャンス数:</strong></span>
           </li>
           <li class="block py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ数: <strong><%= format_count(@post_count) %></strong></span>
+            <span class="whitespace-nowrap">いいねチャンス数:</strong></span>
           </li>
         </ul>
       </div>
