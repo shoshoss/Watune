@@ -13,9 +13,10 @@ class ApplicationController < ActionController::Base
 
   # いいねチャンス数を設定
   def set_likes_chance_count
-    if logged_in?
-      @likes_chance_count = Post.public_likes_chance(current_user).count
-    end
+    return unless logged_in?
+
+    likes_chance_counts = Post.with_likes_count_all(current_user).count
+    @likes_chance_count = likes_chance_counts.values.sum
   end
 
   # ユーザーがログインしているかどうかを確認するメソッド

@@ -31,7 +31,7 @@ class ProfilesController < ApplicationController
     else
       flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
     end
-  
+
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to profile_show_path(@user.username_slug) }
