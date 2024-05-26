@@ -22,7 +22,7 @@
               </td>
               <td colspan="2" class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" },
-                    class: "c-tab text-orange-300 #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance', initial_category: initial_category)} hover:text-orange-500" do %>
+                    class: "c-tab text-pink-200-accent #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
                   <i class="fas fa-thumbs-up mr-1 sm:mr-2"></i><span>応援チャンス</span>
                 <% end %>
               </td>
@@ -54,13 +54,13 @@
               </td>
               <td class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "posts" },
-                    class: "c-tab text-orange-300 #{active_tab_class('my_likes_chance', initial_category: initial_category)} hover:text-orange-500" do %>
+                    class: "c-tab text-pink-200-accent #{active_tab_class('my_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
                   <i class="fas fa-user-check mr-1 sm:mr-2"></i><span>自分の</span>
                 <% end %>
               </td>
               <td class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "posts" },
-                    class: "c-tab text-orange-300 #{active_tab_class('public_likes_chance', initial_category: initial_category)} hover:text-orange-500" do %>
+                    class: "c-tab text-pink-200-accent #{active_tab_class('public_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
                   <i class="fas fa-users mr-1 sm:mr-2"></i><span>みんなの</span>
                 <% end %>
               </td>

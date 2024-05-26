@@ -10,8 +10,11 @@ module.exports = {
       colors: {
         "yellow-400-accent": "#ffea00",
         "yellow-700-accent": "#ffd600",
+        "orange-400-accent": "#FF5555",
         "deep-orange-400": "#ff7043",
         "deep-orange-500": "#ff5722",
+        "pink-200-accent": "#ff4081",
+        "pink-400-accent": "#FF00BF",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
