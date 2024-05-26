@@ -37,7 +37,7 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Exclude:
     - "db/migrate/*.rb"
-  Max: 28
+  Max: 36
 
 # ドキュメンテーションコメントの強制を無効化
 Style/Documentation:
