@@ -23,7 +23,7 @@
               <span class="file-upload-label bg-gray-200 text-gray-700 p-2 rounded cursor-pointer" onclick="document.getElementById('user_avatar').click()">ファイルを選択</span>
               <br class="block sm:hidden mb-2">
               <span id="file-name" class="file-name text-gray-600 sm:ml-2">選択されていません</span>
-              <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : asset_path('wavecg_sm_c.svg') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
+              <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : asset_path('wavescg_sm_c.svg') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
             </div>
           </div>
 
