@@ -13,7 +13,7 @@
     </div>
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
-    <div class="flex justify-center items-center text-lg space-x-4">
+    <div class="flex justify-center items-center text-lg space-x-2">
       <span class="hidden md-plus:flex text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
       <% if current_user.guest %>
         <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
