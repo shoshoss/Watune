@@ -22,9 +22,9 @@ module.exports = {
         sm: "15px", // 15pxの文字サイズを設定
       },
       screens: {
-        "lg-plus": "1200px", // ここでlgより少し大きいサイズを設定
-        "md-plus": "880px",
-        "sm-plus": "720px",
+        "lg-plus": "1200px", // lg 1024px
+        "md-plus": "980px", // md 768px
+        "sm-plus": "720px", // sm 640px
       },
       fontSize: {
         "8xl": "6rem", // 96px
