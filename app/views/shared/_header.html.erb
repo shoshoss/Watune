@@ -50,11 +50,8 @@
           <li class="block py-2">
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
-          <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ登録数: <strong></strong></span>
-          </li>
-          <li class="py-2 text-lg">
-            <span class="whitespace-nowrap">ウェーブ数: <strong></strong></span>
+          <li class="block py-2 text-lg">
+            <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4' %>
           </li>
         </ul>
       </div>
