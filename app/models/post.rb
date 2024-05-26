@@ -21,16 +21,16 @@ class Post < ApplicationRecord
   scope :visible_to, ->(user) { where(privacy: %i[open only_yours only_friends]).or(where(user:)) }
 
   # ユーザーが応援していない投稿を取得するスコープ
-  scope :not_liked_by_user, ->(user) {
+  scope :not_liked_by_user, lambda { |user|
     where(user_id: user.id)
-    .left_joins(:likes)
-    .where(likes: { user_id: nil })
-    .order(created_at: :asc)
+      .left_joins(:likes)
+      .where(likes: { user_id: nil })
+      .order(created_at: :asc)
   }
 
   # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
   # 応援の数が0から9の範囲に収まるものを取得するスコープ
-  scope :with_likes_count_all, ->(user) {
+  scope :with_likes_count_all, lambda { |user|
     user_posts = where(user_id: user.id)
                  .left_joins(:likes)
                  .group('posts.id')
@@ -50,13 +50,13 @@ class Post < ApplicationRecord
   }
 
   # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
-  scope :public_likes_chance, ->(user) {
+  scope :public_likes_chance, lambda { |user|
     where.not(user_id: user.id)
-    .where(privacy: 'open')
-    .left_joins(:likes)
-    .group('posts.id')
-    .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
-    .order(created_at: :asc)
+         .where(privacy: 'open')
+         .left_joins(:likes)
+         .group('posts.id')
+         .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
+         .order(created_at: :asc)
   }
 
   # 自分だけの投稿を取得するスコープ
