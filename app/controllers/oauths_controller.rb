@@ -90,7 +90,7 @@ class OauthsController < ApplicationController
 
   # デフォルトアバターの添付
   def attach_default_avatar(user)
-    default_avatar_path = asset_path('sample.jpg')
+    default_avatar_path = asset_path('wavecg_sm_c.svg')
     user.avatar.attach(io: File.open(default_avatar_path), filename: 'default_avatar.jpg')
   end
 

@@ -40,7 +40,7 @@
 .c-tab-active-all-likes-chance,
 .c-tab-active-my-likes-chance,
 .c-tab-active-public-likes-chance {
-  @apply text-orange-500;
+  @apply text-pink-400-accent;
 }
 
 .c-tab-active-bookmarked {
@@ -65,11 +65,11 @@
 }
 
 .trial-btn {
-  @apply bg-white bg-opacity-80 text-pink-500 font-bold py-4 px-6 rounded-full border-2 border-pink-500 transition-colors duration-300;
+  @apply bg-white bg-opacity-80 text-pink-400-accent font-bold py-4 px-6 rounded-full border-2 border-pink-400-accent transition-colors duration-300;
   display: inline-block;
   text-align: center;
   white-space: normal;
 }
 .trial-btn:hover {
-  @apply bg-pink-500 text-white;
+  @apply bg-pink-400-accent text-white;
 }

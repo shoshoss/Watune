@@ -4,29 +4,29 @@
     <!-- ロゴ -->
     <div class="hidden sm:block shrink-0">
       <%= link_to root_path do %>
-        <%= image_tag 'logo1.webp', alt: 'ロゴ', class: "h-10 md:h-14 w-auto" %>
+        <%= image_tag 'wavecg_orange.svg', alt: 'ロゴ', class: "h-[48px] lg:h-[64px] w-[200px] lg:w-[300px] w-auto rounded-full" %>
       <% end %>
     </div>
     <div class="sm:hidden">
       <%= link_to root_path do %>
-        <%= image_tag asset_path('sample.jpg'), alt: 'ロゴ', class: "rounded-full h-10 w-10" %>
+        <%= image_tag asset_path('wavecg_orange_sm_c.svg'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]" %>
       <% end %>
     </div>
 
     <!-- ナビゲーションリンク -->
-    <div class="flex flex-1 justify-end items-center space-x-4">
+    <div class="flex flex-1 justify-end items-center">
 
       <!-- モーダル（ログインと新規登録）を開くリンク -->
       <%= link_to t('header.signup'),
                   new_signup_modal_path,
-                  class: 'btn btn-outline btn-accent hidden sm:flex btn-lg rounded-full transition-colors duration-300 px-4 py-2',
+                  class: 'btn btn-outline btn-accent hidden sm:flex btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2',
                   data: { turbo_frame: "signup_modal" } %>
       <%= link_to 'お試しログイン',
                   guest_login_path,
-                  class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 px-4 py-2'%>
+                  class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2'%>
       <%= link_to t('header.login'),
                   new_login_modal_path,
-                  class: 'btn btn-outline btn-primary  btn-sm sm:btn-lg rounded-full transition-colors duration-300 px-4 py-2',
+                  class: 'btn btn-outline btn-primary  btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2',
                   data: { turbo_frame: "login_modal" } %>
 
       <!-- ハンバーガーメニュー -->
