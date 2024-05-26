@@ -8,16 +8,13 @@ class UsersController < ApplicationController
   def create_modal
     if current_user&.guest?
       @user = current_user
-      if @user.update(user_params.merge(guest: false))
-        flash[:notice] = I18n.t('flash_messages.users.registration_success')
-      else
+      unless @user.update(user_params.merge(guest: false))
         flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
       end
     else
       @user = User.new(user_params)
       if @user.save
         login(user_params[:email], user_params[:password])
-        flash[:notice] = I18n.t('flash_messages.users.registration_success')
       else
         flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
       end

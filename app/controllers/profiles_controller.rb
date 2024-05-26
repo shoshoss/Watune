@@ -96,6 +96,6 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def set_posts
-    @pagy, @posts = pagy_countless(filtered_posts.includes(:user).order(created_at: :desc), items: 10)
+    @pagy, @posts = pagy_countless(filtered_posts.includes(:user), items: 10)
   end
 end
