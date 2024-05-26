@@ -27,6 +27,7 @@
       <% if current_user.guest %>
         <%= link_to '引き継ぎ登録',
                     new_signup_modal_path,
+                    id: "guest-login",
                     class: 'btn btn-outline btn-accent flex text-lg rounded-full transition-colors duration-300 px-4 py-2',
                     data: { turbo_frame: "signup_modal" } %>
       <% end %>
@@ -66,6 +67,7 @@
       <% if current_user.guest %>
         <%= link_to '引き継ぎ登録',
                     new_signup_modal_path,
+                    id: "guest-login-mobile",
                     class: 'btn btn-outline btn-accent btn-sm rounded-full transition-colors duration-300',
                     data: { turbo_frame: "signup_modal" } %>
       <% end %>
