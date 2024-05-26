@@ -53,7 +53,7 @@ class User < ApplicationRecord
   # 自己紹介は最大500文字まで
   validates :self_introduction, length: { maximum: 500 }
 
-  # いいね機能
+  # 応援機能
   has_many :likes, dependent: :destroy
   has_many :liked_posts, through: :likes, source: :post
 

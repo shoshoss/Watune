@@ -23,19 +23,19 @@
               <td colspan="2" class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" },
                     class: "c-tab text-orange-300 #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance', initial_category: initial_category)} hover:text-orange-500" do %>
-                  <i class="fas fa-thumbs-up lg:mr-2"></i><span>いいねチャンス</span>
+                  <i class="fas fa-thumbs-up lg:mr-2"></i><span>応援チャンス</span>
+                <% end %>
+              </td>
+              <td rowspan="2" class="c-tabs">
+              <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" },
+                    class: "c-tab text-red-400 #{active_tab_class('liked', initial_category: initial_category)} hover:text-red-500" do %>
+                  <i class="fas fa-heart lg:mr-2"></i><span>応援中</span>
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'bookmarked'), data: { turbo_frame: "posts" },
                     class: "c-tab text-yellow-400-accent #{active_tab_class('bookmarked', initial_category: initial_category)} hover:text-yellow-700-accent" do %>
                   <i class="fas fa-bookmark lg:mr-2"></i><span>お気に入り</span>
-                <% end %>
-              </td>
-              <td rowspan="2" class="c-tabs">
-                <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" },
-                    class: "c-tab text-red-400 #{active_tab_class('liked', initial_category: initial_category)} hover:text-red-500" do %>
-                  <i class="fas fa-heart lg:mr-2"></i><span>いいね</span>
                 <% end %>
               </td>
             </tr>

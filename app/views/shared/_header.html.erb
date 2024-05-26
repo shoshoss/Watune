@@ -14,9 +14,9 @@
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="hidden md-plus:flex mx-2 text-lg space-x-4">
-      <span>いいねチャンス数: <strong><%= format_count(@likes_chance_count) %></strong></span>
+      <span>応援チャンス数: <strong><%= format_count(@likes_chance_count) %></strong></span>
     </div>
-    <%= link_to 'いいねをする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
+    <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
@@ -94,7 +94,7 @@
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="block py-2 text-lg">
-            <%= link_to 'いいねをする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4' %>
+            <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4' %>
           </li>
         </ul>
       </div>
