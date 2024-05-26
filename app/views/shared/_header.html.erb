@@ -14,7 +14,7 @@
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="flex justify-center items-center text-lg space-x-4">
-      <span class="hidden md-plus:flex text-lg">応援チャンス数: <strong><%= format_count(@likes_chance_count) %></strong></span>
+      <span class="hidden md-plus:flex text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
       <% if current_user.guest %>
         <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
       <% else %>
@@ -42,7 +42,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 200px; max-width: 400px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 300px; max-width: 600px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
@@ -56,6 +56,7 @@
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="block py-2 text-lg">
+            <span class="text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
             <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4' %>
           </li>
         </ul>
@@ -83,7 +84,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
           <%= image_tag (current_user.avatar.presence || asset_path('sample.jpg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 200px; max-width: 400px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 250px; max-width: 600px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
@@ -97,6 +98,7 @@
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
           <li class="block py-2 text-lg">
+            <span class="text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
             <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4' %>
           </li>
         </ul>
