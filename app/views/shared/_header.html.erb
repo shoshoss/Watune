@@ -13,10 +13,14 @@
     </div>
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
-    <div class="hidden md-plus:flex mx-2 text-lg space-x-4">
-      <span>応援チャンス数: <strong><%= format_count(@likes_chance_count) %></strong></span>
+    <div class="flex justify-center items-center text-lg space-x-4">
+      <span class="hidden md-plus:flex text-lg">応援チャンス数: <strong><%= format_count(@likes_chance_count) %></strong></span>
+      <% if current_user.guest %>
+        <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
+      <% else %>
+        <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
+      <% end %>
     </div>
-    <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
 
     <!-- ナビゲーションリンク（PC） -->
     <div class="hidden sm:flex flex-1 justify-end items-center space-x-4">
