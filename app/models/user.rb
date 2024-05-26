@@ -98,33 +98,6 @@ class User < ApplicationRecord
     guest
   end
 
-  # ゲストユーザーからデータを引き継ぐメソッド
-  def transfer_data_from_guest(guest_user)
-    ActiveRecord::Base.transaction do
-      guest_user.posts.find_each do |post|
-        post.update!(user_id: id)
-      end
-
-      guest_user.likes.find_each do |like|
-        like.update!(user_id: id)
-      end
-
-      guest_user.bookmarks.find_each do |bookmark|
-        bookmark.update!(user_id: id)
-      end
-
-      update!(
-        self_introduction: guest_user.self_introduction.presence || self_introduction,
-        display_name: guest_user.display_name.presence || display_name
-      )
-
-      # アバターを引き継ぐ
-      avatar.attach(guest_user.avatar.blob) if guest_user.avatar.attached?
-
-      # ゲストユーザーを削除
-      guest_user.destroy
-    end
-  end
 
   private
 
