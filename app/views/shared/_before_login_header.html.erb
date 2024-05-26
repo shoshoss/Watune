@@ -2,12 +2,12 @@
 <div class="navbar px-4">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
-    <div class="hidden sm:block shrink-0">
+    <div class="hidden md:block shrink-0">
       <%= link_to root_path do %>
         <%= image_tag 'wavescg_orange.svg', alt: 'ロゴ', class: "h-[48px] lg:h-[64px] w-[200px] lg:w-[300px] w-auto rounded-full" %>
       <% end %>
     </div>
-    <div class="sm:hidden">
+    <div class="md:hidden">
       <%= link_to root_path do %>
         <%= image_tag asset_path('wavescg_orange_sm_c.svg'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]" %>
       <% end %>

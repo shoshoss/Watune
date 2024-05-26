@@ -81,14 +81,14 @@ class ProfilesController < ApplicationController
     category = params[:category] || determine_initial_category
 
     scopes = {
-      'all_my_posts' => @user.posts,
-      'only_me' => @user.posts.only_me,
-      'my_posts_open' => @user.posts.open,
+      'all_my_posts' => @user.posts.order(created_at: :desc),
+      'only_me' => @user.posts.only_me.order(created_at: :desc),
+      'my_posts_open' => @user.posts.my_posts_open.order(created_at: :desc),
       'all_likes_chance' => Post.with_likes_count_all(@user),
       'my_likes_chance' => Post.not_liked_by_user(@user),
       'public_likes_chance' => Post.public_likes_chance(@user),
-      'bookmarked' => @user.bookmarked_posts,
-      'liked' => @user.liked_posts.visible_to(@user)
+      'bookmarked' => @user.bookmarked_posts.order('bookmarks.created_at DESC'),
+      'liked' => @user.liked_posts.order('likes.created_at DESC')
     }
 
     scopes[category] || Post.none
