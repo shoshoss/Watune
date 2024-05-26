@@ -98,7 +98,6 @@ class User < ApplicationRecord
     guest
   end
 
-
   private
 
   # ユーザー名スラグを生成するメソッド

@@ -55,7 +55,8 @@ class UsersController < ApplicationController
   end
 
   def guest_login
-    @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10), guest: true)
+    @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10),
+                         guest: true)
     auto_login(@user)
     redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
                 notice: 'ありがとうございます！<br>お試しログインしました！<br>画面上部にある「引き継ぎ登録」よりデータを引き継げます。'
