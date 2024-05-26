@@ -23,6 +23,7 @@ module.exports = {
       },
       screens: {
         "lg-plus": "1200px", // ここでlgより少し大きいサイズを設定
+        "md-plus": "880px",
         "sm-plus": "720px",
       },
       fontSize: {

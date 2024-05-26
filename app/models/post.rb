@@ -20,38 +20,38 @@ class Post < ApplicationRecord
   # 公開設定の投稿を表示するスコープ
   scope :visible_to, ->(user) { where(privacy: %i[open only_yours only_friends]).or(where(user:)) }
 
-  # ユーザーがいいねしていない投稿を取得するスコープ
+  # ユーザーが応援していない投稿を取得するスコープ
   scope :not_liked_by_user, lambda { |user|
     where(user_id: user.id).left_joins(:likes).where(likes: { user_id: nil })
   }
 
-  # 自分の投稿で自分がいいねしていないもの、および他のユーザーの公開設定された投稿で、
-  # いいねの数が0から8の範囲に収まるものを取得するスコープ
+  # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
+  # 応援の数が0から9の範囲に収まるものを取得するスコープ
   scope :with_likes_count_all, lambda { |user|
-    # 自分の投稿でいいねの数が0のものを取得
+    # 自分の投稿で応援の数が0のものを取得
     user_posts = where(user_id: user.id)
                  .left_joins(:likes)
                  .group('posts.id')
                  .having('COUNT(likes.id) <= 0')
 
-    # 他のユーザーの公開設定された投稿でいいねの数が0から8のものを取得
+    # 他のユーザーの公開設定された投稿で投稿者本人の応援を除外して応援の数が0から9のものを取得
     open_posts = where(privacy: 'open')
                  .where.not(user_id: user.id)
                  .left_joins(:likes)
                  .group('posts.id')
-                 .having('COUNT(likes.id) <= 9')
+                 .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
 
     # 両方の条件を結合
     user_posts.or(open_posts)
   }
 
-  # 自分以外のユーザーの公開設定された投稿を、いいねの数が0から9のものに限定して取得するスコープ
+  # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
   scope :public_likes_chance, lambda { |user|
     where.not(user_id: user.id)
          .where(privacy: 'open')
          .left_joins(:likes)
          .group('posts.id')
-         .having('COUNT(likes.id) <= 9')
+         .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
   }
 
   # 自分だけの投稿を取得するスコープ

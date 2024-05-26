@@ -6,6 +6,8 @@
   <%= turbo_stream.replace 'no-sidebar', partial: 'shared/sidebar' %>
   <%= turbo_stream.replace 'no-widget', partial: 'shared/widget' %>
   <%= turbo_stream.replace 'before_login_header', partial: 'shared/header' %>
+  <%= turbo_stream.remove 'guest-login' %>
+  <%= turbo_stream.remove 'guest-login-mobile' %>
   <%= turbo_stream.update 'before_profile_edit_flash', partial: 'shared/before_profile_edit_flash', locals: { before_profile_edit_flash: { notice: I18n.t('flash_messages.users.registration_success') } } %>
   <%= turbo_stream.update 'before_profile_edit_flash_modal', partial: 'shared/before_profile_edit_flash', locals: { before_profile_edit_flash: { notice: I18n.t('flash_messages.users.registration_success') } } %>
 <% end %>
