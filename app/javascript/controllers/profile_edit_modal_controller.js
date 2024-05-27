@@ -4,9 +4,6 @@ export default class extends Controller {
   connect() {
     this.element.setAttribute("open", true);
     this.setupFileInput();
-    this.adjustTextareaHeight(
-      document.getElementById("user_self_introduction")
-    );
   }
 
   closeModal() {
