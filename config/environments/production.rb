@@ -106,6 +106,8 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts << 'wavecongra.onrender.com'
+  config.hosts << 'www.wavecongra.com'
+  config.hosts << 'www.wavecongra.site'
   config.hosts << 'www.wavescg.com'
   config.hosts << 'wavescg.com'
   # Skip DNS rebinding protection for the default health check endpoint.
