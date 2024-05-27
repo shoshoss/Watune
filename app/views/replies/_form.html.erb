@@ -56,11 +56,11 @@
     if (event.target.tagName.toLowerCase() !== 'textarea') return;
 
     const textarea = event.target;
-    const formContainer = document.getElementById('reply-form-container');
-    const maxContainerHeight = 800; // 適切な高さに設定
+    const replyBody = document.getElementById('body');
+    const maxBodyHeight = 200; // 適切な高さに設定
 
-    // 返信投稿と返信一覧の全体の高さが最大高さを超えた場合の処理
-    if (formContainer.scrollHeight >= maxContainerHeight) {
+    // body全体の高さが最大高さを超えた場合の処理
+    if (replyBody.scrollHeight >= maxBodyHeight) {
       // テキストエリアの高さを固定し、スクロール可能にする
       textarea.classList.add('overflow-y-auto');
     } else {
@@ -68,9 +68,9 @@
       // テキストエリアの高さを調整
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 'px';
-      // 返信投稿と返信一覧の全体の高さを調整
-      formContainer.style.height = 'auto';
-      formContainer.style.height = formContainer.scrollHeight + 'px';
+      // body全体の高さを調整
+      replyBody.style.height = 'auto';
+      replyBody.style.height = replyBody.scrollHeight + 'px';
     }
   });
 </script>

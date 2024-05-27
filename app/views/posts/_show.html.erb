@@ -12,14 +12,12 @@
           </div>
         <% end %>
         <%= render 'posts/post_content', post: @post %>
-        <div id="reply-form-container">
-          <!-- 送信先の表示 -->
-          <%= render 'replies/form', post: @post, reply: @reply %>
-          <div id="replies" class="mt-4">
-            <% @replies.each do |reply| %>
-              <%= render 'posts/post', post: reply %>
-            <% end %>
-          </div>
+        <!-- 送信先の表示 -->
+        <%= render 'replies/form', post: @post, reply: @reply %>
+        <div id="replies" class="mt-4">
+          <% @replies.each do |reply| %>
+            <%= render 'posts/post', post: reply %>
+          <% end %>
         </div>
       </div>
     </div>

@@ -52,16 +52,6 @@ export default class extends Controller {
     });
   }
 
-  adjustTextareaHeight(textarea) {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  }
-
-  adjustHeight(event) {
-    this.adjustTextareaHeight(event.target);
-  }
-
   submitEnd(event) {
     if (event.detail.success) {
       // 成功時にはTurboを無効化してリダイレクトを実行する

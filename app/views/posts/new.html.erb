@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "post_modal" do %>
   <dialog id="post_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="post-modal">
-    <div class="modal-box p-2 max-h-screen overflow-hidden">
+    <div class="modal-box p-2 max-h-screen">
       <div class="flex justify-end items-center">
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->post-modal#closeModal">閉じる</button>
       </div>
@@ -64,11 +64,11 @@
       if (event.target.tagName.toLowerCase() !== 'textarea') return;
 
       const textarea = event.target;
-      const modalBox = document.querySelector('.modal-box');
-      const maxModalHeight = window.innerHeight;
+      const postBody = document.querySelector('body');
+      const maxBodyHeight = 200;
 
-      // モーダル全体の高さが画面の高さを超えた場合の処理
-      if (modalBox.scrollHeight >= maxModalHeight) {
+      // モーダル全体の高さが500pxの高さを超えた場合の処理
+      if (postBody.scrollHeight >= maxBodyHeight) {
         // テキストエリアの高さを固定し、スクロール可能にする
         textarea.classList.add('overflow-y-auto');
       } else {
@@ -77,8 +77,8 @@
         textarea.style.height = 'auto';
         textarea.style.height = textarea.scrollHeight + 'px';
         // モーダルの高さを調整
-        modalBox.style.height = 'auto';
-        modalBox.style.height = modalBox.scrollHeight + 'px';
+        postBody.style.height = 'auto';
+        postBody.style.height = postBody.scrollHeight + 'px';
       }
     });
   </script>
