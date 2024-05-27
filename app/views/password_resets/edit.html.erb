@@ -6,12 +6,12 @@
       <%= form_with model: @user, url: password_reset_path(@token), method: :patch do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
         <div class="mb-4">
-          <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
-          <%= f.text_field :email, class: "input input-bordered w-full", disabled: true, value: @user.email %>
+          <%= f.label :email, class: "block text-base font-medium text-gray-700" %>
+          <%= f.text_field :email, class: "input input-bordered text-base w-full", disabled: true, value: @user.email %>
         </div>
         <div class="mb-4">
-          <%= f.label :password, 'パスワード　※半角英数・8文字～20文字で入力してください', class: "block text-sm font-medium text-gray-700" %>
-          <%= f.password_field :password, class: "input input-bordered w-full" %>
+          <%= f.label :password, 'パスワード　※半角英数・8文字～20文字で入力', class: "block text-base font-medium text-gray-700" %>
+          <%= f.password_field :password, class: "input input-bordered text-base w-full" %>
         </div>
         <%= f.submit t('.submit'), class: "btn btn-primary w-full" %>
       <% end %>

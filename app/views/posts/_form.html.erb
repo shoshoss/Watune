@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', object: f.object %>
   <div class="form-control pt-2">
     <%= f.label :body, is_reply_form ? '返信内容' : '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-    <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-y", rows: "3", style: "resize: vertical;" %>
+    <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-y", rows: "3", style: "resize: vertical;" %>
   </div>
 
   <section class="sound-clips">

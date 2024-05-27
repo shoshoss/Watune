@@ -18,7 +18,7 @@
       <% if current_user.guest %>
         <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
       <% else %>
-        <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
+        <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-base sm-plus:btn-md sm-plus:text-lg' %>
       <% end %>
     </div>
 
