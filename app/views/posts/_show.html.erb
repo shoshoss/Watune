@@ -5,19 +5,14 @@
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
         <% if @post.parent_post.present? %>
-          <%= render 'posts/post_content', post: @post.parent_post, reply: false %>
+          <%= render 'posts/post_content', post: @post.parent_post %>
         <% elsif @post.post_reply_id.present? %>
           <div class="text-lg text-gray-500 mb-2">
             親の投稿が削除されました。
           </div>
         <% end %>
-        <%= render 'posts/post_content', post: @post, reply: false %>
+        <%= render 'posts/post_content', post: @post %>
         <!-- 送信先の表示 -->
-        <div class="text-lg text-gray-500 mb-2">
-          <% unless @post.user.present? %>
-            <span>送信先の投稿が削除されました。</span>
-          <% end %>
-        </div>
         <%= render 'replies/form', post: @post, reply: @reply %>
         <div id="replies" class="mt-4">
           <% @replies.each do |reply| %>

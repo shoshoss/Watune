@@ -3,7 +3,6 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: %i[show]
   before_action :set_current_user_post, only: %i[edit update destroy]
-  before_action :set_send_to_user, only: [:show]
 
   def index
     @show_reply_line = false
@@ -80,14 +79,6 @@ class PostsController < ApplicationController
 
   def set_current_user_post
     @post = current_user.posts.find(params[:id])
-  end
-
-  def set_send_to_user
-    @send_to_user = if @post.parent_post.present?
-                      @post.parent_post.user
-                    else
-                      @post.user
-                    end
   end
 
   def authorize_show
