@@ -4,9 +4,6 @@ export default class extends Controller {
   connect() {
     this.element.setAttribute("open", true);
     this.setupFileInput();
-    this.adjustTextareaHeight(
-      document.getElementById("user_self_introduction")
-    );
   }
 
   closeModal() {
@@ -50,16 +47,6 @@ export default class extends Controller {
       };
       reader.readAsDataURL(file);
     });
-  }
-
-  adjustTextareaHeight(textarea) {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = `${textarea.scrollHeight}px`;
-  }
-
-  adjustHeight(event) {
-    this.adjustTextareaHeight(event.target);
   }
 
   submitEnd(event) {

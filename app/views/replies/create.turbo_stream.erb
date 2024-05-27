@@ -10,7 +10,7 @@
     <%= render 'posts/post', post: @reply %>
   <% end %>
   <%= turbo_stream.replace "new_reply" do %>
-    <%= render 'replies/form', post: @post, reply: Post.new, send_to_user: @send_to_user %>
+    <%= render 'replies/form', post: @post, reply: Post.new %>
   <% end %>
   <%= turbo_stream.replace "post-#{@post.id}-reply-icon" do %>
     <%= render partial: 'posts/reply_icon', locals: { post: @post } %>

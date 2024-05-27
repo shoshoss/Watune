@@ -1,7 +1,6 @@
-<!-- app/views/profiles/_edit_modal.html.erb -->
 <%= turbo_frame_tag "profile_edit_modal" do %>
   <dialog id="profile_edit_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="profile-edit-modal">
-    <div class="modal-box p-2">
+    <div class="modal-box p-2 max-h-screen">
       <div class="flex justify-end items-center">
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->profile-edit-modal#closeModal">閉じる</button>
       </div>
@@ -38,8 +37,8 @@
           </div>
 
           <div class="form-control mt-2">
-            <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1", for: "user_self_introduction" %>
-            <%= f.text_area :self_introduction, id: "user_self_introduction", class: "input-style", rows: "8", style: "resize: vertical;", data: { action: "input->profile-edit-modal#adjustHeight" } %>
+            <%= f.label :self_introduction, '自己紹介', class: "label-text text-lg font-semibold mb-1 overflow-y-auto", for: "self_introduction" %>
+            <%= f.text_area :self_introduction, id: "self_introduction", class: "input-style", rows: "8", style: "resize: vertical;", data: { action: "input->profile-edit-modal#adjustHeight" } %>
           </div>
 
           <div class="form-control mt-4 lg:mt-6">
