@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "post_modal" do %>
   <dialog id="post_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="post-modal">
-    <div class="modal-box p-2">
+    <div class="modal-box p-2 max-h-screen overflow-y-auto">
       <div class="flex justify-end items-center">
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->post-modal#closeModal">閉じる</button>
       </div>
@@ -36,11 +36,19 @@
     </div>
   </dialog>
 
-  <script>
-    document.addEventListener('input', function (event) {
-      if (event.target.tagName.toLowerCase() !== 'textarea') return;
+<script>
+  document.addEventListener('input', function (event) {
+    if (event.target.tagName.toLowerCase() !== 'textarea') return;
+
+    // PCではテキストエリアを広がるようにする
+    if (window.innerWidth >= 640) {  // Tailwind's 'sm' breakpoint is 640px
       event.target.style.height = 'auto';
       event.target.style.height = (event.target.scrollHeight) + 'px';
-    });
-  </script>
+    }
+  });
+</script>
+
+
+
+
 <% end %>
