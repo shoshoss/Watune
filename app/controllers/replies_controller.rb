@@ -1,6 +1,5 @@
 class RepliesController < ApplicationController
   before_action :set_post
-  before_action :set_send_to_user, only: [:create]
 
   def create
     @reply = @post.replies.build(reply_params)
@@ -24,10 +23,6 @@ class RepliesController < ApplicationController
 
   def set_post
     @post = Post.find(params[:id])
-  end
-
-  def set_send_to_user
-    @send_to_user = @post.parent_post ? @post.parent_post.user : @post.user
   end
 
   def reply_params

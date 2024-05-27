@@ -14,11 +14,11 @@
         <%= render 'posts/post_content', post: @post, reply: false %>
         <!-- 送信先の表示 -->
         <div class="text-lg text-gray-500 mb-2">
-          <% unless @send_to_user.present? %>
+          <% unless @post.user.present? %>
             <span>送信先の投稿が削除されました。</span>
           <% end %>
         </div>
-        <%= render 'replies/form', post: @post, reply: @reply, send_to_user: @send_to_user %>
+        <%= render 'replies/form', post: @post, reply: @reply %>
         <div id="replies" class="mt-4">
           <% @replies.each do |reply| %>
             <%= render 'posts/post', post: reply %>
