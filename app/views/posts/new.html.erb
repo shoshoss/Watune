@@ -37,14 +37,16 @@
             <%= f.hidden_field :duration, class: "duration-field" %>
 
             <!-- 送信先設定 -->
-            <div id="privacy-settings" class="form-control pt-2">
-              <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
-              <div class="flex space-x-4 pt-2">
-                <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "_self" } %>
-                <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "_self" } %>
+            <%= turbo_frame_tag "privacy-settings" do %>
+              <div class="form-control pt-2">
+                <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
+                <div class="flex space-x-4 pt-2">
+                  <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
+                  <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+                </div>
+                <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
               </div>
-              <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
-            </div>
+            <% end %>
           </div>
           <div class="form-control mt-4 lg:mt-6">
             <%= f.submit t('helpers.submit.post'), class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
@@ -72,7 +74,7 @@
         // テキストエリアの高さを固定し、スクロール可能にする
         textarea.classList.add('overflow-y-auto');
       } else if (window.innerWidth < 640 && textarea.scrollHeight >= 200) {
-        // スマホの場合、テキストエリアの高さが２00pxに達した場合
+        // スマホの場合、テキストエリアの高さが200pxに達した場合
         textarea.classList.add('overflow-y-auto');
       } else {
         textarea.classList.remove('overflow-y-auto');
