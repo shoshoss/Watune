@@ -35,6 +35,7 @@ class Post < ApplicationRecord
                  .left_joins(:likes)
                  .group('posts.id')
                  .having('COUNT(likes.id) <= 0')
+                 .order(Arel.sql('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) ASC'))
                  .order(created_at: :asc)
 
     open_posts = where(privacy: 'open')
@@ -43,6 +44,7 @@ class Post < ApplicationRecord
                  .group('posts.id')
                  .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
                  .having('SUM(CASE WHEN likes.user_id = ? THEN 1 ELSE 0 END) = 0', user.id)
+                 .order(Arel.sql('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) ASC'))
                  .order(created_at: :asc)
 
     user_posts.or(open_posts)
@@ -56,6 +58,7 @@ class Post < ApplicationRecord
          .group('posts.id')
          .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
          .having('SUM(CASE WHEN likes.user_id = ? THEN 1 ELSE 0 END) = 0', user.id)
+         .order(Arel.sql('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) ASC'))
          .order(created_at: :asc)
   }
 
