@@ -31,24 +31,23 @@ class Post < ApplicationRecord
                  .order(created_at: :asc)
 
     open_posts = where.not(user_id: user.id)
-                 .where(privacy: 'open')
-                 .left_joins(:likes)
-                 .group('posts.id')
-                 .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
-                 .having('SUM(CASE WHEN likes.user_id = ? THEN 1 ELSE 0 END) = 0', user.id)
-                 .order(Arel.sql('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) ASC'))
-                 .order(created_at: :asc)
+                      .where(privacy: 'open')
+                      .left_joins(:likes)
+                      .group('posts.id')
+                      .having('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) <= 9')
+                      .having('SUM(CASE WHEN likes.user_id = ? THEN 1 ELSE 0 END) = 0', user.id)
+                      .order(Arel.sql('SUM(CASE WHEN likes.user_id = posts.user_id THEN 0 ELSE 1 END) ASC'))
+                      .order(created_at: :asc)
 
     user_posts.or(open_posts)
   }
 
   # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
   scope :not_liked_by_user, lambda { |user|
-  where(user_id: user.id)
-    .where.not(id: Like.select(:post_id).where(user_id: user.id))
-    .order(created_at: :asc)
+    where(user_id: user.id)
+      .where.not(id: Like.select(:post_id).where(user_id: user.id))
+      .order(created_at: :asc)
   }
-
 
   # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
   scope :public_likes_chance, lambda { |user|
