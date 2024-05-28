@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     return unless logged_in?
 
     likes_chance_counts = Post.with_likes_count_all(current_user).count
-    @likes_chance_count = likes_chance_counts.keys.size
+    @likes_chance_count = likes_chance_counts.size
   end
 
   # ユーザーがログインしているかどうかを確認するメソッド
