@@ -3,12 +3,9 @@
 set -o errexit
 set -o pipefail
 
-export RAILS_ENV=production
-
 bundle install
-bundle exec rails assets:precompile || {
-  echo "Asset precompilation failed"
-  exit 1
-}
+yarn install
+yarn build:css
+bundle exec rails assets:precompile
 bundle exec rails assets:clean
 bundle exec rails db:migrate
