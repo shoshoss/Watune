@@ -30,7 +30,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fall back to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
+  config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
@@ -112,4 +112,9 @@ Rails.application.configure do
   config.hosts << 'wavescg.com'
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
+    r301 %r{.*}, 'https://wavecongra.com$&', if: Proc.new { |rack_env|
+      rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
+    }
+  end
 end
