@@ -22,11 +22,12 @@ class Post < ApplicationRecord
 
    # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
    scope :not_liked_by_user, lambda { |user|
-   left_joins(:likes)
-     .where(user_id: user.id)
-     .where.not(likes: { user_id: user.id })
-     .order(created_at: :asc)
- }
+    left_joins(:likes)
+      .where(user_id: user.id)
+      .where('likes.user_id IS NULL OR likes.user_id != ?', user.id)
+      .distinct
+      .order(created_at: :asc)
+  }
 
   # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
   # 応援の数が0から9の範囲に収まるものを取得するスコープ
