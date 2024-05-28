@@ -1,9 +1,8 @@
 @tailwind base;
-
 @tailwind components;
 @tailwind utilities;
 
-/* 投稿内容などのインプットのレイアウト */
+/* カスタムスタイル */
 .input-style {
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
