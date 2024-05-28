@@ -1,3 +1,4 @@
+<!-- ヘッダーのHTML -->
 <div id="after-header" class="navbar">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
@@ -14,7 +15,9 @@
 
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="flex justify-center items-center text-lg space-x-2">
-      <span class="hidden md-plus:flex text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
+      <span class="hidden md-plus:flex text-lg">
+        応援チャンス数: <strong><%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
+      </span>
       <% if current_user.guest %>
         <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
       <% else %>
@@ -50,7 +53,9 @@
             <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
           </li>
           <li class="block py-2 text-lg">
-            <span class="text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
+            <span class="hidden md-plus:flex text-lg">
+              応援チャンス数: <strong><%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
+            </span>
             <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}" %>
           </li>
           <li class="py-2">

@@ -1,3 +1,9 @@
 <%= turbo_stream.replace "post-#{@post.id}-like" do %>
   <%= render partial: 'posts/like', locals: { post: @post } %>
 <% end %>
+
+<%= turbo_stream.replace "likes_chance_count" do %>
+  <%= turbo_frame_tag "likes_chance_count" do %>
+    <%= @likes_chance_count %>
+  <% end %>
+<% end %>
