@@ -20,13 +20,13 @@ class Post < ApplicationRecord
   # 公開設定の投稿を表示するスコープ
   scope :visible_to, ->(user) { where(privacy: %i[open only_yours only_friends]).or(where(user:)) }
 
-  # ユーザーが応援していない投稿を取得するスコープ
-  scope :not_liked_by_user, lambda { |user|
-    where(user_id: user.id)
-      .left_joins(:likes)
-      .where(likes: { user_id: nil })
-      .order(created_at: :asc)
-  }
+   # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
+   scope :not_liked_by_user, lambda { |user|
+   left_joins(:likes)
+     .where(user_id: user.id)
+     .where.not(likes: { user_id: user.id })
+     .order(created_at: :asc)
+ }
 
   # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
   # 応援の数が0から9の範囲に収まるものを取得するスコープ
