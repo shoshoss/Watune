@@ -53,10 +53,16 @@ class UsersController < ApplicationController
 
   def guest_login
     email = generate_unique_guest_email
-    @user = User.create!(email: email, password: SecureRandom.hex(10), guest: true)
-    auto_login(@user)
-    redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
-                notice: 'ありがとうございます！<br>お試しログインしました！<br>画面上部にある「引き継ぎ登録」よりデータを引き継げます。'
+    begin
+      @user = User.create!(email: email, password: SecureRandom.hex(10), guest: true)
+      auto_login(@user)
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
+                  notice: 'ありがとうございます！<br>お試しログインしました！<br>画面上部にある「引き継ぎ登録」よりデータを引き継げます。'
+    rescue ActiveRecord::RecordInvalid => e
+      # エラーハンドリング: 例えば、エラーメッセージをログに記録し、ユーザーに通知するなど
+      Rails.logger.error "ゲストユーザーの作成に失敗しました: #{e.message}"
+      redirect_to root_path, alert: 'ゲストログインに失敗しました。再度お試しください。'
+    end
   end
 
   private
