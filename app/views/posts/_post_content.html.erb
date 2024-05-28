@@ -5,7 +5,7 @@
     <div class="flex flex-col items-center justify-between p-2 md:p-4 min-w-[10px] md:w-[15%] flex-shrink-0 relative">
       <!-- アバター -->
       <%= link_to profile_show_path(username_slug: post.user.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(post.user.avatar.presence || asset_path('wavescg_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+        <%= image_tag(post.user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
       <% end %>
       <div id="post-<%= post.id %>-reply-line">
         <% if post.replies.any? && @show_reply_line %>
