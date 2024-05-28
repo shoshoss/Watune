@@ -110,8 +110,6 @@ Rails.application.configure do
   config.hosts << 'wavecongra.onrender.com'
   config.hosts << 'www.wavecongra.com'
   config.hosts << 'www.wavecongra.site'
-  config.hosts << 'www.wavescg.com'
-  config.hosts << 'wavescg.com'
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
