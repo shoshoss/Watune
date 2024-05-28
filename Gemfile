@@ -69,7 +69,9 @@ gem 'aws-sdk-s3', '~> 1.1', require: false
 gem 'active_record_extended', '~> 3.2'
 
 # https://アプリ名.onrender.com」を、「https://www.独自ドメイン」にリダイレクトさせてドメインを統一
-gem 'rack-rewrite'
+gem 'rack-rewrite', '~> 1.5'
+
+gem 'sassc-rails', '~> 2.1'
 
 group :development, :test do
   # デバッグ用のdebug
