@@ -109,11 +109,12 @@ Rails.application.configure do
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts << 'wavecongra.onrender.com'
   config.hosts << 'www.wavecongra.com'
+  config.hosts << 'wavecongra.com'
   config.hosts << 'www.wavecongra.site'
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301(/.*/, 'https://wavecongra.com$&', if: proc { |rack_env|
+    r301(/.*/, 'https://www.wavecongra.com$&', if: proc { |rack_env|
       rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
     })
   end
