@@ -113,8 +113,8 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301 %r{.*}, 'https://wavecongra.com$&', if: Proc.new { |rack_env|
+    r301(/.*/, 'https://wavecongra.com$&', if: proc { |rack_env|
       rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
-    }
+    })
   end
 end
