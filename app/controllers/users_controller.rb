@@ -12,7 +12,6 @@ class UsersController < ApplicationController
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
-        render :new, status: :unprocessable_entity
       end
     else
       @user = User.new(user_params)
@@ -21,7 +20,6 @@ class UsersController < ApplicationController
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
-        render :new, status: :unprocessable_entity
       end
     end
   end
@@ -37,7 +35,6 @@ class UsersController < ApplicationController
         flash[:notice] = I18n.t('flash_messages.users.guest_login_success')
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
-        render :new, status: :unprocessable_entity
       end
     else
       @user = User.new(user_params)
@@ -46,7 +43,6 @@ class UsersController < ApplicationController
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
-        render :new, status: :unprocessable_entity
       end
     end
   end
