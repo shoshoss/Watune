@@ -8,6 +8,16 @@ module ApplicationHelper
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
+  def set_flash(key, message)
+    session[key] = message
+  end
+
+  def get_flash(key)
+    message = session[key]
+    session.delete(key)
+    message
+  end
+
   def before_profile_edit_flash
     flash[:before_profile_edit] || {}
   end
