@@ -54,7 +54,7 @@ class UsersController < ApplicationController
   def guest_login
     email = generate_unique_guest_email
     begin
-      @user = User.create!(email: email, password: SecureRandom.hex(10), guest: true)
+      @user = User.create!(email:, password: SecureRandom.hex(10), guest: true)
       auto_login(@user)
       redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
                   notice: I18n.t('flash_messages.users.guest_login_success')
@@ -74,7 +74,7 @@ class UsersController < ApplicationController
   def generate_unique_guest_email
     loop do
       email = "guest_#{SecureRandom.hex(10)}@example.com"
-      break email unless User.exists?(email: email)
+      break email unless User.exists?(email:)
     end
   end
 end
