@@ -10,10 +10,6 @@ class UsersController < ApplicationController
       @user = current_user
       if @user.update(user_params.merge(guest: false))
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
-        respond_to do |format|
-          format.html { redirect_to edit_profile_path }
-          format.turbo_stream
-        end
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
@@ -23,10 +19,6 @@ class UsersController < ApplicationController
       if @user.save
         login(user_params[:email], user_params[:password])
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
-        respond_to do |format|
-          format.html { redirect_to edit_profile_path }
-          format.turbo_stream
-        end
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
@@ -43,10 +35,6 @@ class UsersController < ApplicationController
       @user = current_user
       if @user.update(user_params.merge(guest: false))
         flash[:notice] = I18n.t('flash_messages.users.guest_login_success')
-        respond_to do |format|
-          format.html { redirect_to edit_profile_path }
-          format.turbo_stream
-        end
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
@@ -56,10 +44,6 @@ class UsersController < ApplicationController
       if @user.save
         login(user_params[:email], user_params[:password])
         flash[:notice] = I18n.t('flash_messages.users.signup_success')
-        respond_to do |format|
-          format.html { redirect_to edit_profile_path }
-          format.turbo_stream
-        end
       else
         flash[:danger] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
@@ -73,7 +57,7 @@ class UsersController < ApplicationController
     auto_login(@user)
     set_flash(:before_profile_edit_flash, I18n.t('flash_messages.users.guest_login_success'))
     respond_to do |format|
-      format.html { redirect_to edit_profile_path }
+      format.html { redirect_to root_path }
       format.turbo_stream
     end
   rescue ActiveRecord::RecordInvalid => e
@@ -81,7 +65,7 @@ class UsersController < ApplicationController
     flash.now[:alert] = I18n.t('flash_messages.users.guest_login_failure')
     respond_to do |format|
       format.html { redirect_to root_path }
-      format.turbo_stream { render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message', locals: { flash: { danger: I18n.t('flash_messages.users.guest_login_failure') } }) }
+      format.turbo_stream
     end
   end
 
