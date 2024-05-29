@@ -36,7 +36,7 @@ class OauthsController < ApplicationController
       redirect_to redirect_path, status: :see_other, notice: notice_message
     end
   rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = "#{I18n.t('flash_messages.users.registration_failure')} #{e.message}"
+    flash[:error] = "#{I18n.t('flash_messages.users.signup_failure')} #{e.message}"
     redirect_to login_path, status: :unprocessable_entity
   end
 
@@ -106,7 +106,7 @@ class OauthsController < ApplicationController
   # リダイレクト先と通知メッセージを決定する
   def determine_redirect(is_new_user, _provider)
     if is_new_user
-      [edit_profile_path, I18n.t('flash_messages.users.registration_success')]
+      [edit_profile_path, I18n.t('flash_messages.users.signup_success')]
     else
       [root_path, I18n.t('flash_messages.user_sessions.login_success')]
     end

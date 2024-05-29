@@ -9,14 +9,14 @@ class UsersController < ApplicationController
     if current_user&.guest?
       @user = current_user
       unless @user.update(user_params.merge(guest: false))
-        flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
+        flash.now[:error] = I18n.t('flash_messages.users.signup_failure')
       end
     else
       @user = User.new(user_params)
       if @user.save
         login(user_params[:email], user_params[:password])
       else
-        flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
+        flash.now[:error] = I18n.t('flash_messages.users.signup_failure')
       end
     end
     respond_to do |format|
@@ -32,20 +32,20 @@ class UsersController < ApplicationController
     if current_user&.guest?
       @user = current_user
       if @user.update(user_params.merge(guest: false))
-        flash[:notice] = I18n.t('flash_messages.users.registration_success')
+        flash[:notice] = I18n.t('flash_messages.users.signup_success')
         redirect_to edit_profile_path, status: :see_other
       else
-        flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
+        flash.now[:error] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
       end
     else
       @user = User.new(user_params)
       if @user.save
         login(user_params[:email], user_params[:password])
-        flash[:notice] = I18n.t('flash_messages.users.registration_success')
+        flash[:notice] = I18n.t('flash_messages.users.signup_success')
         redirect_to edit_profile_path, status: :see_other
       else
-        flash.now[:error] = I18n.t('flash_messages.users.registration_failure')
+        flash.now[:error] = I18n.t('flash_messages.users.signup_failure')
         render :new, status: :unprocessable_entity
       end
     end
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     begin
       @user = User.create!(email:, password: SecureRandom.hex(10), guest: true)
       auto_login(@user)
-      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
+      redirect_to edit_profile_path,
                   notice: I18n.t('flash_messages.users.guest_login_success')
     rescue ActiveRecord::RecordInvalid => e
       # エラーハンドリング: 例えば、エラーメッセージをログに記録し、ユーザーに通知するなど

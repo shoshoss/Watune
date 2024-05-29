@@ -1,5 +1,5 @@
 default_url_options:
   protocol: "https"
-  host: "wavecongra.com"
+  host: "www.wavecongra.com"
 sorcery:
-  google_callback_url: "https://wavecongra.com/oauth/callback"
+  google_callback_url: "https://www.wavecongra.com/oauth/callback"
