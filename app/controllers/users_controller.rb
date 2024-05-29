@@ -52,16 +52,29 @@ class UsersController < ApplicationController
   end
 
   def guest_login
-    @user = User.create!(email: "guest_#{SecureRandom.hex(10)}@example.com", password: SecureRandom.hex(10),
-                         guest: true)
-    auto_login(@user)
-    redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
-                notice: 'ありがとうございます！<br>お試しログインしました！<br>画面上部にある「引き継ぎ登録」よりデータを引き継げます。'
+    email = generate_unique_guest_email
+    begin
+      @user = User.create!(email:, password: SecureRandom.hex(10), guest: true)
+      auto_login(@user)
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
+                  notice: I18n.t('flash_messages.users.guest_login_success')
+    rescue ActiveRecord::RecordInvalid => e
+      # エラーハンドリング: 例えば、エラーメッセージをログに記録し、ユーザーに通知するなど
+      Rails.logger.error I18n.t('flash_messages.users.guest_login_failure') + ": #{e.message}"
+      redirect_to root_path, alert: I18n.t('flash_messages.users.guest_login_failure')
+    end
   end
 
   private
 
   def user_params
     params.require(:user).permit(:email, :password, :display_name, :username_slug, :self_introduction)
+  end
+
+  def generate_unique_guest_email
+    loop do
+      email = "guest_#{SecureRandom.hex(10)}@example.com"
+      break email unless User.exists?(email:)
+    end
   end
 end
