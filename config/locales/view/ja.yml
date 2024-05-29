@@ -75,7 +75,7 @@ ja:
     users:
       signup_success: "ありがとうございます！<br>ユーザー登録が完了しました！<br>おめでとうございます！"
       signup_failure: "ユーザー登録に失敗しました。"
-      guest_login_success: "ありがとうございます！<br>お試し登録しました！<br>画面上部にある「引き継ぎ登録」よりデータを引き継げます。"
+      guest_login_success: "ありがとうございます！<br>お試し登録しました！<br>画面上部にある「引き継ぎ登録」より<br>データを引き継げます。"
       guest_login_failure: "ゲスト登録に失敗しました。再度お試しください。"
 
   posts:

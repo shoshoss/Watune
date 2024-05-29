@@ -1,48 +1,60 @@
-<% before_profile_edit_flash.each do |message_type, message| %>
+<% if (message = get_flash(:before_profile_edit_flash)) %>
   <div class="p-2 mx-2">
-    <div class="<%= flash_class(message_type) %> my-2 rounded-lg text-lg flex flex-col justify-center" role="alert">
+    <div class="alert alert-info text-white my-2 rounded-lg text-lg flex flex-col justify-center" role="alert">
       <span><%= message.html_safe %></span>
     </div>
     <div class="bg-gray-100 p-2 rounded-lg mt-2">
-      <p class="text-lg hidden md:block">
-        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
-        <strong>プロフィールページ</strong>は、画面左上の
+      <p class="text-lg hidden md:block text-center">
+        <strong>プロフィールの編集</strong>は、
+        <br><strong>プロフィールページ</strong>でいつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、
+        <br>画面左上の
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「ロゴ」
         </a>
-        をクリック、または、画面左側に表示されているサイドバーの
+        をクリック、
+        <br>または、画面左側に表示されている<br class="lg:hidden">サイドバーの
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「自分のアイコン」
         </a>
-        や
+        や<br>
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
         の項目より、表示できます。
       </p>
-      <p class="text-lg hidden sm:block md:hidden">
-        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
-        <strong>プロフィールページ</strong>は、画面左上の
+      <p class="text-lg text-center hidden sm:block md:hidden">
+        <strong>プロフィールの編集</strong>は、
+        <br><strong>プロフィールページ</strong>でいつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、
+        <br>画面左上の
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「ロゴ」
         </a>
-        をクリック、または、画面を横に広げることで表示されるサイドバーの
+        をクリック、
+        <br>または、画面を横に広げることで
+        <br>表示されるサイドバーの
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「自分のアイコン」
         </a>
-        や
+        や<br>
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
         の項目より、表示できます。
       </p>
-      <p class="text-lg sm:hidden">
-        <strong>プロフィールの編集</strong>は、<strong>プロフィールページ</strong>でいつでも行えます。<br>
-        <strong>プロフィールページ</strong>は、画面左上の
+      <p class="text-lg text-center sm:hidden">
+        <strong>プロフィールの編集</strong>は、
+        <br><strong>プロフィールページ</strong>で
+        <br>いつでも行えます。<br>
+        <strong>プロフィールページ</strong>は、
+        <br>画面左上の
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「ロゴ」
         </a>
-        をタップすることで表示できます。
+        を
+        <br>タップすることで
+        <br>表示できます。
       </p>
     </div>
   </div>
