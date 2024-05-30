@@ -1,7 +1,9 @@
 class StaticPagesController < ApplicationController
   skip_before_action :require_login, only: %i[top privacy_policy terms_of_use privacy_modal tou_modal]
 
-  def top; end
+  def top
+    @user = User.new
+  end
 
   def privacy_policy; end
 
