@@ -40,7 +40,17 @@
   <%= turbo_frame_tag 'privacy_modal' %>
   <%= turbo_frame_tag 'post_modal' %>
 
-  <%= favicon_link_tag('favicon.ico') %>　
+  <!-- Favicon for legacy browsers -->
+  <link rel="icon" href="<%= asset_path 'favicon.ico' %>" sizes="32x32">
+
+  <!-- SVG icon for modern browsers with light/dark mode support -->
+  <link rel="icon" href="<%= asset_path 'icon.svg' %>" type="image/svg+xml">
+
+  <!-- Apple Touch Icon -->
+  <link rel="apple-touch-icon" href="<%= asset_path 'apple-touch-icon.png' %>">
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="<%= asset_path 'manifest.webmanifest' %>">
 </head>
 <body class="font-sans bg-white flex flex-col min-h-screen">
   <!-- ヘッダー -->
