@@ -1,4 +1,10 @@
 {
+  "name": "WaveConGra",
+  "short_name": "W",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e0f2fe",
+  "theme_color": "#38bdf8",
   "icons": [
     {
       "src": "/icon-192.png",
