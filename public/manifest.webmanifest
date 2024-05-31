@@ -5,6 +5,8 @@
   "display": "standalone",
   "background_color": "#e0f2fe",
   "theme_color": "#38bdf8",
+  "description": "音声メッセージを通じて自己肯定感を高め、 相互にポジティブなエネルギーを共有することができるサービス",
+  "categories": ["social", "communication"],
   "icons": [
     {
       "src": "/icon-192.png",
