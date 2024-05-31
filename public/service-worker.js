@@ -1,5 +1,3 @@
-// public/service-worker.js
-
 const CACHE_NAME = "wavecongra-cache-v1";
 const urlsToCache = [
   "/",
