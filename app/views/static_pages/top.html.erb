@@ -2,33 +2,22 @@
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
     <div class="flex flex-col justify-center max-w-xl mx-auto">
-        <%= link_to "#", class: "invisible" do %>
-          <p class="text-5xl">ダミーで表示されません</p>
-        <% end %>
+      <%= link_to guest_login_path, class: "invisible trial-btn text-xl sm:text-2xl mb-6" do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
       <div class="max-w-lg rounded-full py-16 sm:py-28 bg-orange-500 bg-opacity-80">
-        <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 leading-tight">
-          キミは一人ではない<br>応援し合える仲間や<br>高め合える友がいる
+        <h1 class="text-2xl sm:text-4xl font-bold text-black leading-tight">
+          音でつながる
+          <br>前向きなエネルギー
         </h1>
-        <p class="text-md mt-4 sm:text-2xl font-semibold text-gray-900 leading-tight">
-          あなたの投稿が<br>自分自身と仲間に<br>喜びや希望を与える
+        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">
+          あなたの
+          <br>音声メッセージが
+          <br>自分自身と仲間に
+          <br>希望や喜びを与える
         </p>
       </div>
-      <a href="#next-section" class="mb-6 rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">
-        本アプリについて
-      </a>
-      <%= link_to guest_login_path, class: "#{current_user ? 'invisible' : ''} trial-btn text-xl sm:text-2xl mb-6" do %>
-        お試しでいますぐ始める！
-      <% end %>
-      <!-- Googleで新規登録のボタン -->
-      <div class="flex items-center justify-center mb-8">
-        <%= link_to auth_at_provider_path(provider: :google),
-                    method: :post,
-                    class: "#{current_user ? 'invisible' : ''} bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 rounded-lg text-gray-900 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
-                    data: { turbo: false } do %>
-          <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
-          <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
-        <% end %>
-      </div>
+      <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
     </div>
   </div>
 </div>
@@ -40,7 +29,7 @@
       <p class="text-lg font-semibold">
         本サービスは、<br class="sm:hidden">音声メッセージの投稿（ウェーブ）や
         <br>応援（いいね）スタンプなどを通じて
-        <br>もっと嬉しくて楽しい<br class="sm:hidden">気持ちを体験できるアプリです。
+        <br>自己肯定感を高め<br class="sm:hidden">相互に前向きなエネルギーを<br class="sm:hidden">共有するサービスです。
       </p>
     </div>
   </section>
@@ -67,7 +56,7 @@
         WaveConGra（ウェーブこんぐら）は、
         <br>"Waves of Congratulations and Gratitude" 
         <br>（祝福と感謝の波紋）という意味で、
-        <br>身の回りの環境音や<br class="sm:hidden">あなたの奏でる音楽や話し声は
+        <br>あなたの音声メッセージは
         <br>祝福や感謝で満ちていて、
         <br>波紋のように広がっている<br class="sm:hidden">という想いを込めています。
       </p>
@@ -104,7 +93,7 @@
       <div class="flex items-center justify-center mb-8">
         <%= link_to auth_at_provider_path(provider: :google),
                     method: :post,
-                    class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-gray-900 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
+                    class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
                     data: { turbo: false } do %>
           <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
           <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
