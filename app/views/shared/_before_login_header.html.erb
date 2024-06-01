@@ -1,5 +1,5 @@
 <%= turbo_frame_tag 'login_modal' %>
-<div class="navbar px-4">
+<div class="navbar px-2 sm:px-4">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="hidden md:block shrink-0">
@@ -18,36 +18,11 @@
     <!-- ナビゲーションリンク -->
     <div class="flex flex-1 justify-end items-center">
 
-      <!-- モーダル（ログインと新規登録）を開くリンク -->
-      <%= link_to t('header.signup'),
-                  new_signup_modal_path,
-                  class: 'btn btn-outline btn-accent hidden sm:flex btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2',
-                  data: { turbo_frame: "signup_modal" } %>
-      <%= link_to 'お試しログイン',
-                  guest_login_path,
-                  class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2'%>
-      <%= link_to t('header.login'),
-                  new_login_modal_path,
-                  class: 'btn btn-outline btn-primary  btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-2 sm:mx-4 py-2',
-                  data: { turbo_frame: "login_modal" } %>
+      <!-- 新規登録、ゲスト登録、ログインを開くリンク -->
+      <%= link_to t('header.trial_login'), guest_login_path, method: :post, class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4' %>
+      <%= link_to t('header.signup'), new_signup_modal_path, class: 'btn btn-outline btn-accent btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "signup_modal" } %>
+      <%= link_to t('header.login'), new_login_modal_path, class: 'btn btn-outline btn-primary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "login_modal" } %>
 
-      <!-- ハンバーガーメニュー -->
-      <div class="dropdown dropdown-hover dropdown-end">
-        <button class="btn btn-square btn-ghost md:hidden" tabindex="0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52">
-          <!-- 小さな画面でのみ表示されるナビゲーションリンク -->
-          <li class="block py-2">
-            <%= link_to t('header.signup'),
-                    new_signup_modal_path,
-                    class: 'sm:hidden text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 py-2',
-                    data: { turbo_frame: "signup_modal" } %>
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
 </div>
