@@ -85,6 +85,9 @@ class User < ApplicationRecord
     bookmarks.exists?(post:)
   end
 
+  # ゲストユーザーを除外して新規登録者を取得
+  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(10) }
+
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
 
