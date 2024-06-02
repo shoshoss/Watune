@@ -86,4 +86,9 @@ module ApplicationHelper
       count.to_s
     end
   end
+
+  # ウィジェットがメインコンテンツと同じように表示されないように
+  def hide_widget_on_users_index
+    controller_name == 'users' && action_name == 'index' ? 'hidden' : ''
+  end
 end

@@ -1,0 +1,10 @@
+<% if @recent_users.present? %>
+    <%= turbo_frame_tag "next-page" do %>
+      <%= render partial: 'users/user', collection: @recent_users, as: :user %>
+      <% if @pagy.next %>
+        <%= render 'shared/next_page' %>
+      <% end %>
+    <% end %>
+  <% else %>
+    <div class="mb-3">全ての新規ユーザーを表示しました。</div>
+<% end %>

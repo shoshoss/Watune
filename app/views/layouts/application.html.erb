@@ -104,7 +104,7 @@
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-      <%= render 'shared/widget', users: @recent_users %>
+      <%= render 'shared/widget', users: @recent_users, pagy: @pagy %>
     <% else %>
       <div id="no-widget"></div>
     <% end %>

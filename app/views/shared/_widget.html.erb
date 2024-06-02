@@ -1,18 +1,19 @@
 <div class="w-[350px] p-4 hidden lg:block overflow-y-auto">
-  <div class="user-widget">
+  <div id="new-user-widget" class="<%= hide_widget_on_users_index %>">
     <h2 class="text-lg">新規ユーザー</h2>
-    <% @recent_users.each do |user| %>
-      <div class="user-item flex items-center mb-4">
-        <%= link_to profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" } do %>
-          <%= image_tag(user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14 flex-shrink-0") %>
+    <div id="widget-users-list">
+      <%= render partial: 'users/user', collection: users, as: :user %>
+    </div>
+    <div id="widget-load-more" class="mt-4 text-center">
+      <% if defined?(pagy) && pagy.present? %>
+        <% if pagy.next %>
+          <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "btn-load-more" %>
+        <% else %>
+          <p>次のページはありません</p>
         <% end %>
-        <div class="ml-4 flex-1 overflow-hidden">
-          <h3 class="text-lg font-semibold truncate"><%= user.display_name %></h3>
-          <p class="text-gray-500 truncate">@<%= user.username_slug %></p>
-        </div>
-        <%= link_to "フォロー", "#", class: "btn-follow flex-shrink-0" %>
-      </div>
-    <% end %>
-    <%= link_to 'さらに表示', users_path %>
+      <% else %>
+        <p>Pagyオブジェクトが設定されていません</p>
+      <% end %>
+    </div>
   </div>
 </div>

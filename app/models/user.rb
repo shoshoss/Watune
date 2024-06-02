@@ -20,16 +20,19 @@ class User < ApplicationRecord
 
   # パスワードは新規作成または変更時に8文字以上
   validates :password,
-            presence: true,
-            length: { minimum: 8, message: :too_short },
-            if: -> { new_record? || changes[:crypted_password] }
-
+  presence: true,
+  length: { minimum: 8, message: :too_short },
+  if: -> { new_record? || changes[:crypted_password] }
+  
   # リセットパスワードトークンは一意であり、存在することも許可される
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
-
+  
   # 表示名は最大50文字
   validates :display_name, length: { maximum: 50 }
-
+  
+  # ゲストユーザーを除外して新規登録者を取得
+  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(15) }
+  
   # 予約されたusername_slugを設定
   RESERVED_USERNAMES = %w[
     admin support blog home user dashboard privacy_policy terms_of_use
@@ -85,8 +88,6 @@ class User < ApplicationRecord
     bookmarks.exists?(post:)
   end
 
-  # ゲストユーザーを除外して新規登録者を取得
-  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(10) }
 
   # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }

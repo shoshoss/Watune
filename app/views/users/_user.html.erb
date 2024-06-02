@@ -1,0 +1,10 @@
+<div class="user-item flex items-center mb-4">
+  <%= link_to profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" } do %>
+    <%= image_tag(user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14 flex-shrink-0") %>
+  <% end %>
+  <div class="ml-4 flex-1 overflow-hidden">
+    <h3 class="text-lg font-semibold truncate"><%= user.display_name %></h3>
+    <p class="text-gray-500 truncate">@<%= user.username_slug %></p>
+  </div>
+  <%= link_to "フォロー", "#", class: "btn-follow flex-shrink-0" %>
+</div>
