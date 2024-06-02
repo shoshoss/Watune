@@ -11,7 +11,9 @@
         <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "no-underline text-inherit hover:underline" %>
       </p>
     </div>
-    <%= link_to "フォ（未）", "#", class: "btn-follow flex-shrink-0 z-10", onclick: "event.stopPropagation();" %>
+    <div id="user-<%= user.id %>-follow">
+      <%= render partial: 'users/follow_button', locals: { user: user } %>
+    </div>
   </div>
   <div class="w-full p-2 text-base sm:text-md overflow-y-auto max-h-[calc(1.5rem*3)]">
     <% if user.self_introduction.present? %>

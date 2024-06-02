@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "user-#{user.id}-follow" do %>
+  <% if current_user.following?(user) %>
+    <%= button_to 'フォロー解除', user_friendships_path(user), method: :delete, class: "btn-follow flex-shrink-0 z-10", data: { turbo_frame: "_top" } %>
+  <% elsif current_user != user %>
+    <%= button_to 'フォロー', user_friendships_path(user), method: :post, class: "btn-follow flex-shrink-0 z-10", data: { turbo_frame: "_top" } %>
+  <% end %>
+<% end %>
