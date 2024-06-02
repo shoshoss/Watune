@@ -75,10 +75,30 @@
 
 /* フォローボタン */
 .btn-follow {
-  @apply bg-black text-white font-bold rounded-full px-4 py-2  hover:bg-sky-400;
+  @apply bg-black text-white font-bold px-4 py-2 rounded-full hover:bg-sky-400;
 }
 
 /* フォロー中ボタン */
 .btn-following {
-  @apply bg-sky-400 text-white font-bold rounded-full px-4 py-2  hover:bg-red-100 hover:text-red-600;
+  @apply bg-sky-400 text-white font-bold px-4 py-2 rounded-full;
+  position: relative;
+}
+
+/* フォロー解除テキスト用クラス */
+.btn-unfollow-hover::after {
+  content: attr(data-unfollow-text);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f56565; /* text-red-600 */
+  background-color: #fed7d7; /* bg-red-100 */
+  border-radius: 9999px; /* rounded-full */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-following:hover::after {
+  opacity: 1;
 }

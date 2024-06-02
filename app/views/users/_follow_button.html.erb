@@ -1,21 +1,7 @@
 <%= turbo_frame_tag "user-#{user.id}-follow" do %>
   <% if current_user.following?(user) %>
-    <%= button_to 'フォロー中', user_friendships_path(user), method: :delete, class: "btn-following", data: { turbo_frame: "_top", follow_text: "フォロー中", unfollow_text: "フォロー解除" } %>
+    <%= button_to 'フォロー中', user_friendships_path(user), method: :delete, class: "btn-following btn-unfollow-hover", data: { turbo_frame: "_top", unfollow_text: "フォロー解除" } %>
   <% elsif current_user != user %>
     <%= button_to 'フォローする', user_friendships_path(user), method: :post, class: "btn-follow", data: { turbo_frame: "_top" } %>
   <% end %>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.btn-following').forEach(button => {
-        button.addEventListener('mouseover', () => {
-          button.textContent = button.dataset.unfollowText;
-          button.classList.add('hover:bg-red-100', 'hover:text-red-600');
-        });
-        button.addEventListener('mouseout', () => {
-          button.textContent = button.dataset.followText;
-          button.classList.remove('hover:bg-red-100', 'hover:text-red-600');
-        });
-      });
-    });
-  </script>
 <% end %>
