@@ -1,0 +1,9 @@
+<% if current_user.following?(user) %>
+  <%= form_with(url: user_friendships_path(user), method: :delete, local: true) do |f| %>
+    <%= f.submit t('.destroy') %>
+  <% end %>
+<% elsif current_user != user %>
+  <%= form_with(url: user_friendships_path(user), local: true) do |f| %>
+    <%= f.submit t('.create') %>
+  <% end %>
+<% end %>

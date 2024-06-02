@@ -1,38 +1,42 @@
 class User < ApplicationRecord
   # Sorceryによる認証機能を有効化
   authenticates_with_sorcery!
+
   # 認証情報を複数保持するための関連付け。ユーザー削除時に認証情報も削除される。
   has_many :authentications, dependent: :destroy
 
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
 
+  # ネストされた属性として認証情報を受け入れる
+  accepts_nested_attributes_for :authentications
+
   # Active Storageを使って添付ファイルを管理する
   has_one_attached :avatar
 
-  # ネストされた属性として認証情報を受け入れる
-  accepts_nested_attributes_for :authentications
-  before_validation :generate_username_slug, on: :create, unless: :username_slug?
-  after_create :set_default_display_name
+  # 応援機能
+  has_many :likes, dependent: :destroy
+  has_many :liked_posts, through: :likes, source: :post
 
-  # メールアドレスは一意であり、存在が必要で、最大255文字
+  # ブックマーク機能
+  has_many :bookmarks, dependent: :destroy
+  has_many :bookmarked_posts, through: :bookmarks, source: :post
+
+  # フォロー・フォロワー機能の関連付け
+  has_many :active_friendships, class_name: 'Friendship', foreign_key: :follower_id, dependent: :destroy,
+                                inverse_of: :follower
+  has_many :passive_friendships, class_name: 'Friendship', foreign_key: :followed_id, dependent: :destroy,
+                                 inverse_of: :followed
+  has_many :followings, through: :active_friendships, source: :followed
+  has_many :followers, through: :passive_friendships, source: :follower
+
+  # バリデーションの定義
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
-
-  # パスワードは新規作成または変更時に8文字以上
-  validates :password,
-  presence: true,
-  length: { minimum: 8, message: :too_short },
-  if: -> { new_record? || changes[:crypted_password] }
-  
-  # リセットパスワードトークンは一意であり、存在することも許可される
+  validates :password, presence: true, length: { minimum: 8, message: :too_short }, if: lambda {
+                                                                                          new_record? || changes[:crypted_password]
+                                                                                        }
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
-  
-  # 表示名は最大50文字
-  validates :display_name, length: { maximum: 50 }
-  
-  # ゲストユーザーを除外して新規登録者を取得
-  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(5) }
-  
+
   # 予約されたusername_slugを設定
   RESERVED_USERNAMES = %w[
     admin support blog home user dashboard privacy_policy terms_of_use
@@ -46,20 +50,23 @@ class User < ApplicationRecord
     films image images photo photos photograph photographs picture pictures
   ].freeze
 
-  # ユーザー名スラグは一意で、15文字以下、特定の形式に従う必要がある
-  validates :username_slug, presence: true,
-                            uniqueness: { case_sensitive: false, message: :taken },
-                            length: { minimum: 3, maximum: 15, too_short: :too_short, too_long: :too_long },
-                            format: { with: /\A[\w]+\z/, message: :invalid_format },
-                            exclusion: { in: RESERVED_USERNAMES, message: :reserved }
-
-  # 自己紹介は最大500文字まで
+  # 表示名は最大50文字
+  validates :display_name, length: { maximum: 50 }
+  validates :username_slug, presence: true, uniqueness: { case_sensitive: false, message: :taken },
+                            length: { minimum: 3, maximum: 15, too_short: :too_short, too_long: :too_long }, format: { with: /\A[\w]+\z/, message: :invalid_format }, exclusion: { in: RESERVED_USERNAMES, message: :reserved }
   validates :self_introduction, length: { maximum: 500 }
 
-  # 応援機能
-  has_many :likes, dependent: :destroy
-  has_many :liked_posts, through: :likes, source: :post
+  # コールバック
+  before_validation :generate_username_slug, on: :create, unless: :username_slug?
+  after_create :set_default_display_name
 
+  # スコープ
+  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(5) }
+
+  # enumでユーザーの役割を定義：一般ユーザーは0、管理者は1
+  enum role: { general: 0, admin: 1 }
+
+  # インスタンスメソッド
   def like(post)
     likes.create(post:)
   end
@@ -71,10 +78,6 @@ class User < ApplicationRecord
   def like?(post)
     likes.exists?(post:)
   end
-
-  # ブックマーク機能
-  has_many :bookmarks, dependent: :destroy
-  has_many :bookmarked_posts, through: :bookmarks, source: :post
 
   def bookmark(post)
     bookmarks.create(post:)
@@ -88,11 +91,19 @@ class User < ApplicationRecord
     bookmarks.exists?(post:)
   end
 
+  def following?(user)
+    active_friendships.exists?(followed_id: user.id)
+  end
 
-  # ユーザーの役割をenumで定義：一般ユーザーは0、管理者は1
-  enum role: { general: 0, admin: 1 }
+  def follow(user)
+    active_friendships.find_or_create_by!(followed_id: user.id)
+  end
 
-  # ユーザーが引数で渡されたリソースの所有者かどうかを判断するメソッド
+  def unfollow(user)
+    friendship = active_friendships.find_by(followed_id: user.id)
+    friendship&.destroy!
+  end
+
   def own?(object)
     id == object&.user_id
   end
