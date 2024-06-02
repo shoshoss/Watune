@@ -1,7 +1,7 @@
 <div class="w-[350px] hidden lg:block overflow-y-auto">
-  <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg p-4 my-4 shadow-lg">
-    <h2 class="text-lg font-bold mb-4">新規ユーザー</h2>
-    <div id="widget-users-list" class="space-y-4">
+  <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg my-4 shadow-lg">
+    <h2 class="text-xl text-center font-bold pt-2 mb-4">新規ユーザー</h2>
+    <div id="widget-users-list">
       <%= render partial: 'users/user', collection: users, as: :user %>
     </div>
     <div id="widget-load-more" class="mt-4 text-center">

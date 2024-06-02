@@ -83,7 +83,7 @@
             <%= render partial: 'posts/post', locals: { post: post } %>
           <% end %>
           <% if @pagy.next %>
-            <%= render 'shared/next_page' %>
+            <%= render 'posts/next_page' %>
           <% end %>
         <% end %>
       <% else %>
