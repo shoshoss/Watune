@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[index new create show] do
     resource :friendships, only: %i[create destroy]
-  end 
+  end
   get 'guest_login', to: 'users#guest_login', as: 'guest_login'
   # モーダル用の新規登録ルーティング
   get 'signup_modal', to: 'users#new_modal', as: 'new_signup_modal'

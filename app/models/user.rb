@@ -32,9 +32,8 @@ class User < ApplicationRecord
 
   # バリデーションの定義
   validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
-  validates :password, presence: true, length: { minimum: 8, message: :too_short }, if: lambda {
-                                                                                          new_record? || changes[:crypted_password]
-                                                                                        }
+  validates :password, presence: true, length: { minimum: 8, message: :too_short },
+                       if: -> { new_record? || changes[:crypted_password] }
   validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
 
   # 予約されたusername_slugを設定
@@ -53,7 +52,9 @@ class User < ApplicationRecord
   # 表示名は最大50文字
   validates :display_name, length: { maximum: 50 }
   validates :username_slug, presence: true, uniqueness: { case_sensitive: false, message: :taken },
-                            length: { minimum: 3, maximum: 15, too_short: :too_short, too_long: :too_long }, format: { with: /\A[\w]+\z/, message: :invalid_format }, exclusion: { in: RESERVED_USERNAMES, message: :reserved }
+                            length: { minimum: 3, maximum: 15, too_short: :too_short, too_long: :too_long },
+                            format: { with: /\A[\w]+\z/, message: :invalid_format },
+                            exclusion: { in: RESERVED_USERNAMES, message: :reserved }
   validates :self_introduction, length: { maximum: 500 }
 
   # コールバック

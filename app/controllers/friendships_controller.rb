@@ -4,7 +4,7 @@ class FriendshipsController < ApplicationController
   def create
     current_user.follow(@user)
     respond_to do |format|
-      format.html { redirect_to @user, notice: t('friendships.create.notice') }
+      format.html { redirect_to @user, notice: t('.notice') }
       format.turbo_stream
     end
   end
@@ -12,7 +12,7 @@ class FriendshipsController < ApplicationController
   def destroy
     current_user.unfollow(@user)
     respond_to do |format|
-      format.html { redirect_to @user, notice: t('friendships.destroy.notice') }
+      format.html { redirect_to @user, notice: t('.notice') }
       format.turbo_stream
     end
   end
