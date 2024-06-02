@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   get 'tou_modal', to: 'static_pages#tou_modal'
 
   resources :users, only: %i[index new create show] do
-    resource :friendships, only: %i[create destroy]
+    resources :followings, only: :index, module: :users
+  resources :followers, only: :index, module: :users
+  resource :friendships, only: %i[create destroy]
   end
   get 'guest_login', to: 'users#guest_login', as: 'guest_login'
   # モーダル用の新規登録ルーティング
