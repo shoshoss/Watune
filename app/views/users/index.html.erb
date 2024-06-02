@@ -3,7 +3,7 @@
     <h2 class="text-xl text-center font-bold pt-2 mb-4">新規ユーザー</h2>
     <% if @recent_users.present? %>
       <%= turbo_frame_tag "next-page" do %>
-        <div class="space-y-4">
+        <div>
           <%= render partial: 'users/user', collection: @recent_users, as: :user %>
         </div>
         <% if @pagy.next %>

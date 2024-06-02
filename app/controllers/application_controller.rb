@@ -27,6 +27,6 @@ class ApplicationController < ActionController::Base
 
   # 新規登録ユーザーを設定
   def set_recent_users
-    @pagy, @recent_users = pagy_countless(User.recently_registered, items: 5)
+    @recent_users = User.recently_registered
   end
 end

@@ -31,7 +31,7 @@ class User < ApplicationRecord
   validates :display_name, length: { maximum: 50 }
   
   # ゲストユーザーを除外して新規登録者を取得
-  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(15) }
+  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(5) }
   
   # 予約されたusername_slugを設定
   RESERVED_USERNAMES = %w[
