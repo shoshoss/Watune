@@ -1,10 +1,13 @@
+<h2 class="text-xl text-center font-bold pt-2 mb-4">新規ユーザー</h2>
 <% if @recent_users.present? %>
-    <%= turbo_frame_tag "next-page" do %>
+  <%= turbo_frame_tag "next-page" do %>
+    <div class="space-y-4">
       <%= render partial: 'users/user', collection: @recent_users, as: :user %>
-      <% if @pagy.next %>
-        <%= render 'shared/next_page' %>
-      <% end %>
+    </div>
+    <% if @pagy.next %>
+      <%= render 'shared/next_page' %>
     <% end %>
-  <% else %>
-    <div class="mb-3">全ての新規ユーザーを表示しました。</div>
+  <% end %>
+<% else %>
+  <div class="mb-3">全ての新規ユーザーを表示しました。</div>
 <% end %>

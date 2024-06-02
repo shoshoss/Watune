@@ -3,10 +3,6 @@ class UsersController < ApplicationController
 
   def index
     @pagy, @recent_users = pagy_countless(User.recently_registered, items: 15)
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def new_modal
