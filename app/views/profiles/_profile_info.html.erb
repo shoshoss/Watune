@@ -1,56 +1,62 @@
 <%= turbo_frame_tag "profile_edit_modal" %>
-    <div id="flash_messages_show"></div>
-    <div class="mb-2 flex mx-auto items-stretch">
-      <!-- 左側のダミー要素 -->
-      <div class="<%= 'invisible' %>">
+<div id="flash_messages_show"></div>
+<div class="mb-2 flex mx-auto items-stretch">
+  <!-- 左側のダミー要素 -->
+  <div class="<%= 'invisible' %>">
+    <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
+  </div>
+
+  <!-- アバター画像 -->
+  <div class="flex justify-center flex-grow items-center">
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar, class: "rounded-full object-cover h-28 w-28" %>
+    <% else %>
+      <%= image_tag asset_path('wave_sm_c.svg'), class: "rounded-full object-cover h-28 w-28" %>
+    <% end %>
+  </div>
+
+  <!-- 編集ボタン -->
+  <div class="flex flex-grow-0 justify-end items-end">
+    <% if current_user == @user %>
+      <%= link_to "編集する", edit_profile_path, class: 'text-lg mr-2 sm:mr-5 btn btn-outline btn-secondary',
+          data: { turbo_frame: "profile_edit_modal" } %>
+    <% else %>
+      <div class="invisible">
         <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
       </div>
-
-      <!-- アバター画像 -->
-      <div class="flex justify-center flex-grow items-center">
-        <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar, class: "rounded-full object-cover h-28 w-28" %>
+    <% end %>
+  </div>
+</div>
+<!-- ユーザー名-->
+<div class="mb-2 flex flex-col justify-center items-center">
+  <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
+  <p class="text-gray-500">@<%= @user.username_slug %></p>
+</div>
+<!-- 自己紹介 -->
+<div class="flex flex-col items-center mx-auto px-2 sm:px-5">
+  <div class="p-2 text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
+    <%# 連続する改行に特別なクラスを適用する %>
+    <% if @user.self_introduction.present? %>
+      <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
+        <% if line.empty? %>
+          <div class="text-xxs sm:text-xs">
+            <br>
+          </div>
         <% else %>
-          <%= image_tag asset_path('wave_sm_c.svg'), class: "rounded-full object-cover h-28 w-28" %>
-        <% end %>
-      </div>
-
-      <!-- 編集ボタン -->
-      <div class="flex flex-grow-0 justify-end items-end">
-        <% if current_user == @user %>
-          <%= link_to "編集する", edit_profile_path, class: 'text-lg mr-2 sm:mr-5 btn btn-outline btn-secondary',
-              data: { turbo_frame: "profile_edit_modal" } %>
-        <% else %>
-          <div class="invisible">
-            <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
+          <div class="text-base sm:text-lg">
+            <%= line %><br>
           </div>
         <% end %>
-      </div>
-    </div>
-    <!-- ユーザー名-->
-    <div class="mb-2 flex flex-col justify-center items-center">
-      <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
-      <p class="text-gray-500">@<%= @user.username_slug %></p>
-    </div>
-    <!-- 自己紹介 -->
-    <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
-      <div class="p-2 text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
-        <%# 連続する改行に特別なクラスを適用する %>
-        <% if @user.self_introduction.present? %>
-          <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
-            <% if line.empty? %>
-              <div class="text-xxs sm:text-xs">
-                <br>
-              </div>
-            <% else %>
-              <div class="text-base sm:text-lg">
-                <%= line %><br>
-              </div>
-            <% end %>
-          <% end %>
-        <% else %>
-          <p>自己紹介文はありません。</p>
-        <% end %>
-      </div>
-    </div>
-    
+      <% end %>
+    <% else %>
+      <p>自己紹介文はありません。</p>
+    <% end %>
+  </div>
+</div>
+<!-- フォロー中とフォロワーのリンク -->
+<% if current_user == @user %>
+  <div class="mt-4 flex justify-center space-x-4">
+    <%= link_to "フォロー中 #{@user.followings.count}", user_followings_followers_path(@user, category: 'followings'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
+    <%= link_to "フォロワー #{@user.followers.count}", user_followings_followers_path(@user, category: 'followers'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
+  </div>
+<% end %>

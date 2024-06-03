@@ -17,7 +17,7 @@
         <%= render partial: 'posts/post', locals: { post: post } %>
       <% end %>
       <% if @pagy.next %>
-        <%= render 'posts/next_page' %>
+        <%= render 'shared/next_page' %>
       <% end %>
     <% end %>
   <% else %>

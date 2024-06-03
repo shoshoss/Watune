@@ -1,5 +1,11 @@
-<div class="p-5 hidden lg:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
-  <div class=" hidden widgets--input flex flex-col items-center bg-gray-300 p-3 rounded-full">
-    <h2 class="text-xl font-bold mb-4"></h2>
+<div class="w-[350px] hidden lg:block overflow-y-auto">
+  <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg my-4 shadow-lg">
+    <h2 class="text-xl text-center font-bold pt-2 mb-4">未フォローのユーザー</h2>
+    <div id="widget-users-list">
+      <%= render partial: 'users/user', collection: users, as: :user %>
+    </div>
+    <div id="widget-load-more" class="mt-4 text-center">
+      <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "btn-load-more" %>
+    </div>
   </div>
 </div>

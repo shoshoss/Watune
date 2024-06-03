@@ -1,0 +1,7 @@
+<% if users.present? %>
+  <% users.each do |user| %>
+    <%= render partial: 'users/user', locals: { user: user } %>
+  <% end %>
+<% else %>
+  <p>ユーザーが見つかりませんでした。</p>
+<% end %>

@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "user-#{@user.id}-follow" do %>
+  <%= render partial: 'users/follow_button', locals: { user: @user } %>
+<% end %>

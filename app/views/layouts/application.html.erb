@@ -32,7 +32,6 @@
 
   <!-- スタイルシートのリンク -->
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <%= stylesheet_link_tag 'custom', media: 'all', 'data-turbo-track': 'reload' %>
 
   <!-- Turboフレームタグ -->
   <%= turbo_frame_tag 'signup_modal' %>
@@ -56,6 +55,20 @@
   <!-- Web App Manifest -->
   <link rel="manifest" href="/manifest.webmanifest">
 
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch(error => {
+            console.error('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
 </head>
 
 <body class="font-sans bg-white flex flex-col min-h-screen">
@@ -90,7 +103,7 @@
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-      <%= render 'shared/widget' %>
+      <%= render 'shared/widget', users: @recent_users %>
     <% else %>
       <div id="no-widget"></div>
     <% end %>
@@ -98,19 +111,5 @@
 
   <!-- フッター -->
   <%= render 'shared/footer' %>
-
-  <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => {
-              console.log('Service Worker registered with scope:', registration.scope);
-            })
-            .catch(error => {
-              console.error('Service Worker registration failed:', error);
-            });
-        });
-      }
-    </script>
 </body>
 </html>

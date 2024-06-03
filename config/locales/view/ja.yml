@@ -55,6 +55,15 @@ ja:
       title: "ユーザー登録"
       to_login: "ログイン"
       google_signup: "Googleで新規登録"
+    follow_form:
+      create: "フォローする"
+      destroy: "フォロー解除する"
+
+  friendships:
+    create:
+      notice: "フォローしました。"
+    destroy:
+      notice: "フォロー解除しました。"
 
   header:
     about: "本アプリについて"

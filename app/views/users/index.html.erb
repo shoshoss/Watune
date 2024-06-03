@@ -1,0 +1,17 @@
+<div class="flex justify-center min-h-screen">
+  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
+    <h2 class="text-xl text-center font-bold pt-2 mb-4">未フォローのユーザー</h2>
+    <% if @recent_users.present? %>
+      <%= turbo_frame_tag "next-page" do %>
+        <div>
+          <%= render partial: 'users/user', collection: @recent_users, as: :user %>
+        </div>
+        <% if @pagy.next %>
+          <%= render 'shared/next_page' %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="mb-3">フォローしていない全てのユーザーを表示しました。</div>
+    <% end %>
+  </div>
+</div>
