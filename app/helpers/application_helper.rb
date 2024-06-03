@@ -48,25 +48,23 @@ module ApplicationHelper
   # タブがアクティブかどうかを決定するクラスを返す
   def active_tab_class(*categories, initial_category:)
     active_category = params[:category] || initial_category
-  
-    if categories.include?(active_category)
-      case active_category
-      when 'all_my_posts', 'only_me', 'my_posts_open'
-        'c-tab-active c-tab-active-all-my-posts'
-      when 'all_likes_chance', 'my_likes_chance', 'public_likes_chance'
-        'c-tab-active c-tab-active-all-likes-chance'
-      when 'bookmarked'
-        'c-tab-active c-tab-active-bookmarked'
-      when 'liked'
-        'c-tab-active c-tab-active-liked'
-      when 'followings', 'followers'
-        'c-tab-active'
-      else
-        'c-tab-active'
-      end
-    else
-      ''
-    end
+
+    return '' unless categories.include?(active_category)
+
+    category_classes = {
+      'all_my_posts' => 'c-tab-active c-tab-active-all-my-posts',
+      'only_me' => 'c-tab-active c-tab-active-all-my-posts',
+      'my_posts_open' => 'c-tab-active c-tab-active-all-my-posts',
+      'all_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',
+      'my_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',
+      'public_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',
+      'bookmarked' => 'c-tab-active c-tab-active-bookmarked',
+      'liked' => 'c-tab-active c-tab-active-liked',
+      'followings' => 'c-tab-active',
+      'followers' => 'c-tab-active'
+    }
+
+    category_classes[active_category] || 'c-tab-active'
   end
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用

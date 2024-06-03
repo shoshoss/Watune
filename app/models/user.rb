@@ -64,9 +64,7 @@ class User < ApplicationRecord
   # スコープ ログインしているユーザーがフォローしているユーザーを除外して、新規ユーザーを表示
   def self.recently_registered(current_user = nil)
     users = where(guest: false)
-    if current_user
-      users = users.where.not(id: current_user.followings.pluck(:id) + [current_user.id])
-    end
+    users = users.where.not(id: current_user.followings.pluck(:id) + [current_user.id]) if current_user
     users.order(created_at: :desc).limit(5)
   end
 
