@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   skip_before_action :require_login, only: %i[new_modal create_modal new create guest_login]
 
   def index
-    @pagy, @recent_users = pagy_countless(User.recently_registered, items: 15)
+    @pagy, @recent_users = pagy_countless(User.recently_registered(current_user), items: 15)
   end
 
   def new_modal

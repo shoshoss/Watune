@@ -16,7 +16,7 @@
     <!-- ユーザー数と投稿数の表示（デスクトップ） -->
     <div class="flex justify-center items-center text-lg space-x-2">
       <span class="hidden md-plus:flex text-lg">
-        応援チャンス数: <strong><%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
+        応援チャンス数<strong> <%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
       </span>
       <% if current_user.guest %>
         <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
@@ -54,7 +54,7 @@
           </li>
           <li class="block py-2 text-lg">
             <span class="hidden md-plus:flex text-lg">
-              応援チャンス数: <strong><%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
+              応援チャンス数<strong> <%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
             </span>
             <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}" %>
           </li>
@@ -69,19 +69,19 @@
     </div>
 
     <!-- ナビゲーションリンク（スマホ） -->
-    <div class="sm:hidden flex flex-1 justify-end items-center space-x-2">
+    <div class="sm:hidden flex flex-1 justify-end items-center">
       <% if current_user.guest %>
         <%= link_to '引き継ぎ登録',
                     new_signup_modal_path,
                     id: "guest-update-mobile",
-                    class: 'btn btn-outline btn-accent btn-sm rounded-full transition-colors duration-300',
+                    class: 'btn btn-outline btn-accent btn-sm rounded-full transition-colors duration-300 mr-2',
                     data: { turbo_frame: "signup_modal" } %>
       <% end %>
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "font-bold btn btn-info btn-sm rounded-full transition-colors duration-300 py-2",
+                  class: "font-bold btn btn-info btn-sm rounded-full transition-colors duration-300",
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
@@ -97,7 +97,7 @@
             <%= link_to 'プロフィール', profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" %>
           </li>
           <li class="block py-2 text-lg">
-            <span class="text-lg">応援チャンス数: <strong><%= @likes_chance_count %></strong></span>
+            <span class="text-lg">応援チャンス数<strong> <%= @likes_chance_count %></strong></span>
             <%= link_to '応援をする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}" %>
           </li>
           <li class="py-2">

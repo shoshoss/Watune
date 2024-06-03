@@ -61,8 +61,14 @@ class User < ApplicationRecord
   before_validation :generate_username_slug, on: :create, unless: :username_slug?
   after_create :set_default_display_name
 
-  # スコープ
-  scope :recently_registered, -> { where(guest: false).order(created_at: :desc).limit(5) }
+  # スコープ ログインしているユーザーがフォローしているユーザーを除外して、新規ユーザーを表示
+  def self.recently_registered(current_user = nil)
+    users = where(guest: false)
+    if current_user
+      users = users.where.not(id: current_user.followings.pluck(:id) + [current_user.id])
+    end
+    users.order(created_at: :desc).limit(5)
+  end
 
   # enumでユーザーの役割を定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
