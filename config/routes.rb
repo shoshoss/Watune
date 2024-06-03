@@ -10,9 +10,13 @@ Rails.application.routes.draw do
   get 'privacy_modal', to: 'static_pages#privacy_modal'
   get 'tou_modal', to: 'static_pages#tou_modal'
 
-  resources :users, only: %i[index new create show] do
-    get 'followings_followers', to: 'users/followings_followers#index', as: 'followings_followers'
-    resource :friendships, only: %i[create destroy]
+  resources :users, only: %i[index new create destroy] do
+    resource :friendships, only: %i[create destroy] do
+      member do
+        get :followings
+        get :followers
+      end
+    end
   end
   get 'guest_login', to: 'users#guest_login', as: 'guest_login'
   # モーダル用の新規登録ルーティング
