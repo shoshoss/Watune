@@ -48,7 +48,7 @@ module ApplicationHelper
   # タブがアクティブかどうかを決定するクラスを返す
   def active_tab_class(*categories, initial_category:)
     active_category = params[:category] || initial_category
-
+  
     if categories.include?(active_category)
       case active_category
       when 'all_my_posts', 'only_me', 'my_posts_open'
@@ -59,6 +59,8 @@ module ApplicationHelper
         'c-tab-active c-tab-active-bookmarked'
       when 'liked'
         'c-tab-active c-tab-active-liked'
+      when 'followings', 'followers'
+        'c-tab-active'
       else
         'c-tab-active'
       end
