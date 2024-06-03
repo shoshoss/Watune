@@ -51,7 +51,14 @@
               <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
                 <div class="form-control pt-2">
                   <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
-                  <%= f.collection_select :recipient_ids, current_user.followings, :id, :display_name, {}, { multiple: true, class: "block w-full mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500" } %>
+                  <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+                    <% current_user.followings.each do |following| %>
+                      <label class="inline-flex items-center m-2">
+                        <input type="checkbox" name="post[recipient_ids][]" value="<%= following.id %>" class="form-checkbox h-5 w-5 text-blue-600">
+                        <span class="ml-2 text-gray-700"><%= following.display_name %></span>
+                      </label>
+                    <% end %>
+                  </div>
                 </div>
               <% end %>
             <% end %>

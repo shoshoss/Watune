@@ -1,10 +1,5 @@
 class PostUsersController < ApplicationController
-  before_action :set_post, only: %i[create destroy show]
-
-  # 受信者の一覧表示
-  def show
-    @post_users = @post.post_users.includes(:user)
-  end
+  before_action :set_post, only: %i[create destroy]
 
   # 受信者の追加
   def create
@@ -14,7 +9,7 @@ class PostUsersController < ApplicationController
     else
       flash[:alert] = "受信者の追加に失敗しました。"
     end
-    redirect_to post_user_path(@post)
+    redirect_to user_post_path(@post.user.username_slug, @post)
   end
 
   # 受信者の削除
@@ -22,7 +17,7 @@ class PostUsersController < ApplicationController
     @post_user = @post.post_users.find(params[:id])
     @post_user.destroy
     flash[:notice] = "受信者が削除されました。"
-    redirect_to post_user_path(@post)
+    redirect_to user_post_path(@post.user.username_slug, @post)
   end
 
   private

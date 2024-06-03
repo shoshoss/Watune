@@ -25,22 +25,23 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params)
     if @post.save
+      create_post_users(@post) if params[:post][:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] =
-        t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
       render :new, status: :unprocessable_entity
     end
   end
 
   def update
     if @post.update(post_params)
+      @post.post_users.destroy_all # 既存の受信者を削除
+      create_post_users(@post) if params[:post][:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] =
-        t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
+      flash.now[:danger] = t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
       render :edit, status: :unprocessable_entity
     end
   end
@@ -75,5 +76,11 @@ class PostsController < ApplicationController
 
   def post_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
+  end
+
+  def create_post_users(post)
+    params[:post][:recipient_ids].each do |recipient_id|
+      post.post_users.create(user_id: recipient_id, role: 'direct_recipient')
+    end
   end
 end

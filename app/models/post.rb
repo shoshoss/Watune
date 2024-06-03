@@ -10,13 +10,9 @@ class Post < ApplicationRecord
   has_many :bookmarked_users, through: :bookmarks, source: :user
 
   has_many :post_users, dependent: :destroy
-  has_many :direct_recipients, lambda {
-                                 where(post_users: { role: 'direct_recipient' })
-                               }, through: :post_users, source: :user
+  has_many :direct_recipients, -> { where(post_users: { role: 'direct_recipient' }) }, through: :post_users, source: :user
   has_many :reply_recipients, -> { where(post_users: { role: 'reply_recipient' }) }, through: :post_users, source: :user
-  has_many :community_recipients, lambda {
-                                    where(post_users: { role: 'community_recipient' })
-                                  }, through: :post_users, source: :user
+  has_many :community_recipients, -> { where(post_users: { role: 'community_recipient' }) }, through: :post_users, source: :user
 
   has_one_attached :audio
 
@@ -27,12 +23,12 @@ class Post < ApplicationRecord
   enum privacy: { only_me: 0, reply: 1, open: 2, only_yours: 10, only_friends: 20, selected_users: 30, community: 40 }
 
   # 公開設定の投稿を表示するスコープ
-  scope :visible_to, lambda { |user|
-                       where(privacy: %i[open only_yours only_friends selected_users community]).or(where(user:))
-                     }
+  scope :visible_to, ->(user) {
+    where(privacy: %i[open only_yours only_friends selected_users community]).or(where(user:))
+  }
 
   # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
-  scope :not_liked_by_user, lambda { |user|
+  scope :not_liked_by_user, ->(user) {
     where(user_id: user.id)
       .where.not(id: Like.select(:post_id).where(user_id: user.id))
       .order(created_at: :asc)
@@ -40,7 +36,7 @@ class Post < ApplicationRecord
 
   # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
   # 応援の数が0から9の範囲に収まるものを取得するスコープ
-  scope :with_likes_count_all, lambda { |user|
+  scope :with_likes_count_all, ->(user) {
     user_posts = where(user_id: user.id)
                  .left_joins(:likes)
                  .group('posts.id')
@@ -61,7 +57,7 @@ class Post < ApplicationRecord
   }
 
   # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
-  scope :public_likes_chance, lambda { |user|
+  scope :public_likes_chance, ->(user) {
     where.not(user_id: user.id)
          .where(privacy: 'open')
          .left_joins(:likes)
