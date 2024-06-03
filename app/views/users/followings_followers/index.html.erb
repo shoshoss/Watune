@@ -3,19 +3,39 @@
     <h1 class="text-center font-bold text-xl mt-2"><%= @user.display_name %></h1>
     <p class="text-center text-sm">@<%= @user.username_slug %></p>
     <div class="c-tabs mt-4 mb-2">
-      <%= link_to user_followings_followers_path(@user, category: 'followings'), data: { turbo_frame: "followings_followers" }, class: "c-tab #{active_tab_class('followings', initial_category: 'followings')}" do %>
+      <%= link_to user_followings_followers_path(@user, category: 'followings'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('followings', initial_category: 'followings')} hover:bg-sky-100" do %>
         フォロー中
       <% end %>
-      <%= link_to user_followings_followers_path(@user, category: 'followers'), data: { turbo_frame: "followings_followers" }, class: "c-tab #{active_tab_class('followers', initial_category: 'followings')}" do %>
+      <%= link_to user_followings_followers_path(@user, category: 'followers'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('followers', initial_category: 'followings')} hover:bg-sky-100" do %>
         フォロワー
       <% end %>
     </div>
 
-    <%= turbo_frame_tag "followings_followers" do %>
-      <% if params[:category] == 'followers' %>
-        <%= render 'users/users', users: @followers %>
+    <% if params[:category] == 'followers' %>
+      <% if @followers.present? %>
+        <%= turbo_frame_tag "next-page" do %>
+          <% @followers.each do |follower| %>
+            <%= render partial: 'users/user', locals: { user: follower } %>
+          <% end %>
+          <% if @pagy.next %>
+            <%= render 'shared/next_page' %>
+          <% end %>
+        <% end %>
       <% else %>
-        <%= render 'users/users', users: @followings %>
+        <div class="mb-3">フォロワーがいません</div>
+      <% end %>
+    <% else %>
+      <% if @followings.present? %>
+        <%= turbo_frame_tag "next-page" do %>
+          <% @followings.each do |following| %>
+            <%= render partial: 'users/user', locals: { user: following } %>
+          <% end %>
+          <% if @pagy.next %>
+            <%= render 'shared/next_page' %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="mb-3">フォロー中のユーザーがいません</div>
       <% end %>
     <% end %>
   </div>
