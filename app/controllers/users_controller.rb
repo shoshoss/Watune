@@ -73,10 +73,10 @@ class UsersController < ApplicationController
     @user = current_user
     if @user.destroy
       logout
-      flash[:success] = "アカウントを削除しました。"
+      flash[:success] = 'アカウントを削除しました。'
       redirect_to root_path
     else
-      flash[:error] = "アカウントの削除に失敗しました。"
+      flash[:error] = 'アカウントの削除に失敗しました。'
       redirect_to profile_path
     end
   end
