@@ -1,29 +1,21 @@
 class PostsController < ApplicationController
   include ActionView::RecordIdentifier
 
-  before_action :set_post, only: %i[show]
+  before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
 
   def index
     @show_reply_line = false
-    @pagy, @posts = pagy_countless(Post.open.includes(:user).order(created_at: :desc), items: 10)
+    @pagy, @posts = pagy_countless(Post.open.includes(:user, :replies).order(created_at: :desc), items: 10)
   end
 
   def show
     @show_reply_line = true
-    begin
-      @post = Post.includes(:user).find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      redirect_to root_path, alert: 'この投稿は削除されました。'
-      return
-    end
-
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
   end
 
   def new
-    # 新規投稿フォームの設定
     @post = Post.new
     params[:privacy] ||= @post.privacy
   end
@@ -31,7 +23,6 @@ class PostsController < ApplicationController
   def edit; end
 
   def create
-    # 新規投稿の作成
     @post = current_user.posts.build(post_params)
     if @post.save
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
@@ -71,25 +62,18 @@ class PostsController < ApplicationController
   private
 
   def set_post
-    @post = Post.find_by(id: params[:id])
-    return unless @post.nil?
-
+    @post = Post.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: 'この投稿は削除されました。'
   end
 
   def set_current_user_post
     @post = current_user.posts.find(params[:id])
-  end
-
-  def authorize_show
-    # 投稿の表示権限を確認
-    return if @post.user == current_user || @post.privacy == 'open'
-
-    redirect_to root_path, alert: 'この投稿は表示できません。'
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: 'この投稿は削除されました。'
   end
 
   def post_params
-    # 投稿パラメータの設定
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
   end
 end

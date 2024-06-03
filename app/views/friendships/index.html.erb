@@ -2,11 +2,11 @@
   <div class="max-w-xl w-full bg-white border-2 border-gray-200">
     <h1 class="text-center font-bold text-xl mt-2"><%= @user.display_name %></h1>
     <p class="text-center text-sm">@<%= @user.username_slug %></p>
-    <div class="c-tabs mt-4 mb-2">
-      <%= link_to followings_user_friendships_path(@user, category: 'followings'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('followings', initial_category: 'followings')} hover:bg-sky-100" do %>
+    <div class="c-tabs flex mb-2">
+      <%= link_to followings_user_friendships_path(@user, category: 'followings'), data: { turbo_frame: "_top" }, class: "c-tab flex-1 #{active_tab_class('followings', initial_category: 'followings')} hover:bg-sky-100 text-center py-2" do %>
         フォロー中
       <% end %>
-      <%= link_to followers_user_friendships_path(@user, category: 'followers'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('followers', initial_category: 'followings')} hover:bg-sky-100" do %>
+      <%= link_to followers_user_friendships_path(@user, category: 'followers'), data: { turbo_frame: "_top" }, class: "c-tab flex-1 #{active_tab_class('followers', initial_category: 'followings')} hover:bg-sky-100 text-center py-2" do %>
         フォロワー
       <% end %>
     </div>
@@ -21,7 +21,7 @@
         <% end %>
       <% end %>
     <% else %>
-      <div class="mb-3">
+      <div class="mb-3 text-center">
         <% if @category == 'followers' %>
           フォロワーはまだいません。
         <% else %>

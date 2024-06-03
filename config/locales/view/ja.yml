@@ -27,7 +27,7 @@ ja:
       not_created: "お手数をおかけします。<br>%{item}できませんでした。"
       updated: "ありがとうございます！<br>%{item}を更新しました！"
       not_updated: "お手数をおかけします。<br>%{item}を更新できませんでした。"
-      deleted: "<br>%{item}を削除しました！"
+      deleted: "%{item}を削除しました！"
       bookmarks_created: "ありがとうございます！<br>ブックマークしました！"
       bookmarks_destroy: "ありがとうございました！<br>ブックマークを外しました！"
       not_authorized: "権限がありません。"
