@@ -50,6 +50,9 @@ Rails.application.routes.draw do
 
   post '/:username_slug/status/:id/replies', to: 'replies#create', as: 'user_post_replies'
 
+  # PostUserのルーティング（投稿受信者管理）
+  resources :post_users, only: %i[show create destroy]
+
   # プロフィールのルーティング
   resource :profile, only: %i[edit update]
   # プロフィールモーダルのルーティング

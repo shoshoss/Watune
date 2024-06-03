@@ -9,7 +9,6 @@ class ProfilesController < ApplicationController
     return unless @user.nil?
 
     redirect_to root_path, alert: 'ユーザーが見つかりません。'
-    nil
   end
 
   # プロフィール編集アクション
@@ -88,7 +87,11 @@ class ProfilesController < ApplicationController
       'my_likes_chance' => Post.not_liked_by_user(@user),
       'public_likes_chance' => Post.public_likes_chance(@user),
       'bookmarked' => @user.bookmarked_posts.order('bookmarks.created_at DESC'),
-      'liked' => @user.liked_posts.order('likes.created_at DESC')
+      'liked' => @user.liked_posts.order('likes.created_at DESC'),
+      'posts_to_you' => Post.joins(:post_users).where(post_users: { user: @user, role: 'direct_recipient' }),
+      'posts_to_friends' => @user.posts.where(privacy: 'selected_users').order(created_at: :desc),
+      'replies_to_you' => Post.joins(:post_users).where(post_users: { user: @user, role: 'reply_recipient' }),
+      'community_posts' => Post.joins(:post_users).where(post_users: { user: @user, role: 'community_recipient' })
     }
 
     scopes[category] || Post.none
