@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'privacy_modal', to: 'static_pages#privacy_modal'
   get 'tou_modal', to: 'static_pages#tou_modal'
 
-  resources :users, only: %i[index new create show] do
+  resources :users, only: %i[index new create destroy] do
     get 'followings_followers', to: 'users/followings_followers#index', as: 'followings_followers'
     resource :friendships, only: %i[create destroy]
   end

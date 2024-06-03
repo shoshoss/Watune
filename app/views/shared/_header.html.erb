@@ -64,6 +64,9 @@
           <li class="block py-2">
             <%= link_to t('header.logout'), logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
           </li>
+          <li class="py-2">
+            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか？' }, class: 'btn btn-danger' %>
+          </li>
         </ul>
       </div>
     </div>
@@ -105,6 +108,9 @@
           </li>
           <li class="py-2">
             <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4" %>
+          </li>
+          <li class="py-2">
+            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか？' }, class: 'btn btn-danger' %>
           </li>
         </ul>
       </div>

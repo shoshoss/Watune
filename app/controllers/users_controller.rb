@@ -69,6 +69,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @user = current_user
+    if @user.destroy
+      logout
+      flash[:success] = "アカウントを削除しました。"
+      redirect_to root_path
+    else
+      flash[:error] = "アカウントの削除に失敗しました。"
+      redirect_to profile_path
+    end
+  end
+
   private
 
   def user_params
