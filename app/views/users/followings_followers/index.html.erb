@@ -11,32 +11,23 @@
       <% end %>
     </div>
 
-    <% if params[:category] == 'followers' %>
-      <% if @followers.present? %>
-        <%= turbo_frame_tag "next-page" do %>
-          <% @followers.each do |follower| %>
-            <%= render partial: 'users/user', locals: { user: follower } %>
-          <% end %>
-          <% if @pagy.next %>
-            <%= render 'shared/next_page' %>
-          <% end %>
+    <% if @users.present? %>
+      <%= turbo_frame_tag "next-page" do %>
+        <% @users.each do |user| %>
+          <%= render partial: 'users/user', locals: { user: user } %>
         <% end %>
-      <% else %>
-        <div class="mb-3">フォロワーがいません</div>
+        <% if @pagy.next %>
+          <%= render 'shared/next_page' %>
+        <% end %>
       <% end %>
     <% else %>
-      <% if @followings.present? %>
-        <%= turbo_frame_tag "next-page" do %>
-          <% @followings.each do |following| %>
-            <%= render partial: 'users/user', locals: { user: following } %>
-          <% end %>
-          <% if @pagy.next %>
-            <%= render 'shared/next_page' %>
-          <% end %>
+      <div class="mb-3">
+        <% if @category == 'followers' %>
+          フォロワーはまだいません。
+        <% else %>
+          フォロー中のユーザーがまだいません。
         <% end %>
-      <% else %>
-        <div class="mb-3">フォロー中のユーザーがいません</div>
-      <% end %>
+      </div>
     <% end %>
   </div>
 </div>
