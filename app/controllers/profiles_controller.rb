@@ -90,7 +90,9 @@ class ProfilesController < ApplicationController
       'liked' => @user.liked_posts.order('likes.created_at DESC'),
       'posts_to_you' => Post.posts_to_you(@user),
       'my_posts_following' => Post.my_posts_following(@user),
-      'community_posts' => Post.joins(:post_users).where(post_users: { user: @user, role: 'community_recipient' }).order(created_at: :desc)
+      'community_posts' => Post.joins(:post_users)
+                               .where(post_users: { user: @user, role: 'community_recipient' })
+                               .order(created_at: :desc)
     }
 
     scopes[category] || Post.none

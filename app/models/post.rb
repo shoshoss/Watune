@@ -10,9 +10,13 @@ class Post < ApplicationRecord
   has_many :bookmarked_users, through: :bookmarks, source: :user
 
   has_many :post_users, dependent: :destroy
-  has_many :direct_recipients, -> { where(post_users: { role: 'direct_recipient' }) }, through: :post_users, source: :user
+  has_many :direct_recipients, lambda {
+                                 where(post_users: { role: 'direct_recipient' })
+                               }, through: :post_users, source: :user
   has_many :reply_recipients, -> { where(post_users: { role: 'reply_recipient' }) }, through: :post_users, source: :user
-  has_many :community_recipients, -> { where(post_users: { role: 'community_recipient' }) }, through: :post_users, source: :user
+  has_many :community_recipients, lambda {
+                                    where(post_users: { role: 'community_recipient' })
+                                  }, through: :post_users, source: :user
 
   has_one_attached :audio
 
@@ -25,12 +29,14 @@ class Post < ApplicationRecord
   # 公開設定の投稿を表示するスコープ
   def visible_to?(user)
     return true if self.user == user # 投稿者本人
-    return true if self.privacy == 'open' # 全体公開
-    return post_users.exists?(user: user, approved: true) # 承認された受信者
+    return true if privacy == 'open' # 全体公開
+    return true if privacy == 'reply'
+
+    post_users.exists?(user:, approved: true) # 承認された受信者
   end
 
   # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
-  scope :not_liked_by_user, ->(user) {
+  scope :not_liked_by_user, lambda { |user|
     where(user_id: user.id)
       .where.not(id: Like.select(:post_id).where(user_id: user.id))
       .order(created_at: :asc)
@@ -38,7 +44,7 @@ class Post < ApplicationRecord
 
   # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
   # 応援の数が0から9の範囲に収まるものを取得するスコープ
-  scope :with_likes_count_all, ->(user) {
+  scope :with_likes_count_all, lambda { |user|
     user_posts = where(user_id: user.id)
                  .left_joins(:likes)
                  .group('posts.id')
@@ -59,7 +65,7 @@ class Post < ApplicationRecord
   }
 
   # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
-  scope :public_likes_chance, ->(user) {
+  scope :public_likes_chance, lambda { |user|
     where.not(user_id: user.id)
          .where(privacy: 'open')
          .left_joins(:likes)
@@ -77,10 +83,27 @@ class Post < ApplicationRecord
   scope :my_posts_open, -> { where(privacy: 'open').order(created_at: :desc) }
 
   # 仲間への投稿を取得するスコープ
-  scope :my_posts_following, ->(user) { joins(:post_users).where(user: user, post_users: { role: 'direct_recipient' }).distinct.order(created_at: :desc) }
+  scope :my_posts_following, lambda { |user|
+    joins(:post_users).where(
+      user:,
+      post_users: { role: 'direct_recipient' }
+    ).or(
+      joins(:post_users).where(
+        post_users: { user_id: user.following_ids, role: 'reply_recipient' }
+      )
+    ).distinct.order(created_at: :desc)
+  }
 
   # 仲間からの投稿を取得するスコープ
-  scope :posts_to_you, ->(user) { joins(:post_users).where(post_users: { user_id: user, role: 'direct_recipient' }).distinct.order(created_at: :desc) }
+  scope :posts_to_you, lambda { |user|
+    joins(:post_users).where(
+      post_users: { user_id: user, role: 'direct_recipient' }
+    ).or(
+      joins(:post_users).where(
+        post_users: { user_id: user, role: 'reply_recipient' }
+      )
+    ).distinct.order(created_at: :desc)
+  }
 
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
   def ancestors

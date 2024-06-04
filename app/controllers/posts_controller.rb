@@ -34,7 +34,8 @@ class PostsController < ApplicationController
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+      flash.now[:danger] =
+        t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
       render :new, status: :unprocessable_entity
     end
   end
@@ -44,7 +45,8 @@ class PostsController < ApplicationController
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] = t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
+      flash.now[:danger] =
+        t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
       render :edit, status: :unprocessable_entity
     end
   end

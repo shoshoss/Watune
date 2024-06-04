@@ -5,9 +5,9 @@ class PostUsersController < ApplicationController
   def create
     @post_user = @post.post_users.build(post_user_params)
     if @post_user.save
-      flash[:notice] = "受信者が追加されました。"
+      flash[:notice] = '受信者が追加されました。'
     else
-      flash[:alert] = "受信者の追加に失敗しました。"
+      flash[:alert] = '受信者の追加に失敗しました。'
     end
     redirect_to user_post_path(@post.user.username_slug, @post)
   end
@@ -16,7 +16,7 @@ class PostUsersController < ApplicationController
   def destroy
     @post_user = @post.post_users.find(params[:id])
     @post_user.destroy
-    flash[:notice] = "受信者が削除されました。"
+    flash[:notice] = '受信者が削除されました。'
     redirect_to user_post_path(@post.user.username_slug, @post)
   end
 

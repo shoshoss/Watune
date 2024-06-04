@@ -7,11 +7,8 @@ class User < ApplicationRecord
 
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
-
-  has_many :posts
   has_many :post_users, through: :posts
-  has_many :friendships, foreign_key: :follower_id
-  has_many :followings, through: :friendships, source: :followed
+  has_many :friendships, foreign_key: :follower_id, inverse_of: :follower
 
   def following_ordered_by_sent_posts
     following_ids = followings.pluck(:id)
@@ -159,10 +156,10 @@ class User < ApplicationRecord
   end
 
   # フォロー中のユーザーを送信回数で並び替えるスコープ
-  scope :following_ordered_by_sent_posts, ->(user_id) {
+  scope :following_ordered_by_sent_posts, lambda { |user_id|
     joins(:post_users)
       .where(post_users: { role: 'direct_recipient' })
-      .where(posts: { user_id: user_id })
+      .where(posts: { user_id: })
       .group('users.id')
       .order('COUNT(posts.id) DESC')
   }
