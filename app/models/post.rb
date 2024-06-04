@@ -75,10 +75,10 @@ class Post < ApplicationRecord
   scope :my_posts_open, -> { where(privacy: 'open').order(created_at: :desc) }
 
   # 仲間への投稿を取得するスコープ
-  scope :my_posts_following, ->(user) { joins(:post_users).where(post_users: { user_id: user.following_ids, role: 'direct_recipient' }).order(created_at: :desc) }
+  scope :my_posts_following, ->(user) { joins(:post_users).where(user: user, post_users: { role: 'direct_recipient' }).distinct.order(created_at: :desc) }
 
   # 仲間からの投稿を取得するスコープ
-  scope :posts_to_you, ->(user) { joins(:post_users).where(post_users: { user_id: user.following_ids, role: 'direct_recipient' }).order(created_at: :desc) }
+  scope :posts_to_you, ->(user) { joins(:post_users).where(post_users: { user_id: user, role: 'direct_recipient' }).distinct.order(created_at: :desc) }
 
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
   def ancestors

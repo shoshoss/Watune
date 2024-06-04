@@ -54,7 +54,7 @@
                   <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
                     <% current_user.followings.each do |following| %>
                       <label class="inline-flex items-center m-2">
-                        <input type="checkbox" name="post[recipient_ids][]" value="<%= following.id %>" class="form-checkbox h-5 w-5 text-blue-600">
+                        <%= check_box_tag 'post[recipient_ids][]', following.id, false, class: 'form-checkbox h-5 w-5 text-blue-600' %>
                         <span class="ml-2 text-gray-700"><%= following.display_name %></span>
                       </label>
                     <% end %>

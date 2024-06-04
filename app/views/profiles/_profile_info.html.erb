@@ -2,9 +2,15 @@
 <div id="flash_messages_show"></div>
 <div class="mb-2 flex mx-auto items-stretch">
   <!-- 左側のダミー要素 -->
-  <div class="<%= 'invisible' %>">
-    <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
-  </div>
+    <% if current_user == @user %>
+      <div class="<%= 'invisible' %>">
+        <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
+      </div>
+    <% else %>
+      <div class="<%= 'invisible' %> ml-2 sm:ml-5">
+        <%= button_to 'ダミー', "#", class: "w-[128px] btn-following btn-unfollow-hover" %>
+      </div>
+    <% end %>
 
   <!-- アバター画像 -->
   <div class="flex justify-center flex-grow items-center">
@@ -15,14 +21,14 @@
     <% end %>
   </div>
 
-  <!-- 編集ボタン -->
-  <div class="flex flex-grow-0 justify-end items-end">
+  <!-- 編集ボタン or フォローボタン -->
+  <div class="flex flex-grow-0 justify-end items-end mr-2 sm:mr-5">
     <% if current_user == @user %>
-      <%= link_to "編集する", edit_profile_path, class: 'text-lg mr-2 sm:mr-5 btn btn-outline btn-secondary',
+      <%= link_to "編集する", edit_profile_path, class: 'text-lg  btn btn-outline btn-secondary',
           data: { turbo_frame: "profile_edit_modal" } %>
     <% else %>
-      <div class="invisible">
-        <%= link_to "編集する", edit_profile_path, class: 'text-lg ml-2 sm:ml-5 btn btn-outline btn-secondary invisible' %>
+      <div id="user-<%= @user.id %>-follow">
+        <%= render partial: 'users/follow_button', locals: { user: @user } %>
       </div>
     <% end %>
   </div>
