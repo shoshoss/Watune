@@ -42,8 +42,8 @@
                 <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
                 <div class="flex space-x-4 pt-2">
                   <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
-                  <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
                   <%= link_to '仲間へ', new_post_path(privacy: 'selected_users'), class: "c-button #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
+                  <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
                 </div>
                 <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
               </div>
