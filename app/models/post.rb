@@ -78,7 +78,7 @@ class Post < ApplicationRecord
   scope :my_posts_following, ->(user) { joins(:post_users).where(post_users: { user_id: user.following_ids, role: 'direct_recipient' }).order(created_at: :desc) }
 
   # 仲間からの投稿を取得するスコープ
-  scope :all_from_following, ->(user) { joins(:post_users).where(post_users: { user_id: user.following_ids, role: 'direct_recipient' }).order(created_at: :desc) }
+  scope :posts_to_you, ->(user) { joins(:post_users).where(post_users: { user_id: user.following_ids, role: 'direct_recipient' }).order(created_at: :desc) }
 
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
   def ancestors

@@ -56,7 +56,7 @@ module ApplicationHelper
       'only_me' => 'c-tab-active c-tab-active-all-my-posts',
       'my_posts_following' => 'c-tab-active c-tab-active-all-my-posts',
       'my_posts_open' => 'c-tab-active c-tab-active-all-my-posts',
-      'all_from_following' => 'c-tab-active c-tab-active-all-from-following',
+      'posts_to_you' => 'c-tab-active c-tab-active-posts-to-you',
       'all_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',
       'my_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',
       'public_likes_chance' => 'c-tab-active c-tab-active-all-likes-chance',

@@ -36,7 +36,7 @@
   @apply text-blue-500;
 }
 
-.c-tab-active-all-from-following {
+.c-tab-active-posts-to-you {
   @apply text-orange-400;
 }
 
