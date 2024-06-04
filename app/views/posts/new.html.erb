@@ -43,9 +43,24 @@
                 <div class="flex space-x-4 pt-2">
                   <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
                   <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+                  <%= link_to '仲間へ', new_post_path(privacy: 'selected_users'), class: "c-button #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
                 </div>
                 <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
               </div>
+
+              <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
+                <div class="form-control pt-2">
+                  <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
+                  <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+                    <% current_user.following_ordered_by_sent_posts.each do |following| %>
+                      <label class="inline-flex items-center m-2">
+                        <%= check_box_tag 'post[recipient_ids][]', following.id, false, class: 'form-checkbox h-5 w-5 text-blue-600' %>
+                        <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
+                      </label>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
             <% end %>
           </div>
           <div class="form-control mt-4 lg:mt-6">

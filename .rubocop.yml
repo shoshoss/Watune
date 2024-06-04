@@ -14,7 +14,7 @@ AllCops:
     - "bin/*" # ビンスクリプトは除外
     - "node_modules/**/*" # フロントエンド依存関係は除外
     - "vendor/**/*" # サードパーティのソースコードは除外
-    - "config/initializers/sorcery.rb"
+    - "config/initializers/sorcery.rb" # 初期化設定は除外
 
 # 国際化の無効化
 Rails/I18nLocaleTexts:
@@ -32,12 +32,12 @@ Metrics/BlockLength:
     - "spec/**/*.rb" # RSpecのファイルは除外
 Metrics/MethodLength:
   Exclude:
-    - "db/migrate/*.rb"
-  Max: 25
+    - "db/migrate/*.rb" # マイグレーションファイルは除外
+  Max: 25 # メソッドの最大行数を25に設定
 Metrics/AbcSize:
   Exclude:
-    - "db/migrate/*.rb"
-  Max: 36
+    - "db/migrate/*.rb" # マイグレーションファイルは除外
+  Max: 36 # ABCサイズの最大値を36に設定
 
 # ドキュメンテーションコメントの強制を無効化
 Style/Documentation:
@@ -45,12 +45,13 @@ Style/Documentation:
 
 # 文字列リテラルの引用符のスタイル（デフォルトはシングルクォートを推奨）
 Style/StringLiterals:
-  EnforcedStyle: single_quotes
+  EnforcedStyle: single_quotes # シングルクォートを強制
 
-# その他のカスタム設定...
+# その他のカスタム設定
 Layout/LineLength:
   Max: 120 # 行の最大長を120に設定
 
+# RSpecの設定
 RSpec/ContextWording:
   Enabled: true
   Prefixes:
@@ -70,7 +71,7 @@ RSpec/NestedGroups:
 
 RSpec/ExampleLength:
   Enabled: true
-  Max: 8 # 例の最大行数を8に増加
+  Max: 8 # 例の最大行数を8に設定
 
 Capybara/ClickLinkOrButtonStyle:
   Enabled: false # Capybaraのクリックスタイルの強制を無効化
@@ -81,7 +82,7 @@ RSpec/MultipleExpectations:
 # Security/Openのチェックを無視
 Security/Open:
   Exclude:
-    - "app/controllers/oauths_controller.rb"
+    - "app/controllers/oauths_controller.rb" # 特定のコントローラーは除外
 
 # Rails/HasManyOrHasOneDependentルールを無効
 Rails/HasManyOrHasOneDependent:

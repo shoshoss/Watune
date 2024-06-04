@@ -36,6 +36,10 @@
   @apply text-blue-500;
 }
 
+.c-tab-active-posts-to-you {
+  @apply text-orange-400;
+}
+
 .c-tab-active-all-likes-chance,
 .c-tab-active-my-likes-chance,
 .c-tab-active-public-likes-chance {
@@ -47,7 +51,7 @@
 }
 
 .c-tab-active-liked {
-  @apply text-red-500;
+  @apply text-red-400;
 }
 
 /* 投稿のプライバシー選択のボタンのレイアウト */

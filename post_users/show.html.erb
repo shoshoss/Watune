@@ -1,0 +1,24 @@
+<h1>受信者管理</h1>
+
+<h2>受信者を追加</h2>
+<%= form_with model: [ @post, PostUser.new ], local: true do |f| %>
+  <div class="form-group">
+    <%= f.label :user_id, "受信者を選択" %>
+    <%= f.collection_select :user_id, User.all, :id, :display_name, prompt: "受信者を選択" %>
+  </div>
+  <div class="form-group">
+    <%= f.label :role, "役割" %>
+    <%= f.select :role, PostUser.roles.keys.map { |role| [role.humanize, role] }, prompt: "役割を選択" %>
+  </div>
+  <%= f.submit "受信者を追加", class: "btn btn-primary" %>
+<% end %>
+
+<h2>受信者リスト</h2>
+<ul>
+  <% @post_users.each do |post_user| %>
+    <li>
+      <%= post_user.user.display_name %> (<%= post_user.role.humanize %>)
+      <%= link_to "削除", post_user_path(post_user), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+    </li>
+  <% end %>
+</ul>
