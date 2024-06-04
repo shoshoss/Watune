@@ -8,6 +8,28 @@ class User < ApplicationRecord
   # UserとPostの関連付け
   has_many :posts, dependent: :destroy
 
+  has_many :posts
+  has_many :post_users, through: :posts
+  has_many :friendships, foreign_key: :follower_id
+  has_many :followings, through: :friendships, source: :followed
+
+  def following_ordered_by_sent_posts
+    following_ids = followings.pluck(:id)
+
+    # フォローしているユーザーの送信回数を取得
+    user_post_counts = PostUser.where(user_id: following_ids)
+                               .group(:user_id)
+                               .count
+
+    # 全フォローしているユーザーを取得
+    followings_with_counts = followings.map do |user|
+      [user, user_post_counts[user.id] || 0]
+    end
+
+    # 送信回数でソート
+    followings_with_counts.sort_by { |_, count| -count }.map(&:first)
+  end
+
   # ネストされた属性として認証情報を受け入れる
   accepts_nested_attributes_for :authentications
 
@@ -135,4 +157,13 @@ class User < ApplicationRecord
   def set_default_display_name
     update(display_name: "ウェーブ登録#{id}") if display_name.blank?
   end
+
+  # フォロー中のユーザーを送信回数で並び替えるスコープ
+  scope :following_ordered_by_sent_posts, ->(user_id) {
+    joins(:post_users)
+      .where(post_users: { role: 'direct_recipient' })
+      .where(posts: { user_id: user_id })
+      .group('users.id')
+      .order('COUNT(posts.id) DESC')
+  }
 end

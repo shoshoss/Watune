@@ -52,10 +52,10 @@
                 <div class="form-control pt-2">
                   <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
                   <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
-                    <% current_user.followings.each do |following| %>
+                    <% current_user.following_ordered_by_sent_posts.each do |following| %>
                       <label class="inline-flex items-center m-2">
                         <%= check_box_tag 'post[recipient_ids][]', following.id, false, class: 'form-checkbox h-5 w-5 text-blue-600' %>
-                        <span class="ml-2 text-gray-700"><%= following.display_name %></span>
+                        <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
                       </label>
                     <% end %>
                   </div>

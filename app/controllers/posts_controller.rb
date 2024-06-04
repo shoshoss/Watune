@@ -3,6 +3,7 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
+  before_action :set_followings_by_post_count, only: %i[new edit create update]
 
   def index
     @show_reply_line = false
@@ -29,8 +30,7 @@ class PostsController < ApplicationController
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] =
-        t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
       render :new, status: :unprocessable_entity
     end
   end
@@ -40,8 +40,7 @@ class PostsController < ApplicationController
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] =
-        t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
+      flash.now[:danger] = t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
       render :edit, status: :unprocessable_entity
     end
   end
@@ -75,12 +74,16 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
   end
 
   def create_post_users(post)
     params[:post][:recipient_ids].each do |recipient_id|
       post.post_users.create(user_id: recipient_id, role: 'direct_recipient')
     end
+  end
+
+  def set_followings_by_post_count
+    @sorted_followings = current_user.following_ordered_by_sent_posts
   end
 end
