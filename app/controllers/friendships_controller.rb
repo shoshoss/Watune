@@ -1,5 +1,15 @@
 class FriendshipsController < ApplicationController
-  before_action :set_user, only: %i[create destroy index]
+  before_action :set_user, only: %i[index create destroy]
+
+  def index
+    @category = params[:category] || 'followings'
+    @pagy, @users = if @category == 'followers'
+                      pagy_countless(@user.followers, items: 15)
+                    else
+                      pagy_countless(@user.followings, items: 15)
+                    end
+    render :index
+  end
 
   def create
     current_user.follow(@user)
@@ -15,16 +25,6 @@ class FriendshipsController < ApplicationController
       format.html { redirect_to @user, notice: t('.notice') }
       format.turbo_stream
     end
-  end
-
-  def index
-    @category = params[:category] || 'followings'
-    @pagy, @users = if @category == 'followers'
-                      pagy_countless(@user.followers, items: 15)
-                    else
-                      pagy_countless(@user.followings, items: 15)
-                    end
-    render :index
   end
 
   private
