@@ -1,5 +1,5 @@
 class FriendshipsController < ApplicationController
-  before_action :set_user, only: %i[create destroy followings followers]
+  before_action :set_user, only: %i[create destroy index]
 
   def create
     current_user.follow(@user)
@@ -17,15 +17,13 @@ class FriendshipsController < ApplicationController
     end
   end
 
-  def followings
-    @category = 'followings'
-    @pagy, @users = pagy_countless(@user.followings, items: 15)
-    render :index
-  end
-
-  def followers
-    @category = 'followers'
-    @pagy, @users = pagy_countless(@user.followers, items: 15)
+  def index
+    @category = params[:category] || 'followings'
+    @pagy, @users = if @category == 'followers'
+                      pagy_countless(@user.followers, items: 15)
+                    else
+                      pagy_countless(@user.followings, items: 15)
+                    end
     render :index
   end
 
