@@ -5,9 +5,7 @@
 <div id="notification" class="mb-4">
   <%= render 'shared/flash_message' %>
 </div>
-<%= form_with url: create_login_modal_path,
-    data: { controller: "login-modal", 
-            action: "turbo:submit-end->login-modal#afterClose" } do |f| %>
+<%= form_with url: create_login_modal_path, local: true, data: { controller: "login-modal", action: "turbo:submit-end->login-modal#afterClose" } do |f| %>
   <!-- Googleでログインのボタン -->
   <div class="flex items-center justify-center mb-8">
       <%= link_to auth_at_provider_path(provider: :google),
@@ -25,13 +23,13 @@
     <!-- メールアドレス入力 -->
     <div class="form-control">
       <%= f.label :email, t('helpers.label.email'), class: "label-text text-lg mb-1" %>
-      <%= f.email_field :email, placeholder: "example@wavecongra.com", class: "input input-bordered text-lg", required: true, autocomplete: "email" %>
+      <%= f.email_field :email, placeholder: "example@wavecongra.com", class: "input input-bordered text-lg", required: true, autocomplete: "email", value: params[:email] %>
     </div>
 
     <!-- パスワード入力 -->
     <div class="form-control mt-2">
       <%= f.label :password, t('helpers.label.password'), class: "label-text text-lg mb-1" %>
-      <%= f.password_field :password, class: "input input-bordered text-lg", required: true, autocomplete: "current-password" %>
+      <%= f.password_field :password, class: "input input-bordered text-lg", required: true, autocomplete: "current-password", value: params[:password] %>
     </div>
 
     <!-- ログインボタン -->
