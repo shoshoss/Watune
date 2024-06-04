@@ -11,6 +11,10 @@ class PostsController < ApplicationController
   end
 
   def show
+    unless @post.visible_to?(current_user)
+      redirect_to root_path, alert: 'この投稿を見る権限がありません。'
+      return
+    end
     @show_reply_line = true
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
@@ -64,17 +68,17 @@ class PostsController < ApplicationController
   def set_post
     @post = Post.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'この投稿は削除されました。'
+    redirect_to root_path, alert: 'この投稿は存在しません。'
   end
 
   def set_current_user_post
     @post = current_user.posts.find(params[:id])
   rescue ActiveRecord::RecordNotFound
-    redirect_to root_path, alert: 'この投稿は削除されました。'
+    redirect_to root_path, alert: 'この投稿は存在しません。'
   end
 
   def post_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
   end
 
   def create_post_users(post)

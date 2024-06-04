@@ -21,7 +21,7 @@
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">
-                <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'posts_to_you'), data: { turbo_frame: "posts" },
+              <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'posts_to_you'), data: { turbo_frame: "posts" },
                     class: "c-tab text-orange-400 #{active_tab_class('posts_to_you', initial_category: initial_category)} hover:text-orange-400" do %>
                   <i class="fa-regular fa-envelope mr-1 sm:mr-2"></i><span>仲間から</span>
                 <% end %>
@@ -33,7 +33,7 @@
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">
-                <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" },
+              <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" },
                     class: "c-tab text-red-400 #{active_tab_class('liked', initial_category: initial_category)} hover:text-red-500" do %>
                   <i class="fa-solid fa-hand-holding-heart mr-1 sm:mr-2"></i><span>応援中</span>
                 <% end %>

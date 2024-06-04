@@ -20,12 +20,14 @@ class Post < ApplicationRecord
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
                        allow_nil: true
 
-  enum privacy: { only_me: 0, reply: 1, open: 2, only_yours: 10, only_friends: 20, selected_users: 30, community: 40 }
+  enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
 
   # 公開設定の投稿を表示するスコープ
-  scope :visible_to, ->(user) {
-    where(privacy: %i[open only_yours only_friends selected_users community]).or(where(user:))
-  }
+  def visible_to?(user)
+    return true if self.user == user # 投稿者本人
+    return true if self.privacy == 'open' # 全体公開
+    return post_users.exists?(user: user, approved: true) # 承認された受信者
+  end
 
   # 投稿者本人が自分に「いいね」をしていない投稿を取得するスコープ
   scope :not_liked_by_user, ->(user) {
