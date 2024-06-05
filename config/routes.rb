@@ -11,10 +11,10 @@ Rails.application.routes.draw do
   get 'tou_modal', to: 'static_pages#tou_modal'
 
   resources :users, only: %i[index new create destroy] do
-    resource :friendships, only: %i[create destroy] do
-      member do
-        get :followings
-        get :followers
+    resource :friendships, only: %i[index create destroy] do
+      collection do
+        get :followings, to: 'friendships#index', defaults: { category: 'followings' }
+        get :followers, to: 'friendships#index', defaults: { category: 'followers' }
       end
     end
   end
