@@ -24,7 +24,7 @@ class Post < ApplicationRecord
   def visible_to?(user)
     return true if self.user == user # 投稿者本人
     return true if privacy == 'open' # 全体公開
-    return true if privacy == 'reply' # 返信
+    return true if privacy == 'reply'
 
     post_users.exists?(user:, approved: true) # 承認された受信者
   end
@@ -79,7 +79,7 @@ class Post < ApplicationRecord
   # 仲間への投稿を取得するスコープ
   scope :my_posts_following, ->(user) {
     direct_posts = joins(:post_users).where(user:, post_users: { role: 'direct_recipient' })
-    reply_posts = joins(:replies).where(replies: { user_id: user.following_ids })
+    reply_posts = where(user_id: user.id, post_reply_id: Post.select(:id))
     
     Post.where(id: direct_posts.select(:id)).or(Post.where(id: reply_posts.select(:id))).distinct.order(created_at: :desc)
   }
@@ -87,7 +87,7 @@ class Post < ApplicationRecord
   # 仲間からの投稿を取得するスコープ
   scope :posts_to_you, ->(user) {
     direct_posts = joins(:post_users).where(post_users: { user_id: user, role: 'direct_recipient' })
-    reply_posts = joins(:replies).where(replies: { user_id: user })
+    reply_posts = where(post_reply_id: Post.where(user_id: user).select(:id))
     
     Post.where(id: direct_posts.select(:id)).or(Post.where(id: reply_posts.select(:id))).distinct.order(created_at: :desc)
   }
@@ -95,7 +95,7 @@ class Post < ApplicationRecord
   # 相互のダイレクトメッセージや複数選択の送受信、返信のやり取りを表示するスコープ
   scope :shared_with_you, ->(current_user, profile_user) {
     direct_posts = joins(:post_users).where(post_users: { user_id: [current_user.id, profile_user.id], approved: true })
-    reply_posts = joins(:replies).where(user_id: [current_user.id, profile_user.id])
+    reply_posts = where(post_reply_id: Post.where(user_id: [current_user.id, profile_user.id]).select(:id))
 
     Post.where(id: direct_posts.select(:id)).or(Post.where(id: reply_posts.select(:id))).distinct.order(created_at: :desc)
   }
