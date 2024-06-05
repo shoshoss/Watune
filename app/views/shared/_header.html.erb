@@ -96,7 +96,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
           <%= image_tag (current_user.avatar.presence || asset_path('wave_sm_c.svg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 250px; max-width: 600px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 300px; max-width: 600px;">
           <li class="py-2">
             <%= link_to t('header.about'), root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" %>
           </li>
