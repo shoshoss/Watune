@@ -4,6 +4,7 @@ class RepliesController < ApplicationController
   def create
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
+    @reply.parent_post = @post # 返信元の投稿を設定
     if @reply.save
       flash[:notice] = '返信しました！'
       respond_to do |format|
