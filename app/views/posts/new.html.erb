@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "post_modal" do %>
-  <dialog id="post_modal_dialog" class="z-50 modal bg-gray-500 bg-opacity-50" data-controller="post-modal">
+  <dialog id="post_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="post-modal">
     <div class="modal-box p-2 max-h-screen">
       <div class="flex justify-end items-center">
         <button class="text-blue-500 hover:text-blue-700 font-semibold" data-action="click->post-modal#closeModal">閉じる</button>
@@ -42,7 +42,7 @@
                 <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
                 <div class="flex space-x-4 pt-2">
                   <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "c-button #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
-                  <%= link_to '仲間へ', new_post_path(privacy: 'selected_users'), class: "c-button #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
+                  <%= link_to '仲間へ', new_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "c-button #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
                   <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "c-button #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
                 </div>
                 <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
@@ -54,7 +54,7 @@
                   <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
                     <% current_user.following_ordered_by_sent_posts.each do |following| %>
                       <label class="inline-flex items-center m-2">
-                        <%= check_box_tag 'post[recipient_ids][]', following.id, false, class: 'form-checkbox h-5 w-5 text-blue-600' %>
+                        <%= check_box_tag 'post[recipient_ids][]', following.id, params[:selected_user_ids]&.include?(following.id.to_s), class: 'form-checkbox h-5 w-5 text-blue-600' %>
                         <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
                       </label>
                     <% end %>
