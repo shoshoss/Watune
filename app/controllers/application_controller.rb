@@ -28,11 +28,11 @@ class ApplicationController < ActionController::Base
 
   # 新規登録ユーザーを設定
   def set_recent_users
-    @recent_users = User.recently_registered(current_user)
+    @recent_users = User.recently_registered(current_user).limit(5)
   end
 
   # 未フォローのユーザー数を設定
   def set_unfollowed_users_count
-    @unfollowed_users_count = User.where.not(id: current_user.following_ids).count
+    @unfollowed_users_count = User.recently_registered(current_user).count
   end
 end
