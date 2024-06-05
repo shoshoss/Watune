@@ -4,11 +4,11 @@
   <!-- 左側のダミー要素 -->
   <div class="pl-[10px] sm:min-w-[150px]">
     <% if current_user == @user %>
-      <div class="<%= 'invisible' %>">
+      <div class="invisible">
         <%= link_to "編集する", "#", class: 'text-lg sm:text-xl btn btn-outline btn-secondary' %>
       </div>
     <% else %>
-      <div class="<%= 'invisible' %>">
+      <div class="invisible">
         <%= button_to 'ダミー', "#", class: "w-[115px] btn-following btn-unfollow-hover" %>
       </div>
     <% end %>
@@ -16,22 +16,35 @@
 
   <!-- アバター画像 -->
   <div class="flex justify-center flex-grow items-center">
-    <% if @user.avatar.attached? %>
-      <%= image_tag @user.avatar, class: "rounded-full object-cover h-28 w-28" %>
-    <% else %>
-      <%= image_tag asset_path('wave_sm_c.svg'), class: "rounded-full object-cover h-28 w-28" %>
+    <%= link_to profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" } do %>
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar, class: "rounded-full object-cover h-[77px] w-[77px] sm:h-[180px] sm:w-[180px]" %>
+      <% else %>
+        <%= image_tag asset_path('wave_sm_c.svg'), class: "rounded-full object-cover h-[77px] w-[77px] sm:h-[180px] sm:w-[180px]" %>
+      <% end %>
     <% end %>
   </div>
 
   <!-- 編集ボタン or フォローボタン -->
-  <div class="flex flex-grow-0 justify-end items-end ">
+  <div class="flex flex-grow-0 justify-end items-end">
     <table class="min-w-[115px]">
-      <tr class="">
+      <tr>
         <td>
-          <%= link_to "あなたへ",
-            new_post_path,
-            class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
-            data: { turbo_frame: "post_modal" } %>
+          <% if current_user == @user %>
+            <%= link_to "自分へ",
+                new_post_path(privacy: 'only_me'),
+                class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
+                data: { turbo_frame: "post_modal" } %>
+          <% else %>
+            <div id="send-message">
+              <% if current_user.following?(@user) %>
+                <%= link_to "あなたへ",
+                    new_post_path(privacy: 'selected_users', selected_user_ids: [@user.id]),
+                    class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
+                    data: { turbo_frame: "post_modal" } %>
+              <% end %>
+            </div>
+          <% end %>
         </td>
       </tr>
       <tr>
@@ -49,14 +62,14 @@
         </td>
       </tr>
     </table>
-
-    
   </div>
 </div>
 <!-- ユーザー名-->
 <div class="mb-2 flex flex-col justify-center items-center">
-  <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
-  <p class="text-gray-500">@<%= @user.username_slug %></p>
+  <%= link_to profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" } do %>
+    <h1 class="text-lg font-semibold"><%= @user.display_name %></h1>
+    <p class="text-gray-500">@<%= @user.username_slug %></p>
+  <% end %>
 </div>
 <!-- 自己紹介 -->
 <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
