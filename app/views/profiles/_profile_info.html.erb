@@ -28,10 +28,18 @@
     <table class="min-w-[115px]">
       <tr class="">
         <td>
-          <%= link_to "あなたへ",
-            new_post_path,
-            class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
-            data: { turbo_frame: "post_modal" } %>
+          <% if current_user == @user %>
+            <%= link_to "自分へ",
+                new_post_path(privacy: 'only_me'),
+                class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
+                data: { turbo_frame: "post_modal" } %>
+          <% else %>
+            <%= link_to "あなたへ",
+                new_post_path(privacy: 'selected_users'),
+                class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
+                data: { turbo_frame: "post_modal" } %>
+          <% end %>
+          
         </td>
       </tr>
       <tr>

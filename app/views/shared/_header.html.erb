@@ -36,7 +36,7 @@
       <% end %>
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
-                  new_post_path,
+                  new_post_path(privacy: 'open'),
                   class: "hidden sm:flex text-white font-bold text-xl btn btn-info rounded-full transition-colors duration-300 px-4 py-2",
                   data: { turbo_frame: "post_modal" } %>
       
@@ -87,7 +87,7 @@
 
       <!-- 投稿ボタン -->
       <%= link_to t('header.post_audio'),
-                  new_post_path,
+                  new_post_path(privacy: 'open'),
                   class: "text-white font-bold btn btn-info btn-sm rounded-full transition-colors duration-300",
                   data: { turbo_frame: "post_modal" } %>
 
