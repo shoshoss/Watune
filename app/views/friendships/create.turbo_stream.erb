@@ -1,3 +1,14 @@
 <%= turbo_stream.replace "user-#{@user.id}-follow" do %>
   <%= render partial: 'users/follow_button', locals: { user: @user } %>
 <% end %>
+
+<%= turbo_stream.replace "send-message" do %>
+  <div id="send-message">
+    <% if current_user.following?(@user) %>
+      <%= link_to "あなたへ",
+          new_post_path(privacy: 'selected_users', selected_user_ids: [@user.id]),
+          class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
+          data: { turbo_frame: "post_modal" } %>
+    <% end %>
+  </div>
+<% end %>
