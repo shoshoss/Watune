@@ -92,7 +92,8 @@ class ProfilesController < ApplicationController
       'my_posts_following' => Post.my_posts_following(@user),
       'community_posts' => Post.joins(:post_users)
                                .where(post_users: { user: @user, role: 'community_recipient' })
-                               .order(created_at: :desc)
+                               .order(created_at: :desc),
+      'shared_with_you' => Post.shared_with_you(current_user, @user)
     }
 
     scopes[category] || Post.none
