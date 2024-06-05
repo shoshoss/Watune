@@ -105,6 +105,21 @@ class Post < ApplicationRecord
     ).distinct.order(created_at: :desc)
   }
 
+  # 相互のダイレクトメッセージや複数選択の送受信、返信のやり取りを表示するスコープ
+  scope :shared_with_you, lambda { |current_user, profile_user|
+                            joins(:post_users).where(
+                              post_users: { user_id: [current_user.id, profile_user.id], approved: true }
+                            ).or(
+                              joins(:post_users).where(
+                                post_users: { user_id: current_user.id, role: 'reply_recipient' }
+                              ).where(user_id: profile_user.id)
+                            ).or(
+                              joins(:post_users).where(
+                                post_users: { user_id: profile_user.id, role: 'reply_recipient' }
+                              ).where(user_id: current_user.id)
+                            ).distinct.order(created_at: :desc)
+                          }
+
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
   def ancestors
     parents = []

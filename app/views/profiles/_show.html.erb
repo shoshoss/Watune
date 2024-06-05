@@ -85,6 +85,10 @@
               class: "c-tab text-blue-400 #{active_tab_class('my_posts_open', initial_category: initial_category)} hover:text-blue-500" do %>
             <i class="fas fa-globe mr-1 sm:mr-2"></i> みんなへ
           <% end %>
+          <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'shared_with_you'), data: { turbo_frame: "posts" },
+              class: "c-tab text-blue-400 #{active_tab_class('shared_with_you', initial_category: initial_category)} hover:text-blue-500" do %>
+            <i class="fas fa-share-alt mr-1 sm:mr-2"></i> あなたと共有
+          <% end %>
         </div>
       <% end %>
 
