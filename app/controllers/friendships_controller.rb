@@ -13,17 +13,21 @@ class FriendshipsController < ApplicationController
 
   def create
     current_user.follow(@user)
+    update_unfollowed_users_count
+
     respond_to do |format|
-      format.html { redirect_to @user, notice: t('.notice') }
       format.turbo_stream
+      format.html { redirect_to @user, notice: t('.notice') }
     end
   end
 
   def destroy
     current_user.unfollow(@user)
+    update_unfollowed_users_count
+
     respond_to do |format|
-      format.html { redirect_to @user, notice: t('.notice') }
       format.turbo_stream
+      format.html { redirect_to @user, notice: t('.notice') }
     end
   end
 
@@ -31,5 +35,9 @@ class FriendshipsController < ApplicationController
 
   def set_user
     @user = User.find(params[:user_id])
+  end
+
+  def update_unfollowed_users_count
+    @unfollowed_users_count = User.where.not(id: current_user.following_ids).count
   end
 end
