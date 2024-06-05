@@ -40,13 +40,13 @@
       <%= f.submit "登録", class: "btn btn-outline btn-accent text-xl" %>
     </div>
     <p class="text-sm mt-4">
-      アカウントを登録することにより、
+      WaveConGraのご利用で、
       <%= link_to '利用規約', tou_modal_path, class: "text-blue-500 hover:text-blue-600",
                   data: { turbo_frame: "tou_modal" } %>
-        および
+        と
       <%= link_to 'プライバシーポリシー', privacy_modal_path, class: "text-blue-500 hover:text-blue-600",
                   data: { turbo_frame: "privacy_modal" } %>
-      に同意したことになります。<br>
+      が適用されます。<br>
     </p>
   </div>
 <% end %>
