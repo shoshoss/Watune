@@ -71,7 +71,7 @@ module ApplicationHelper
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用
   def active_bottom(privacy_value)
-    params[:privacy] == privacy_value ? 'c-bottom-active' : ''
+    params[:privacy] == privacy_value ? 'btn-choice-active' : ''
   end
 
   def active_if(path)
