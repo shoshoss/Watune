@@ -23,15 +23,19 @@
             <% if post.user.present? %>
               <!-- 返信先の投稿が存在する場合 -->
               <!-- 投稿のユーザー名にリンクを設定し、モーダルでプロフィールを表示 -->
-              <%= link_to "#{post.user.display_name}さん", profile_modal_path(username_slug: post.user.username_slug),
-                  class: "text-xl font-semibold text-blue-500 hover:text-blue-700",
-                  data: { turbo_frame: "profile_modal" } %><br>
+              <%= link_to profile_modal_path(username_slug: post.user.username_slug),
+                          class: "text-xl font-semibold text-blue-500 hover:underline",
+                          data: { turbo_frame: "profile_modal" } do %>
+                <%= post.user.display_name %><span class="font-normal">さん</span>
+              <% end %><br>
 
               <!-- 投稿の祖先（リプライ元）ユーザーを一意に取得し、リンクを設定 -->
               <% post.ancestors.map(&:user).uniq.each do |user| %>
-                <%= link_to "#{user.display_name}さん", profile_modal_path(username_slug: user.username_slug),
-                    class: "text-blue-500 hover:text-blue-700",
-                    data: { turbo_frame: "profile_modal" } %>
+                <%= link_to profile_modal_path(username_slug: user.username_slug),
+                            class: "text-blue-500 hover:underline",
+                            data: { turbo_frame: "profile_modal" } do %>
+                  <%= user.display_name %><span class="font-normal">さん</span>
+                <% end %>
                 <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
                 <!-- 最後のユーザー以外には読点を追加 -->
               <% end %>
