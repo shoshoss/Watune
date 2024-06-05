@@ -84,7 +84,7 @@ class User < ApplicationRecord
   def self.recently_registered(current_user = nil)
     users = where(guest: false)
     users = users.where.not(id: current_user.followings.pluck(:id) + [current_user.id]) if current_user
-    users.order(created_at: :desc).limit(5)
+    users.order(created_at: :desc)
   end
 
   # enumでユーザーの役割を定義：一般ユーザーは0、管理者は1
@@ -154,13 +154,4 @@ class User < ApplicationRecord
   def set_default_display_name
     update(display_name: "ウェーブ登録#{id}") if display_name.blank?
   end
-
-  # フォロー中のユーザーを送信回数で並び替えるスコープ
-  scope :following_ordered_by_sent_posts, lambda { |user_id|
-    joins(:post_users)
-      .where(post_users: { role: 'direct_recipient' })
-      .where(posts: { user_id: })
-      .group('users.id')
-      .order('COUNT(posts.id) DESC')
-  }
 end
