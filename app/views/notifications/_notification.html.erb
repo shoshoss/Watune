@@ -1,0 +1,5 @@
+<%= turbo_frame_tag dom_id(notification) do %>
+  <div class="notification <%= 'unread' if notification.unread %>">
+    <%= generate_notification_message(notification) %>
+  </div>
+<% end %>

@@ -1,0 +1,3 @@
+<%= turbo_stream.append "notifications", partial: 'notifications/notification', collection: @notifications, as: :notification %>
+<%= turbo_stream.replace "notification_count", partial: 'notifications/notification_count', locals: { notifications: @notifications } %>
+<%= turbo_stream.replace "next-page", partial: 'shared/next_page' if @pagy.next %>

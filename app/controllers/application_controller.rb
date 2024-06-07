@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   before_action :set_likes_chance_count, if: :logged_in?
   before_action :set_recent_users, if: :logged_in?
   before_action :set_unfollowed_users_count, if: :logged_in?
+  before_action :set_notifications, if: :logged_in?
 
   private
 
@@ -34,5 +35,9 @@ class ApplicationController < ActionController::Base
   # 未フォローのユーザー数を設定
   def set_unfollowed_users_count
     @unfollowed_users_count = User.recently_registered(current_user).count
+  end
+
+  def set_notifications
+    @notifications = current_user.received_notifications.unread
   end
 end
