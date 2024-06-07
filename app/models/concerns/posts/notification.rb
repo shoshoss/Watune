@@ -20,6 +20,9 @@ module Posts
 
       # 返信の通知を作成するメソッド
       def create_notification_reply!(current_user, reply)
+        recipient_id = self.parent_post.user_id
+        return if current_user.id == recipient_id # 自分宛の返信は通知しない
+
         notification = current_user.sent_notifications.new(
           recipient_id: self.parent_post.user_id, # 返信の親投稿のユーザーIDを通知の受信者とする
           sender_id: current_user.id, # 通知の送信者
