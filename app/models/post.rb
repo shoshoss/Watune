@@ -35,7 +35,7 @@ class Post < ApplicationRecord
     return true if self.user == user # 投稿者本人
     return true if privacy == 'open' # 全体公開
     return true if privacy == 'reply' # リプライ
-    
+
     post_users.exists?(user:, approved: true) # 承認された受信者
   end
 
@@ -49,7 +49,7 @@ class Post < ApplicationRecord
     end
     parents.reverse
   end
-  
+
   private
 
   # 投稿作成時に通知を作成するコールバックメソッド
