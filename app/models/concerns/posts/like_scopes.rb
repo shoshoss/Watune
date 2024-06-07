@@ -10,8 +10,8 @@ module Posts
           .order(created_at: :asc)
       }
 
-      # 自分の投稿で自分が応援していないもの、および他のユーザーの公開設定された投稿で、
-      # 応援の数が0から9の範囲に収まるものを取得するスコープ
+      # 自分の投稿で自分がいいねしていないもの、および他のユーザーの公開設定された投稿で、
+      # いいねの数が0から9の範囲に収まるものを取得するスコープ
       scope :with_likes_count_all, lambda { |user|
         user_posts = where(user_id: user.id)
                      .left_joins(:likes)
@@ -32,7 +32,7 @@ module Posts
         user_posts.or(open_posts)
       }
 
-      # 自分以外のユーザーの公開設定された投稿を、投稿者本人の応援を除外して応援の数が0から9のものに限定して取得するスコープ
+      # 自分以外のユーザーの公開設定された投稿を、投稿者本人のいいねを除外していいねの数が0から9のものに限定して取得するスコープ
       scope :public_likes_chance, lambda { |user|
         where.not(user_id: user.id)
              .where(privacy: 'open')

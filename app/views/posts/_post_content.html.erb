@@ -13,7 +13,7 @@
         <% end %>
       </div>
     </div>
-    <!-- 2列目: ユーザー情報、投稿、応援、シェア -->
+    <!-- 2列目: ユーザー情報、投稿、いいね、シェア -->
     <div class="pl-2 flex-grow" style="max-width: calc(100% - 15%);">
       <div class="flex justify-between items-center mb-2">
         <div class="overflow-x-auto whitespace-nowrap" style="max-width:80%;">
@@ -113,7 +113,7 @@
       <div class="flex justify-end">
         <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id), data: { turbo_frame: "_top" }, class: "text-md md:text-lg my-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
       </div>
-      <!-- 返信、リツイート、応援、シェア -->
+      <!-- 返信、リツイート、いいね、シェア -->
       <div class="flex justify-between items-center">
         <div id="post-<%= post.id %>-reply-icon">
           <%= render 'posts/reply_icon', post: post %>

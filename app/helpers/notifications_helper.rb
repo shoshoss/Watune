@@ -3,7 +3,7 @@ module NotificationsHelper
     case notification.action
     when 'like'
       # いいねの通知
-      "#{notification.sender.display_name}さんがあなたの投稿に応援しました。"
+      "#{notification.sender.display_name}さんがあなたの投稿にいいねしました。"
     when 'reply'
       # 返信の通知
       "#{notification.sender.display_name}さんがあなたへ返信しました。"

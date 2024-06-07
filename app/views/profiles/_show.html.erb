@@ -29,7 +29,7 @@
               <td colspan="2" class="c-tabs">
                 <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "posts" },
                     class: "c-tab text-pink-200-accent #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
-                  <i class="fa-solid fa-handshake-angle mr-1 sm:mr-2"></i><span>応援チャンス</span>
+                  <i class="fa-solid fa-handshake-angle mr-1 sm:mr-2"></i><span>いいねチャンス</span>
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">

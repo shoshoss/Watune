@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
     redirect_to new_login_modal_path, status: :found
   end
 
-  # 応援チャンス数を設定
+  # いいねチャンス数を設定
   def set_likes_chance_count
     return unless logged_in?
 
