@@ -1,4 +1,3 @@
-<%= turbo_frame_tag "notifications" do %>
-  <%= render partial: 'notifications/notification', collection: @notifications, as: :notification %>
-  <%= render 'shared/next_page' if @pagy.next %>
+<%= turbo_frame_tag "notifications_index" do %>
+  <%= render partial: 'notifications/index', locals: { notifications: @notifications, pagy: @pagy } %>
 <% end %>

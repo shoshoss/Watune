@@ -35,7 +35,7 @@
               <td rowspan="2" class="c-tabs">
               <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'liked'), data: { turbo_frame: "posts" },
                     class: "c-tab text-red-400 #{active_tab_class('liked', initial_category: initial_category)} hover:text-red-500" do %>
-                  <i class="fa-solid fa-hand-holding-heart mr-1 sm:mr-2"></i><span>応援中</span>
+                  <i class="fa-solid fa-hand-holding-heart mr-1 sm:mr-2"></i><span>いいね</span>
                 <% end %>
               </td>
               <td rowspan="2" class="c-tabs">

@@ -1,0 +1,14 @@
+<% if notifications.present? %>
+  <div class="notifications-list">
+    <%= turbo_frame_tag "next-page" do %>
+      <% notifications.each do |notification| %>
+        <%= render partial: 'notifications/notification', locals: { notification: notification } %>
+      <% end %>
+      <% if pagy.next %>
+        <%= render 'shared/next_page' %>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <div class="mb-3">通知がありません</div>
+<% end %>
