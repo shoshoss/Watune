@@ -5,10 +5,10 @@
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold" do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたの投稿にいいねしました。<span>
+      <span class="text-sm sm:text-lg">さんがあなたの投稿にいいねしました。</span>
     </div>
     <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'reply' %>
@@ -17,7 +17,7 @@
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold" do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたへ返信しました。</span>
@@ -29,7 +29,7 @@
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold" do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたをフォローしました。</span>
@@ -40,7 +40,7 @@
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold" do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたへ投稿しました。</span>

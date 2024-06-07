@@ -1,3 +1,5 @@
+<%= turbo_frame_tag 'post_edit_modal' %>
+<%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag dom_id(post) do %>
   <div data-controller="audio" id="post-id-<%= post.id %>"
        class="bg-white rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 p-[8px]">
