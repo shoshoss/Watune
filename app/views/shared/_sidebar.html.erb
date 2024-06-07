@@ -22,21 +22,24 @@
     <!-- 通知 -->
     <li>
       <%= link_to notifications_path, data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}" do %>
-        <i class="fas fa-bell text-2xl relative #{'text-blue-500' if current_page?(notifications_path)}">
-          <% if current_user.received_notifications.unread.any? %>
-            <span class="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
-              <%= current_user.received_notifications.unread.count %>
-            </span>
-          <% end %>
-        </i>
-        <h2 class="text-lg font-bold flex-grow">通知</h2>
-      <% end %>
+  <i class="fas fa-bell text-2xl relative #{'text-blue-500' if current_page?(notifications_path)}">
+    <% unread_notifications = current_user.received_notifications.unread %>
+    <% Rails.logger.info("Unread notifications: #{unread_notifications.to_a}") %>
+    <% if unread_notifications.any? %>
+      <span class="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
+        <%= unread_notifications.count %>
+      </span>
+    <% end %>
+  </i>
+  <h2 class="text-lg font-bold flex-grow">通知</h2>
+<% end %>
+
     </li>
   </ul>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "flex text-white font-bold text-2xl btn btn-info rounded-full rounded-full transition-colors duration-300",
+                  class: "flex text-white font-bold text-2xl btn btn-info rounded-full transition-colors duration-300",
                   data: { turbo_frame: "post_modal" } %>
   </div>
 </aside>

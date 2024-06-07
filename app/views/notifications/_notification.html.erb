@@ -1,3 +1,48 @@
 <div class="notification <%= 'unread' if notification.unread %>">
-  <%= generate_notification_message(notification) %>
+  <% if notification.action == 'like' %>
+    <div class="flex items-center">
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% end %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-lg font-semibold" do %>
+        <%= notification.sender.display_name %>
+      <% end %>
+      さんがあなたの投稿にいいねしました。
+    </div>
+    <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
+  <% elsif notification.action == 'reply' %>
+    <div class="flex items-center">
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% end %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-lg font-semibold" do %>
+        <%= notification.sender.display_name %>
+      <% end %>
+      さんがあなたへ返信しました。
+    </div>
+    <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
+  <% elsif notification.action == 'follow' %>
+    <div class="flex items-center">
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% end %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-lg font-semibold" do %>
+        <%= notification.sender.display_name %>
+      <% end %>
+      さんがあなたをフォローしました。
+    </div>
+  <% elsif notification.action == 'post' %>
+    <div class="flex items-center">
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14") %>
+      <% end %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "ml-2 text-lg font-semibold" do %>
+        <%= notification.sender.display_name %>
+      <% end %>
+      さんがあなたへ投稿しました。
+    </div>
+    <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
+  <% else %>
+    新しい通知があります。
+  <% end %>
 </div>

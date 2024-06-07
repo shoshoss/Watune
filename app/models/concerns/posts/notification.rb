@@ -1,16 +1,17 @@
+# app/models/concerns/posts/notification.rb
 module Posts
   module Notification
     extend ActiveSupport::Concern
 
     included do
       # いいねの通知を作成するメソッド
-      def create_notification_like!(current_user, like)
-        return if current_user.id == self.user_id # 自分の投稿に対するいいねは通知しない
+      def create_notification_like!(current_user)
+        return if current_user.id == user_id # 自分の投稿に対するいいねは通知しない
 
         notification = current_user.sent_notifications.new(
-          recipient_id: self.user_id, # 通知の受信者
+          recipient_id: user_id, # 通知の受信者
           sender_id: current_user.id, # 通知の送信者
-          notifiable: like, # いいねされた投稿
+          notifiable: self, # いいねされた投稿
           action: 'like', # アクションタイプ
           unread: true # 未読状態
         )

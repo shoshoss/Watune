@@ -1,10 +1,6 @@
 class NotificationsController < ApplicationController
   def index
-    @pagy, @notifications = pagy_countless(current_user.received_notifications.unread.order(created_at: :desc), items: 10)
-    respond_to do |format|
-      format.turbo_stream
-      format.html
-    end
+    @pagy, @notifications = pagy_countless(current_user.received_notifications.unread.order(created_at: :desc), items: 15)
   end
 
   def update

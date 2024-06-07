@@ -11,6 +11,6 @@ class Like < ApplicationRecord
   def create_like_notification
     return if user_id == post.user_id
 
-    post.create_notification_like!(user, self)
+    post.create_notification_like!(user)
   end
 end
