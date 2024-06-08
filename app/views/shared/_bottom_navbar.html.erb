@@ -1,4 +1,4 @@
-<nav id="bottom-navbar" class="fixed bottom-0 left-0 z-50 w-full bg-white border-t sm:hidden transition-opacity duration-300">
+<nav id="bottom-navbar" class="fixed bottom-0 left-0 z-50 w-full bg-white border-t sm:hidden transition-opacity duration-300 border-t-1 border-gray-200">
   <ul class="flex justify-around">
     <li class="flex-1 text-center">
       <%= link_to posts_path, class: "block py-2 #{'text-blue-500' if current_page?(posts_path)}" do %>
@@ -30,7 +30,7 @@
 </nav>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  function handleNavbarOpacity() {
     var navbar = document.getElementById('bottom-navbar');
     var lastScrollTop = 0;
 
@@ -45,5 +45,8 @@
       }
       lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
-  });
+  }
+
+  document.addEventListener('DOMContentLoaded', handleNavbarOpacity);
+  document.addEventListener('turbo:load', handleNavbarOpacity);
 </script>
