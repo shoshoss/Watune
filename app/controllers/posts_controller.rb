@@ -16,6 +16,7 @@ class PostsController < ApplicationController
       return
     end
     @show_reply_line = true
+    @notifications = current_user.received_notifications.unread
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
   end
@@ -33,7 +34,6 @@ class PostsController < ApplicationController
       create_post_users(@post) if params[:post][:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
-      @post.create_notification_for_recipients(current_user) # 投稿の通知を作成
     else
       flash.now[:danger] =
         t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')

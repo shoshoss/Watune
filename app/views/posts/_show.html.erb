@@ -16,7 +16,8 @@
         <%= render 'replies/form', post: @post, reply: @reply %>
         <div id="replies" class="mt-4">
           <% @replies.each do |reply| %>
-            <%= render 'posts/post', post: reply %>
+            <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
+            <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
           <% end %>
         </div>
       </div>

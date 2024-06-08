@@ -22,18 +22,17 @@
     <!-- 通知 -->
     <li>
       <%= link_to notifications_path, data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}" do %>
-  <i class="fas fa-bell text-2xl relative #{'text-blue-500' if current_page?(notifications_path)}">
-    <% unread_notifications = current_user.received_notifications.unread %>
-    <% Rails.logger.info("Unread notifications: #{unread_notifications.to_a}") %>
-    <% if unread_notifications.any? %>
-      <span class="absolute top-0 right-0 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
-        <%= unread_notifications.count %>
-      </span>
-    <% end %>
-  </i>
-  <h2 class="text-lg font-bold flex-grow">通知</h2>
-<% end %>
-
+        <div class="relative">
+          <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
+          <% unread_notifications_count = current_user.received_notifications.unread.count %>
+          <% if unread_notifications_count > 0 %>
+            <span class="absolute -top-1 -right-1 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
+              <%= unread_notifications_count %>
+            </span>
+          <% end %>
+        </div>
+        <h2 class="text-lg font-bold flex-grow">通知</h2>
+      <% end %>
     </li>
   </ul>
   <div class="mt-auto py-5">

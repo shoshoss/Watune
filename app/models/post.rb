@@ -54,11 +54,11 @@ class Post < ApplicationRecord
 
   # 投稿作成時に通知を作成するコールバックメソッド
   def create_notification_for_post
-    create_notification_for_recipients(user)
+    create_notification_post(user)
   end
 
   def create_notification_for_reply
-    create_notification_reply!(user, self)
+    create_notification_reply(user)
   end
 
   def reply?
