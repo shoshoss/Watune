@@ -74,7 +74,7 @@
 
 <body class="font-sans bg-white flex flex-col min-h-screen">
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-50 bg-white w-full shadow max-w-screen-xl mx-auto">
+  <header class="sm:sticky sm:top-0 z-50 bg-white w-full shadow max-w-screen-xl mx-auto">
     <% if logged_in? %>
       <%= render 'shared/header' %>
     <% else %>
@@ -112,5 +112,39 @@
 
   <!-- フッター -->
   <%= render 'shared/footer' %>
+
+  <!-- スマホ用ボトムメニューバー -->
+  <% if logged_in? %>
+  <nav class="fixed bottom-0 left-0 w-full bg-white border-t sm:hidden">
+    <ul class="flex justify-around">
+      <li class="flex-1 text-center">
+        <%= link_to posts_path, class: "block py-2 #{'text-blue-500' if current_page?(posts_path)}" do %>
+          <i class="fas fa-globe text-2xl"></i>
+        <% end %>
+      </li>
+      <li class="flex-1 text-center">
+        <%= link_to profile_show_path(username_slug: current_user.username_slug), class: "block py-2 #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug))}" do %>
+          <i class="fas fa-user text-2xl"></i>
+        <% end %>
+      </li>
+      <li class="flex-1 text-center relative">
+        <%= link_to notifications_path, class: "block py-2 #{'text-blue-500' if current_page?(notifications_path)}" do %>
+          <i class="fas fa-bell text-2xl"></i>
+          <% unread_notifications_count = current_user.received_notifications.unread.count %>
+          <% if unread_notifications_count > 0 %>
+            <span class="absolute -top-1 -right-1 inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
+              <%= unread_notifications_count %>
+            </span>
+          <% end %>
+        <% end %>
+      </li>
+      <li class="flex-1 text-center">
+        <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'), class: "block py-2 #{'text-orange-400' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'))}" do %>
+          <i class="fa-regular fa-envelope text-2xl"></i>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+  <% end %>
 </body>
 </html>
