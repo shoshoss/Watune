@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
   <div data-controller="audio" id="post-id-<%= post.id %>", 
-    class="rounded-lg flex hover:bg-gray-100 shadow-lg overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+    class="rounded-lg flex hover:bg-sky-100 shadow-lg overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
     <!-- 1列目: アバター -->
     <div class="flex flex-col items-center justify-between min-w-[10px] md:w-[15%] flex-shrink-0 relative">
       <!-- アバター -->
