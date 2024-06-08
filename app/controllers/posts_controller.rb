@@ -16,6 +16,7 @@ class PostsController < ApplicationController
       return
     end
     @show_reply_line = true
+    @notifications = current_user.received_notifications.unread
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :desc), items: 10)
   end
@@ -67,28 +68,33 @@ class PostsController < ApplicationController
 
   private
 
+  # 特定の投稿をセットする
   def set_post
     @post = Post.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: 'この投稿は存在しません。'
   end
 
+  # ログインユーザーの投稿をセットする
   def set_current_user_post
     @post = current_user.posts.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: 'この投稿は存在しません。'
   end
 
+  # 投稿のパラメータを許可する
   def post_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
   end
 
+  # 投稿に関連するユーザーを作成する
   def create_post_users(post)
     params[:post][:recipient_ids].each do |recipient_id|
       post.post_users.create(user_id: recipient_id, role: 'direct_recipient')
     end
   end
 
+  # フォローしているユーザーを投稿数でソートする
   def set_followings_by_post_count
     @sorted_followings = current_user.following_ordered_by_sent_posts
   end

@@ -1,6 +1,6 @@
 <aside id="after-sidebar" class="p-3 w-64 hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
-    <%= link_to profile_show_path(current_user.username_slug), data: { turbo_frame: "_top" } do %>
+    <%= link_to profile_show_path(current_user.username_slug) do %>
       <%= image_tag (current_user.avatar.presence || asset_path('wave_sm_c.svg')), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
@@ -19,12 +19,26 @@
         <h2 class="text-lg font-bold flex-grow">みんなのウェーブ</h2>
       <% end %>
     </li>
-    <!-- 他のリンクも同様に追加 -->
+    <!-- 通知 -->
+    <li>
+      <%= link_to notifications_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}" do %>
+        <div class="relative">
+          <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
+          <% unread_notifications_count = current_user.received_notifications.unread.count %>
+          <% if unread_notifications_count > 0 %>
+            <span class="absolute -top-1 -right-1 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
+              <%= unread_notifications_count %>
+            </span>
+          <% end %>
+        </div>
+        <h2 class="text-lg font-bold flex-grow">通知</h2>
+      <% end %>
+    </li>
   </ul>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
-                  class: "flex text-white font-bold text-2xl btn btn-info rounded-full rounded-full transition-colors duration-300",
+                  class: "flex text-white font-bold text-2xl btn btn-info rounded-full transition-colors duration-300",
                   data: { turbo_frame: "post_modal" } %>
   </div>
 </aside>

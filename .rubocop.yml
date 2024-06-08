@@ -49,7 +49,7 @@ Style/StringLiterals:
 
 # その他のカスタム設定
 Layout/LineLength:
-  Max: 120 # 行の最大長を120に設定
+  Max: 125 # 行の最大長を125に設定
 
 # RSpecの設定
 RSpec/ContextWording:

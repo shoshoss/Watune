@@ -4,14 +4,15 @@ class RepliesController < ApplicationController
   def create
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
-    @reply.parent_post = @post # 返信元の投稿を設定
     if @reply.save
+      Rails.logger.info 'Reply saved successfully'
       flash[:notice] = '返信しました！'
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to user_post_path(@post.user.username_slug, @post), notice: '返信が作成されました。' }
       end
     else
+      Rails.logger.error "Reply save failed: #{@reply.errors.full_messages.join(', ')}"
       flash.now[:danger] = 'お手数をおかけします。返信できませんでした。'
       respond_to do |format|
         format.turbo_stream
@@ -27,6 +28,6 @@ class RepliesController < ApplicationController
   end
 
   def reply_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy)
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy).merge(post_reply_id: @post.id)
   end
 end
