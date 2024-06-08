@@ -13,14 +13,26 @@
         <% end %>
         <%= render 'posts/post_content', post: @post %>
         <!-- 送信先の表示 -->
-        <%= render 'replies/form', post: @post, reply: @reply %>
-        <div id="replies" class="mt-4">
+        <div id="replies" class="mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px);">
           <% @replies.each do |reply| %>
             <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
             <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
           <% end %>
         </div>
+        <%= render 'replies/form', post: @post, reply: @reply %>
       </div>
     </div>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var repliesContainer = document.getElementById('replies');
+    repliesContainer.scrollTop = repliesContainer.scrollHeight;
+  });
+
+  document.addEventListener('turbo:load', function () {
+    var repliesContainer = document.getElementById('replies');
+    repliesContainer.scrollTop = repliesContainer.scrollHeight;
+  });
+</script>

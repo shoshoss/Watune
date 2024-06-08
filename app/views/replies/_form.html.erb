@@ -1,56 +1,58 @@
 <%= turbo_frame_tag "new_reply" do %>
   <%= form_with(model: [post, post.replies.build], url: user_post_replies_path(post.user.username_slug, post), local: false) do |f| %>
     <div id="error_messages"></div>
-    <div class="card-body p-2">
-      <%= render 'shared/error_messages', object: f.object %>
-      <div class="form-control pt-2">
-        <%= f.label :body, '返信内容', class: "block text-lg font-semibold", for: "body" %>
-        <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "5" %>
-      </div>
-
-      <section class="sound-clips">
-        <!-- 音声クリップはここに表示 -->
-      </section>
-
-      <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
-      <%= f.hidden_field :duration, class: "duration-field" %>
-
-      <!-- 送信先設定 -->
-      <%= turbo_frame_tag "privacy-settings" do %>
-        <div id="privacy-settings" class="form-control pt-2">
-          <label for="post_privacy" class="block text-lg font-semibold">返信先</label>
-          <div class="text-lg text-gray-500 mb-2">
-            <% if post.user.present? %>
-              <!-- 返信先の投稿が存在する場合 -->
-              <!-- 投稿のユーザー名にリンクを設定し、モーダルでプロフィールを表示 -->
-              <%= link_to profile_modal_path(username_slug: post.user.username_slug),
-                          class: "text-xl font-semibold text-blue-500 hover:underline",
-                          data: { turbo_frame: "profile_modal" } do %>
-                <%= post.user.display_name %><span class="font-normal">さん</span>
-              <% end %><br>
-
-              <!-- 投稿の祖先（リプライ元）ユーザーを一意に取得し、リンクを設定 -->
-              <% post.ancestors.map(&:user).uniq.each do |user| %>
-                <%= link_to profile_modal_path(username_slug: user.username_slug),
-                            class: "text-blue-500 hover:underline",
-                            data: { turbo_frame: "profile_modal" } do %>
-                  <%= user.display_name %><span class="font-normal">さん</span>
-                <% end %>
-                <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
-                <!-- 最後のユーザー以外には読点を追加 -->
-              <% end %>
-            <% else %>
-              <!-- 返信先の投稿が削除されている場合のメッセージ -->
-              <span>送信先の投稿が削除されました。</span>
-            <% end %>
-          </div>
-          <input type="hidden" name="post[privacy]" id="post_reply_privacy" value="reply">
-          <!-- 返信のプライバシー設定をhiddenフィールドに設定 -->
+    <div class="bg-white p-4 z-50 border-t-2 border-gray-200">
+      <div class="card-body p-2">
+        <%= render 'shared/error_messages', object: f.object %>
+        <div class="form-control pt-2">
+          <%= f.label :body, '返信内容', class: "block text-lg font-semibold", for: "body" %>
+          <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
         </div>
-      <% end %>
-    </div>
-    <div class="form-control mt-4 lg:mt-6">
-      <%= f.submit "返信する", class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
+
+        <section class="sound-clips">
+          <!-- 音声クリップはここに表示 -->
+        </section>
+
+        <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+        <%= f.hidden_field :duration, class: "duration-field" %>
+
+        <!-- 送信先設定 -->
+        <%= turbo_frame_tag "privacy-settings" do %>
+          <div id="privacy-settings" class="form-control pt-2">
+            <label for="post_privacy" class="block text-lg font-semibold">返信先</label>
+            <div class="text-lg text-gray-500 mb-2">
+              <% if post.user.present? %>
+                <!-- 返信先の投稿が存在する場合 -->
+                <!-- 投稿のユーザー名にリンクを設定し、モーダルでプロフィールを表示 -->
+                <%= link_to profile_modal_path(username_slug: post.user.username_slug),
+                            class: "text-xl font-semibold text-blue-500 hover:underline",
+                            data: { turbo_frame: "profile_modal" } do %>
+                  <%= post.user.display_name %><span class="font-normal">さん</span>
+                <% end %><br>
+
+                <!-- 投稿の祖先（リプライ元）ユーザーを一意に取得し、リンクを設定 -->
+                <% post.ancestors.map(&:user).uniq.each do |user| %>
+                  <%= link_to profile_modal_path(username_slug: user.username_slug),
+                              class: "text-blue-500 hover:underline",
+                              data: { turbo_frame: "profile_modal" } do %>
+                    <%= user.display_name %><span class="font-normal">さん</span>
+                  <% end %>
+                  <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
+                  <!-- 最後のユーザー以外には読点を追加 -->
+                <% end %>
+              <% else %>
+                <!-- 返信先の投稿が削除されている場合のメッセージ -->
+                <span>送信先の投稿が削除されました。</span>
+              <% end %>
+            </div>
+            <input type="hidden" name="post[privacy]" id="post_reply_privacy" value="reply">
+            <!-- 返信のプライバシー設定をhiddenフィールドに設定 -->
+          </div>
+        <% end %>
+      </div>
+      <div class="form-control mt-4 lg:mt-6">
+        <%= f.submit "返信する", class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
+      </div>
     </div>
   <% end %>
 <% end %>
