@@ -8,4 +8,11 @@
       <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "btn-load-more" %>
     </div>
   </div>
+
+  <!-- PC画面での投稿ボタン -->
+  <div class="fixed pl-[100px] bottom-24">
+    <%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
+      <i class="fa-solid fa-gift text-6xl"></i>
+    <% end %>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-<nav id="bottom-navbar" class="fixed bottom-0 left-0 z-50 w-full bg-white border-t sm:hidden transition-opacity duration-300 border-t-1 border-gray-200">
+<nav id="bottom-navbar" class="sm:hidden fixed bottom-0 left-0 z-50 w-full bg-white border-t transition-opacity duration-300 border-t-1 border-gray-200">
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
       <%= link_to posts_path, class: "block py-2 #{'text-blue-500' if current_page?(posts_path)}" do %>
@@ -30,8 +30,8 @@
 </nav>
 
 <!-- 投稿ボタン -->
-<%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "fixed right-5 bottom-16 z-50 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
-  <i class="fa-solid fa-gift text-2xl sm:text-3xl"></i>
+<%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
+  <i class="fa-solid fa-gift text-2xl sm:text-6xl"></i>
 <% end %>
 
 <script>
