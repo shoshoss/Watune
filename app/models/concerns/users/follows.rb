@@ -12,7 +12,7 @@ module Users
 
       # フォロー関連のインスタンスメソッド
       def follow(user)
-        active_friendships.find_or_create_by!(followed_id: user.id)
+        active_friendships.find_or_create_by(followed_id: user.id)
         create_notification_follow(user) # フォロー時に通知を作成
       end
 
@@ -25,7 +25,6 @@ module Users
         active_friendships.exists?(followed_id: user.id)
       end
 
-      
       # フォローしているユーザーの投稿回数を取得し、送信回数でソート
       def following_ordered_by_sent_posts
         following_ids = followings.pluck(:id)

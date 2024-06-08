@@ -11,9 +11,9 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy # 投稿と関連付け
   has_many :post_users, through: :posts # 投稿ユーザーと関連付け
   has_many :sent_notifications, class_name: 'Notification', foreign_key: 'sender_id', dependent: :destroy,
-                                    inverse_of: :sender
+                                inverse_of: :sender
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :destroy,
-                                        inverse_of: :recipient
+                                    inverse_of: :recipient
 
   # ファイル添付
   has_one_attached :avatar # アバター画像
