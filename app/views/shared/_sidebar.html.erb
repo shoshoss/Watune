@@ -26,7 +26,7 @@
           <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
           <% unread_notifications_count = current_user.received_notifications.unread.count %>
           <% if unread_notifications_count > 0 %>
-            <span class="absolute -top-1 -right-1 inline-block w-4 h-4 bg-red-500 text-white text-xs rounded-full text-center">
+            <span class="absolute -top-2 -right-2 inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
               <%= unread_notifications_count %>
             </span>
           <% end %>

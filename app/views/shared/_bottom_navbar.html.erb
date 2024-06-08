@@ -1,0 +1,60 @@
+<nav id="bottom-navbar" class="fixed bottom-0 left-0 z-50 w-full bg-white border-t sm:hidden transition-opacity duration-300 border-t-1 border-gray-200">
+  <ul class="py-1 flex justify-around">
+    <li class="flex-1 text-center">
+      <%= link_to posts_path, class: "block py-2 #{'text-blue-500' if current_page?(posts_path)}" do %>
+        <i class="fas fa-globe text-2xl"></i>
+      <% end %>
+    </li>
+    <li class="flex-1 text-center">
+      <%= link_to profile_show_path(username_slug: current_user.username_slug), class: "block py-2 #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug))}" do %>
+        <i class="fas fa-user text-2xl"></i>
+      <% end %>
+    </li>
+    <li class="flex-1 text-center relative">
+      <%= link_to notifications_path, class: "block py-2 #{'text-blue-500' if current_page?(notifications_path)}" do %>
+        <i class="fas fa-bell text-2xl"></i>
+        <% unread_notifications_count = current_user.received_notifications.unread.count %>
+        <% if unread_notifications_count > 0 %>
+          <span class="absolute top-0 right-[29px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
+            <%= unread_notifications_count %>
+          </span>
+        <% end %>
+      <% end %>
+    </li>
+    <li class="flex-1 text-center">
+      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'), class: "block py-2 #{'text-orange-400' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'))}" do %>
+        <i class="fa-regular fa-envelope text-2xl"></i>
+      <% end %>
+    </li>
+  </ul>
+</nav>
+
+<!-- 投稿ボタン -->
+<%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "fixed right-5 bottom-16 z-50 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
+  <i class="fa-solid fa-gift text-2xl sm:text-3xl"></i>
+<% end %>
+
+<script>
+  function handleNavbarOpacity() {
+    var navbar = document.getElementById('bottom-navbar');
+    var postButton = document.getElementById('post-button');
+    var lastScrollTop = 0;
+
+    window.addEventListener('scroll', function () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop) {
+        // スクロールダウン
+        navbar.style.opacity = '0.5';
+        postButton.style.opacity = '0.5';
+      } else {
+        // スクロールアップ
+        navbar.style.opacity = '1';
+        postButton.style.opacity = '1';
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', handleNavbarOpacity);
+  document.addEventListener('turbo:load', handleNavbarOpacity);
+</script>

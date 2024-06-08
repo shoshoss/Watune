@@ -74,15 +74,17 @@
 
 <body class="font-sans bg-white flex flex-col min-h-screen">
   <!-- ヘッダー -->
-  <header class="sticky top-0 z-50 bg-white w-full shadow max-w-screen-xl mx-auto">
-    <% if logged_in? %>
-      <%= render 'shared/header' %>
-    <% else %>
+  <% if logged_in? %>
+    <header class="sm:sticky sm:top-0 z-40 bg-white w-full shadow max-w-screen-xl mx-auto">
+        <%= render 'shared/header' %>
+    </header>
+  <% else %>
+    <header class="sticky top-0 z-40 bg-white w-full shadow max-w-screen-xl mx-auto">
       <div id="before_login_header">
         <%= render 'shared/before_login_header' %>
       </div>
-    <% end %>
-  </header>
+    </header>
+  <% end %>
 
   <!-- コンテンツコンテナ -->
   <div class="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
@@ -112,5 +114,8 @@
 
   <!-- フッター -->
   <%= render 'shared/footer' %>
+
+  <!-- スマホ用ボトムメニューバー -->
+  <%= render 'shared/bottom_navbar' if logged_in? %>
 </body>
 </html>
