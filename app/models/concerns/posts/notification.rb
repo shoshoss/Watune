@@ -8,14 +8,25 @@ module Posts
       def create_notification_like(current_user)
         return if current_user.id == user_id # 自分の投稿に対するいいねは通知しない
 
-        notification = current_user.sent_notifications.new(
-          recipient_id: user_id, # 通知の受信者
-          sender_id: current_user.id, # 通知の送信者
-          notifiable: self, # いいねされた投稿
-          action: 'like', # アクションタイプ
-          unread: true # 未読状態
-        )
-        notification.save if notification.valid?
+        existing_notification = current_user.sent_notifications.where(
+          recipient_id: user_id,
+          notifiable: self,
+          action: 'like',
+          created_at: 15.minutes.ago..Time.current
+        ).first
+
+        if existing_notification
+          existing_notification.update!(unread: true, created_at: Time.current)
+        else
+          notification = current_user.sent_notifications.new(
+            recipient_id: user_id, # 通知の受信者
+            sender_id: current_user.id, # 通知の送信者
+            notifiable: self, # いいねされた投稿
+            action: 'like', # アクションタイプ
+            unread: true # 未読状態
+          )
+          notification.save if notification.valid?
+        end
       end
 
       # 返信の通知を作成するメソッド

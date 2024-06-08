@@ -1,6 +1,6 @@
 <div class="notification <%= 'bg-orange-100' if notification.unread %>">
   <% if notification.action == 'like' %>
-    <div class="flex items-center ml-2">
+    <div class="flex items-center p-2">
       <i class="fas fa-heart text-[#F91980] text-xl sm:text-3xl "></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
@@ -12,7 +12,7 @@
     </div>
     <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'reply' %>
-    <div class="flex items-center ml-2">
+    <div class="flex items-center p-2">
       <i class="fas fa-reply text-blue-500 text-xl sm:text-3xl"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
@@ -24,7 +24,7 @@
     </div>
     <%= render partial: 'posts/post_content', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'follow' %>
-    <div class="flex items-center ml-2">
+    <div class="flex items-center p-2">
       <i class="fas fa-user-plus text-green-500 text-xl sm:text-3xl"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
@@ -35,7 +35,7 @@
       <span class="text-sm sm:text-lg">さんがあなたをフォローしました。</span>
     </div>
   <% elsif notification.action == 'post' %>
-    <div class="flex items-center ml-2">
+    <div class="flex items-center p-2">
       <i class="fa-regular fa-envelope text-orange-400 text-xl sm:text-3xl"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
         <%= image_tag(notification.sender.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>

@@ -13,7 +13,7 @@ module Users
       # フォロー関連のインスタンスメソッド
       def follow(user)
         active_friendships.find_or_create_by!(followed_id: user.id)
-        create_notification_follow!(user) # フォロー時に通知を作成
+        create_notification_follow(user) # フォロー時に通知を作成
       end
 
       def unfollow(user)
@@ -35,15 +35,26 @@ module Users
       end
 
       # フォロー時の通知を作成するメソッド
-      def create_notification_follow!(followed_user)
-        notification = sent_notifications.new(
+      def create_notification_follow(followed_user)
+        existing_notification = sent_notifications.where(
           recipient_id: followed_user.id,
-          sender_id: id,
           notifiable: followed_user,
           action: 'follow',
-          unread: true
-        )
-        notification.save if notification.valid?
+          created_at: 15.minutes.ago..Time.current
+        ).first
+
+        if existing_notification
+          existing_notification.update!(unread: true, created_at: Time.current)
+        else
+          notification = sent_notifications.new(
+            recipient_id: followed_user.id,
+            sender_id: id,
+            notifiable: followed_user,
+            action: 'follow',
+            unread: true
+          )
+          notification.save! if notification.valid?
+        end
       end
     end
   end
