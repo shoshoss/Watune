@@ -5,17 +5,19 @@
   <div class="container pt-3">
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
-        <% if @post.parent_post.present? %>
-          <%= render 'posts/post_content', post: @post.parent_post %>
-        <% elsif @post.post_reply_id.present? %>
-          <div class="text-lg text-gray-500 mb-2">
-            親の投稿が削除されました。
-          </div>
-        <% end %>
-        <%= render 'posts/post_content', post: @post %>
+        <div class="z-50 sticky top-0 sm:top-[80px] bg-white z-45">
+          <% if @post.parent_post.present? %>
+            <%= render 'posts/post_content', post: @post.parent_post %>
+          <% elsif @post.post_reply_id.present? %>
+            <div class="text-lg text-gray-500 mb-2">
+              親の投稿が削除されました。
+            </div>
+          <% end %>
+            <%= render 'posts/post_content', post: @post %>
+        </div>
 
         <!-- 送信先の表示 -->
-        <div id="replies" class="mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px); display: flex; flex-direction: column;">
+        <div id="replies" class="z-10 mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px); display: flex; flex-direction: column;">
           <% if @replies.present? %>
             <%= turbo_frame_tag "next-page" do %>
               <% @replies.each do |reply| %>

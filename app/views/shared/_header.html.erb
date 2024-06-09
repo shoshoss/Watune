@@ -41,7 +41,7 @@
                   data: { turbo_frame: "post_modal" } %>
       
       <!-- ユーザーメニュー -->
-      <div class="dropdown dropdown-hover dropdown-end ml-2 shrink-0">
+      <div class="z-50 dropdown dropdown-hover dropdown-end ml-2 shrink-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('wave_sm_c.svg')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
@@ -92,7 +92,7 @@
                   data: { turbo_frame: "post_modal" } %>
 
       <!-- ユーザーメニュー -->
-      <div class="dropdown dropdown-hover dropdown-end shrink-0">
+      <div class="z-50 dropdown dropdown-hover dropdown-end shrink-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn px-2">
           <%= image_tag (current_user.avatar.presence || asset_path('wave_sm_c.svg')), class: "rounded-full h-10 w-10 min-w-[35px]" %>
         </label>
