@@ -5,7 +5,7 @@
   <div class="container pt-3">
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
-        <div class="z-50 sticky top-0 sm:top-[80px] bg-white z-45">
+        <div class="bg-white">
           <% if @post.parent_post.present? %>
             <%= render 'posts/post_content', post: @post.parent_post %>
           <% elsif @post.post_reply_id.present? %>
@@ -17,19 +17,28 @@
         </div>
 
         <!-- 送信先の表示 -->
-        <div id="replies" class="z-10 mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px); display: flex; flex-direction: column;">
-          <% if @replies.present? %>
-            <%= turbo_frame_tag "next-page" do %>
-              <% @replies.each do |reply| %>
-                <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
-                <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
-              <% end %>
-              <% if @pagy.next %>
-                <%= render 'shared/next_page' %>
+        <div class="sm:pr-2 border-2 border-gray-300">
+          <div class="flex justify-center">
+            <button id="scroll-to-bottom" class="my-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
+            返信の下を表示
+            </button>
+          </div>
+          <div id="replies" class="sm:pr-2  overflow-y-auto" style="max-height: calc(100vh - 300px)">  
+            <% if @replies.present? %>
+              <%= turbo_frame_tag "next-page" do %>
+                <% @replies.each do |reply| %>
+                  <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
+                  <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
+                <% end %>
+                <% if @pagy.next %>
+                  <%= render 'shared/next_page' %>
+                <% end %>
               <% end %>
             <% end %>
-          <% end %>
+          </div>
+          
         </div>
+
         
         <%= render 'replies/form', post: @post, reply: @reply %>
       </div>
@@ -39,9 +48,13 @@
 
 <script>
   document.addEventListener('turbo:load', function() {
+    const scrollToBottomButton = document.getElementById('scroll-to-bottom');
     const repliesContainer = document.getElementById('replies');
-    if (repliesContainer) {
-      repliesContainer.scrollTop = repliesContainer.scrollHeight;
+
+    if (scrollToBottomButton && repliesContainer) {
+      scrollToBottomButton.addEventListener('click', function() {
+        repliesContainer.scrollTop = repliesContainer.scrollHeight;
+      });
     }
   });
 </script>

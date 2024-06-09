@@ -18,7 +18,7 @@ class PostsController < ApplicationController
     @show_reply_line = true
     @notifications = current_user.received_notifications.unread
     @reply = Post.new
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 25)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 15)
   end
 
   def new
