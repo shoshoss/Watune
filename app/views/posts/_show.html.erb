@@ -15,7 +15,7 @@
         <%= render 'posts/post_content', post: @post %>
 
         <!-- 送信先の表示 -->
-        <div id="replies" class="mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px);">
+        <div id="replies" class="mt-4 overflow-y-auto" style="max-height: calc(100vh - 300px); display: flex; flex-direction: column;">
           <% if @replies.present? %>
             <%= turbo_frame_tag "next-page" do %>
               <% @replies.each do |reply| %>
@@ -36,13 +36,10 @@
 <% end %>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    var repliesContainer = document.getElementById('replies');
-    repliesContainer.scrollTop = repliesContainer.scrollHeight;
-  });
-
-  document.addEventListener('turbo:load', function () {
-    var repliesContainer = document.getElementById('replies');
-    repliesContainer.scrollTop = repliesContainer.scrollHeight;
+  document.addEventListener('turbo:load', function() {
+    const repliesContainer = document.getElementById('replies');
+    if (repliesContainer) {
+      repliesContainer.scrollTop = repliesContainer.scrollHeight;
+    }
   });
 </script>
