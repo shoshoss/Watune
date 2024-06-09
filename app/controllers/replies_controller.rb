@@ -1,18 +1,32 @@
 class RepliesController < ApplicationController
-  before_action :set_post
+  before_action :set_post, only: %i[new_modal create_modal create]
+
+  def new_modal
+    @show_reply_line = true
+    @reply = Post.new
+  end
+
+  def create_modal
+    @reply = @post.replies.build(reply_params)
+    @reply.user = current_user
+    if @reply.save
+      flash[:notice] = '返信しました！'
+    else
+      flash.now[:danger] = 'お手数をおかけします。返信できませんでした。'
+      render :new_modal, status: :unprocessable_entity
+    end
+  end
 
   def create
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
-      Rails.logger.info 'Reply saved successfully'
       flash[:notice] = '返信しました！'
       respond_to do |format|
         format.turbo_stream
         format.html { redirect_to user_post_path(@post.user.username_slug, @post), notice: '返信が作成されました。' }
       end
     else
-      Rails.logger.error "Reply save failed: #{@reply.errors.full_messages.join(', ')}"
       flash.now[:danger] = 'お手数をおかけします。返信できませんでした。'
       respond_to do |format|
         format.turbo_stream
