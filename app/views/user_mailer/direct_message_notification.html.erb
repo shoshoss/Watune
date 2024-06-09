@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>新しい返信があります</h1>
+    <p>
+      <%= @user.display_name %>さん、こんにちは。
+    </p>
+    <p>
+      <%= @reply.user.display_name %>さんから新しい返信があります。
+    </p>
+    <p>
+      <%= link_to '返信を確認する', user_post_url(username_slug: @reply.user.username_slug, id: @reply.post_reply_id) %>
+    </p>
+  </body>
+</html>

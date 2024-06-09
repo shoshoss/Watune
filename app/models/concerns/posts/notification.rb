@@ -47,17 +47,22 @@ module Posts
       # 投稿の通知を作成するメソッド
       def create_notification_post(current_user)
         recipients = post_users.where(role: 'direct_recipient').pluck(:user_id)
+        puts "Recipients: #{recipients}" # デバッグメッセージ
         recipients.each do |recipient_id|
-          next if recipient_id == current_user.id # 自分自身への通知は不要
+          next if recipient_id == current_user.id
 
           notification = current_user.sent_notifications.new(
-            recipient_id:, # 通知の受信者
-            sender_id: current_user.id, # 通知の送信者
-            notifiable: self, # 投稿
-            action: 'post', # アクションタイプ
-            unread: true # 未読状態
+            recipient_id: recipient_id,
+            sender_id: current_user.id,
+            notifiable: self,
+            action: 'direct_message',
+            unread: true
           )
-          notification.save if notification.valid?
+          if notification.save
+            puts "Notification created for user_id: #{recipient_id}" # デバッグメッセージ
+          else
+            puts "Failed to create notification for user_id: #{recipient_id} - Errors: #{notification.errors.full_messages}" # デバッグメッセージ
+          end
         end
       end
     end

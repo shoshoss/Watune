@@ -27,8 +27,8 @@ class Post < ApplicationRecord
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
 
   # コールバック
-  after_create_commit :create_notification_for_post
-  after_create_commit :create_notification_for_reply, if: :reply?
+  after_create_commit :notify_post, if: :direct_message?
+  after_create_commit :notify_reply, if: :reply?
 
   # 投稿の可視性を判定するメソッド
   def visible_to?(user)
@@ -53,12 +53,23 @@ class Post < ApplicationRecord
   private
 
   # 投稿作成時に通知を作成するコールバックメソッド
-  def create_notification_for_post
+  def notify_post
+    puts "Running notify_post for post_id: #{id}" # デバッグメッセージ
     create_notification_post(user)
+    post_users.each do |post_user|
+      puts "Sending email to post_user: #{post_user.user.id}" # デバッグメッセージ
+      UserMailer.direct_message_notification(post_user.user, self).deliver_now
+    end
   end
 
-  def create_notification_for_reply
+  def direct_message?
+    puts "Privacy is #{privacy}" # デバッグメッセージ
+    privacy == 'selected_users'
+  end
+
+  def notify_reply
     create_notification_reply(user)
+    UserMailer.reply_notification(parent_post.user, self).deliver_now
   end
 
   def reply?
