@@ -54,16 +54,13 @@ class Post < ApplicationRecord
 
   # 投稿作成時に通知を作成するコールバックメソッド
   def notify_post
-    puts "Running notify_post for post_id: #{id}" # デバッグメッセージ
     create_notification_post(user)
     post_users.each do |post_user|
-      puts "Sending email to post_user: #{post_user.user.id}" # デバッグメッセージ
       UserMailer.direct_message_notification(post_user.user, self).deliver_now
     end
   end
 
   def direct_message?
-    puts "Privacy is #{privacy}" # デバッグメッセージ
     privacy == 'selected_users'
   end
 
