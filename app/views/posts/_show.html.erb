@@ -1,26 +1,60 @@
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'post_edit_modal' %>
+<%= turbo_frame_tag 'reply_modal' %>
 <%= turbo_frame_tag "post_show" do %>
   <div class="container pt-3">
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
-        <% if @post.parent_post.present? %>
-          <%= render 'posts/post_content', post: @post.parent_post %>
-        <% elsif @post.post_reply_id.present? %>
-          <div class="text-lg text-gray-500 mb-2">
-            親の投稿が削除されました。
-          </div>
-        <% end %>
-        <%= render 'posts/post_content', post: @post %>
-        <!-- 送信先の表示 -->
-        <%= render 'replies/form', post: @post, reply: @reply %>
-        <div id="replies" class="mt-4">
-          <% @replies.each do |reply| %>
-            <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
-            <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
+        <div class="bg-white">
+          <% if @post.parent_post.present? %>
+            <%= render 'posts/post_content', post: @post.parent_post %>
+          <% elsif @post.post_reply_id.present? %>
+            <div class="text-lg text-gray-500 mb-2">
+              親の投稿が削除されました。
+            </div>
           <% end %>
+            <%= render 'posts/post_content', post: @post %>
         </div>
+
+        <!-- 送信先の表示 -->
+        <div class="sm:pr-2 border-2 border-gray-300">
+          <div class="flex justify-center">
+            <button id="scroll-to-bottom" class="my-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
+            返信の下を表示
+            </button>
+          </div>
+          <div id="replies" class="sm:pr-2  overflow-y-auto" style="max-height: calc(100vh - 300px)">  
+            <% if @replies.present? %>
+              <%= turbo_frame_tag "next-page" do %>
+                <% @replies.each do |reply| %>
+                  <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
+                  <%= render 'posts/post_content', post: reply, notifications: reply_notifications %>
+                <% end %>
+                <% if @pagy.next %>
+                  <%= render 'shared/next_page' %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+          
+        </div>
+
+        
+        <%= render 'replies/form', post: @post, reply: @reply %>
       </div>
     </div>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('turbo:load', function() {
+    const scrollToBottomButton = document.getElementById('scroll-to-bottom');
+    const repliesContainer = document.getElementById('replies');
+
+    if (scrollToBottomButton && repliesContainer) {
+      scrollToBottomButton.addEventListener('click', function() {
+        repliesContainer.scrollTop = repliesContainer.scrollHeight;
+      });
+    }
+  });
+</script>

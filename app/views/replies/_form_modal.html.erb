@@ -1,0 +1,5 @@
+<%= turbo_frame_tag "new_reply_modal" do %>
+  <%= form_with model: [post, post.replies.build], url: create_reply_modal_path(post.user.username_slug, post), local: true, data: { controller: "reply-modal", action: "turbo:submit-end->reply-modal#afterClose" } do |f| %>
+    <%= render 'replies/form_fields', f: f, post: post %>
+  <% end %>
+<% end %>

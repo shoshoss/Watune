@@ -11,8 +11,45 @@
 
   <!-- PC画面での投稿ボタン -->
   <div class="fixed pl-[100px] bottom-24">
-    <%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
-      <i class="fa-solid fa-gift text-6xl"></i>
+    <% if params[:controller] == "posts" && params[:action] == "show" %>
+      <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
+                  id: "pc-reply-button",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+                  data: { turbo_frame: "reply_modal" } do %>
+        <i class="fa-regular fa-comment text-6xl"></i>
+      <% end %>
+    <% else %>
+      <%= link_to new_post_path(privacy: 'open'),
+                  id: "pc-post-button",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+                  data: { turbo_frame: "post_modal" } do %>
+        <i class="fa-solid fa-gift text-6xl"></i>
+      <% end %>
     <% end %>
   </div>
 </div>
+
+<script>
+  function handleWidgetOpacity() {
+    var pcPostButton = document.getElementById('pc-post-button');
+    var pcReplyButton = document.getElementById('pc-reply-button');
+    var lastScrollTop = 0;
+
+    window.addEventListener('scroll', function () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop) {
+        // スクロールダウン
+        if (pcPostButton) pcPostButton.style.opacity = '0.5';
+        if (pcReplyButton) pcReplyButton.style.opacity = '0.5';
+      } else {
+        // スクロールアップ
+        if (pcPostButton) pcPostButton.style.opacity = '1';
+        if (pcReplyButton) pcReplyButton.style.opacity = '1';
+      }
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', handleWidgetOpacity);
+  document.addEventListener('turbo:load', handleWidgetOpacity);
+</script>

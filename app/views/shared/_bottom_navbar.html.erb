@@ -30,14 +30,27 @@
 </nav>
 
 <!-- 投稿ボタン -->
-<%= link_to new_post_path(privacy: 'open'), id: "post-button", class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg", data: { turbo_frame: "post_modal" } do %>
-  <i class="fa-solid fa-gift text-2xl sm:text-6xl"></i>
+<% if params[:controller] == "posts" && params[:action] == "show" %>
+  <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
+              id: "reply-button",
+              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+              data: { turbo_frame: "reply_modal" } do %>
+    <i class="fa-regular fa-comment text-2xl"></i>
+  <% end %>
+<% else %>
+  <%= link_to new_post_path(privacy: 'open'),
+              id: "post-button",
+              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+              data: { turbo_frame: "post_modal" } do %>
+    <i class="fa-solid fa-gift text-2xl"></i>
+  <% end %>
 <% end %>
 
 <script>
   function handleNavbarOpacity() {
     var navbar = document.getElementById('bottom-navbar');
     var postButton = document.getElementById('post-button');
+    var replyButton = document.getElementById('reply-button');
     var lastScrollTop = 0;
 
     window.addEventListener('scroll', function () {
@@ -45,11 +58,13 @@
       if (scrollTop > lastScrollTop) {
         // スクロールダウン
         navbar.style.opacity = '0.5';
-        postButton.style.opacity = '0.5';
+        if (postButton) postButton.style.opacity = '0.5';
+        if (replyButton) replyButton.style.opacity = '0.5';
       } else {
         // スクロールアップ
         navbar.style.opacity = '1';
-        postButton.style.opacity = '1';
+        if (postButton) postButton.style.opacity = '1';
+        if (replyButton) replyButton.style.opacity = '1';
       }
       lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
