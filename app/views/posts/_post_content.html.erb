@@ -58,12 +58,14 @@
         <div class="text-sm text-gray-500 mb-2">
           返信先: 
           <% post.ancestors.map(&:user).uniq.each do |user| %>
-            <%= link_to profile_modal_path(username_slug: user.username_slug),
-                        class: "text-blue-500 font-semibold hover:underline",
-                        data: { turbo_frame: "profile_modal" } do %>
-              <%= user.display_name %><span class="font-normal">さん</span>
+            <% unless post.user.id == user.id %>
+              <%= link_to profile_modal_path(username_slug: user.username_slug),
+                          class: "text-blue-500 font-semibold hover:underline",
+                          data: { turbo_frame: "profile_modal" } do %>
+                <%= user.display_name %><span class="font-normal">さん</span>
+              <% end %>
+              <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
             <% end %>
-            <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
           <% end %>
         </div>
       <% end %>

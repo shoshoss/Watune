@@ -32,13 +32,15 @@
 
                 <!-- 投稿の祖先（リプライ元）ユーザーを一意に取得し、リンクを設定 -->
                 <% post.ancestors.map(&:user).uniq.each do |user| %>
-                  <%= link_to profile_modal_path(username_slug: user.username_slug),
-                              class: "text-blue-500 hover:underline",
-                              data: { turbo_frame: "profile_modal" } do %>
-                    <%= user.display_name %><span class="font-normal">さん</span>
+                  <% unless user == current_user %>
+                    <%= link_to profile_modal_path(username_slug: user.username_slug),
+                                class: "text-blue-500 hover:underline",
+                                data: { turbo_frame: "profile_modal" } do %>
+                      <%= user.display_name %><span class="font-normal">さん</span>
+                    <% end %>
+                    <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
+                    <!-- 最後のユーザー以外には読点を追加 -->
                   <% end %>
-                  <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>
-                  <!-- 最後のユーザー以外には読点を追加 -->
                 <% end %>
               <% else %>
                 <!-- 返信先の投稿が削除されている場合のメッセージ -->
