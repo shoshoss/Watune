@@ -5,7 +5,7 @@ class NotificationsController < ApplicationController
                           when 'unread'
                             current_user.received_notifications.unread
                           when 'friends'
-                            current_user.received_notifications.where(action: %w[reply post], unread: false)
+                            current_user.received_notifications.where(action: %w[reply direct], unread: false)
                           when 'likes_and_follows'
                             current_user.received_notifications.where(action: %w[like follow], unread: false)
                           else

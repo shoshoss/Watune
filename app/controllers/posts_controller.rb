@@ -29,20 +29,22 @@ class PostsController < ApplicationController
   def edit; end
 
   def create
-    @post = current_user.posts.build(post_params)
-    if @post.save
-      create_post_users(@post) if params[:post][:recipient_ids].present?
-      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      redirect_to user_post_path(current_user.username_slug, @post)
-    else
-      flash.now[:danger] =
-        t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
-      render :new, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @post = current_user.posts.build(post_params.except(:recipient_ids))
+      if @post.save
+        create_post_users(@post) if params[:post][:recipient_ids].present?
+
+        flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
+        redirect_to user_post_path(current_user.username_slug, @post)
+      else
+        flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
   def update
-    if @post.update(post_params)
+    if @post.update(post_params.except(:recipient_ids))
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -84,7 +86,7 @@ class PostsController < ApplicationController
 
   # 投稿のパラメータを許可する
   def post_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id)
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
   end
 
   # 投稿に関連するユーザーを作成する

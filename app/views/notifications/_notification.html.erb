@@ -34,7 +34,7 @@
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたをフォローしました。</span>
     </div>
-  <% elsif notification.action == 'post' %>
+  <% elsif notification.action == 'direct' %>
     <div class="flex items-center p-2">
       <i class="fa-regular fa-envelope text-orange-400 text-xl sm:text-3xl"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>

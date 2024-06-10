@@ -54,7 +54,7 @@ module Posts
             recipient_id:, # 通知の受信者
             sender_id: current_user.id, # 通知の送信者
             notifiable: self, # 投稿
-            action: 'post', # アクションタイプ
+            action: 'direct', # アクションタイプ
             unread: true # 未読状態
           )
           notification.save if notification.valid?
