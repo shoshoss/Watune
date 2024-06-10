@@ -46,12 +46,12 @@ module Posts
 
       # 投稿の通知を作成するメソッド
       def create_notification_post(current_user)
-        recipients = self.post_users.where(role: 'direct_recipient').pluck(:user_id)
+        recipients = post_users.where(role: 'direct_recipient').pluck(:user_id)
         recipients.each do |recipient_id|
           next if recipient_id == current_user.id # 自分自身への通知は不要
 
           notification = current_user.sent_notifications.new(
-            recipient_id: recipient_id, # 通知の受信者
+            recipient_id:, # 通知の受信者
             sender_id: current_user.id, # 通知の送信者
             notifiable: self, # 投稿
             action: 'direct', # アクションタイプ

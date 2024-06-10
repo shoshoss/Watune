@@ -9,14 +9,14 @@ class UserMailer < ApplicationMailer
     @user = user
     @reply = reply
     @url = notifications_url
-    mail(to: @user.email, subject: '新しい返信があります')
+    mail(to: @user.email, subject: '【WaveConGra】新しい通知（返信）の確認')
   end
 
   def direct_notification(user, post)
     @user = user
     @post = post
     @url = notifications_url
-    mail(to: @user.email, subject: '新しいダイレクトメッセージがあります')
+    mail(to: @user.email, subject: '【WaveConGra】新しい通知（DM）の確認')
   end
 
   private
