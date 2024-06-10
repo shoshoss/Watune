@@ -9,7 +9,7 @@ class NotificationJob < ApplicationJob
     when 'reply'
       post.create_notification_reply(post.user)
       UserMailer.reply_notification(post.parent_post.user, post).deliver_later
-    when 'direct'
+    when 'direct_post'
       post.create_notification_post(post.user)
       post.post_users.each do |post_user|
         UserMailer.direct_notification(post_user.user, post).deliver_later
