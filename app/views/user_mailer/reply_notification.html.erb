@@ -1,15 +1,7 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-  </head>
-  <body>
-    <h1>返信がありました</h1>
-    <p>
-      <%= @reply.user.display_name %>さんからの返信があります。
-    </p>
-    <p>
-      <%= link_to '返信を確認する', user_post_url(username_slug: @reply.parent_post.user.username_slug, id: @reply.parent_post.id) %>
-    </p>
-  </body>
-</html>
+<p><%= @user.display_name %>様</p>
+<p>===============================================</p>
+
+<p>新しい返信があります。</p>
+
+<p>以下のリンクから返信内容を確認できます。</p>
+<p><a href="<%= @url %>"><%= @url %></a></p>
