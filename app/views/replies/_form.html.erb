@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_reply" do %>
-  <%= form_with(model: [post, post.replies.build], url: user_post_replies_path(post.user.username_slug, post), local: false) do |f| %>
+  <%= form_with model: [post, post.replies.build], url: user_post_replies_path(post.user.username_slug, post) do |f| %>
     <%= render 'replies/form_fields', f: f, post: post %>
   <% end %>
 <% end %>
