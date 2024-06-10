@@ -8,7 +8,7 @@ class Like < ApplicationRecord
 
   private
 
-  def create_notify_like
+  def notify_like
     return if user_id == post.user_id
 
     post.create_notification_like(user)
