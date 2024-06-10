@@ -12,7 +12,7 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: '新しい返信があります')
   end
 
-  def direct_message_notification(user, message)
+  def direct_notification(user, message)
     @user = user
     @message = message
     mail(to: @user.email, subject: '新しいダイレクトメッセージがあります')

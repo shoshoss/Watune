@@ -27,7 +27,7 @@ class Post < ApplicationRecord
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
 
   # コールバック
-  after_create_commit :notify_post, if: :direct_message?
+  after_create_commit :notify_post, if: :direct?
   after_create_commit :notify_reply, if: :reply?
 
   # 投稿の可視性を判定するメソッド
@@ -56,11 +56,11 @@ class Post < ApplicationRecord
   def notify_post
     create_notification_post(user)
     post_users.each do |post_user|
-      UserMailer.direct_message_notification(post_user.user, self).deliver_now
+      UserMailer.direct_notification(post_user.user, self).deliver_now
     end
   end
 
-  def direct_message?
+  def direct?
     privacy == 'selected_users'
   end
 
