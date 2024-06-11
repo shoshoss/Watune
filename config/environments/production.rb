@@ -14,7 +14,7 @@ Rails.application.configure do
 
   # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
-  
+
   # Cloudflare R2 を使う
   config.active_storage.service = :cloudflare
 
@@ -66,7 +66,7 @@ Rails.application.configure do
   config.hosts << 'www.wavecongra.com'
   config.hosts << 'wavecongra.com'
   config.hosts << 'www.wavecongra.site'
-  
+
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
     r301(/.*/, 'https://www.wavecongra.com$&', if: proc { |rack_env|
       rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
