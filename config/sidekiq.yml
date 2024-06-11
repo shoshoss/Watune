@@ -1,20 +1,25 @@
 ---
-:concurrency: 5
+# デフォルトの並列処理数を10に設定
+:concurrency: 10
+
+# キューの優先順位を設定。criticalキューは2倍の頻度でチェック
 :queues:
   - [critical, 2]
   - default
   - low
 
+# ステージング環境の設定（本番環境と同じ設定を使用）
 staging:
   :concurrency: 10
   :queues:
-    - critical
+    - [critical, 2]
     - default
     - low
 
+# 本番環境の設定
 production:
   :concurrency: 10
   :queues:
-    - critical
+    - [critical, 2]
     - default
     - low
