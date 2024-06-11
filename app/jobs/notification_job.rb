@@ -1,8 +1,6 @@
-# app/jobs/notification_job.rb
 class NotificationJob < ApplicationJob
-  queue_as :default
+  queue_as :default  # デフォルトのキューにジョブを送る
 
-  # 通知タイプと投稿IDを受け取る
   def perform(notification_type, post_id)
     post = Post.find(post_id)
     case notification_type
