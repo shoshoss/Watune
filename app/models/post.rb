@@ -28,8 +28,6 @@ class Post < ApplicationRecord
 
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
 
-  after_create :create_post_users_and_notify
-
   # 投稿の可視性を判定するメソッド
   def visible_to?(user)
     return true if self.user == user # 投稿者本人
@@ -48,39 +46,5 @@ class Post < ApplicationRecord
       current_post = current_post.parent_post
     end
     parents.reverse
-  end
-
-  # コールバック
-  def create_post_users_and_notify
-    if direct? && recipient_ids.present?
-      recipient_ids.each do |recipient_id|
-        post_users.create(user_id: recipient_id, role: 'direct_recipient')
-      end
-      notify_async('direct_post')
-    elsif reply?
-      notify_async('reply')
-    end
-  end
-
-  # 非同期通知を実行する
-  def notify_async(notification_type)
-    NotificationJob.perform_later(notification_type, id)
-  end
-
-  private
-
-  # 通知が必要かどうかを判定する
-  def needs_notification?
-    reply? || direct?
-  end
-
-  # リプライかどうかを判定する
-  def reply?
-    post_reply_id.present?
-  end
-
-  # ダイレクトポストかどうかを判定する
-  def direct?
-    privacy == 'selected_users'
   end
 end
