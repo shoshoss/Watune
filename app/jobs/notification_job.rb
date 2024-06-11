@@ -1,5 +1,5 @@
 class NotificationJob < ApplicationJob
-  queue_as :default  # デフォルトのキューにジョブを送る
+  queue_as :default # デフォルトのキューにジョブを送る
 
   def perform(notification_type, post_id)
     post = Post.find(post_id)
