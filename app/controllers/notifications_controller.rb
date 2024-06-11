@@ -1,13 +1,11 @@
 class NotificationsController < ApplicationController
   def index
-    @category = params[:category] || 'unread'
+    @category = params[:category] || 'all'
     notifications_scope = case @category
-                          when 'unread'
-                            current_user.received_notifications.unread
                           when 'friends'
-                            current_user.received_notifications.where(action: %w[reply direct], unread: false)
+                            current_user.received_notifications.where(action: %w[reply direct])
                           when 'likes_and_follows'
-                            current_user.received_notifications.where(action: %w[like follow], unread: false)
+                            current_user.received_notifications.where(action: %w[like follow])
                           else
                             current_user.received_notifications
                           end

@@ -5,13 +5,13 @@
   <div class="max-w-xl w-full bg-white border-2 border-gray-200">
     <h1 class="text-center font-bold text-xl mt-2">通知</h1>
     <div class="c-tabs flex mb-2">
-      <%= link_to notifications_path(category: 'unread'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('unread', initial_category: 'unread')} hover:bg-sky-100 text-center py-2" do %>
-        未読
+      <%= link_to notifications_path(category: 'all'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+        すべて
       <% end %>
-      <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('friends', initial_category: 'unread')} hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
         仲間から
       <% end %>
-      <%= link_to notifications_path(category: 'likes_and_follows'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('likes_and_follows', initial_category: 'unread')} hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to notifications_path(category: 'likes_and_follows'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('likes_and_follows', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
         いいねとフォロー
       <% end %>
     </div>
