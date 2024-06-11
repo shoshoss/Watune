@@ -1,82 +1,42 @@
-# frozen_string_literal: true
-
-require 'active_support/core_ext/integer/time'
-
+# 本番環境の設定
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+  # ここに指定された設定はconfig/application.rbよりも優先されます。
 
-  # Code is not reloaded between requests.
+  # リクエスト間でコードをリロードしません。
   config.enable_reloading = false
 
-  # Eager load code on boot. This eager loads most of Rails and
-  # your application in memory, allowing both threaded web servers
-  # and those relying on copy on write to perform better.
-  # Rake tasks automatically ignore this option for performance.
+  # 起動時にコードをイージャーロードします。
   config.eager_load = true
 
-  # Full error reports are disabled and caching is turned on.
+  # フルエラーレポートを無効にし、キャッシュを有効にします。
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
-  # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
-  # config.require_master_key = true
-
-  # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
+  # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
-  # config.public_file_server.enabled = true
-
-  # Compress CSS using a preprocessor.
-  # config.assets.css_compressor = :sass
-
-  # Do not fall back to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
-
-  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  # config.asset_host = "http://assets.example.com"
-
-  # Specifies the header that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
-  # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
-
-  # Store uploaded files on the local file system (see config/storage.yml for options).
+  
   # Cloudflare R2 を使う
   config.active_storage.service = :cloudflare
 
-  # Mount Action Cable outside main process or domain.
-  # config.action_cable.mount_path = nil
-  # config.action_cable.url = "wss://example.com/cable"
-  # config.action_cable.allowed_request_origins = [ "http://example.com", /http:\/\/example.*/ ]
-
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
-  # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
-
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # SSL経由でのアクセスを強制し、Strict-Transport-Securityを使用し、セキュアクッキーを使用します。
   config.force_ssl = true
 
-  # Log to STDOUT by default
+  # ログをSTDOUTに出力します。
   config.logger = ActiveSupport::Logger.new($stdout)
-                                       .tap  { |logger| logger.formatter = Logger::Formatter.new }
+                                       .tap { |logger| logger.formatter = Logger::Formatter.new }
                                        .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
 
-  # Prepend all log lines with the following tags.
+  # すべてのログ行の前にリクエストIDタグを追加します。
   config.log_tags = [:request_id]
 
-  # "info" includes generic and useful information about system operation, but avoids logging too much
-  # information to avoid inadvertent exposure of personally identifiable information (PII). If you
-  # want to log everything, set the level to "debug".
+  # ログレベルを設定します。デフォルトは「info」です。
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
 
-  # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  # Active Jobのキューアダプタを設定します。
+  config.active_job.queue_adapter = :async
 
-  # Use a real queuing backend for Active Job (and separate queues per environment).
-  # config.active_job.queue_adapter = :resque
-  # config.active_job.queue_name_prefix = "app_production"
-
+  # メール設定
   config.action_mailer.perform_caching = false
-
   config.action_mailer.default_url_options = Settings.default_url_options.to_h
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_options = { charset: 'utf-8' }
@@ -90,29 +50,23 @@ Rails.application.configure do
     authentication: 'login'
   }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
-
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
+  # I18nのロケールフォールバックを有効にします。
   config.i18n.fallbacks = true
 
-  # Don't log any deprecations.
+  # 非推奨のログを出力しません。
   config.active_support.report_deprecations = false
 
-  # Do not dump schema after migrations.
+  # マイグレーション後にスキーマをダンプしません。
   config.active_record.dump_schema_after_migration = false
 
   config.assets.css_compressor = nil
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
+  # DNSリバインディング保護とその他の`Host`ヘッダー攻撃を有効にします。
   config.hosts << 'wavecongra.onrender.com'
   config.hosts << 'www.wavecongra.com'
   config.hosts << 'wavecongra.com'
   config.hosts << 'www.wavecongra.site'
-  # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
     r301(/.*/, 'https://www.wavecongra.com$&', if: proc { |rack_env|
       rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
