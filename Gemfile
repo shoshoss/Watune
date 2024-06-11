@@ -32,7 +32,9 @@ gem 'cssbundling-rails'
 gem 'jbuilder'
 
 # 本番環境でAction Cableを実行するためにRedisアダプターを使用
-# gem 'redis', '>= 4.0.1'
+gem 'redis', '>= 5.2'
+
+gem 'sidekiq', '>= 7.2'
 
 # Redisで高度なデータ型を取得するためのKredis
 # gem 'kredis'
