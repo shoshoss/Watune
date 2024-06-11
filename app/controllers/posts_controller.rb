@@ -30,9 +30,8 @@ class PostsController < ApplicationController
 
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
+    @post.recipient_ids = post_params[:recipient_ids] if post_params[:recipient_ids].present?
     if @post.save
-      create_post_users(@post) if params[:post][:recipient_ids].present?
-
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -85,13 +84,6 @@ class PostsController < ApplicationController
   # 投稿のパラメータを許可する
   def post_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
-  end
-
-  # 投稿に関連するユーザーを作成する
-  def create_post_users(post)
-    params[:post][:recipient_ids].each do |recipient_id|
-      post.post_users.create(user_id: recipient_id, role: 'direct_recipient')
-    end
   end
 
   # フォローしているユーザーを投稿数でソートする

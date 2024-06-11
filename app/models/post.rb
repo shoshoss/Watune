@@ -4,6 +4,8 @@ class Post < ApplicationRecord
   include Posts::SharedScopes
   include Posts::Notification
 
+  attr_accessor :recipient_ids
+
   belongs_to :user
   has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
@@ -21,14 +23,12 @@ class Post < ApplicationRecord
   has_one_attached :audio
 
   validates :body, length: { maximum: 10_000 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_thanまたはequal_to: 3599 },
                        allow_nil: true
 
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
 
-  # コールバック
-  after_create_commit :notify_post, if: :direct?
-  after_create_commit :notify_reply, if: :reply?
+  after_create :create_post_users_and_notify
 
   # 投稿の可視性を判定するメソッド
   def visible_to?(user)
@@ -50,26 +50,37 @@ class Post < ApplicationRecord
     parents.reverse
   end
 
-  private
-
-  # 投稿作成時に通知を作成するコールバックメソッド
-  def notify_post
-    create_notification_post(user)
-    post_users.each do |post_user|
-      UserMailer.direct_notification(post_user.user, self).deliver_now
+  # コールバック
+  def create_post_users_and_notify
+    if direct? && recipient_ids.present?
+      recipient_ids.each do |recipient_id|
+        post_users.create(user_id: recipient_id, role: 'direct_recipient')
+      end
+      notify_async('direct_post')
+    elsif reply?
+      notify_async('reply')
     end
   end
 
-  def direct?
-    privacy == 'selected_users'
+  # 非同期通知を実行する
+  def notify_async(notification_type)
+    NotificationJob.perform_later(notification_type, id)
   end
 
-  def notify_reply
-    create_notification_reply(user)
-    UserMailer.reply_notification(parent_post.user, self).deliver_now
+  private
+
+  # 通知が必要かどうかを判定する
+  def needs_notification?
+    reply? || direct?
   end
 
+  # リプライかどうかを判定する
   def reply?
     post_reply_id.present?
+  end
+
+  # ダイレクトポストかどうかを判定する
+  def direct?
+    privacy == 'selected_users'
   end
 end
