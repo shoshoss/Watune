@@ -10,6 +10,7 @@ class RepliesController < ApplicationController
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
+      notify_async(@reply, 'reply')
       flash[:notice] = '返信しました！'
     else
       flash.now[:danger] = 'お手数をおかけします。返信できませんでした。'
@@ -21,6 +22,7 @@ class RepliesController < ApplicationController
     @reply = @post.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
+      notify_async(@reply, 'reply')
       flash[:notice] = '返信しました！'
       respond_to do |format|
         format.turbo_stream
@@ -43,5 +45,10 @@ class RepliesController < ApplicationController
 
   def reply_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy).merge(post_reply_id: @post.id)
+  end
+
+  # 非同期通知を実行する
+  def notify_async(post, notification_type)
+    NotificationJob.perform_later(notification_type, post.id)
   end
 end
