@@ -32,7 +32,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
       create_post_users(@post) if params[:post][:recipient_ids].present?
-      notify_async(@post, 'direct_post') if @post.privacy == 'selected_users'
+      notify_async(@post, 'direct') if @post.privacy == 'selected_users'
 
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
