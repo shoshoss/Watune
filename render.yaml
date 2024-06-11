@@ -5,17 +5,42 @@ databases:
     region: singapore
 
 services:
+  - type: redis
+    name: sidekiq-redis
+    region: singapore
+    maxmemoryPolicy: noeviction
+    ipAllowList: [] # only allow internal connections
+
+  - type: worker
+    name: sidekiq-worker
+    runtime: ruby
+    region: singapore
+    buildCommand: bundle install
+    startCommand: bundle exec sidekiq
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: sidekiq-redis
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+
   - type: web
     name: WaveConGra
     runtime: ruby
     region: singapore
-    plan: free
-    buildCommand: "./bin/render-build.sh"
-    startCommand: "bundle exec puma -C config/puma.rb"
+    buildCommand: ./bin/render-build.sh
+    startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: WaveConGra
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: sidekiq-redis
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
