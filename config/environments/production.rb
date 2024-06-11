@@ -33,7 +33,7 @@ Rails.application.configure do
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
 
   # Active Jobのキューアダプタを設定します。
-  config.active_job.queue_adapter = :async
+  config.active_job.queue_adapter = :sidekiq
 
   # メール設定
   config.action_mailer.perform_caching = false
