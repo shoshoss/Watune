@@ -1,25 +1,20 @@
-services:
-  - type: redis
-    name: Gmail通知
+databases:
+  - name: WaveConGra
+    databaseName: dbcongra
+    user: shonosuke
     region: singapore
-    maxmemoryPolicy: allkeys-lru
-    plan: free
 
+services:
   - type: web
     name: WaveConGra
     runtime: ruby
     region: singapore
-    buildCommand: ./bin/render-build.sh
-    startCommand: bundle exec puma -C config/puma.rb
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: WaveConGra
-          property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: redis
-          name: Gmail通知
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
@@ -40,3 +35,9 @@ services:
           property: connectionString
       - key: RAILS_MASTER_KEY
         sync: false
+
+  - type: redis
+    name: Gmail通知
+    plan: free
+    region: singapore
+    maxmemoryPolicy: noeviction
