@@ -64,7 +64,7 @@ class Post < ApplicationRecord
 
   # 非同期通知を実行する
   def notify_async(notification_type)
-    NotificationJob.perform_later(notification_type, self.id)
+    NotificationJob.perform_later(notification_type, id)
   end
 
   private
