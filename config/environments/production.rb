@@ -65,6 +65,8 @@ Rails.application.configure do
   config.hosts << 'wavecongra.onrender.com'
   config.hosts << 'www.wavecongra.com'
   config.hosts << 'wavecongra.com'
+  config.hosts << 'www.watune.com'
+  config.hosts << 'watune.com'
   config.hosts << 'www.wavecongra.site'
 
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
