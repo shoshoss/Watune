@@ -11,7 +11,8 @@ class AddEmailNotificationSettingsToUsers < ActiveRecord::Migration[7.1]
       t.boolean :email_notify_on_like, default: false, null: false
       t.boolean :email_notify_on_follow, default: false, null: false
       t.string :notification_frequency, default: 'real-time', null: false
-      t.datetime :notification_time, default: -> { 'CURRENT_TIMESTAMP' }, null: false
+      t.datetime :notification_time, null: true
+      t.integer :notification_weekday, default: 0, null: false  # 日曜日をデフォルトとする
     end
   end
 end

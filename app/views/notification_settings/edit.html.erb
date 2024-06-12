@@ -14,12 +14,17 @@
 
       <div class="form-control mb-6">
         <%= form.label :notification_frequency, '通知の頻度', class: 'label text-lg font-bold' %>
-        <%= form.select :notification_frequency, options_for_select([['リアルタイム', 'real-time'], ['毎日', 'daily'], ['毎週', 'weekly']], @user.notification_frequency), class: 'select select-info select-bordered select-md w-full max-w-xs text-lg' %>
+        <%= form.select :notification_frequency, options_for_select([['リアルタイムで通知', 'real-time'], ['1日おきに通知', 'daily'], ['1週間おきに通知', 'weekly']], @user.notification_frequency), class: 'select select-info select-bordered select-md w-full max-w-xs text-lg' %>
       </div>
 
-      <div class="form-control mb-6" id="notification_time_section" style="display: none;">
-        <%= form.label :notification_time, '通知時間 (Gmail通知の場合)', class: 'label text-lg font-bold' %>
-        <%= form.select :notification_time, options_for_select((0..23).map { |h| ["#{h}:00", h] }, @user.notification_time&.hour || 9), class: 'select select-info select-bordered select-md w-full text-lg' %>
+      <div class="ml-4 form-control mb-6" id="notification_time_section" style="display: none;">
+        <%= form.label :notification_time, '通知時間 (通知がある場合)', class: 'label text-lg font-bold' %>
+        <%= form.select :notification_time, options_for_select((0..23).map { |h| ["#{h}:00", h] }, @user.notification_time&.hour || 9), class: 'select select-info select-bordered select-md w-full text-lg max-w-xs' %>
+      </div>
+
+      <div class="ml-4 form-control mb-6" id="notification_weekday_section" style="display: none;">
+        <%= form.label :notification_weekday, '通知曜日 (1週間おきに通知の場合)', class: 'label text-lg font-bold' %>
+        <%= form.select :notification_weekday, options_for_select(Date::DAYNAMES.each_with_index.map { |day, i| [day, i] }, @user.notification_weekday), class: 'select select-info select-bordered select-lg w-full text-lg max-w-xs' %>
       </div>
 
       <h3 class="text-xl font-semibold mb-4">Gmail通知の詳細設定</h3>
@@ -82,19 +87,25 @@
   document.addEventListener('DOMContentLoaded', function() {
     const frequencySelect = document.getElementById('user_notification_frequency');
     const notificationTimeSection = document.getElementById('notification_time_section');
+    const notificationWeekdaySection = document.getElementById('notification_weekday_section');
 
-    function toggleNotificationTimeSection() {
-      if (frequencySelect.value === 'real-time') {
+    function toggleNotificationSections() {
+      const frequency = frequencySelect.value;
+      if (frequency === 'real-time') {
         notificationTimeSection.style.display = 'none';
-      } else {
+        notificationWeekdaySection.style.display = 'none';
+      } else if (frequency === 'daily') {
         notificationTimeSection.style.display = 'block';
+        notificationWeekdaySection.style.display = 'none';
+      } else if (frequency === 'weekly') {
+        notificationTimeSection.style.display = 'block';
+        notificationWeekdaySection.style.display = 'block';
       }
     }
 
-    frequencySelect.addEventListener('change', toggleNotificationTimeSection);
-    toggleNotificationTimeSection();
+    frequencySelect.addEventListener('change', toggleNotificationSections);
+    toggleNotificationSections();
 
-    // Apply the select-lg and select-info classes
     document.querySelectorAll('select').forEach(function(select) {
       select.classList.add('select-md', 'select-info', 'select-bordered', 'text-lg');
     });
