@@ -26,6 +26,11 @@
         <i class="fa-regular fa-envelope text-2xl"></i>
       <% end %>
     </li>
+    <li class="flex-1 text-center">
+      <%= link_to edit_notification_settings_path, class: "block py-2 #{'text-blue-500' if current_page?(edit_notification_settings_path)}" do %>
+        <i class="fas fa-cog text-2xl"></i>
+      <% end %>
+    </li>
   </ul>
 </nav>
 
