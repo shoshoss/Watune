@@ -14,20 +14,19 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy # 投稿と関連付け
   has_many :post_users, through: :posts # 投稿ユーザーと関連付け
   has_many :sent_notifications, class_name: 'Notification', foreign_key: 'sender_id', dependent: :destroy,
-                                inverse_of: :sender
+                                inverse_of: :sender # 送信された通知
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :destroy,
-                                    inverse_of: :recipient
-
-  has_many :reposts, dependent: :destroy
+                                    inverse_of: :recipient # 受信した通知
+  has_many :reposts, dependent: :destroy # リポストと関連付け
 
   # ファイル添付
   has_one_attached :avatar # アバター画像
 
   # バリデーションの定義
-  validates :email, uniqueness: true, presence: true, length: { maximum: 255 }
+  validates :email, uniqueness: true, presence: true, length: { maximum: 255 } # メールアドレス
   validates :password, presence: true, length: { minimum: 8, message: :too_short },
-                       if: -> { new_record? || changes[:crypted_password] }
-  validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true
+                       if: -> { new_record? || changes[:crypted_password] } # パスワード
+  validates :reset_password_token, presence: true, uniqueness: true, allow_nil: true # パスワードリセットトークン
   validates :display_name, length: { maximum: 50 } # 表示名は最大50文字
 
   # 予約されたusername_slugを設定
@@ -46,8 +45,8 @@ class User < ApplicationRecord
   validates :username_slug, presence: true, uniqueness: { case_sensitive: false, message: :taken },
                             length: { minimum: 3, maximum: 15, too_short: :too_short, too_long: :too_long },
                             format: { with: /\A[\w]+\z/, message: :invalid_format },
-                            exclusion: { in: RESERVED_USERNAMES, message: :reserved }
-  validates :self_introduction, length: { maximum: 500 }
+                            exclusion: { in: RESERVED_USERNAMES, message: :reserved } # ユーザー名スラグ
+  validates :self_introduction, length: { maximum: 500 } # 自己紹介文
 
   # コールバック
   before_validation :generate_username_slug, on: :create, unless: :username_slug? # ユーザー名スラグを生成
@@ -56,7 +55,7 @@ class User < ApplicationRecord
   # enumでユーザーの役割を定義：一般ユーザーは0、管理者は1
   enum role: { general: 0, admin: 1 }
 
-  # スコープ ログインしているユーザーがフォローしているユーザーを除外して、新規ユーザーを表示
+  # スコープ: ログインしているユーザーがフォローしているユーザーを除外して、新規ユーザーを表示
   def self.recently_registered(current_user = nil)
     users = where(guest: false)
     users = users.where.not(id: current_user.followings.pluck(:id) + [current_user.id]) if current_user
