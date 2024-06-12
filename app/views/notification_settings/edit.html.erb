@@ -1,0 +1,36 @@
+<div class="flex justify-center min-h-screen">
+  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
+    <h1 class="text-4xl font-bold mt-4 text-center">通知設定</h1>
+
+    <%= form_with model: @user, url: notification_settings_path, local: true, class: "m-5 space-y-6" do |form| %>
+      
+      <!-- Gmail通知設定 -->
+      <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Gmail通知</h2>
+        
+        <div class="form-control mb-6">
+          <%= form.label :notification_email, '通知メールアドレス', class: 'label text-lg font-bold' %>
+          <%= form.email_field :notification_email, value: @user.notification_email.presence || @user.email, class: 'input input-info input-bordered w-full text-lg' %>
+        </div>
+
+        <div class="mt-6">
+          <div class="ml-4">
+            <div class="flex items-center space-x-4 mb-6">
+              <%= form.label :email_notify_on_direct_message, 'ダイレクトメッセージ通知', class: 'label text-lg font-bold' %>
+              <%= form.check_box :email_notify_on_direct_message, class: 'checkbox checkbox-info' %>
+            </div>
+
+            <div class="flex items-center space-x-4 mb-6">
+              <%= form.label :email_notify_on_reply, '返信通知', class: 'label text-lg font-bold' %>
+              <%= form.check_box :email_notify_on_reply, class: 'checkbox checkbox-info' %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-control mt-6">
+        <%= form.submit '更新', class: 'btn btn-primary w-full text-lg' %>
+      </div>
+    <% end %>
+  </div>
+</div>

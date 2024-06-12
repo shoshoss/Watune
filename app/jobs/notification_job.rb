@@ -6,14 +6,8 @@ class NotificationJob < ApplicationJob
     case notification_type
     when 'reply'
       post.create_notification_reply(post.user)
-      Rails.logger.info "Notification created for reply: #{post.id}"
-      UserMailer.reply_notification(post.parent_post.user, post).deliver_later
     when 'direct'
       post.create_notification_post(post.user)
-      Rails.logger.info "Notification created for direct: #{post.id}"
-      post.post_users.each do |post_user|
-        UserMailer.direct_notification(post_user.user, post).deliver_later
-      end
     else
       Rails.logger.error "Unknown notification type: #{notification_type}"
     end
