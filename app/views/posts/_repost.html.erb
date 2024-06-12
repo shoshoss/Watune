@@ -1,0 +1,10 @@
+<% if current_user.reposts.exists?(post: post) %>
+  <% repost = current_user.reposts.find_by(post: post) %>
+  <%= link_to post_repost_path(post, repost), method: :delete, data: { turbo_method: :delete }, id: "post-#{post.id}-repost-button" do %>
+    <i class="fa-solid fa-retweet text-lg text-green-500 hover:text-green-700"></i>
+  <% end %>
+<% else %>
+  <%= link_to post_reposts_path(post), method: :post, data: { turbo_method: :post }, id: "post-#{post.id}-repost-button" do %>
+    <i class="fa-solid fa-retweet text-lg text-gray-500 hover:text-green-500"></i>
+  <% end %>
+<% end %>

@@ -125,9 +125,8 @@
           <%= render 'posts/reply_icon', post: post %>
         </div>
         <div>
-          <%= link_to "#", id: "#" do %>
-            <i class="fa-solid fa-retweet text-lg text-gray-500 hover:text-blue-700"></i>
-            未
+          <%= turbo_frame_tag "post-#{post.id}-repost" do %>
+            <%= render 'posts/repost', post: post %>
           <% end %>
         </div>
         <div>
