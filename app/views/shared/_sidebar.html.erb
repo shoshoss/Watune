@@ -34,6 +34,13 @@
         <h2 class="text-lg font-bold flex-grow">通知</h2>
       <% end %>
     </li>
+    <!-- 通知設定 -->
+    <li>
+      <%= link_to edit_notification_settings_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(edit_notification_settings_path)}" do %>
+        <i class="fas fa-cog text-2xl #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
+        <h2 class="text-lg font-bold flex-grow">通知設定</h2>
+      <% end %>
+    </li>
   </ul>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
