@@ -27,7 +27,6 @@ Style/Documentation:
     - "app/models/application_record.rb" # モデルのベースクラスは除外
     - "app/models/like.rb" # モデルは除外
     - "app/models/post.rb" # モデルは除外
-    - "app/models/relationship.rb" # モデルは除外
     - "app/models/user.rb" # モデルは除外
     - "config/application.rb" # アプリケーション設定ファイルは除外
 
