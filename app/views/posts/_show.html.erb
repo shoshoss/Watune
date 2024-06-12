@@ -20,7 +20,7 @@
         <div class="sm:pr-2 border-2 border-gray-300">
           <div class="flex justify-center">
             <button id="scroll-to-bottom" class="my-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
-              返信の下を表示
+              返信一覧の下へ
             </button>
           </div>
           <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">  
@@ -53,15 +53,33 @@
       repliesContainer.scrollTop = repliesContainer.scrollHeight;
     }
 
+    function checkScroll() {
+      if (repliesContainer.scrollHeight > repliesContainer.clientHeight) {
+        scrollToBottomButton.style.display = 'block';
+      } else {
+        scrollToBottomButton.style.display = 'none';
+      }
+    }
+
     if (scrollToBottomButton && repliesContainer) {
       scrollToBottomButton.addEventListener('click', scrollToBottom);
-      
-      // ページロード時にスクロール
-      scrollToBottom();
 
-      // 新しい返信が追加されたときにスクロール
-      const observer = new MutationObserver(scrollToBottom);
-      observer.observe(repliesContainer, { childList: true });
+      // ページロード時にスクロールをチェック
+      checkScroll();
+
+      // 新しい返信が追加されたときにスクロールをチェック
+      const observer = new MutationObserver(function(mutationsList, observer) {
+        for (let mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            checkScroll();
+            if (scrollToBottomButton.style.display === 'block') {
+              scrollToBottom();
+            }
+          }
+        }
+      });
+
+      observer.observe(repliesContainer, { childList: true, subtree: true });
     }
   });
 </script>
