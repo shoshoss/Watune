@@ -143,7 +143,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_022653) do
     t.boolean "notify_on_like", default: true, null: false
     t.boolean "notify_on_follow", default: true, null: false
     t.string "notification_frequency", default: "real-time", null: false
-    t.datetime "notification_time", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "notification_time"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username_slug"], name: "index_users_on_username_slug", unique: true

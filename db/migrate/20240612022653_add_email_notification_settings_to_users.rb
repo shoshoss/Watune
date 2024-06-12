@@ -7,7 +7,7 @@ class AddEmailNotificationSettingsToUsers < ActiveRecord::Migration[7.1]
       t.boolean :notify_on_like, default: true, null: false
       t.boolean :notify_on_follow, default: true, null: false
       t.string :notification_frequency, default: 'real-time', null: false
-      t.datetime :notification_time, default: -> { 'CURRENT_TIMESTAMP' }, null: false
+      t.datetime :notification_time
     end
   end
 end
