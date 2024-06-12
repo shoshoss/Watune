@@ -130,6 +130,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_215031) do
     t.datetime "updated_at", null: false
     t.index ["original_post_id"], name: "index_reposts_on_original_post_id"
     t.index ["post_id"], name: "index_reposts_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_reposts_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_reposts_on_user_id"
   end
 

@@ -8,5 +8,8 @@ class CreateReposts < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+
+    # リポストは一度しかできないようにユニークインデックスを追加
+    add_index :reposts, %i[user_id post_id], unique: true
   end
 end
