@@ -9,7 +9,7 @@ class NotificationsController < ApplicationController
                           when 'likes_and_follows'
                             current_user.received_notifications.where(action: %w[like follow])
                           else
-                            current_user.received_notifications
+                            current_user.received_notifications.none
                           end
 
     @pagy, @notifications = pagy_countless(notifications_scope.includes(:sender, :notifiable).order(created_at: :desc),
