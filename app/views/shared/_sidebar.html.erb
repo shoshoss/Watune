@@ -21,7 +21,7 @@
     </li>
     <!-- 通知 -->
     <li>
-      <%= link_to notifications_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}", data: { turbo_frame: "_top" } do %>
+      <%= link_to notifications_path, method: :post, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}", data: { turbo_frame: "_top" } do %>
         <div class="relative">
           <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
           <% unread_notifications_count = current_user.received_notifications.unread.count %>
