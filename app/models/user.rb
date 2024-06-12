@@ -89,11 +89,31 @@ class User < ApplicationRecord
     update(display_name: "ウェーチュン登録#{id}") if display_name.blank?
   end
 
+  # 通知設定のデフォルト値を設定するメソッド
   def set_default_notification_settings
+    set_default_notify_flags
+    set_default_email_notify_flags
+    set_default_notification_preferences
+  end
+
+  # アプリ内通知フラグのデフォルト値を設定するメソッド
+  def set_default_notify_flags
     self.notify_on_reply = true if notify_on_reply.nil?
     self.notify_on_direct_message = true if notify_on_direct_message.nil?
     self.notify_on_like = true if notify_on_like.nil?
     self.notify_on_follow = true if notify_on_follow.nil?
+  end
+
+  # Gmail通知フラグのデフォルト値を設定するメソッド
+  def set_default_email_notify_flags
+    self.email_notify_on_reply = true if email_notify_on_reply.nil?
+    self.email_notify_on_direct_message = true if email_notify_on_direct_message.nil?
+    self.email_notify_on_like = false if email_notify_on_like.nil?
+    self.email_notify_on_follow = false if email_notify_on_follow.nil?
+  end
+
+  # 通知の頻度と時間のデフォルト値を設定するメソッド
+  def set_default_notification_preferences
     self.notification_frequency = 'real-time' if notification_frequency.nil?
     self.notification_time ||= Time.current.change(hour: 9) # デフォルトの通知時間を午前9時に設定
   end

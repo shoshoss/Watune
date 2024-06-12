@@ -1,42 +1,44 @@
-<h1>通知設定</h1>
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">通知設定</h1>
 
-<%= form_with model: @user, url: notification_settings_path, local: true do |form| %>
-  <div class="field">
-    <%= form.label :notification_email, '通知メールアドレス' %>
-    <%= form.email_field :notification_email %>
-  </div>
+  <%= form_with model: @user, url: notification_settings_path, local: true, class: "space-y-4" do |form| %>
+    <div class="form-control">
+      <%= form.label :notification_email, '通知メールアドレス', class: 'label' %>
+      <%= form.email_field :notification_email, class: 'input input-bordered w-full' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notify_on_reply, 'リプライ通知' %>
-    <%= form.check_box :notify_on_reply %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notify_on_reply, 'リプライ通知', class: 'label' %>
+      <%= form.check_box :notify_on_reply, class: 'checkbox checkbox-primary' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notify_on_direct_message, 'ダイレクトメッセージ通知' %>
-    <%= form.check_box :notify_on_direct_message %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notify_on_direct_message, 'ダイレクトメッセージ通知', class: 'label' %>
+      <%= form.check_box :notify_on_direct_message, class: 'checkbox checkbox-primary' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notify_on_like, 'いいね通知' %>
-    <%= form.check_box :notify_on_like %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notify_on_like, 'いいね通知', class: 'label' %>
+      <%= form.check_box :notify_on_like, class: 'checkbox checkbox-primary' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notify_on_follow, 'フォロー通知' %>
-    <%= form.check_box :notify_on_follow %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notify_on_follow, 'フォロー通知', class: 'label' %>
+      <%= form.check_box :notify_on_follow, class: 'checkbox checkbox-primary' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notification_frequency, '通知の頻度' %>
-    <%= form.select :notification_frequency, options_for_select([['リアルタイム', 'real-time'], ['毎日', 'daily'], ['毎週', 'weekly']], @user.notification_frequency) %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notification_frequency, '通知の頻度', class: 'label' %>
+      <%= form.select :notification_frequency, options_for_select([['リアルタイム', 'real-time'], ['毎日', 'daily'], ['毎週', 'weekly']], @user.notification_frequency), class: 'select select-bordered w-full' %>
+    </div>
 
-  <div class="field">
-    <%= form.label :notification_time, '通知時間' %>
-    <%= form.time_select :notification_time, { default: { hour: 9, minute: 0 } } %>
-  </div>
+    <div class="form-control">
+      <%= form.label :notification_time, '通知時間', class: 'label' %>
+      <%= form.time_select :notification_time, { default: { hour: 9, minute: 0 } }, class: 'input input-bordered w-full' %>
+    </div>
 
-  <div class="actions">
-    <%= form.submit '更新' %>
-  </div>
-<% end %>
+    <div class="form-control mt-4">
+      <%= form.submit '更新', class: 'btn btn-primary w-full' %>
+    </div>
+  <% end %>
+</div>
