@@ -19,6 +19,7 @@ class PostsController < ApplicationController
     @notifications = current_user.received_notifications.unread
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 15)
+    @parent_posts = @post.ancestors
   end
 
   def new

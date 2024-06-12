@@ -4,14 +4,25 @@
       <div class="flex justify-end items-center">
         <i class="fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->reply-modal#closeModal"></i>
       </div>
-      <% if @post.parent_post.present? %>
+      <!-- 返信元の投稿の一覧表示 -->
+      <div class="bg-white">
+        <% if @parent_posts.present? %>
+          <% @parent_posts.each do |parent_post| %>
+            <%= render 'posts/post_content', post: parent_post %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class="bg-white">
+        <% if @post.parent_post.present? %>
           <%= render 'posts/post_content', post: @post.parent_post %>
         <% elsif @post.post_reply_id.present? %>
           <div class="text-lg text-gray-500 mb-2">
             親の投稿が削除されました。
           </div>
         <% end %>
+
         <%= render 'posts/post_content', post: @post %>
+      </div>
       <%= render 'replies/form_modal', post: @post, reply: @reply %>
       <div class="modal-action">
         <button class="btn" data-action="reply-modal#closeModal">閉じる</button>

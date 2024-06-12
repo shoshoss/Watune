@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "profile_edit_modal" %>
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
@@ -5,6 +6,15 @@
   <div class="container pt-3">
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
+        <!-- 親投稿の一覧表示 -->
+        <div class="bg-white">
+          <% if @parent_posts.present? %>
+            <% @parent_posts.each do |parent_post| %>
+              <%= render 'posts/post_content', post: parent_post %>
+            <% end %>
+          <% end %>
+        </div>
+
         <div class="bg-white">
           <% if @post.parent_post.present? %>
             <%= render 'posts/post_content', post: @post.parent_post %>
@@ -13,17 +23,20 @@
               親の投稿が削除されました。
             </div>
           <% end %>
-            <%= render 'posts/post_content', post: @post %>
+          <%= render 'posts/post_content', post: @post %>
         </div>
 
         <!-- 送信先の表示 -->
         <div class="sm:pr-2 border-2 border-gray-300">
           <div class="flex justify-center">
-            <button id="scroll-to-bottom" class="my-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
-            返信の下を表示
+            <button id="scroll-to-top" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-secondary">
+              <i class="fas fa-arrow-up mr-1"></i>返信一覧の上へ
+            </button>
+            <button id="scroll-to-bottom" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
+              <i class="fas fa-arrow-down mr-1"></i>返信一覧の下を表示
             </button>
           </div>
-          <div id="replies" class="sm:pr-2  overflow-y-auto" style="max-height: calc(100vh - 300px)">  
+          <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">
             <% if @replies.present? %>
               <%= turbo_frame_tag "next-page" do %>
                 <% @replies.each do |reply| %>
@@ -36,8 +49,8 @@
               <% end %>
             <% end %>
           </div>
-          
         </div>
+
         <%= render 'replies/form', post: @post, reply: @reply %>
       </div>
     </div>
@@ -46,13 +59,48 @@
 
 <script>
   document.addEventListener('turbo:load', function() {
+    const scrollToTopButton = document.getElementById('scroll-to-top');
     const scrollToBottomButton = document.getElementById('scroll-to-bottom');
     const repliesContainer = document.getElementById('replies');
 
-    if (scrollToBottomButton && repliesContainer) {
-      scrollToBottomButton.addEventListener('click', function() {
-        repliesContainer.scrollTop = repliesContainer.scrollHeight;
+    function scrollToTop() {
+      repliesContainer.scrollTop = 0;
+    }
+
+    function scrollToBottom() {
+      repliesContainer.scrollTop = repliesContainer.scrollHeight;
+    }
+
+    function checkScroll() {
+      if (repliesContainer.scrollHeight > repliesContainer.clientHeight) {
+        scrollToTopButton.style.display = 'block';
+        scrollToBottomButton.style.display = 'block';
+      } else {
+        scrollToTopButton.style.display = 'none';
+        scrollToBottomButton.style.display = 'none';
+      }
+    }
+
+    if (scrollToTopButton && scrollToBottomButton && repliesContainer) {
+      scrollToTopButton.addEventListener('click', scrollToTop);
+      scrollToBottomButton.addEventListener('click', scrollToBottom);
+
+      // ページロード時にスクロールをチェック
+      checkScroll();
+
+      // 新しい返信が追加されたときにスクロールをチェック
+      const observer = new MutationObserver(function(mutationsList, observer) {
+        for (let mutation of mutationsList) {
+          if (mutation.type === 'childList') {
+            checkScroll();
+            if (scrollToBottomButton.style.display === 'block') {
+              scrollToBottom();
+            }
+          }
+        }
       });
+
+      observer.observe(repliesContainer, { childList: true, subtree: true });
     }
   });
 </script>
