@@ -2,6 +2,8 @@ class NotificationsController < ApplicationController
   def index
     @category = params[:category] || 'all'
     notifications_scope = case @category
+                          when 'all'
+                            current_user.received_notifications
                           when 'friends'
                             current_user.received_notifications.where(action: %w[reply direct])
                           when 'likes_and_follows'
@@ -16,7 +18,7 @@ class NotificationsController < ApplicationController
     # 未読通知を既読にする
     # バリデーション不要な一括更新のため、update_allを使用
     # rubocop:disable Rails/SkipsModelValidations
-    notifications_scope.update_all(unread: false) if @category == 'unread'
+    notifications_scope.update_all(unread: false) if @category == 'all'
     # rubocop:enable Rails/SkipsModelValidations
   end
 end
