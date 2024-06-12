@@ -6,6 +6,9 @@ class User < ApplicationRecord
   # Sorceryによる認証機能を有効化
   authenticates_with_sorcery!
 
+  # 通知設定のデフォルト値を設定するためのコールバック
+  after_initialize :set_default_notification_settings, if: :new_record?
+
   # 関連付け
   has_many :authentications, dependent: :destroy # 認証情報を複数保持
   has_many :posts, dependent: :destroy # 投稿と関連付け
@@ -83,6 +86,15 @@ class User < ApplicationRecord
 
   # デフォルトの表示名を設定するメソッド
   def set_default_display_name
-    update(display_name: "ウェーブ登録#{id}") if display_name.blank?
+    update(display_name: "ウェーチュン登録#{id}") if display_name.blank?
+  end
+
+  def set_default_notification_settings
+    self.notify_on_reply = true if self.notify_on_reply.nil?
+    self.notify_on_direct_message = true if self.notify_on_direct_message.nil?
+    self.notify_on_like = true if self.notify_on_like.nil?
+    self.notify_on_follow = true if self.notify_on_follow.nil?
+    self.notification_frequency = 'real-time' if self.notification_frequency.nil?
+    self.notification_time ||= Time.current.change(hour: 9) # デフォルトの通知時間を午前9時に設定
   end
 end
