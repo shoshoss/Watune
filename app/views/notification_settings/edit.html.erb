@@ -1,113 +1,36 @@
-<div class="container mx-auto p-4">
-  <h1 class="text-3xl font-bold mb-6">通知設定</h1>
+<div class="flex justify-center min-h-screen">
+  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
+    <h1 class="text-4xl font-bold mt-4 text-center">通知設定</h1>
 
-  <%= form_with model: @user, url: notification_settings_path, local: true, class: "space-y-6" do |form| %>
-    
-    <!-- Gmail通知設定 -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-4">Gmail通知</h2>
+    <%= form_with model: @user, url: notification_settings_path, local: true, class: "m-5 space-y-6" do |form| %>
       
-      <div class="form-control mb-6">
-        <%= form.label :notification_email, '通知メールアドレス', class: 'label text-lg font-bold' %>
-        <%= form.email_field :notification_email, value: @user.notification_email.presence || @user.email, class: 'input input-info input-bordered w-full text-lg' %>
-      </div>
-
-      <div class="form-control mb-6">
-        <%= form.label :notification_frequency, '通知の頻度', class: 'label text-lg font-bold' %>
-        <%= form.select :notification_frequency, options_for_select([['リアルタイムで通知', 'real-time'], ['1日おきに通知', 'daily'], ['1週間おきに通知', 'weekly']], @user.notification_frequency), class: 'select select-info select-bordered select-md w-full max-w-xs text-lg' %>
-      </div>
-
-      <div class="ml-4 form-control mb-6" id="notification_time_section" style="display: none;">
-        <%= form.label :notification_time, '通知時間 (通知がある場合)', class: 'label text-lg font-bold' %>
-        <%= form.select :notification_time, options_for_select((0..23).map { |h| ["#{h}:00", h] }, @user.notification_time&.hour || 9), class: 'select select-info select-bordered select-md w-full text-lg max-w-xs' %>
-      </div>
-
-      <div class="ml-4 form-control mb-6" id="notification_weekday_section" style="display: none;">
-        <%= form.label :notification_weekday, '通知曜日 (1週間おきに通知の場合)', class: 'label text-lg font-bold' %>
-        <%= form.select :notification_weekday, options_for_select(Date::DAYNAMES.each_with_index.map { |day, i| [day, i] }, @user.notification_weekday), class: 'select select-info select-bordered select-lg w-full text-lg max-w-xs' %>
-      </div>
-
-      <h3 class="text-xl font-semibold mb-4">Gmail通知の詳細設定</h3>
-      <div class="ml-4">
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :email_notify_on_reply, 'リプライ通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :email_notify_on_reply, class: 'checkbox checkbox-info' %>
+      <!-- Gmail通知設定 -->
+      <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Gmail通知</h2>
+        
+        <div class="form-control mb-6">
+          <%= form.label :notification_email, '通知メールアドレス', class: 'label text-lg font-bold' %>
+          <%= form.email_field :notification_email, value: @user.notification_email.presence || @user.email, class: 'input input-info input-bordered w-full text-lg' %>
         </div>
 
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :email_notify_on_direct_message, 'ダイレクトメッセージ通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :email_notify_on_direct_message, class: 'checkbox checkbox-info' %>
-        </div>
+        <div class="mt-6">
+          <div class="ml-4">
+            <div class="flex items-center space-x-4 mb-6">
+              <%= form.label :email_notify_on_direct_message, 'ダイレクトメッセージ通知', class: 'label text-lg font-bold' %>
+              <%= form.check_box :email_notify_on_direct_message, class: 'checkbox checkbox-info' %>
+            </div>
 
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :email_notify_on_like, 'いいね通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :email_notify_on_like, class: 'checkbox checkbox-info' %>
-        </div>
-
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :email_notify_on_follow, 'フォロー通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :email_notify_on_follow, class: 'checkbox checkbox-info' %>
+            <div class="flex items-center space-x-4 mb-6">
+              <%= form.label :email_notify_on_reply, '返信通知', class: 'label text-lg font-bold' %>
+              <%= form.check_box :email_notify_on_reply, class: 'checkbox checkbox-info' %>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- アプリ内通知設定 -->
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <h2 class="text-2xl font-semibold mb-4">アプリ内通知</h2>
-      <div class="ml-4">
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :notify_on_reply, 'リプライ通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :notify_on_reply, class: 'checkbox checkbox-info' %>
-        </div>
-
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :notify_on_direct_message, 'ダイレクトメッセージ通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :notify_on_direct_message, class: 'checkbox checkbox-info' %>
-        </div>
-
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :notify_on_like, 'いいね通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :notify_on_like, class: 'checkbox checkbox-info' %>
-        </div>
-
-        <div class="flex items-center space-x-4 mb-6">
-          <%= form.label :notify_on_follow, 'フォロー通知', class: 'label text-lg font-bold' %>
-          <%= form.check_box :notify_on_follow, class: 'checkbox checkbox-info' %>
-        </div>
+      <div class="form-control mt-6">
+        <%= form.submit '更新', class: 'btn btn-primary w-full text-lg' %>
       </div>
-    </div>
-
-    <div class="form-control mt-6">
-      <%= form.submit '更新', class: 'btn btn-primary w-full text-lg' %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const frequencySelect = document.getElementById('user_notification_frequency');
-    const notificationTimeSection = document.getElementById('notification_time_section');
-    const notificationWeekdaySection = document.getElementById('notification_weekday_section');
-
-    function toggleNotificationSections() {
-      const frequency = frequencySelect.value;
-      if (frequency === 'real-time') {
-        notificationTimeSection.style.display = 'none';
-        notificationWeekdaySection.style.display = 'none';
-      } else if (frequency === 'daily') {
-        notificationTimeSection.style.display = 'block';
-        notificationWeekdaySection.style.display = 'none';
-      } else if (frequency === 'weekly') {
-        notificationTimeSection.style.display = 'block';
-        notificationWeekdaySection.style.display = 'block';
-      }
-    }
-
-    frequencySelect.addEventListener('change', toggleNotificationSections);
-    toggleNotificationSections();
-
-    document.querySelectorAll('select').forEach(function(select) {
-      select.classList.add('select-md', 'select-info', 'select-bordered', 'text-lg');
-    });
-  });
-</script>

@@ -138,17 +138,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_022653) do
     t.integer "access_count_to_reset_password_page", default: 0
     t.boolean "guest", default: false, null: false
     t.string "notification_email"
-    t.boolean "notify_on_reply", default: true, null: false
-    t.boolean "notify_on_direct_message", default: true, null: false
-    t.boolean "notify_on_like", default: true, null: false
-    t.boolean "notify_on_follow", default: true, null: false
     t.boolean "email_notify_on_reply", default: true, null: false
     t.boolean "email_notify_on_direct_message", default: true, null: false
-    t.boolean "email_notify_on_like", default: false, null: false
-    t.boolean "email_notify_on_follow", default: false, null: false
-    t.string "notification_frequency", default: "real-time", null: false
-    t.datetime "notification_time"
-    t.integer "notification_weekday", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username_slug"], name: "index_users_on_username_slug", unique: true
