@@ -1,0 +1,42 @@
+<h1>通知設定</h1>
+
+<%= form_with model: @user, url: notification_settings_path, local: true do |form| %>
+  <div class="field">
+    <%= form.label :notification_email, '通知メールアドレス' %>
+    <%= form.email_field :notification_email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notify_on_reply, 'リプライ通知' %>
+    <%= form.check_box :notify_on_reply %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notify_on_direct_message, 'ダイレクトメッセージ通知' %>
+    <%= form.check_box :notify_on_direct_message %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notify_on_like, 'いいね通知' %>
+    <%= form.check_box :notify_on_like %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notify_on_follow, 'フォロー通知' %>
+    <%= form.check_box :notify_on_follow %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notification_frequency, '通知の頻度' %>
+    <%= form.select :notification_frequency, options_for_select([['リアルタイム', 'real-time'], ['毎日', 'daily'], ['毎週', 'weekly']], @user.notification_frequency) %>
+  </div>
+
+  <div class="field">
+    <%= form.label :notification_time, '通知時間' %>
+    <%= form.time_select :notification_time, { default: { hour: 9, minute: 0 } } %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit '更新' %>
+  </div>
+<% end %>
