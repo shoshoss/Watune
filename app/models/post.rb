@@ -20,6 +20,11 @@ class Post < ApplicationRecord
   has_many :community_recipients, lambda {
                                     where(post_users: { role: 'community_recipient' })
                                   }, through: :post_users, source: :user
+  # リポスト関係の追加
+  has_many :reposts, dependent: :destroy
+  has_many :reposted_posts, through: :reposts, source: :original_post
+  has_many :reposted_by_users, through: :reposts, source: :user
+  
   has_one_attached :audio
 
   validates :body, length: { maximum: 10_000 }
