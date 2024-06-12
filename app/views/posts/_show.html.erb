@@ -19,8 +19,11 @@
         <!-- 送信先の表示 -->
         <div class="sm:pr-2 border-2 border-gray-300">
           <div class="flex justify-center">
-            <button id="scroll-to-bottom" class="my-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
-              返信一覧の下へ
+            <button id="scroll-to-top" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-secondary">
+              <i class="fas fa-arrow-up mr-1"></i>返信一覧の上へ
+            </button>
+            <button id="scroll-to-bottom" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
+              <i class="fas fa-arrow-down mr-1"></i>返信一覧の下を表示
             </button>
           </div>
           <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">  
@@ -46,8 +49,13 @@
 
 <script>
   document.addEventListener('turbo:load', function() {
+    const scrollToTopButton = document.getElementById('scroll-to-top');
     const scrollToBottomButton = document.getElementById('scroll-to-bottom');
     const repliesContainer = document.getElementById('replies');
+
+    function scrollToTop() {
+      repliesContainer.scrollTop = 0;
+    }
 
     function scrollToBottom() {
       repliesContainer.scrollTop = repliesContainer.scrollHeight;
@@ -55,13 +63,16 @@
 
     function checkScroll() {
       if (repliesContainer.scrollHeight > repliesContainer.clientHeight) {
+        scrollToTopButton.style.display = 'block';
         scrollToBottomButton.style.display = 'block';
       } else {
+        scrollToTopButton.style.display = 'none';
         scrollToBottomButton.style.display = 'none';
       }
     }
 
-    if (scrollToBottomButton && repliesContainer) {
+    if (scrollToTopButton && scrollToBottomButton && repliesContainer) {
+      scrollToTopButton.addEventListener('click', scrollToTop);
       scrollToBottomButton.addEventListener('click', scrollToBottom);
 
       // ページロード時にスクロールをチェック
