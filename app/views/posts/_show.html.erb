@@ -5,6 +5,15 @@
   <div class="container pt-3">
     <div class="px-2 mx-auto">
       <div class="grid grid-cols-1 gap-4">
+        <!-- 親投稿の一覧表示 -->
+        <div class="bg-white">
+          <% if @parent_posts.present? %>
+            <% @parent_posts.each do |parent_post| %>
+              <%= render 'posts/post_content', post: parent_post %>
+            <% end %>
+          <% end %>
+        </div>
+
         <div class="bg-white">
           <% if @post.parent_post.present? %>
             <%= render 'posts/post_content', post: @post.parent_post %>
@@ -13,7 +22,7 @@
               親の投稿が削除されました。
             </div>
           <% end %>
-            <%= render 'posts/post_content', post: @post %>
+          <%= render 'posts/post_content', post: @post %>
         </div>
 
         <!-- 送信先の表示 -->
@@ -26,7 +35,7 @@
               <i class="fas fa-arrow-down mr-1"></i>返信一覧の下を表示
             </button>
           </div>
-          <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">  
+          <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">
             <% if @replies.present? %>
               <%= turbo_frame_tag "next-page" do %>
                 <% @replies.each do |reply| %>
@@ -39,8 +48,8 @@
               <% end %>
             <% end %>
           </div>
-          
         </div>
+
         <%= render 'replies/form', post: @post, reply: @reply %>
       </div>
     </div>

@@ -4,6 +4,7 @@ class RepliesController < ApplicationController
   def new_modal
     @show_reply_line = true
     @reply = Post.new
+    @parent_posts = @post.ancestors
   end
 
   def create_modal
