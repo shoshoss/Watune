@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     end
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]
+    resources :reposts, only: %i[create destroy]
   end
   get '/:username_slug/status/:id', to: 'posts#show', as: :user_post
 
