@@ -41,6 +41,12 @@ module Posts
           unread: true # 未読状態
         )
         notification.save if notification.valid?
+
+        # メール通知
+        recipient = User.find(recipient_id)
+        return unless recipient.email_notify_on_reply
+
+        UserMailer.reply_notification(recipient, self).deliver_later
       end
 
       # 投稿の通知を作成するメソッド
@@ -57,6 +63,10 @@ module Posts
             unread: true # 未読状態
           )
           notification.save if notification.valid?
+
+          # メール通知
+          recipient = User.find(recipient_id)
+          UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
         end
       end
     end
