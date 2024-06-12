@@ -24,7 +24,7 @@ class ProfilesController < ApplicationController
   def update
     display_name_param = user_params[:display_name]
     if @user.update(user_params) && display_name_param.blank?
-      @user.update(display_name: "ウェーチュン登録#{@user.id}")
+      @user.update(display_name: "ウェーチュン#{@user.id}")
       flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
     elsif @user.update(user_params)
       flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')

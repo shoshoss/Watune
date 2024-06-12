@@ -2,10 +2,10 @@ class RepostsController < ApplicationController
   before_action :set_post
 
   def create
-    if Repost.exists?(user: current_user, post: @post)
+    if current_user.repost?(@post)
       redirect_to root_path, alert: '既にリポスト済みです'
     else
-      @repost = Repost.create(user: current_user, post: @post, original_post: @post)
+      @repost = current_user.repost(@post)
       respond_to do |format|
         format.turbo_stream
       end
@@ -13,14 +13,9 @@ class RepostsController < ApplicationController
   end
 
   def destroy
-    @repost = Repost.find_by(user: current_user, post: @post)
-    if @repost
-      @repost.destroy
-      respond_to do |format|
-        format.turbo_stream
-      end
-    else
-      redirect_to root_path, alert: 'リポストが見つかりません'
+    @repost = current_user.un_repost(@post)
+    respond_to do |format|
+      format.turbo_stream
     end
   end
 

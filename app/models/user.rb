@@ -2,6 +2,7 @@ class User < ApplicationRecord
   include Users::Likes
   include Users::Bookmarks
   include Users::Follows
+  include Users::Reposts
 
   # Sorceryによる認証機能を有効化
   authenticates_with_sorcery!
@@ -17,7 +18,6 @@ class User < ApplicationRecord
                                 inverse_of: :sender # 送信された通知
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :destroy,
                                     inverse_of: :recipient # 受信した通知
-  has_many :reposts, dependent: :destroy # リポストと関連付け
 
   # ファイル添付
   has_one_attached :avatar # アバター画像
