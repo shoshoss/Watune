@@ -15,6 +15,7 @@ class NotificationSettingsController < ApplicationController
   private
 
   def notification_settings_params
-    params.require(:user).permit(:notification_email, :notify_on_reply, :notify_on_direct_message, :notify_on_like, :notify_on_follow, :notification_frequency, :notification_time)
+    params.require(:user).permit(:notification_email, :notify_on_reply, :notify_on_direct_message, :notify_on_like,
+                                 :notify_on_follow, :notification_frequency, :notification_time)
   end
 end

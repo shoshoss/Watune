@@ -90,11 +90,11 @@ class User < ApplicationRecord
   end
 
   def set_default_notification_settings
-    self.notify_on_reply = true if self.notify_on_reply.nil?
-    self.notify_on_direct_message = true if self.notify_on_direct_message.nil?
-    self.notify_on_like = true if self.notify_on_like.nil?
-    self.notify_on_follow = true if self.notify_on_follow.nil?
-    self.notification_frequency = 'real-time' if self.notification_frequency.nil?
+    self.notify_on_reply = true if notify_on_reply.nil?
+    self.notify_on_direct_message = true if notify_on_direct_message.nil?
+    self.notify_on_like = true if notify_on_like.nil?
+    self.notify_on_follow = true if notify_on_follow.nil?
+    self.notification_frequency = 'real-time' if notification_frequency.nil?
     self.notification_time ||= Time.current.change(hour: 9) # デフォルトの通知時間を午前9時に設定
   end
 end

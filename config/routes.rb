@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
 
   resources :notifications, only: %i[index]
-  resource :notification_settings, only: [:edit, :update]
+  resource :notification_settings, only: %i[edit update]
 
   # パスワードリセットのルーティング
   resources :password_resets, only: %i[new create edit update]
