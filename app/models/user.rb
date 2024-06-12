@@ -18,6 +18,8 @@ class User < ApplicationRecord
   has_many :received_notifications, class_name: 'Notification', foreign_key: 'recipient_id', dependent: :destroy,
                                     inverse_of: :recipient
 
+  has_many :reposts, dependent: :destroy
+
   # ファイル添付
   has_one_attached :avatar # アバター画像
 
