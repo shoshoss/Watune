@@ -9,10 +9,6 @@ class Post < ApplicationRecord
   # ユーザーとの関係
   belongs_to :user
 
-  # リポスト（original_post）との関係
-  belongs_to :original_post, class_name: 'Post', optional: true
-
-
   # リプライ関係
   has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
@@ -34,9 +30,8 @@ class Post < ApplicationRecord
                                     where(post_users: { role: 'community_recipient' })
                                   }, through: :post_users, source: :user
 
-  # リポスト関係
+  # リポスト関連
   has_many :reposts, dependent: :destroy
-  has_many :reposted_posts, through: :reposts, source: :original_post
   has_many :reposted_by_users, through: :reposts, source: :user
 
   # 音声添付ファイル

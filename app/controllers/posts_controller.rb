@@ -7,7 +7,7 @@ class PostsController < ApplicationController
 
   def index
     @show_reply_line = false
-    @pagy, @posts = pagy_countless(Post.open.includes(:user, :replies, :reposts).order(created_at: :desc), items: 10)
+    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
   end
 
   def show
@@ -103,5 +103,13 @@ class PostsController < ApplicationController
   # フォローしているユーザーを投稿数でソートする
   def set_followings_by_post_count
     @sorted_followings = current_user.following_ordered_by_sent_posts
+  end
+
+  # 投稿一覧を取得するメソッド
+  def fetch_posts
+    Post.left_joins(:reposts)
+        .includes(:user, :replies, :reposts)
+        .order('COALESCE(reposts.created_at, posts.created_at) DESC')
+        .distinct
   end
 end
