@@ -109,7 +109,7 @@ class PostsController < ApplicationController
   def fetch_posts
     Post.select('posts.*, COALESCE(reposts.created_at, posts.created_at) AS reposted_at')
         .left_joins(:reposts)
-        .includes(:user, :replies, :reposts)
+        .includes(:user, :reposts)
         .order(Arel.sql('reposted_at DESC'))
         .distinct
   end

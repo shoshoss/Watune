@@ -31,7 +31,7 @@ class Post < ApplicationRecord
                                   }, through: :post_users, source: :user
 
   # リポスト関係
-  has_many :reposts, dependent: :destroy
+  has_many :reposts, class_name: 'Repost', foreign_key: 'post_id', dependent: :destroy
   has_many :reposted_by_users, through: :reposts, source: :user
 
   # 音声添付ファイル
@@ -62,5 +62,15 @@ class Post < ApplicationRecord
       current_post = current_post.parent_post
     end
     parents.reverse
+  end
+
+  # リポストかどうかを判定するメソッド
+  def is_repost?
+    reposts.exists?
+  end
+
+  # リポストされた元の投稿を取得するメソッド
+  def reposted_post
+    is_repost? ? Repost.find(self.id).original_post : nil
   end
 end

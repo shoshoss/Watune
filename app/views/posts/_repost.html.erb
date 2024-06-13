@@ -1,14 +1,16 @@
-<%= turbo_frame_tag dom_id(post) do %>
+<%= turbo_frame_tag dom_id(repost, :repost) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
-  <div data-controller="audio" id="post-id-<%= post.id %>", 
-    class="rounded-lg flex hover:bg-sky-100 shadow-lg overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
-    <div class="flex items-center mb-2">
-      <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline mr-2", data: { turbo_frame: "profile_modal" } do %>
-        <%= image_tag(post.user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14 mr-2") %>
-        <%= post.user.display_name %>
+  <div data-controller="audio" id="repost-id-<%= repost.id %>",
+       class="hover:bg-sky-100 overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+    <div class="ml-[8px] mb-[2px]">
+      <i class="fa-solid fa-retweet text-base text-gray-500"></i>
+      <%= link_to profile_modal_path(username_slug: repost.user.username_slug), class: "text-base font-semibold text-gray-500 hover:underline ml-[2px]", data: { turbo_frame: "profile_modal" } do %>
+        <%= repost.user.display_name %>さんがリポスト
       <% end %>
-      <span>さんがリポストしました:</span>
     </div>
-    <%= render 'posts/post_content', post: post.reposted_post %>
+    <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Repost' && n.notifiable_id == repost.id } %>
+    <div class="flex">
+      <%= render 'posts/post_body', post: repost %>
+    </div>
   </div>
 <% end %>

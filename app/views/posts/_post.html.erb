@@ -1,6 +1,5 @@
-<% if post.is_a?(Repost) %>
-  <% repost = post %>
-  <%= render partial: 'posts/repost', locals: { post: repost.post } %>
+<% if post.is_repost? %>
+  <%= render partial: 'posts/repost', locals: { repost: post } %>
 <% else %>
   <%= render partial: 'posts/post_content', locals: { post: post } %>
 <% end %>
