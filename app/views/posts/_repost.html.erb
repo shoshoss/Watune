@@ -1,12 +1,14 @@
-<%= turbo_frame_tag "post-#{post.id}-repost" do %>
-  <% if current_user.reposts.exists?(post: post) %>
-    <% repost = current_user.reposts.find_by(post: post) %>
-    <%= link_to post_repost_path(post.id, repost.id), method: :delete, data: { turbo_method: :delete }, id: "post-#{post.id}-repost-button" do %>
-      <i class="fa-solid fa-retweet text-xl text-green-500 hover:text-green-700"></i>
-    <% end %>
-  <% else %>
-    <%= link_to post_reposts_path(post), method: :post, data: { turbo_method: :post }, id: "post-#{post.id}-repost-button" do %>
-      <i class="fa-solid fa-retweet text-xl text-gray-500 hover:text-green-500"></i>
-    <% end %>
-  <% end %>
+<%= turbo_frame_tag dom_id(post) do %>
+  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
+  <div data-controller="audio" id="post-id-<%= post.id %>", 
+    class="rounded-lg flex hover:bg-sky-100 shadow-lg overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+    <div class="flex items-center mb-2">
+      <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline mr-2", data: { turbo_frame: "profile_modal" } do %>
+        <%= image_tag(post.user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-10 w-10 md:h-14 md:w-14 mr-2") %>
+        <%= post.user.display_name %>
+      <% end %>
+      <span>さんがリポストしました:</span>
+    </div>
+    <%= render 'posts/post_content', post: post.reposted_post %>
+  </div>
 <% end %>

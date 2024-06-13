@@ -39,8 +39,7 @@ class Post < ApplicationRecord
 
   # バリデーション
   validates :body, length: { maximum: 10_000 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_thanまたはequal_to: 3599 },
-                       allow_nil: true
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 }, allow_nil: true
 
   # プライバシー設定
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }

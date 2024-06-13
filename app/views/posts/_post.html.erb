@@ -1,12 +1,6 @@
-<%= turbo_frame_tag dom_id(post) do %>
-  <div class="post-content">
-    <% if post.reposts.exists? %>
-      <div class="repost-info">
-        <p><%= link_to post.user.username, user_path(post.user) %> さんがリポストしました:</p>
-      </div>
-      <%= render partial: 'posts/post_content', locals: { post: post.reposts.first.post } %>
-    <% else %>
-      <%= render partial: 'posts/post_content', locals: { post: post } %>
-    <% end %>
-  </div>
+<% if post.is_a?(Repost) %>
+  <% repost = post %>
+  <%= render partial: 'posts/repost', locals: { post: repost.post } %>
+<% else %>
+  <%= render partial: 'posts/post_content', locals: { post: post } %>
 <% end %>
