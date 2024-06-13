@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_12_215031) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_13_022804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -123,11 +123,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_215031) do
 
   create_table "reposts", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "post_id", null: false
+    t.string "repostable_type", null: false
+    t.bigint "repostable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_reposts_on_post_id"
-    t.index ["user_id", "post_id"], name: "index_reposts_on_user_id_and_post_id", unique: true
+    t.index ["repostable_type", "repostable_id"], name: "index_reposts_on_repostable"
+    t.index ["user_id", "repostable_id", "repostable_type"], name: "index_reposts_on_user_and_repostable", unique: true
     t.index ["user_id"], name: "index_reposts_on_user_id"
   end
 
@@ -167,6 +168,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_12_215031) do
   add_foreign_key "post_users", "posts"
   add_foreign_key "post_users", "users"
   add_foreign_key "posts", "users"
-  add_foreign_key "reposts", "posts"
   add_foreign_key "reposts", "users"
 end

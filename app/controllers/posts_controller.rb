@@ -105,11 +105,12 @@ class PostsController < ApplicationController
     @sorted_followings = current_user.following_ordered_by_sent_posts
   end
 
-  # 投稿一覧を取得するメソッド
-  def fetch_posts
-    Post.left_joins(:reposts)
+   # 投稿一覧を取得するメソッド
+   def fetch_posts
+    Post.select('posts.*, reposts.created_at AS reposted_at')
+        .left_joins(:reposts)
         .includes(:user, :replies, :reposts)
-        .order('COALESCE(reposts.created_at, posts.created_at) DESC')
+        .order(Arel.sql('COALESCE(reposted_at, posts.created_at) DESC'))
         .distinct
   end
 end
