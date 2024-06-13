@@ -1,1 +1,12 @@
-<%= render partial: 'posts/post_content', locals: { post: post } %>
+<%= turbo_frame_tag dom_id(post) do %>
+  <div class="post-content">
+    <% if post.original_post.present? %>
+      <div class="repost-info">
+        <p><%= link_to post.user.username, user_path(post.user) %> さんがリポストしました:</p>
+      </div>
+      <%= render partial: 'posts/post_content', locals: { post: post.original_post } %>
+    <% else %>
+      <%= render partial: 'posts/post_content', locals: { post: post } %>
+    <% end %>
+  </div>
+<% end %>

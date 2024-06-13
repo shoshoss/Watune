@@ -7,7 +7,7 @@ class PostsController < ApplicationController
 
   def index
     @show_reply_line = false
-    @pagy, @posts = pagy_countless(Post.open.includes(:user, :replies).order(created_at: :desc), items: 10)
+    @pagy, @posts = pagy_countless(Post.open.includes(:user, :replies, :reposts).order(created_at: :desc), items: 10)
   end
 
   def show
