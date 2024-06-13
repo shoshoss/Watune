@@ -9,6 +9,10 @@ class Post < ApplicationRecord
   # ユーザーとの関係
   belongs_to :user
 
+  # リポスト（original_post）との関係
+  belongs_to :original_post, class_name: 'Post', optional: true
+
+
   # リプライ関係
   has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
