@@ -2,11 +2,12 @@ class CreateReposts < ActiveRecord::Migration[7.1]
   def change
     create_table :reposts do |t|
       t.references :user, null: false, foreign_key: true
-      t.references :repostable, polymorphic: true, null: false
+      t.references :post, null: false, foreign_key: true
 
       t.timestamps
     end
 
-    add_index :reposts, %i[user_id repostable_id repostable_type], unique: true, name: 'index_reposts_on_user_and_repostable'
+    # リポストは一度しかできないようにユニークインデックスを追加
+    add_index :reposts, %i[user_id post_id], unique: true
   end
 end

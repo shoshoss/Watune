@@ -105,8 +105,8 @@ class PostsController < ApplicationController
     @sorted_followings = current_user.following_ordered_by_sent_posts
   end
 
-   # 投稿一覧を取得するメソッド
-   def fetch_posts
+  # 投稿一覧を取得するメソッド
+  def fetch_posts
     Post.select('posts.*, reposts.created_at AS reposted_at')
         .left_joins(:reposts)
         .includes(:user, :replies, :reposts)
