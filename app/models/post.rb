@@ -30,7 +30,7 @@ class Post < ApplicationRecord
                                     where(post_users: { role: 'community_recipient' })
                                   }, through: :post_users, source: :user
 
-  # リポスト関連
+  # リポスト関係
   has_many :reposts, dependent: :destroy
   has_many :reposted_by_users, through: :reposts, source: :user
 

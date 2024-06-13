@@ -8,15 +8,15 @@ module Users
     end
 
     def repost(post)
-      reposts.create(post:, original_post: post)
+      reposts.create(post: post)
     end
 
     def un_repost(post)
-      reposts.find_by(post:)&.destroy
+      reposts.find_by(post: post)&.destroy
     end
 
     def repost?(post)
-      reposts.exists?(post:)
+      reposts.exists?(post: post)
     end
   end
 end

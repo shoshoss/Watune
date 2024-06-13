@@ -107,10 +107,10 @@ class PostsController < ApplicationController
 
   # 投稿一覧を取得するメソッド
   def fetch_posts
-    Post.select('posts.*, reposts.created_at AS reposted_at')
+    Post.select('posts.*, COALESCE(reposts.created_at, posts.created_at) AS reposted_at')
         .left_joins(:reposts)
         .includes(:user, :replies, :reposts)
-        .order(Arel.sql('COALESCE(reposted_at, posts.created_at) DESC'))
+        .order(Arel.sql('reposted_at DESC'))
         .distinct
   end
 end
