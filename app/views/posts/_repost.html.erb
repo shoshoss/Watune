@@ -1,5 +1,5 @@
 <%= turbo_frame_tag dom_id(repost, :repost) do %>
-  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
+  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == repost.id } %>
   <div data-controller="audio" id="repost-id-<%= repost.id %>",
        class="hover:bg-sky-100 overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
     <div class="ml-[8px] mb-[2px]">
