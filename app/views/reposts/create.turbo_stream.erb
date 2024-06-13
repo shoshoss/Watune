@@ -1,3 +1,7 @@
 <%= turbo_stream.replace "post-#{@post.id}-repost" do %>
   <%= render partial: 'posts/repost', locals: { post: @post } %>
 <% end %>
+
+<%= turbo_stream.prepend "post-list" do %>
+  <%= render partial: 'posts/post', locals: { post: @original_post } %>
+<% end %>

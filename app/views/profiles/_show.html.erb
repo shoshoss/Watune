@@ -102,7 +102,7 @@
       <%= turbo_frame_tag "next-page" do %>
         <% @posts.each do |post| %>
           <% post_notifications = @notifications.select { |notification| notification.notifiable == post } %>
-          <%= render 'posts/post', post: post, notifications: post_notifications %>
+          <%= render 'posts/post_content', post: post, notifications: post_notifications %>
         <% end %>
         <% if @pagy.next %>
           <%= render 'shared/next_page' %>

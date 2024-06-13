@@ -7,7 +7,7 @@
   <% end %>
 <% else %>
   <%= turbo_stream.append "replies" do %>
-    <%= render 'posts/post', post: @reply %>
+    <%= render 'posts/post_content', post: @reply %>
   <% end %>
   <%= turbo_stream.replace "new_modal_reply" do %>
     <%= render 'replies/form_modal', post: @post, reply: Post.new %>

@@ -15,7 +15,7 @@
   </div>
   <!-- 投稿一覧 -->
   <div class="px-2 mx-auto">
-    <div class="grid grid-cols-1 gap-4">
+    <div id="post-list" class="grid grid-cols-1 gap-4">
       <% if posts.present? %>
         <%= turbo_frame_tag "next-page" do %>
           <%= render posts %>

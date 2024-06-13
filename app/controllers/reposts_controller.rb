@@ -6,6 +6,7 @@ class RepostsController < ApplicationController
       redirect_to root_path, alert: '既にリポスト済みです'
     else
       @repost = current_user.repost(@post)
+      @original_post = @post
       respond_to do |format|
         format.turbo_stream
       end
