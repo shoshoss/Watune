@@ -42,7 +42,7 @@
             <% if @replies.present? %>
               <%= turbo_frame_tag "next-page" do %>
                 <% @replies.each do |reply| %>
-                  <% reply_notifications = @notifications.select { |notification| notification.notifiable == reply } %>
+                  <% reply_notifications = (@notifications || []).select { |notification| notification.notifiable == reply } %>
                   <%= render 'posts/post', post: reply, notifications: reply_notifications %>
                 <% end %>
                 <% if @pagy.next %>
