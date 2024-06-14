@@ -24,6 +24,10 @@ module ApplicationHelper
     user&.bookmarked?(post)
   end
 
+  def user_following?(user, other_user)
+    user&.following?(other_user)
+  end
+
   def set_flash(key, message)
     session[key] = message
   end
