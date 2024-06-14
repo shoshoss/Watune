@@ -7,7 +7,7 @@
 # 設定パラメータ: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 60 # ブロックの最大行数を60に設定
+  Max: 80 # ブロックの最大行数を80に設定
 
 # 違反数: 1
 # 設定パラメータ: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.

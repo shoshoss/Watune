@@ -31,7 +31,7 @@ class Post < ApplicationRecord
                                   }, through: :post_users, source: :user
 
   # リポスト関係
-  has_many :reposts, class_name: 'Repost', foreign_key: 'post_id', dependent: :destroy
+  has_many :reposts, class_name: 'Repost', dependent: :destroy
   has_many :reposted_by_users, through: :reposts, source: :user
 
   # 音声添付ファイル
@@ -39,7 +39,8 @@ class Post < ApplicationRecord
 
   # バリデーション
   validates :body, length: { maximum: 10_000 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 }, allow_nil: true
+  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
+                       allow_nil: true
 
   # プライバシー設定
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
@@ -65,12 +66,12 @@ class Post < ApplicationRecord
   end
 
   # リポストかどうかを判定するメソッド
-  def is_repost?
+  def repost?
     reposts.exists?
   end
 
   # リポストされた元の投稿を取得するメソッド
   def reposted_post
-    is_repost? ? Repost.find(self.id).original_post : nil
+    repost? ? Repost.find(id).original_post : nil
   end
 end

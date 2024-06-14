@@ -6,8 +6,8 @@ class NotificationsController < ApplicationController
                             current_user.received_notifications
                           when 'friends'
                             current_user.received_notifications.where(action: %w[reply direct])
-                          when 'likes_and_follows'
-                            current_user.received_notifications.where(action: %w[like follow])
+                          when 'others'
+                            current_user.received_notifications.where(action: %w[like follow repost])
                           else
                             current_user.received_notifications.none
                           end

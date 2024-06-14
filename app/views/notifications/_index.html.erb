@@ -12,7 +12,7 @@
       <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
         仲間から
       <% end %>
-      <%= link_to notifications_path(category: 'likes_and_follows'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('likes_and_follows', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to notifications_path(category: 'others'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('others', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
         その他
       <% end %>
     </div>
