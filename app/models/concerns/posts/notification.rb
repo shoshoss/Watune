@@ -69,6 +69,20 @@ module Posts
           UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
         end
       end
+
+      # リポスト通知を作成するメソッド
+      def create_notification_repost(current_user)
+        return if current_user.id == user_id # 自分の投稿に対するリポストは通知しない
+
+        notification = current_user.sent_notifications.new(
+          recipient_id: user_id, # 通知の受信者
+          sender_id: current_user.id, # 通知の送信者
+          notifiable: self, # リポストされた投稿
+          action: 'repost', # アクションタイプ
+          unread: true # 未読状態
+        )
+        notification.save if notification.valid?
+      end
     end
   end
 end
