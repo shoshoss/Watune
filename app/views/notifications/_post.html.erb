@@ -1,0 +1,8 @@
+<% if post.present? %>
+  <% if post.repost? %>
+    <%= render partial: 'notifications/repost', locals: { post: post } %>
+  <% else %>
+    <%= render partial: 'notifications/post_content', locals: { post: post } %>
+  <% end %>
+<% else %>
+<% end %>

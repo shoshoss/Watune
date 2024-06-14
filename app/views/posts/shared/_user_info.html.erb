@@ -1,0 +1,51 @@
+<div class="flex justify-between items-center mb-2">
+  <div class="overflow-x-auto whitespace-nowrap" style="max-width:80%;">
+    <div class="dropdown dropdown-hover">
+      <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline", data: { turbo_frame: "profile_modal" } do %>
+        <%= post.user.display_name %>
+      <% end %>
+    </div>
+    <br>
+    <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
+    <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
+    <% if post.direct_recipients.any? %>
+      <div class="text-sm text-gray-500">
+        <span>宛先:</span>
+        <% post.direct_recipients.each do |recipient| %>
+          <%= link_to profile_modal_path(username_slug: recipient.username_slug),
+                      class: "text-blue-500 font-semibold hover:underline",
+                      data: { turbo_frame: "profile_modal" } do %>
+            <%= recipient.display_name %><span class="font-normal">さん</span>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <% if current_user.own?(post) %>
+    <div class="flex sm:flex-wrap space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-2">
+      <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700", data: { turbo_frame: "post_edit_modal" } do %>
+        <i class="fas fa-pencil-alt text-lg"></i>
+        <span class="hidden sm:inline">編集</span>
+      <% end %>
+      <%= link_to post_path(post), id: "button-delete-#{post.id}", data: { turbo_method: :delete, turbo_confirm: t('defaults.delete_confirm') }, class: "text-red-500 hover:text-red-700" do %>
+        <i class="fas fa-trash-alt"></i>
+        <span class="hidden sm:inline">削除</span>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+<!-- 返信先の表示 -->
+<% if post.parent_post.present? %>
+  <div class="text-sm text-gray-500 mb-2">
+    返信先: 
+    <% post.ancestors.map(&:user).uniq.each do |user| %>
+      <% unless post.user.id == user.id %>
+        <%= link_to profile_modal_path(username_slug: user.username_slug),
+                    class: "text-blue-500 font-semibold hover:underline",
+                    data: { turbo_frame: "profile_modal" } do %>
+          <%= user.display_name %><span class="font-normal">さん</span>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

@@ -10,7 +10,7 @@
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたの投稿にいいねしました。</span>
     </div>
-    <%= render partial: 'posts/post', locals: { post: notification.notifiable } %>
+    <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'reply' %>
     <div class="flex items-center p-2">
       <i class="fas fa-reply text-blue-500 text-xl sm:text-3xl"></i>
@@ -22,7 +22,7 @@
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたへ返信しました。</span>
     </div>
-    <%= render partial: 'posts/post', locals: { post: notification.notifiable } %>
+    <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'repost' %>
     <div class="flex items-center p-2">
       <i class="fa-solid fa-retweet text-green-500 text-xl sm:text-3xl"></i>
@@ -34,7 +34,7 @@
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたの投稿をリポストしました。</span>
     </div>
-    <%= render partial: 'posts/post', locals: { post: notification.notifiable } %>
+    <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'follow' %>
     <div class="flex items-center p-2">
       <i class="fas fa-user-plus text-green-500 text-xl sm:text-3xl"></i>
@@ -57,7 +57,7 @@
       <% end %>
       <span class="text-sm sm:text-lg">さんがあなたへ投稿しました。</span>
     </div>
-    <%= render partial: 'posts/post', locals: { post: notification.notifiable } %>
+    <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% else %>
     新しい通知があります。
   <% end %>
