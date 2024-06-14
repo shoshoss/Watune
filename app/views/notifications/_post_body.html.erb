@@ -2,9 +2,6 @@
 <%= render 'posts/shared/avatar', post: post %>
 <!-- 2列目 -->
 <div class="pl-2 flex-grow" style="max-width: calc(100% - 15%);">
-  <%= render 'posts/shared/user_info', post: post %>
   <%= render 'posts/shared/body', post: post %>
-  <%= render 'posts/shared/audio_player', post: post %>
   <%= render 'posts/shared/detail_link', post: post %>
-  <%= render 'posts/shared/footer', post: post %>
 </div>

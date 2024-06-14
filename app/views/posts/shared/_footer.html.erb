@@ -1,0 +1,25 @@
+<!-- 返信、リツイート、いいね、シェア -->
+<div class="flex justify-between items-center">
+  <div id="post-<%= post.id %>-reply-icon">
+    <%= render 'posts/reply_icon', post: post %>
+  </div>
+  <div>
+    <%= turbo_frame_tag "post-#{post.id}-repost" do %>
+      <%= render 'posts/repost_icon', post: post %>
+    <% end %>
+  </div>
+  <div>
+    <%= turbo_frame_tag "post-#{post.id}-like" do %>
+      <%= render 'posts/like', post: post %>
+    <% end %>
+  </div>
+  <div id="post-<%= post.id %>-bookmark">
+    <%= render 'posts/bookmark', post: post %>
+  </div>
+  <div>
+    <%= link_to "#", id: "#" do %>
+      <i class="fa-brands fa-x-twitter text-lg text-black-500 hover:text-black-700"></i>
+      未
+    <% end %>
+  </div>
+</div>
