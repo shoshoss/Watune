@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  skip_before_action :require_login, only: %i[show modal]
   before_action :set_current_user, only: %i[edit update]
   before_action :set_user, only: %i[show modal]
   before_action :set_posts, only: %i[show], if: -> { @user.present? }
