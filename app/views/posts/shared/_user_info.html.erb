@@ -21,7 +21,7 @@
       </div>
     <% end %>
   </div>
-  <% if current_user.own?(post) %>
+  <% if current_user && user_owns_post?(current_user, post) %>
     <div class="flex sm:flex-wrap space-x-3 sm:space-x-0 sm:flex-col sm:space-y-2 p-2">
       <%= link_to edit_post_path(post), id: "button-edit-#{post.id}", class: "text-blue-500 hover:text-blue-700", data: { turbo_frame: "post_edit_modal" } do %>
         <i class="fas fa-pencil-alt text-lg"></i>
