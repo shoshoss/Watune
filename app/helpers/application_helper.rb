@@ -8,6 +8,22 @@ module ApplicationHelper
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
+  def user_owns_post?(user, post)
+    user&.id == post.user_id
+  end
+
+  def user_likes_post?(user, post)
+    user&.like?(post)
+  end
+
+  def user_reposts_post?(user, post)
+    user&.reposts&.exists?(post_id: post.id)
+  end
+
+  def user_bookmarked_post?(user, post)
+    user&.bookmarked?(post)
+  end
+
   def set_flash(key, message)
     session[key] = message
   end
