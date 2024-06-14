@@ -28,7 +28,7 @@
 
           <div class="form-control">
             <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1", for: "user_display_name" %>
-            <%= f.text_field :display_name, id: "user_display_name", class: "input-style", placeholder: "ウェーチュン登録#{@user.id}", value: (@user.display_name if @user.display_name.present? && @user.display_name != "ウェーチュン登録#{@user.id}") %>
+            <%= f.text_field :display_name, id: "user_display_name", class: "input-style", placeholder: "ウェーチュン#{@user.id}", value: (@user.display_name if @user.display_name.present? && @user.display_name != "ウェーチュン#{@user.id}") %>
           </div>
 
           <div class="form-control mt-2">

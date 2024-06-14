@@ -1,1 +1,5 @@
-<%= render partial: 'posts/post_content', locals: { post: post } %>
+<% if post.repost? %>
+  <%= render partial: 'posts/repost', locals: { post: post } %>
+<% else %>
+  <%= render partial: 'posts/post_content', locals: { post: post } %>
+<% end %>

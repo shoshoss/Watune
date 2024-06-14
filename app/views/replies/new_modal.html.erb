@@ -8,20 +8,20 @@
       <div class="bg-white">
         <% if @parent_posts.present? %>
           <% @parent_posts.each do |parent_post| %>
-            <%= render 'posts/post_content', post: parent_post %>
+            <%= render 'posts/post', post: parent_post %>
           <% end %>
         <% end %>
       </div>
       <div class="bg-white">
         <% if @post.parent_post.present? %>
-          <%= render 'posts/post_content', post: @post.parent_post %>
+          <%= render 'posts/post', post: @post.parent_post %>
         <% elsif @post.post_reply_id.present? %>
           <div class="text-lg text-gray-500 mb-2">
             親の投稿が削除されました。
           </div>
         <% end %>
 
-        <%= render 'posts/post_content', post: @post %>
+        <%= render 'posts/post', post: @post %>
       </div>
       <%= render 'replies/form_modal', post: @post, reply: @reply %>
       <div class="modal-action">
