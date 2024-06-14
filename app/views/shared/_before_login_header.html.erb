@@ -3,13 +3,13 @@
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="hidden md:block shrink-0">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag 'wave_orange.png', alt: 'ロゴ', class: "h-[48px] lg:h-[64px] w-[200px] lg:w-[300px] w-auto rounded-full",
             data: { turbo_frame: "_top" } %>
       <% end %>
     </div>
     <div class="md:hidden">
-      <%= link_to root_path do %>
+      <%= link_to posts_path do %>
         <%= image_tag asset_path('wave_orange_sm_c.png'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]",
             data: { turbo_frame: "_top" } %>
       <% end %>
