@@ -1,8 +1,15 @@
-<%= link_to new_reply_modal_path(username_slug: post.user.username_slug, id: post.id),
-            data: { turbo_frame: "reply_modal" },
-            class: "text-lg text-gray-500 hover:text-blue-700" do %>
-  <i class="fa-regular fa-comment <%= 'text-blue-500' if post.replies.exists?(user: current_user) %>"></i>
-  <% if post.replies.count > 0 %>
-    <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
+<%= if logged_in? %>
+  <%= link_to new_reply_modal_path(username_slug: post.user.username_slug, id: post.id), data: { turbo_frame: "reply_modal" }, class: "text-lg text-gray-500 hover:text-blue-700" do %>
+    <i class="fa-regular fa-comment <%= 'text-blue-500' if post.replies.exists?(user: current_user) %>"></i>
+    <% if post.replies.count > 0 %>
+      <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= link_to new_signup_modal_path, data: { turbo_frame: "signup_modal" }, class: "text-lg text-gray-500 hover:text-blue-700" do %>
+    <i class="fa-regular fa-comment"></i>
+    <% if post.replies.count > 0 %>
+      <span class="ml-2 text-lg text-gray-500"><%= post.replies.count %></span>
+    <% end %>
   <% end %>
 <% end %>
