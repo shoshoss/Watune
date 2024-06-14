@@ -18,11 +18,14 @@
         </p>
       </div>
       <a href="#next-section" class="rounded-full text-lg sm:text-2xl btn btn-outline btn-primary mt-6 bg-white bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+      <section class="text-center">
+        <%= link_to "投稿を見てみる", posts_path, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent hover:bg-sky-100 rounded-full transition-colors duration-300" %>
+      </section>
     </div>
   </div>
 </div>
 
-<div class="text-gray-900 container mx-auto py-12" id="next-section" style="background-image: url('/images/wave.webp'); background-size: cover; background-position: center;">
+<div class="text-gray-900 container mx-auto py-12" id="next-section" style="background-image: url('#'); background-size: cover; background-position: center;">
   <section class="mb-12 text-center">
     <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-8 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
@@ -84,10 +87,14 @@
       </ul>
     </div>
   </section>
+
+  <section class="text-center">
+    <%= link_to "投稿を見てみる", posts_path, class: "mb-6 text-xl sm:text-2xl btn btn-accent hover:bg-sky-100 rounded-full transition-colors duration-300" %>
+  </section>
   <% unless current_user %>
     <section class="text-center">
-      <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl mt-6' do %>
-      お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
+      お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能
     <% end %>
     </section>
     <!-- Googleで新規登録のボタン -->

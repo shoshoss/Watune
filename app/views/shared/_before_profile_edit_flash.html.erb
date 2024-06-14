@@ -48,14 +48,14 @@
         <br><strong>プロフィールページ</strong>で
         <br>いつでも行えます。<br>
         <strong>プロフィールページ</strong>は、
-        <br>画面右上のアイコンより、
+        <br>画面右上のアイコンより、<br class="sm:hidden">
         <a href="<%= profile_show_path(current_user.username_slug) %>" class="text-xl font-semibold text-blue-500 hover:text-blue-700 underline" data: { turbo_frame: "_top" }>
           「プロフィール」
         </a>
         を
         <br>タップすることで
         <br>表示できます。
-      </p>
+      </br>
     </div>
   </div>
 <% end %>

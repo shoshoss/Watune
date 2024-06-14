@@ -56,15 +56,16 @@ class UsersController < ApplicationController
     @user = User.create!(email:, password: SecureRandom.hex(10), guest: true)
     auto_login(@user)
     set_flash(:before_profile_edit_flash, I18n.t('flash_messages.users.guest_login_success'))
+    redirect_to posts_path
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html
       format.turbo_stream
     end
   rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error I18n.t('flash_messages.users.guest_login_failure') + ": #{e.message}"
     flash.now[:alert] = I18n.t('flash_messages.users.guest_login_failure')
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html
       format.turbo_stream
     end
   end
