@@ -1,16 +1,18 @@
-<%= turbo_frame_tag dom_id(repost, :repost) do %>
-  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == repost.id } %>
-  <div data-controller="audio" id="repost-id-<%= repost.id %>",
-       class="hover:bg-sky-100 overflow-hidden border-b my-4 p-[8px] <%= 'bg-orange-100' if unread_notification %>">
-    <div class="ml-[8px] mb-[2px]">
-      <i class="fa-solid fa-retweet text-base text-gray-500"></i>
-      <%= link_to profile_modal_path(username_slug: repost.user.username_slug), class: "text-base font-semibold text-gray-500 hover:underline ml-[2px]", data: { turbo_frame: "profile_modal" } do %>
-        <%= repost.user.display_name %>さんがリポスト
+<%= turbo_frame_tag dom_id(post, :repost) do %>
+  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Repost' && n.notifiable_id == post.id } %>
+  <div data-controller="audio" id="repost-id-<%= post.id %>"
+       class="hover:bg-sky-100 overflow-y-hidden border-b p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+    <div class="flex items-center space-x-2 overflow-x-auto whitespace-nowrap pb-2 pl-[8px]">
+      <i class="fa-solid fa-retweet text-base text-green-500"></i>
+      <% post.reposts.order(created_at: :desc).each_with_index do |repost, index| %>
+        <%= link_to profile_modal_path(username_slug: repost.user.username_slug), class: "text-base font-semibold text-green-500 hover:underline ml-[2px]", data: { turbo_frame: "profile_modal" } do %>
+          <% repost_user_is_current_user = repost.user == current_user %>
+          <%= repost_user_is_current_user ? "あなた" : "#{repost.user.display_name}さん" %>
+        <% end %>
       <% end %>
     </div>
-    <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Repost' && n.notifiable_id == repost.id } %>
     <div class="flex">
-      <%= render 'posts/post_body', post: repost %>
+      <%= render 'posts/post_body', post: post %>
     </div>
   </div>
 <% end %>
