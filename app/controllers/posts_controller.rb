@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
   include ActionView::RecordIdentifier
 
+  skip_before_action :require_login, only: %i[index show]
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
   before_action :set_followings_by_post_count, only: %i[new edit create update]
