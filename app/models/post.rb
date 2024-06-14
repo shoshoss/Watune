@@ -31,7 +31,7 @@ class Post < ApplicationRecord
                                   }, through: :post_users, source: :user
 
   # リポスト関係
-  has_many :reposts, class_name: 'Repost', dependent: :destroy
+  has_many :reposts, class_name: 'Repost', foreign_key: 'post_id', dependent: :destroy, inverse_of: :original_post
   has_many :reposted_by_users, through: :reposts, source: :user
 
   # 音声添付ファイル

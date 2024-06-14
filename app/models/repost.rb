@@ -1,6 +1,6 @@
 class Repost < ApplicationRecord
   belongs_to :user
-  belongs_to :original_post, class_name: 'Post', foreign_key: 'post_id', inverse_of: :original_post
+  belongs_to :original_post, class_name: 'Post', foreign_key: 'post_id', inverse_of: :reposts
 
   after_create_commit :notify_repost
 
