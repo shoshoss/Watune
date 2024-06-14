@@ -16,12 +16,14 @@
         </div>
 
         <div class="bg-white">
-          <% if @post.parent_post.present? %>
-            <%= render 'posts/post', post: @post.parent_post %>
-          <% elsif @post.post_reply_id.present? %>
-            <div class="text-lg text-gray-500 mb-2">
-              親の投稿が削除されました。
-            </div>
+          <% unless @parent_posts.include?(@post.parent_post) %>
+            <% if @post.parent_post.present? %>
+              <%= render 'posts/post', post: @post.parent_post %>
+            <% elsif @post.post_reply_id.present? %>
+              <div class="text-lg text-gray-500 mb-2">
+                親の投稿が削除されました。
+              </div>
+            <% end %>
           <% end %>
           <%= render 'posts/post', post: @post %>
         </div>

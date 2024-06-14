@@ -3,11 +3,13 @@
   <div id="post-<%= post.id %>-reply-icon">
     <%= render 'posts/reply_icon', post: post %>
   </div>
-  <div>
-    <%= turbo_frame_tag "post-#{post.id}-repost" do %>
-      <%= render 'posts/repost_icon', post: post %>
-    <% end %>
-  </div>
+  <% if post.open? %>
+    <div>
+      <%= turbo_frame_tag "post-#{post.id}-repost" do %>
+        <%= render 'posts/repost_icon', post: post %>
+      <% end %>
+    </div>
+  <% end %>
   <div>
     <%= turbo_frame_tag "post-#{post.id}-like" do %>
       <%= render 'posts/like', post: post %>
