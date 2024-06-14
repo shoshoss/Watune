@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "post-#{post.id}-bookmark" do %>
   <div class="flex items-center">
-    <% if current_user.bookmarked?(post) %>
+    <% if user_bookmarked_post?(current_user, post) %>
       <% bookmark = current_user.bookmarks.find_by(post: post) %>
       <%= link_to post_bookmark_path(post.id, bookmark.id), method: :delete, data: { turbo_method: :delete }, id: "post-#{post.id}-bookmark-button" do %>
         <i class="fas fa-bookmark text-xl text-yellow-700-accent hover:text-yellow-900"></i>
@@ -10,7 +10,7 @@
         <i class="fas fa-bookmark text-xl text-gray-500 hover:text-yellow-700-accent"></i>
       <% end %>
     <% end %>
-    <% if current_user.id == post.user_id %>
+    <% if current_user && user_owns_post?(current_user, post) %>
       <% bookmark_count = post.bookmarks.where.not(user_id: post.user_id).count %>
       <% if bookmark_count > 0 %>
         <span class="ml-2 text-lg text-gray-500"><%= bookmark_count %></span>
