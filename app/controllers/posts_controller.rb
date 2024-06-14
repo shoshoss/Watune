@@ -12,12 +12,13 @@ class PostsController < ApplicationController
   end
 
   def show
-    unless @post.visible_to?(current_user)
+    if current_user && !@post.visible_to?(current_user)
       redirect_to root_path, alert: 'この投稿を見る権限がありません。'
       return
     end
+  
     @show_reply_line = true
-    @notifications = current_user.received_notifications.unread
+    @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 15)
     @parent_posts = @post.ancestors
