@@ -3,7 +3,7 @@
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
 <div class="flex justify-center min-h-screen">
-  <div class="max-w-xl w-full bg-white border-2 border-gray-200">
+  <div class="max-w-[674px] w-full bg-white border-2 border-gray-200">
     <h1 class="text-center font-bold text-xl mt-2">通知</h1>
     <div class="c-tabs flex mb-2">
       <%= link_to notifications_path(category: 'all'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>

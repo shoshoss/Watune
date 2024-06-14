@@ -14,8 +14,8 @@
     </form>
   </div>
   <!-- 投稿一覧 -->
-  <div class="px-2 mx-auto">
-    <div id="post-list" class="grid grid-cols-1 border">
+  <div class="mx-auto max-w-[674px] w-full border border-gray-200">
+    <div id="post-list" class="grid grid-cols-1">
       <% if posts.present? %>
         <%= turbo_frame_tag "next-page" do %>
           <%= render posts %>

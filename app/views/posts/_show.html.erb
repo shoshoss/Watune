@@ -3,8 +3,8 @@
 <%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
 <%= turbo_frame_tag "post_show" do %>
-  <div class="container pt-3">
-    <div class="px-2 mx-auto">
+  <div class="container border-2 border-gray-300 pt-3">
+    <div class="mx-auto">
       <div class="grid grid-cols-1 gap-4">
         <!-- 親投稿の一覧表示 -->
         <div class="bg-white">
@@ -29,13 +29,13 @@
         </div>
 
         <!-- 送信先の表示 -->
-        <div class="sm:pr-2 border-2 border-gray-300">
+        <div class="px-2 mx-2 border border-gray-300">
           <div class="flex justify-center">
-            <button id="scroll-to-top" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-secondary">
-              <i class="fas fa-arrow-up mr-1"></i>返信一覧の上へ
+            <button id="scroll-to-top" class="m-1 sm:m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-secondary">
+              <i class="fas fa-arrow-up"></i>返信一覧の上へ
             </button>
-            <button id="scroll-to-bottom" class="m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
-              <i class="fas fa-arrow-down mr-1"></i>返信一覧の下を表示
+            <button id="scroll-to-bottom" class="m-1 sm:m-2 text-base btn-sm sm:text-md sm:btn-base btn btn-outline btn-accent">
+              <i class="fas fa-arrow-down"></i>返信一覧の下を表示
             </button>
           </div>
           <div id="replies" class="sm:pr-2 overflow-y-auto" style="max-height: calc(100vh - 300px)">
