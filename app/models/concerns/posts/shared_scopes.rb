@@ -39,6 +39,8 @@ module Posts
 
       # 相互のダイレクトメッセージや複数選択の送受信、返信のやり取りを表示するスコープ
       scope :shared_with_you, lambda { |current_user, profile_user|
+        next if current_user.nil? || profile_user.nil?
+
         # 指定されたユーザーと現在のユーザー間のダイレクトメッセージを取得
         direct_to_profile_user = joins(:post_users).where(
           user_id: current_user.id,
