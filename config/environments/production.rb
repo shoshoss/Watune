@@ -67,11 +67,10 @@ Rails.application.configure do
   config.hosts << 'wavecongra.com'
   config.hosts << 'www.watune.com'
   config.hosts << 'watune.com'
-  config.hosts << 'www.wavecongra.site'
 
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
-      rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
-    })
-  end
+    r301 /.*/, 'https://www.watune.com$&', if: Proc.new { |rack_env|
+      ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
+    }
+  end  
 end
