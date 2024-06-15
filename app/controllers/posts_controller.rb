@@ -16,7 +16,7 @@ class PostsController < ApplicationController
       redirect_to root_path, alert: 'この投稿を見る権限がありません。'
       return
     end
-  
+
     @show_reply_line = true
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
