@@ -70,7 +70,7 @@ Rails.application.configure do
   config.hosts << 'www.wavecongra.site'
 
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301(/.*/, 'https://www.wavecongra.com$&', if: proc { |rack_env|
+    r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
       rack_env['SERVER_NAME'] == 'wavecongra.onrender.com'
     })
   end

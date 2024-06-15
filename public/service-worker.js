@@ -1,4 +1,4 @@
-const CACHE_NAME = "wavecongra-cache-v1";
+const CACHE_NAME = "Watune-cache-v1";
 const urlsToCache = [
   "/",
   "/icon-192.png",

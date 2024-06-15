@@ -1,7 +1,7 @@
 <div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
-    <div class="flex flex-col justify-center max-w-xl mx-auto">
+    <div class="flex flex-col justify-center max-w-[674px] mx-auto">
       <%= link_to guest_login_path, class: "invisible trial-btn text-xl sm:text-2xl mb-6" do %>
         お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
       <% end %>
@@ -17,20 +17,18 @@
           <br>喜びや元氣を与える
         </p>
       </div>
-      <a href="#about" class="rounded-full text-lg sm:text-2xl btn btn-info mt-6 bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
-      <section class="text-center">
-        <%= link_to "投稿を見てみる", posts_path, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
-      </section>
+      <a href="#about" class="rounded-full text-xl sm:text-2xl btn btn-info mt-6 bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+      <%= link_to "ウェーブ（投稿）を見てみる", posts_path, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
     </div>
   </div>
 </div>
 
-<div id="about" class="text-gray-900 container mx-auto py-12" style="background-image: url('#'); background-size: cover; background-position: center;">
+<div id="about" class="flex flex-col max-w-[674px] justify-center text-gray-900 container mx-auto py-12" style="background-image: url('#'); background-size: cover; background-position: center;">
   <section class="mb-12 text-center">
     <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-8 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
       <p class="text-lg font-semibold">
-        本アプリ（WaveConGra）は、<br class="sm:hidden">音声による応援や
+        本アプリ（Watune）は、<br class="sm:hidden">音声による応援や
         <br>感謝・祝福のメッセージを通じて
         <br>仲間と喜びや元氣を分かち合い
         <br>前向きなエネルギーを<br class="sm:hidden">共有するサービスです。
@@ -57,12 +55,12 @@
     <div class="rounded-full bg-sky-400 bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">アプリ名の由来</h2>
       <p class="text-lg font-semibold">
-        WaveConGra（ウェーブこんぐら）は、
-        <br>"Waves of Congratulations and Gratitude" 
-        <br>（祝福と感謝の波紋）という意味で、
-        <br>あなたの音声メッセージは
-        <br>祝福や感謝で満ちていて、
-        <br>波紋のように広がっている<br class="sm:hidden">という想いを込めています。
+        Watune（ウェーチュン）は、
+        <br>Wave Tune（ウェーブチューン）
+        <br> 「Wave（波、波紋）」と<br class="sm:hidden">「Tune（旋律、メロディー）」を
+        <br>組み合わせた造語です。
+        <br>心地の良い前向きな音が
+        <br>波紋のように広がっている<br class="sm:hidden">という意味を込めています。
       </p>
     </div>
   </section>
@@ -70,7 +68,7 @@
     <div class="rounded-full bg-sky-400 bg-opacity-50 px-5 py-12 sm:p-12 mx-auto max-w-2xl">
       <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
       <p class="text-lg font-semibold">
-        本アプリは、<br class="sm:hidden">前向きになりたい人々
+        本アプリは、<br class="sm:hidden">前向きになりたい人々や
         <br>切磋琢磨したい人々を<br class="sm:hidden">対象としています。
         <br>学びのアウトプットや<br class="sm:hidden">アイデアの音声メモ、
         <br>思い出の記録としても<br class="sm:hidden">ご利用いただけます。
@@ -82,30 +80,26 @@
       <h2 class="text-3xl font-bold mb-4">こだわりポイント</h2>
       <ul class="list-none p-0 text-lg font-semibold text-center">
         <li class="leading-none mb-2">・音声による投稿<br class="sm:hidden">（1投稿60分未満）</li>
-        <li class="leading-none mb-2">・自分のプロフィールで<br class="sm:hidden">投稿のメニュー表示</li>
-        <li class="leading-none">・応援（いいねスタンプ）<br class="sm:hidden">しやすい仕組み</li>
+        <li class="leading-none mb-2">・投稿をカテゴリー分けした<br class="sm:hidden">プロフィール画面</li>
+        <li class="leading-none">・スマホでも閲覧や操作がしやすいように</li>
       </ul>
     </div>
   </section>
 
-  <section class="text-center">
-    <%= link_to "投稿を見てみる", posts_path, class: "mb-6 text-xl sm:text-2xl btn btn-accent hover:bg-sky-100 rounded-full transition-colors duration-300" %>
-  </section>
+  <%= link_to "ウェーブ（投稿）を見てみる", posts_path, class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
   <% unless current_user %>
-    <section class="text-center">
-      <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
-      お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能
+    <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
+    お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能
     <% end %>
-    </section>
     <!-- Googleで新規登録のボタン -->
-      <div class="flex items-center justify-center mb-8">
-        <%= link_to auth_at_provider_path(provider: :google),
-                    method: :post,
-                    class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
-                    data: { turbo: false } do %>
-          <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
-          <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
-      <% end %>
+    <div class="flex items-center justify-center mb-8">
+      <%= link_to auth_at_provider_path(provider: :google),
+                  method: :post,
+                  class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
+                  data: { turbo: false } do %>
+        <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+        <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
+    <% end %>
   <% end %>
 </div>
 
