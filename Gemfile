@@ -73,6 +73,9 @@ gem 'active_record_extended', '~> 3.2'
 # https://アプリ名.onrender.com」を、「https://www.独自ドメイン」にリダイレクトさせてドメインを統一
 gem 'rack-rewrite', '~> 1.5'
 
+# OGPメタタグの設定を効率的に行うため
+gem 'meta-tags', '~> 2.21'
+
 group :development, :test do
   # デバッグ用のdebug
   gem 'debug', platforms: %i[mri windows]
