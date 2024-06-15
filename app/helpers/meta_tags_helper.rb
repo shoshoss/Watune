@@ -10,21 +10,21 @@ module MetaTagsHelper
       title: 'タイトル',
       reverse: true,
       separator: '|',
-      description: "このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。",
+      description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       keywords: 'ページキーワード',
       canonical: request.original_url,
       noindex: !Rails.env.production?,
       og: {
         site_name: 'Watune（ウェーチュン）',
         title: 'タイトル',
-        description: "このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。",
+        description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
         url: request.original_url,
         image: image_url('ogp.png'),
-        locale: 'ja_JP',
+        locale: 'ja_JP'
       },
       twitter: {
         card: 'summary_large_image',
-        site: '@ツイッターのアカウント名',
+        site: '@ツイッターのアカウント名'
       },
       fb: {
         app_id: '自身のfacebookのapplication ID'
@@ -35,36 +35,42 @@ module MetaTagsHelper
   def assign_meta_tags(options = {})
     defaults = default_meta_tags
     options.reverse_merge!(defaults)
-    site = options[:site]
-    title = options[:title]
-    description = options[:description]
-    keywords = options[:keywords]
-    image = options[:image].presence || image_url('placeholder.png')
-    configs = {
+    configs = build_meta_tags(options)
+    set_meta_tags(configs)
+  end
+
+  private
+
+  def build_meta_tags(options)
+    {
       separator: '|',
       reverse: true,
-      site: site,
-      title: title,
-      description: description,
-      keywords: keywords,
+      site: options[:site],
+      title: options[:title],
+      description: options[:description],
+      keywords: options[:keywords],
       canonical: request.original_url,
-      icon: {
-        href: image_url('placeholder.png')
-      },
-      og: {
-        type: 'website',
-        title: title.presence || site,
-        description: description,
-        url: request.original_url,
-        image: image,
-        site_name: site
-      },
-      twitter: {
-        site: site,
-        card: 'summary_large_image',
-        image: image
-      }
+      og: build_og_meta_tags(options),
+      twitter: build_twitter_meta_tags(options)
     }
-    set_meta_tags(configs)
+  end
+
+  def build_og_meta_tags(options)
+    {
+      type: 'website',
+      title: options[:title].presence || options[:site],
+      description: options[:description],
+      url: request.original_url,
+      image: options[:image].presence || image_url('placeholder.png'),
+      site_name: options[:site]
+    }
+  end
+
+  def build_twitter_meta_tags(options)
+    {
+      site: options[:site],
+      card: 'summary_large_image',
+      image: options[:image].presence || image_url('placeholder.png')
+    }
   end
 end
