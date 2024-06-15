@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  skip_before_action :require_login, only: %i[show modal]
   before_action :set_current_user, only: %i[edit update]
   before_action :set_user, only: %i[show modal]
   before_action :set_posts, only: %i[show], if: -> { @user.present? }
@@ -6,10 +7,9 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @show_reply_line = false
-    @notifications = current_user.received_notifications.unread
-    return unless @user.nil?
-
-    redirect_to root_path, alert: 'ユーザーが見つかりません。'
+    @notifications = current_user&.received_notifications&.unread
+    return unless @user
+    redirect_to root_path, alert: 'ユーザーが見つかりません。' if @user.nil?
   end
 
   # プロフィール編集アクション
@@ -42,7 +42,7 @@ class ProfilesController < ApplicationController
   def modal
     if @user.nil?
       render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message',
-                                                         locals: { message: 'ユーザーが見つかりません。' })
+                                                        locals: { message: 'ユーザーが見つかりません。' })
       return
     end
 
@@ -50,7 +50,7 @@ class ProfilesController < ApplicationController
       format.html { render partial: 'profiles/profile_modal', locals: { user: @user } }
       format.turbo_stream do
         render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal',
-                                                                   locals: { user: @user })
+                                                                  locals: { user: @user })
       end
     end
   end
@@ -76,8 +76,8 @@ class ProfilesController < ApplicationController
     current_user == @user ? 'all_my_posts' : 'my_posts_open'
   end
 
-  # 投稿をフィルタリング
-  def filtered_posts
+   # 投稿をフィルタリング
+   def filtered_posts
     category = params[:category] || determine_initial_category
 
     scopes = {

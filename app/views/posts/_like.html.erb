@@ -1,19 +1,25 @@
 <%= turbo_frame_tag "post-#{post.id}-like" do %>
   <div class="flex items-center">
-    <% if current_user.like?(post) %>
-      <% like = current_user.likes.find_by(post: post) %>
-      <%= link_to post_like_path(post.id, like.id), method: :delete, data: { turbo_method: :delete }, id: "post-#{post.id}-like-button" do %>
-        <i class="fas fa-heart text-xl text-red-500 hover:text-red-700"></i>
+    <% if logged_in? %>
+      <% if current_user.like?(post) %>
+        <% like = current_user.likes.find_by(post: post) %>
+        <%= link_to post_like_path(post.id, like.id), method: :delete, data: { turbo_method: :delete }, id: "post-#{post.id}-like-button" do %>
+          <i class="fas fa-heart text-xl text-red-500 hover:text-red-700"></i>
+        <% end %>
+      <% else %>
+        <%= link_to post_likes_path(post.id), method: :post, data: { turbo_method: :post }, id: "post-#{post.id}-like-button" do %>
+          <i class="fas fa-heart text-xl text-gray-500 hover:text-red-500"></i>
+        <% end %>
+      <% end %>
+      <% if current_user.id == post.user_id %>
+        <% like_count = post.likes.where.not(user_id: post.user_id).count %>
+        <% if like_count > 0 %>
+          <span class="ml-2 text-lg text-gray-500"><%= like_count %></span>
+        <% end %>
       <% end %>
     <% else %>
-      <%= link_to post_likes_path(post.id), method: :post, data: { turbo_method: :post }, id: "post-#{post.id}-like-button" do %>
-        <i class="fas fa-heart text-xl text-gray-500 hover:text-red-500"></i>
-      <% end %>
-    <% end %>
-    <% if current_user.id == post.user_id %>
-      <% like_count = post.likes.where.not(user_id: post.user_id).count %>
-      <% if like_count > 0 %>
-        <span class="ml-2 text-lg text-gray-500"><%= like_count %></span>
+      <%= link_to new_signup_modal_path, data: { turbo_frame: "signup_modal" }, class: "text-gray-500 hover:text-red-500" do %>
+        <i class="fas fa-heart text-xl"></i>
       <% end %>
     <% end %>
   </div>

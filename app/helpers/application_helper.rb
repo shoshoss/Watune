@@ -4,7 +4,7 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def page_title(title = '')
-    base_title = 'WaveConGra 〜感謝と祝福の波紋〜'
+    base_title = 'Watune 〜感謝と祝福の波紋〜'
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
