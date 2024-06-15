@@ -56,7 +56,7 @@
         <% if logged_in? %>
           <%= render 'replies/form', post: @post, reply: @reply %>
         <% else %>
-          <div class="text-center">
+          <div class="text-center mb-2">
             <p class="mb-2 text-lg sm:text-lg">ここに返信フォームが<br class="sm:hidden">新規登録またはログイン後に表示されます。</p>
             <%= link_to t('header.signup'), new_signup_modal_path, class: 'text-lg btn btn-outline btn-accent btn-base sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "signup_modal" } %>
             <%= link_to t('header.login'), new_login_modal_path, class: 'text-lg btn btn-outline btn-primary btn-base sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "login_modal" } %>
