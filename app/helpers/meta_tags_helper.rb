@@ -13,21 +13,28 @@ module MetaTagsHelper
     "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}%0a&url=#{CGI.escape(url)}%0a&hashtags=#{CGI.escape(hashtags)}"
   end
 
+  def x_share_root_url
+    text = "Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ"
+    hashtags = "Watune,ウェーチュン"
+    url = full_url(root_path)
+    "https://twitter.com/intent/tweet?text=#{CGI.escape(text)}&hashtags=#{CGI.escape(hashtags)}&url=#{CGI.escape(url)}"
+  end
+
   def truncate_post_content(content)
     max_length = 100
     truncated_content = content.truncate(max_length, omission: '...')
     truncated_content.gsub(/\r\n|\r|\n/, "\n") # 改行を統一
   end
 
-  def show_meta_tags
-    assign_meta_tags if display_meta_tags.blank?
+  def meta_tags
+    set_meta_tags(default_meta_tags)
     display_meta_tags
   end
 
   def default_meta_tags
     {
       site: 'Watune（ウェーチュン）',
-      title: 'Watune - 音声メッセージで喜びや元氣を共有するアプリ',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ',
       reverse: true,
       separator: '|',
       description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
@@ -42,7 +49,7 @@ module MetaTagsHelper
   def default_og_tags
     {
       site_name: 'Watune（ウェーチュン）',
-      title: 'Watune - 音声メッセージで自分自身と仲間に喜びや元氣を与えるアプリ',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与えるアプリ',
       description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       url: request.original_url,
       image: full_url('/ogp.webp'),
@@ -58,13 +65,6 @@ module MetaTagsHelper
       description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       image: full_url('/ogp.webp')
     }
-  end
-
-  def assign_meta_tags(options = {})
-    defaults = default_meta_tags
-    options.reverse_merge!(defaults)
-    configs = build_meta_tags(options)
-    set_meta_tags(configs)
   end
 
   private
@@ -106,19 +106,11 @@ module MetaTagsHelper
 
   def full_title(page_title = '')
     base_title = 'Watune（ウェーチュン）'
-    if page_title.empty?
-      base_title
-    else
-      "#{page_title} | #{base_title}"
-    end
+    page_title.empty? ? base_title : "#{page_title} | #{base_title}"
   end
 
   def full_url(path)
-    domain = if Rails.env.development?
-               'http://0.0.0.0:3000'
-             else
-               'https://www.watune.com'
-             end
+    domain = Rails.env.development? ? 'http://0.0.0.0:3000' : 'https://www.watune.com'
     "#{domain}#{path}"
   end
 end
