@@ -1,4 +1,24 @@
 module MetaTagsHelper
+  def x_share_post_url(post)
+    user_name = post.user.display_name
+    post_content = truncate_post_content(post.body)
+    if post.user == current_user
+      text = "ウェーブしました！\n投稿内容：\n#{post_content}"
+    else
+      text = "#{user_name}さんのウェーブ！\n投稿内容：\n#{post_content}"
+    end
+    hashtags = "Watune,ウェーチュン"
+    path = user_post_path(username_slug: post.user.username_slug, id: post.id)
+    url = full_url(path)
+    "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}%0a&url=#{CGI.escape(url)}%0a&hashtags=#{CGI.escape(hashtags)}"
+  end
+
+  def truncate_post_content(content)
+    max_length = 100
+    truncated_content = content.truncate(max_length, omission: '... 続きあり')
+    truncated_content.gsub(/\r\n|\r|\n/, "\n") # 改行を統一
+  end
+
   def show_meta_tags
     assign_meta_tags if display_meta_tags.blank?
     display_meta_tags

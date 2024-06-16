@@ -19,9 +19,8 @@
     <%= render 'posts/bookmark', post: post %>
   </div>
   <div>
-    <%= link_to "#", id: "#" do %>
+    <%= link_to x_share_post_url(post), target: "_blank" do %>
       <i class="fa-brands fa-x-twitter text-lg text-black-500 hover:text-black-700"></i>
-      未
     <% end %>
   </div>
 </div>
