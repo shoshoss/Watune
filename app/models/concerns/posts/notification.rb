@@ -51,19 +51,21 @@ module Posts
 
       # 投稿の通知を作成するメソッド
       def create_notification_post(current_user)
-        direct_recipients.each do |recipient|
-          next if recipient.id == current_user.id # 自分自身への通知は不要
-
-          notification = current_user.sent_notifications.new(
-            recipient_id: recipient.id, # 通知の受信者
-            sender_id: current_user.id, # 通知の送信者
-            notifiable: self, # 投稿
-            action: 'direct', # アクションタイプ
-            unread: true # 未読状態
+        notifications = direct_recipients.where.not(id: current_user.id).map do |recipient|
+          current_user.sent_notifications.new(
+            recipient_id: recipient.id,
+            sender_id: current_user.id,
+            notifiable: self,
+            action: 'direct',
+            unread: true
           )
-          notification.save if notification.valid?
+        end
 
-          # メール通知
+        # バルクインサート
+        Notification.import(notifications)
+
+        # メール通知をバッチ処理で実行
+        direct_recipients.where.not(id: current_user.id).each do |recipient|
           UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
         end
       end
