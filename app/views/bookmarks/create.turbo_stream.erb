@@ -1,3 +1,3 @@
 <%= turbo_stream.replace "post-#{@post.id}-bookmark" do %>
-  <%= render partial: 'posts/bookmark', locals: { post: @post } %>
+  <%= render partial: 'posts/shared/bookmark_icon', locals: { post: @post } %>
 <% end %>

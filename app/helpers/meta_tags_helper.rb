@@ -14,10 +14,10 @@ module MetaTagsHelper
   end
 
   def x_share_root_url
-    text = "Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ"
-    hashtags = "Watune,ウェーチュン"
+    text = 'Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ'
+    hashtags = 'Watune,ウェーチュン'
     url = full_url(root_path)
-    "https://twitter.com/intent/tweet?text=#{CGI.escape(text)}&hashtags=#{CGI.escape(hashtags)}&url=#{CGI.escape(url)}"
+    "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}&hashtags=#{CGI.escape(hashtags)}&url=#{CGI.escape(url)}"
   end
 
   def truncate_post_content(content)
@@ -26,8 +26,8 @@ module MetaTagsHelper
     truncated_content.gsub(/\r\n|\r|\n/, "\n") # 改行を統一
   end
 
-  def meta_tags
-    set_meta_tags(default_meta_tags)
+  def show_meta_tags
+    assign_meta_tags if display_meta_tags.blank?
     display_meta_tags
   end
 
@@ -65,6 +65,13 @@ module MetaTagsHelper
       description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       image: full_url('/ogp.webp')
     }
+  end
+
+  def assign_meta_tags(options = {})
+    defaults = default_meta_tags
+    options.reverse_merge!(defaults)
+    configs = build_meta_tags(options)
+    set_meta_tags(configs)
   end
 
   private
@@ -106,11 +113,19 @@ module MetaTagsHelper
 
   def full_title(page_title = '')
     base_title = 'Watune（ウェーチュン）'
-    page_title.empty? ? base_title : "#{page_title} | #{base_title}"
+    if page_title.empty?
+      base_title
+    else
+      "#{page_title} | #{base_title}"
+    end
   end
 
   def full_url(path)
-    domain = Rails.env.development? ? 'http://0.0.0.0:3000' : 'https://www.watune.com'
+    domain = if Rails.env.development?
+               'http://0.0.0.0:3000'
+             else
+               'https://www.watune.com'
+             end
     "#{domain}#{path}"
   end
 end
