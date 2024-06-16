@@ -1,7 +1,7 @@
 <div class="user-item flex flex-col items-start hover:bg-sky-100 p-2">
   <div class="flex items-center w-full">
     <%= link_to profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "flex items-center no-underline flex-shrink-0 hover:underline" do %>
-      <%= image_tag(user.avatar.presence || asset_path('wave_sm_c.svg'), alt: "プロフィール画像", class: "rounded-full h-[40px] w-[40px] flex-shrink-0") %>
+      <%= image_tag(user.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "rounded-full h-[40px] w-[40px] flex-shrink-0") %>
     <% end %>
     <div class="ml-2 flex-1 overflow-hidden">
       <h3 class="text-md font-semibold truncate">
