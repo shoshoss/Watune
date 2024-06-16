@@ -75,7 +75,7 @@ ja:
     post_audio: "ウェーブする"
     bookmark_index: "ブックマーク一覧"
     profile: "プロフィール"
-    trial_login: "お試しログイン"
+    trial_login: "お試し利用"
 
   flash_messages:
     user_sessions:

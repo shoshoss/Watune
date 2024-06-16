@@ -5,6 +5,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
   before_action :set_followings_by_post_count, only: %i[new edit create update]
+  before_action :authorize_view!, only: [:show]
 
   def index
     @show_reply_line = false
@@ -12,11 +13,6 @@ class PostsController < ApplicationController
   end
 
   def show
-    if current_user && !@post.visible_to?(current_user)
-      redirect_to root_path, alert: 'この投稿を見る権限がありません。'
-      return
-    end
-
     @show_reply_line = true
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
@@ -117,5 +113,11 @@ class PostsController < ApplicationController
         .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
         .includes(:user, :reposts)
         .order(Arel.sql('reposted_at DESC'))
+  end
+
+  def authorize_view!
+    return if @post.visible_to?(current_user)
+
+    redirect_to root_path, alert: 'この投稿を見る権限がありません。'
   end
 end

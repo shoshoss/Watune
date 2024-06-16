@@ -51,7 +51,11 @@ class Post < ApplicationRecord
     return true if privacy == 'open' # 全体公開
     return true if privacy == 'reply' # リプライ
 
-    post_users.exists?(user:, approved: true) # 承認された受信者
+    # 未ログインユーザーはこれ以上のプライバシーレベルの投稿は見れない
+    return false if user.nil?
+
+    # ログインユーザーかつ承認された受信者であれば投稿を見ることができる
+    post_users.exists?(user:, approved: true)
   end
 
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
