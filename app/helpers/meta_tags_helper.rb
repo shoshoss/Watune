@@ -14,7 +14,7 @@ module MetaTagsHelper
   end
 
   def x_share_root_url
-    text = 'Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ'
+    text = 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ'
     hashtags = 'Watune,ウェーチュン'
     url = full_url(root_path)
     "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}&hashtags=#{CGI.escape(hashtags)}&url=#{CGI.escape(url)}"
@@ -34,7 +34,7 @@ module MetaTagsHelper
   def default_meta_tags
     {
       site: 'Watune（ウェーチュン）',
-      title: 'Watune - 音で自分自身と仲間に喜びや元氣を共有するアプリ',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
       reverse: true,
       separator: '|',
       description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
@@ -49,8 +49,8 @@ module MetaTagsHelper
   def default_og_tags
     {
       site_name: 'Watune（ウェーチュン）',
-      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与えるアプリ',
-      description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
+      description: 'このWebアプリは、音による前向きなメッセージやメロディーを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       url: request.original_url,
       image: full_url('/ogp.webp'),
       locale: 'ja_JP'
@@ -60,9 +60,9 @@ module MetaTagsHelper
   def default_twitter_tags
     {
       card: 'summary_large_image',
-      site: '@ツイッターのアカウント名',
-      title: 'タイトル',
-      description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
+      site: '@shonosuke53a',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
+      description: 'このWebアプリは、音による前向きなメッセージやメロディーを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
       image: full_url('/ogp.webp')
     }
   end
