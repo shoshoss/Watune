@@ -30,7 +30,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      create_post_users(@post) if params[:post][:recipient_ids].present?
+      create_post_users(@post) if post_params[:recipient_ids].present?
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
 
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
@@ -43,6 +43,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params.except(:recipient_ids))
+      create_post_users(@post) if post_params[:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
