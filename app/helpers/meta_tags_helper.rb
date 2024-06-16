@@ -104,7 +104,7 @@ module MetaTagsHelper
   def build_twitter_meta_tags(options)
     {
       card: 'summary_large_image',
-      site: options[:twitter_site] || '@ツイッターのアカウント名',
+      site: options[:twitter_site] || '@shonosuke53a',
       title: options[:title].presence || options[:site],
       description: options[:description],
       image: options[:image].presence || full_url('/ogp.webp')
