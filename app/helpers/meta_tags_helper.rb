@@ -1,4 +1,24 @@
 module MetaTagsHelper
+  def x_share_post_url(post)
+    user_name = post.user.display_name
+    post_content = truncate_post_content(post.body)
+    if post.user == current_user
+      text = "ウェーブしました！\n投稿内容：\n#{post_content}"
+    else
+      text = "#{user_name}さんのウェーブ！\n投稿内容：\n#{post_content}"
+    end
+    hashtags = "Watune,ウェーチュン"
+    path = user_post_path(username_slug: post.user.username_slug, id: post.id)
+    url = full_url(path)
+    "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}%0a&url=#{CGI.escape(url)}%0a&hashtags=#{CGI.escape(hashtags)}"
+  end
+
+  def truncate_post_content(content)
+    max_length = 100
+    truncated_content = content.truncate(max_length, omission: '... 続きあり')
+    truncated_content.gsub(/\r\n|\r|\n/, "\n") # 改行を統一
+  end
+
   def show_meta_tags
     assign_meta_tags if display_meta_tags.blank?
     display_meta_tags
@@ -16,15 +36,18 @@ module MetaTagsHelper
       noindex: !Rails.env.production?,
       og: {
         site_name: 'Watune（ウェーチュン）',
-        title: 'タイトル',
+        title: 'ogタイトル',
         description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
         url: request.original_url,
-        image: image_url('ogp.png'),
+        image: full_url('/ogp.webp'),
         locale: 'ja_JP'
       },
       twitter: {
         card: 'summary_large_image',
-        site: '@ツイッターのアカウント名'
+        site: '@ツイッターのアカウント名',
+        title: 'タイトル',
+        description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
+        image: full_url('/ogp.webp')
       },
       fb: {
         app_id: '自身のfacebookのapplication ID'
@@ -61,16 +84,36 @@ module MetaTagsHelper
       title: options[:title].presence || options[:site],
       description: options[:description],
       url: request.original_url,
-      image: options[:image].presence || image_url('placeholder.png'),
+      image: options[:image].presence || full_url('/ogp.webp'),
       site_name: options[:site]
     }
   end
 
   def build_twitter_meta_tags(options)
     {
-      site: options[:site],
       card: 'summary_large_image',
-      image: options[:image].presence || image_url('placeholder.png')
+      site: options[:twitter_site] || '@ツイッターのアカウント名',
+      title: options[:title].presence || options[:site],
+      description: options[:description],
+      image: options[:image].presence || full_url('/ogp.webp')
     }
+  end
+
+  def full_title(page_title = '')
+    base_title = 'Watune（ウェーチュン）'
+    if page_title.empty?
+      base_title
+    else
+      "#{page_title} | #{base_title}"
+    end
+  end
+
+  def full_url(path)
+    domain = if Rails.env.development?
+               'http://0.0.0.0:3000'
+             else
+               'https://www.watune.com'
+             end
+    "#{domain}#{path}"
   end
 end
