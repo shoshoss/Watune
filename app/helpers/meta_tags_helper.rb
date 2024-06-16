@@ -16,15 +16,18 @@ module MetaTagsHelper
       noindex: !Rails.env.production?,
       og: {
         site_name: 'Watune（ウェーチュン）',
-        title: 'タイトル',
+        title: 'ogタイトル',
         description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
         url: request.original_url,
-        image: image_url('ogp.png'),
+        image: full_url('/ogp.webp'),
         locale: 'ja_JP'
       },
       twitter: {
         card: 'summary_large_image',
-        site: '@ツイッターのアカウント名'
+        site: '@ツイッターのアカウント名',
+        title: 'タイトル',
+        description: 'このWebアプリは、音声による前向きなメッセージを通じて、あなたと仲間に元氣を与え、日々の生活をより豊かにするサービスです。',
+        image: full_url('/ogp.webp')
       },
       fb: {
         app_id: '自身のfacebookのapplication ID'
@@ -61,16 +64,36 @@ module MetaTagsHelper
       title: options[:title].presence || options[:site],
       description: options[:description],
       url: request.original_url,
-      image: options[:image].presence || image_url('placeholder.png'),
+      image: options[:image].presence || full_url('/ogp.webp'),
       site_name: options[:site]
     }
   end
 
   def build_twitter_meta_tags(options)
     {
-      site: options[:site],
       card: 'summary_large_image',
-      image: options[:image].presence || image_url('placeholder.png')
+      site: options[:twitter_site] || '@ツイッターのアカウント名',
+      title: options[:title].presence || options[:site],
+      description: options[:description],
+      image: options[:image].presence || full_url('/ogp.webp')
     }
+  end
+
+  def full_title(page_title = '')
+    base_title = 'Watune（ウェーチュン）'
+    if page_title.empty?
+      base_title
+    else
+      "#{page_title} | #{base_title}"
+    end
+  end
+
+  def full_url(path)
+    domain = if Rails.env.development?
+               'http://0.0.0.0:3000'
+             else
+               'https://www.watune.com'
+             end
+    "#{domain}#{path}"
   end
 end
