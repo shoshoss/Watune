@@ -17,13 +17,13 @@ module MetaTagsHelper
     text = 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ'
     hashtags = 'Watune,ウェーチュン'
     url = full_url(root_path)
-    "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}&hashtags=#{CGI.escape(hashtags)}&url=#{CGI.escape(url)}"
+    "https://twitter.com/intent/tweet?text=%0a%0a#{CGI.escape(text)}%0a&url=#{CGI.escape(url)}%0a&hashtags=#{CGI.escape(hashtags)}"
   end
 
   def truncate_post_content(content)
-    max_length = 100
+    max_length = 80
     truncated_content = content.truncate(max_length, omission: '...')
-    truncated_content.gsub(/\r\n|\r|\n/, "\n") # 改行を統一
+    truncated_content.gsub(/\r\n|\r|\n/, "\n")
   end
 
   def show_meta_tags
