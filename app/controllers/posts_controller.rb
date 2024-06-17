@@ -7,12 +7,14 @@ class PostsController < ApplicationController
   before_action :set_followings_by_post_count, only: %i[new edit create update]
   before_action :authorize_view!, only: [:show]
 
+  # 投稿一覧を表示するアクション
   def index
     @show_reply_line = false
     # 無限スクロールのための投稿データを取得
     @pagy, @posts = pagy_countless(fetch_posts, items: 10)
   end
 
+  # 投稿詳細を表示するアクション
   def show
     @show_reply_line = true
     # 現在のユーザーの未読通知を取得
@@ -24,22 +26,22 @@ class PostsController < ApplicationController
     @parent_posts = @post.ancestors
   end
 
+  # 新しい投稿フォームを表示するアクション
   def new
     @post = Post.new
     params[:privacy] ||= @post.privacy
   end
 
+  # 投稿を編集するフォームを表示するアクション
   def edit; end
 
+  # 新しい投稿を作成するアクション
   def create
-    # 新しい投稿を作成
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      # 投稿に関連するユーザーを作成
       create_post_users(@post) if post_params[:recipient_ids].present?
-      # 非同期通知を実行
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
-
+      Rails.cache.delete("posts/index")
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -48,9 +50,11 @@ class PostsController < ApplicationController
     end
   end
 
+  # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
       create_post_users(@post) if post_params[:recipient_ids].present?
+      Rails.cache.delete("posts/show/#{@post.id}")
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -59,8 +63,11 @@ class PostsController < ApplicationController
     end
   end
 
+  # 投稿を削除するアクション
   def destroy
     @post.destroy!
+    Rails.cache.delete("posts/index")
+    Rails.cache.delete("posts/show/#{@post.id}")
     flash[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
       format.html { redirect_to posts_path, status: :see_other }
@@ -77,7 +84,9 @@ class PostsController < ApplicationController
 
   # 特定の投稿をセットする
   def set_post
-    @post = Post.find(params[:id])
+    @post = Rails.cache.fetch("posts/show/#{params[:id]}", expires_in: 12.hours) do
+      Post.find(params[:id])
+    end
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: 'この投稿は存在しません。'
   end
@@ -118,14 +127,16 @@ class PostsController < ApplicationController
 
   # 投稿一覧を取得するメソッド
   def fetch_posts
-    latest_reposts = Repost.select('DISTINCT ON (post_id) *')
-                           .order('post_id, created_at DESC')
+    Rails.cache.fetch("posts/index", expires_in: 12.hours) do
+      latest_reposts = Repost.select('DISTINCT ON (post_id) *')
+                             .order('post_id, created_at DESC')
 
-    Post.open
-        .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
-        .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts) # 関連データを一度にロードする
-        .order(Arel.sql('reposted_at DESC'))
+      Post.open
+          .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
+          .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
+          .includes(:user, :reposts) # 関連データを一度にロードする
+          .order(Arel.sql('reposted_at DESC'))
+    end
   end
 
   # 投稿の表示権限を確認する
