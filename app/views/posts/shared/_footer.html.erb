@@ -1,24 +1,26 @@
-<!-- 返信、リツイート、いいね、シェア -->
-<div class="flex justify-between items-center">
-  <div id="post-<%= post.id %>-reply-icon">
-    <%= render 'posts/shared/reply_icon', post: post %>
-  </div>
-  <% if post.open? %>
+<% cache [post, "footer"] do %>
+  <!-- 返信、リツイート、いいね、シェア -->
+  <div class="flex justify-between items-center">
+    <div id="post-<%= post.id %>-reply-icon">
+      <%= render 'posts/shared/reply_icon', post: post %>
+    </div>
+    <% if post.open? %>
+      <div>
+        <%= turbo_frame_tag "post-#{post.id}-repost" do %>
+          <%= render 'posts/shared/repost_icon', post: post %>
+        <% end %>
+      </div>
+    <% end %>
     <div>
-      <%= turbo_frame_tag "post-#{post.id}-repost" do %>
-        <%= render 'posts/shared/repost_icon', post: post %>
+      <%= turbo_frame_tag "post-#{post.id}-like" do %>
+        <%= render 'posts/shared/like_icon', post: post %>
       <% end %>
     </div>
-  <% end %>
-  <div>
-    <%= turbo_frame_tag "post-#{post.id}-like" do %>
-      <%= render 'posts/shared/like_icon', post: post %>
-    <% end %>
+    <div id="post-<%= post.id %>-bookmark">
+      <%= render 'posts/shared/bookmark_icon', post: post %>
+    </div>
+    <div id="post-<%= post.id %>-x">
+      <%= render 'posts/shared/x_icon', post: post %>
+    </div>
   </div>
-  <div id="post-<%= post.id %>-bookmark">
-    <%= render 'posts/shared/bookmark_icon', post: post %>
-  </div>
-  <div id="post-<%= post.id %>-x">
-    <%= render 'posts/shared/x_icon', post: post %>
-  </div>
-</div>
+<% end %>

@@ -1,8 +1,10 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
-  <div data-controller="audio" id="post-id-<%= post.id %>", 
-    class="flex hover:bg-sky-100 overflow-hidden border-b py-[12px] px-[16px] <%= 'bg-orange-100' if unread_notification %>">
-    
-    <%= render 'posts/post_body', post: post %>
-  </div>
+  <%= cache [post, "content", post.updated_at.to_i] do %>
+    <div data-controller="audio" id="post-id-<%= post.id %>", 
+      class="flex hover:bg-sky-100 overflow-hidden border-b py-[12px] px-[16px] <%= 'bg-orange-100' if unread_notification %>">
+      
+      <%= render 'posts/post_body', post: post %>
+    </div>
+  <% end %>
 <% end %>

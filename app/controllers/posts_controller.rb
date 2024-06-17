@@ -41,7 +41,7 @@ class PostsController < ApplicationController
     if @post.save
       create_post_users(@post) if post_params[:recipient_ids].present?
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
-      Rails.cache.delete("posts/index")
+      expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -54,7 +54,7 @@ class PostsController < ApplicationController
   def update
     if @post.update(post_params.except(:recipient_ids))
       create_post_users(@post) if post_params[:recipient_ids].present?
-      Rails.cache.delete("posts/show/#{@post.id}")
+      expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -66,8 +66,7 @@ class PostsController < ApplicationController
   # 投稿を削除するアクション
   def destroy
     @post.destroy!
-    Rails.cache.delete("posts/index")
-    Rails.cache.delete("posts/show/#{@post.id}")
+    expire_cache_for(@post) # キャッシュの削除
     flash[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
       format.html { redirect_to posts_path, status: :see_other }
@@ -134,7 +133,7 @@ class PostsController < ApplicationController
       Post.open
           .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
           .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-          .includes(:user, :reposts) # 関連データを一度にロードする
+          .includes(:user, :reposts, :replies, :likes) # 関連データを一度にロードする
           .order(Arel.sql('reposted_at DESC'))
     end
   end
@@ -144,5 +143,10 @@ class PostsController < ApplicationController
     return if @post.visible_to?(current_user)
 
     redirect_to root_path, alert: 'この投稿を見る権限がありません。'
+  end
+
+  # キャッシュを削除するメソッド
+  def expire_cache_for(post)
+    ActionController::Base.new.expire_fragment("post/#{post.id}")
   end
 end
