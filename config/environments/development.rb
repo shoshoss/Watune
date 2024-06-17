@@ -93,7 +93,7 @@ Rails.application.configure do
 
   # キャッシュストアにRedisを使用
   config.cache_store = :redis_cache_store, {
-    url: ENV.fetch("REDIS_URL") { "redis://redis:6379/1" },
+    url: ENV.fetch('REDIS_URL', 'redis://redis:6379/1'),
     expires_in: 12.hours # キャッシュの有効期限を12時間に設定
   }
 end

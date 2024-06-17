@@ -21,7 +21,7 @@ module Posts
         Notification.import(notifications)
 
         # 自分自身を除く受信者ごとにメール通知を送信
-        direct_recipients.where.not(id: current_user.id).each do |recipient|
+        direct_recipients.where.not(id: current_user.id).find_each do |recipient|
           # 受信者がメール通知を有効にしている場合のみ送信
           UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
         end
