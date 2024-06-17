@@ -74,7 +74,7 @@ class Post < ApplicationRecord
 
   # direct_recipient_idsを取得するメソッド
   def direct_recipient_ids
-    self.direct_recipients.pluck(:id)
+    direct_recipients.pluck(:id)
   end
 
   # リポストかどうかを判定するメソッド

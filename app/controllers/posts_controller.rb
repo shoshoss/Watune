@@ -67,7 +67,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy!
     expire_cache_for(@post) # キャッシュの削除
-    flash[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
+    flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
       format.html { redirect_to posts_path, status: :see_other }
       format.turbo_stream do
@@ -105,13 +105,14 @@ class PostsController < ApplicationController
   # 投稿に関連するユーザーを作成する
   def create_post_users(post)
     recipient_ids = post_params[:recipient_ids]
-    return unless recipient_ids.present?
+    return if recipient_ids.blank?
 
     recipients = recipient_ids.map do |recipient_id|
-      { post_id: post.id, user_id: recipient_id, role: 'direct_recipient', created_at: Time.current, updated_at: Time.current }
+      { post_id: post.id, user_id: recipient_id, role: 'direct_recipient', created_at: Time.current,
+        updated_at: Time.current }
     end
 
-    PostUser.insert_all(recipients)
+    PostUser.insert_all(recipients) # rubocop:disable Rails/SkipsModelValidations
   end
 
   # 非同期通知を実行する
@@ -126,7 +127,7 @@ class PostsController < ApplicationController
 
   # 投稿一覧を取得するメソッド
   def fetch_posts
-    Rails.cache.fetch("posts/index", expires_in: 12.hours) do
+    Rails.cache.fetch('posts/index', expires_in: 12.hours) do
       latest_reposts = Repost.select('DISTINCT ON (post_id) *')
                              .order('post_id, created_at DESC')
 
@@ -147,6 +148,7 @@ class PostsController < ApplicationController
 
   # キャッシュを削除するメソッド
   def expire_cache_for(post)
-    ActionController::Base.new.expire_fragment("post/#{post.id}")
+    Rails.cache.delete('posts/index')
+    Rails.cache.delete("posts/show/#{post.id}")
   end
 end

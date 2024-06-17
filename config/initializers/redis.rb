@@ -1,5 +1,5 @@
 # Redisの設定
-redis_config = { url: ENV.fetch("REDIS_URL") { "redis://redis:6379/1" } }
+redis_config = { url: ENV.fetch('REDIS_URL') { 'redis://redis:6379/1' } }
 
 # RailsのキャッシュストアにRedisを使用
 Rails.application.config.cache_store = :redis_cache_store, { url: redis_config[:url] }

@@ -102,8 +102,6 @@ group :development do
   # 開発環境でのコンソール表示のためのweb-console
   gem 'web-console'
 
-
-
   # 開発環境でのコマンドの高速化のためのspring
   # gem 'spring'
 end
