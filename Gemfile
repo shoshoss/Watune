@@ -31,8 +31,11 @@ gem 'cssbundling-rails'
 # JSON APIを簡単に構築
 gem 'jbuilder'
 
-# 本番環境でAction Cableを実行するためにRedisアダプターを使用
+# Redisとの通信を行うための基本的なクライアントライブラリ
 gem 'redis', '>= 5.2'
+
+# Redisを利用してデータを一時的に保存するための設定を容易にするライブラリ
+gem 'redis-rails', '>= 5.0'
 
 gem 'sidekiq', '>= 7.2'
 

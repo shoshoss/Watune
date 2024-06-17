@@ -87,4 +87,9 @@ Rails.application.configure do
 
   # Active Jobのキューアダプタを設定します。開発環境ではデフォルトで:asyncが使用されます。
   config.active_job.queue_adapter = :async
+
+  # キャッシュストアにRedisを使用
+  config.cache_store = :redis_cache_store, {
+    url: ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }
+  }
 end

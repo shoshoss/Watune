@@ -9,14 +9,18 @@ class PostsController < ApplicationController
 
   def index
     @show_reply_line = false
+    # 無限スクロールのための投稿データを取得
     @pagy, @posts = pagy_countless(fetch_posts, items: 10)
   end
 
   def show
     @show_reply_line = true
+    # 現在のユーザーの未読通知を取得
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
+    # 返信データを取得し、ページネーションを設定
     @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 15)
+    # 親投稿を取得
     @parent_posts = @post.ancestors
   end
 
@@ -28,9 +32,12 @@ class PostsController < ApplicationController
   def edit; end
 
   def create
+    # 新しい投稿を作成
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
+      # 投稿に関連するユーザーを作成
       create_post_users(@post) if post_params[:recipient_ids].present?
+      # 非同期通知を実行
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
 
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
@@ -54,7 +61,7 @@ class PostsController < ApplicationController
 
   def destroy
     @post.destroy!
-    flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
+    flash[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
       format.html { redirect_to posts_path, status: :see_other }
       format.turbo_stream do
@@ -89,9 +96,14 @@ class PostsController < ApplicationController
 
   # 投稿に関連するユーザーを作成する
   def create_post_users(post)
-    params[:post][:recipient_ids].each do |recipient_id|
-      post.post_users.create(user_id: recipient_id, role: 'direct_recipient')
+    recipient_ids = post_params[:recipient_ids]
+    return unless recipient_ids.present?
+
+    recipients = recipient_ids.map do |recipient_id|
+      { post_id: post.id, user_id: recipient_id, role: 'direct_recipient', created_at: Time.current, updated_at: Time.current }
     end
+
+    PostUser.insert_all(recipients)
   end
 
   # 非同期通知を実行する
@@ -112,10 +124,11 @@ class PostsController < ApplicationController
     Post.open
         .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
         .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts)
+        .includes(:user, :reposts) # 関連データを一度にロードする
         .order(Arel.sql('reposted_at DESC'))
   end
 
+  # 投稿の表示権限を確認する
   def authorize_view!
     return if @post.visible_to?(current_user)
 
