@@ -4,8 +4,6 @@ class Post < ApplicationRecord
   include Posts::SharedScopes
   include Posts::Notification
 
-  attr_accessor :recipient_ids
-
   # ユーザーとの関係
   belongs_to :user
 
@@ -67,6 +65,16 @@ class Post < ApplicationRecord
       current_post = current_post.parent_post
     end
     parents.reverse
+  end
+
+  # direct_recipient_idsを設定するメソッド
+  def direct_recipient_ids=(ids)
+    self.direct_recipients = User.find(ids)
+  end
+
+  # direct_recipient_idsを取得するメソッド
+  def direct_recipient_ids
+    self.direct_recipients.pluck(:id)
   end
 
   # リポストかどうかを判定するメソッド
