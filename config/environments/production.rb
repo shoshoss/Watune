@@ -73,4 +73,11 @@ Rails.application.configure do
       ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
     })
   end
+
+  # Redisキャッシュストアの設定
+  config.cache_store = :redis_cache_store, {
+    url: ENV.fetch("REDIS_URL"),
+    expires_in: 12.hours, # キャッシュの有効期限を12時間に設定
+    namespace: 'cache' # 名前空間を設定
+  }
 end
