@@ -95,7 +95,10 @@ group :development do
   gem 'web-console'
 
   # リクエストの速度を表示するためのrack-mini-profiler
-  # gem 'rack-mini-profiler'
+  gem 'rack-mini-profiler', '>= 3.3'
+
+  # N+1クエリの検出や未使用のEager Loadの警告のためのbullet
+  gem 'bullet', '>= 7.1'
 
   # 開発環境でのコマンドの高速化のためのspring
   # gem 'spring'
