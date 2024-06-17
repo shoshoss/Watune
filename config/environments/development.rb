@@ -96,16 +96,4 @@ Rails.application.configure do
     url: ENV.fetch("REDIS_URL") { "redis://redis:6379/1" },
     expires_in: 12.hours # キャッシュの有効期限を12時間に設定
   }
-
-  # rack-mini-profilerの設定
-  Rack::MiniProfilerRails.initialize!(Rails.application)
-
-  # bulletの設定
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.add_footer = true
 end

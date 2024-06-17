@@ -80,8 +80,16 @@ gem 'rack-rewrite', '~> 1.5'
 gem 'meta-tags', '~> 2.21'
 
 group :development, :test do
+  # リクエストの速度を表示するためのrack-mini-profiler
+  gem 'rack-mini-profiler', '>= 3.3', require: false
+
+  # N+1クエリの検出や未使用のEager Loadの警告のためのbullet
+  gem 'bullet', '>= 7.1', require: false
+
   # デバッグ用のdebug
   gem 'debug', platforms: %i[mri windows]
+  gem 'flamegraph', '>= 0.9'
+  gem 'stackprof', '>= 0.2'
 
   # テスト用のダミーデータ生成のためのfaker
   gem 'faker', '>= 3.3'
@@ -94,11 +102,7 @@ group :development do
   # 開発環境でのコンソール表示のためのweb-console
   gem 'web-console'
 
-  # リクエストの速度を表示するためのrack-mini-profiler
-  gem 'rack-mini-profiler', '>= 3.3'
 
-  # N+1クエリの検出や未使用のEager Loadの警告のためのbullet
-  gem 'bullet', '>= 7.1'
 
   # 開発環境でのコマンドの高速化のためのspring
   # gem 'spring'
