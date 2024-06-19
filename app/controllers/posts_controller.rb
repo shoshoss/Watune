@@ -84,9 +84,7 @@ class PostsController < ApplicationController
 
   # 特定の投稿をセットする
   def set_post
-    @post = Rails.cache.fetch("posts/show/#{params[:id]}", expires_in: 12.hours) do
-      Post.find(params[:id])
-    end
+    @post = Post.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to root_path, alert: 'この投稿は存在しません。'
   end
@@ -110,16 +108,14 @@ class PostsController < ApplicationController
 
   # 投稿一覧を取得するメソッド
   def fetch_posts
-    Rails.cache.fetch('posts/index', expires_in: 12.hours) do
-      latest_reposts = Repost.select('DISTINCT ON (post_id) *')
-                             .order('post_id, created_at DESC')
+    latest_reposts = Repost.select('DISTINCT ON (post_id) *')
+                            .order('post_id, created_at DESC')
 
-      Post.open
-          .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
-          .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-          .includes(:user, :reposts, :replies, :likes) # 関連データを一度にロードする
-          .order(Arel.sql('reposted_at DESC'))
-    end
+    Post.open
+        .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
+        .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
+        .includes(:user, :reposts, :replies, :likes) # 関連データを一度にロードする
+        .order(Arel.sql('reposted_at DESC'))
   end
 
   # 投稿の表示権限を確認する
