@@ -10,7 +10,6 @@ Rails.application.configure do
 
   # フルエラーレポートを無効にし、キャッシュを有効にします。
   config.consider_all_requests_local = false
-  config.action_controller.perform_caching = true
 
   # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?

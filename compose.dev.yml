@@ -22,7 +22,6 @@ services:
     tty: true
     volumes:
       - ./:/app
-      - bundle_data:/usr/local/bundle:cached
       - node_modules:/app/node_modules
     environment:
       TZ: Asia/Tokyo
@@ -30,26 +29,19 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       SENDER_ADDRESS: ${SENDER_ADDRESS}
       SELENIUM_DRIVER_URL: http://chrome:4444/wd/hub
-      REDIS_URL: redis://redis:6379/1
+
     ports:
       - "3000:3000"
     depends_on:
       - db
       - chrome
-      - redis
 
   chrome:
     image: seleniarm/standalone-chromium:latest
     ports:
       - 4444:4444
 
-  redis:
-    image: redis:7.2.5
-    volumes:
-      - redis_data:/data
-
 volumes:
   postgres_data:
   bundle_data:
   node_modules:
-  redis_data:

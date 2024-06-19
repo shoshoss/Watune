@@ -20,14 +20,3 @@ services:
         sync: false
       - key: WEB_CONCURRENCY
         value: 2
-      - key: REDIS_URL
-        fromService:
-          name: Gmail通知
-          property: redisUrl
-
-  - type: redis
-    name: Gmail通知
-    plan: free
-    region: singapore
-    maxmemoryPolicy: noeviction
-    ipAllowList: []
