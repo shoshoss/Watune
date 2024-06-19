@@ -39,7 +39,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      create_post_users(@post) if post_params[:recipient_ids].present?
+      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids])
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
       expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
@@ -100,19 +100,6 @@ class PostsController < ApplicationController
   # 投稿のパラメータを許可する
   def post_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
-  end
-
-  # 投稿に関連するユーザーを作成する
-  def create_post_users(post)
-    recipient_ids = post_params[:recipient_ids]
-    return if recipient_ids.blank?
-
-    recipients = recipient_ids.map do |recipient_id|
-      { post_id: post.id, user_id: recipient_id, role: 'direct_recipient', created_at: Time.current,
-        updated_at: Time.current }
-    end
-
-    PostUser.insert_all(recipients) # rubocop:disable Rails/SkipsModelValidations
   end
 
   # 非同期通知を実行する
