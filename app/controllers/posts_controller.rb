@@ -39,9 +39,10 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids]) if post_params[:recipient_ids].present?
-      notify_async(@post, 'direct') if @post.privacy == 'selected_users'
-      expire_cache_for(@post) # キャッシュの削除
+      if post_params[:recipient_ids].present?
+        PostCreationJob.perform_later(@post.id, post_params[:recipient_ids],
+                                      @post.privacy)
+      end
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -56,7 +57,6 @@ class PostsController < ApplicationController
       if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
         PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy)
       end
-      expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -68,7 +68,6 @@ class PostsController < ApplicationController
   # 投稿を削除するアクション
   def destroy
     @post.destroy!
-    expire_cache_for(@post) # キャッシュの削除
     flash.now[:notice] = t('defaults.flash_message.deleted', item: Post.model_name.human, default: '投稿が削除されました。')
     respond_to do |format|
       format.html { redirect_to posts_path, status: :see_other }
@@ -128,11 +127,5 @@ class PostsController < ApplicationController
     return if @post.visible_to?(current_user)
 
     redirect_to root_path, alert: 'この投稿を見る権限がありません。'
-  end
-
-  # キャッシュを削除するメソッド
-  def expire_cache_for(post)
-    Rails.cache.delete('posts/index')
-    Rails.cache.delete("posts/show/#{post.id}")
   end
 end
