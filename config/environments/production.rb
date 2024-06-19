@@ -12,13 +12,6 @@ Rails.application.configure do
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
-  # Redisキャッシュストアの設定
-  config.cache_store = :redis_cache_store, {
-    url: ENV.fetch('REDIS_URL'),
-    expires_in: 12.hours, # キャッシュの有効期限を12時間に設定
-    namespace: 'cache' # 名前空間を設定
-  }
-
   # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
 
