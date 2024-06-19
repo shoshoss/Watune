@@ -12,6 +12,13 @@ Rails.application.configure do
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
+  # Redisキャッシュストアの設定
+  config.cache_store = :redis_cache_store, {
+    url: ENV.fetch('REDIS_URL'),
+    expires_in: 12.hours, # キャッシュの有効期限を12時間に設定
+    namespace: 'cache' # 名前空間を設定
+  }
+
   # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
 
@@ -59,6 +66,7 @@ Rails.application.configure do
   # マイグレーション後にスキーマをダンプしません。
   config.active_record.dump_schema_after_migration = false
 
+  # CSS圧縮を無効にします。
   config.assets.css_compressor = nil
 
   # DNSリバインディング保護とその他の`Host`ヘッダー攻撃を有効にします。
@@ -68,6 +76,7 @@ Rails.application.configure do
   config.hosts << 'www.watune.com'
   config.hosts << 'watune.com'
 
+  # リダイレクト設定
   config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
     r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
       ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])

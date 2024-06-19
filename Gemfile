@@ -31,8 +31,11 @@ gem 'cssbundling-rails'
 # JSON APIを簡単に構築
 gem 'jbuilder'
 
-# 本番環境でAction Cableを実行するためにRedisアダプターを使用
+# Redisとの通信を行うための基本的なクライアントライブラリ
 gem 'redis', '>= 5.2'
+
+# Redisを利用してデータを一時的に保存するための設定を容易にするライブラリ
+gem 'redis-rails', '>= 5.0'
 
 gem 'sidekiq', '>= 7.2'
 
@@ -77,8 +80,16 @@ gem 'rack-rewrite', '~> 1.5'
 gem 'meta-tags', '~> 2.21'
 
 group :development, :test do
+  # リクエストの速度を表示するためのrack-mini-profiler
+  gem 'rack-mini-profiler', '>= 3.3', require: false
+
+  # N+1クエリの検出や未使用のEager Loadの警告のためのbullet
+  gem 'bullet', '>= 7.1', require: false
+
   # デバッグ用のdebug
   gem 'debug', platforms: %i[mri windows]
+  gem 'flamegraph', '>= 0.9'
+  gem 'stackprof', '>= 0.2'
 
   # テスト用のダミーデータ生成のためのfaker
   gem 'faker', '>= 3.3'
@@ -90,9 +101,6 @@ end
 group :development do
   # 開発環境でのコンソール表示のためのweb-console
   gem 'web-console'
-
-  # リクエストの速度を表示するためのrack-mini-profiler
-  # gem 'rack-mini-profiler'
 
   # 開発環境でのコマンドの高速化のためのspring
   # gem 'spring'
