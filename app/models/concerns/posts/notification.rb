@@ -40,10 +40,10 @@ module Posts
         ).first
 
         if existing_notification
-          # 存在する場合は未読状態に更新
+          # 既存の通知があれば更新する
           existing_notification.update!(unread: true, created_at: Time.current)
         else
-          # 新規通知を作成
+          # 新しい通知を作成する
           notification = current_user.sent_notifications.new(
             recipient_id: user_id, # 通知の受信者
             sender_id: current_user.id, # 通知の送信者
@@ -77,11 +77,30 @@ module Posts
         UserMailer.reply_notification(recipient, self).deliver_later
       end
 
+      # 投稿の通知を作成するメソッド
+      def create_notification_post(current_user)
+        ActiveRecord::Base.transaction do
+          direct_recipients.where.not(id: current_user.id).each do |recipient|
+            # 通知の作成
+            notification = current_user.sent_notifications.new(
+              recipient_id: recipient.id,
+              sender_id: current_user.id,
+              notifiable: self,
+              action: 'direct',
+              unread: true
+            )
+            notification.save!
+
+            # メール通知を非同期で送信
+            UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
+          end
+        end
+      end
+
       # リポスト通知を作成するメソッド
       def create_notification_repost(current_user)
         return if current_user.id == user_id # 自分の投稿に対するリポストは通知しない
 
-        # 新規通知を作成
         notification = current_user.sent_notifications.new(
           recipient_id: user_id, # 通知の受信者
           sender_id: current_user.id, # 通知の送信者
