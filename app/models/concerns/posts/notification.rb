@@ -81,14 +81,28 @@ module Posts
       def create_notification_repost(current_user)
         return if current_user.id == user_id # 自分の投稿に対するリポストは通知しない
 
-        notification = current_user.sent_notifications.new(
-          recipient_id: user_id, # 通知の受信者
-          sender_id: current_user.id, # 通知の送信者
-          notifiable: self, # リポストされた投稿
-          action: 'repost', # アクションタイプ
-          unread: true # 未読状態
-        )
-        notification.save if notification.valid? # 通知が有効なら保存
+        # 過去15分以内に同じ投稿に対する同じユーザーからの通知があるかをチェック
+        existing_notification = current_user.sent_notifications.where(
+          recipient_id: user_id,
+          notifiable: self,
+          action: 'repost',
+          created_at: 15.minutes.ago..Time.current
+        ).first
+
+        if existing_notification
+          # 既存の通知があれば更新する
+          existing_notification.update!(unread: true, created_at: Time.current)
+        else
+          # 新しい通知を作成する
+          notification = current_user.sent_notifications.new(
+            recipient_id: user_id, # 通知の受信者
+            sender_id: current_user.id, # 通知の送信者
+            notifiable: self, # リポストされた投稿
+            action: 'repost', # アクションタイプ
+            unread: true # 未読状態
+          )
+          notification.save if notification.valid? # 通知が有効なら保存
+        end
       end
     end
   end
