@@ -109,7 +109,7 @@ class PostsController < ApplicationController
   # 投稿一覧を取得するメソッド
   def fetch_posts
     latest_reposts = Repost.select('DISTINCT ON (post_id) *')
-                            .order('post_id, created_at DESC')
+                           .order('post_id, created_at DESC')
 
     Post.open
         .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
