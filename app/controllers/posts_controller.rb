@@ -39,7 +39,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids])
+      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids]) if post_params[:recipient_ids].present?
       notify_async(@post, 'direct') if @post.privacy == 'selected_users'
       expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
