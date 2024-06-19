@@ -1,6 +1,4 @@
-<%= cache [post, 'avatar'] do %>
-  <%= render 'posts/shared/avatar', post: post %>
-<% end %>
+<%= render 'posts/shared/avatar', post: post %>
 <div class="flex-grow">
   <%= render 'posts/shared/user_info', post: post %>
   <%= render 'posts/shared/body', post: post %>
