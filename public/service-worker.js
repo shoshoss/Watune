@@ -1,38 +1,65 @@
+// キャッシュ名とキャッシュするURLを定義
 const CACHE_NAME = "Watune-cache-v1";
-const urlsToCache = [
-  "/",
+const essentialUrlsToCache = [
+  "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
+];
+const additionalUrlsToCache = [
+  "/", // ホームページ
+  "/waves",
   "/icon-192.png",
   "/icon-512.png",
   "/apple-touch-icon.png",
-  "/manifest.webmanifest",
 ];
 
+// インストールイベント: サービスワーカーのインストール時に発生
 self.addEventListener("install", (event) => {
   event.waitUntil(
+    // キャッシュを開き、必須リソースをキャッシュする
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache");
-      return cache.addAll(urlsToCache);
+      return cache.addAll(essentialUrlsToCache);
     })
   );
 });
 
-self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
-});
-
+// アクティベートイベント: サービスワーカーのアクティベート時に発生
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
+    // 不要な古いキャッシュを削除する
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheWhitelist.indexOf(cacheName) === -1) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        // アクティベート後に追加のリソースをキャッシュする
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.addAll(additionalUrlsToCache);
+        });
+      })
+  );
+});
+
+// フェッチイベント: ネットワークリクエストが発生したときに処理
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    // キャッシュを確認し、キャッシュがあればそれを返す
+    caches.match(event.request).then((response) => {
+      return (
+        response ||
+        fetch(event.request).then((response) => {
+          // ネットワークから取得したリソースをキャッシュに保存
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, response.clone());
+            return response;
+          });
         })
       );
     })
