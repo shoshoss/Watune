@@ -80,7 +80,7 @@ module Posts
       # 投稿の通知を作成するメソッド
       def create_notification_post(current_user)
         ActiveRecord::Base.transaction do
-          direct_recipients.where.not(id: current_user.id).each do |recipient|
+          direct_recipients.where.not(id: current_user.id).find_each do |recipient|
             # 通知の作成
             notification = current_user.sent_notifications.new(
               recipient_id: recipient.id,
