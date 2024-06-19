@@ -65,7 +65,7 @@ module Posts
         Notification.import(notifications)
 
         # メール通知をバッチ処理で実行
-        direct_recipients.where.not(id: current_user.id).each do |recipient|
+        direct_recipients.where.not(id: current_user.id).find_each do |recipient|
           UserMailer.direct_notification(recipient, self).deliver_later if recipient.email_notify_on_direct_message
         end
       end
