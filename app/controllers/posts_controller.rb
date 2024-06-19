@@ -53,7 +53,9 @@ class PostsController < ApplicationController
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
-      create_post_users(@post) if post_params[:recipient_ids].present?
+      if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
+        PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy)
+      end
       expire_cache_for(@post) # キャッシュの削除
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
@@ -100,11 +102,6 @@ class PostsController < ApplicationController
   # 投稿のパラメータを許可する
   def post_params
     params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
-  end
-
-  # 非同期通知を実行する
-  def notify_async(post, notification_type)
-    NotificationJob.perform_later(notification_type, post.id)
   end
 
   # フォローしているユーザーを投稿数でソートする

@@ -3,7 +3,7 @@ class PostCreationJob < ApplicationJob
   queue_as :default
 
   # 投稿を非同期で作成するジョブ
-  def perform(post_id, recipient_ids)
+  def perform(post_id, recipient_ids, privacy)
     post = Post.find(post_id)
 
     # 受信者がいる場合、PostUserを作成
@@ -14,7 +14,7 @@ class PostCreationJob < ApplicationJob
     end
 
     # 投稿のプライバシー設定が 'selected_users' の場合、通知を非同期で作成
-    NotificationJob.perform_later('direct', post.id) if post.privacy == 'selected_users'
+    NotificationJob.perform_later('direct', post.id) if privacy == 'selected_users'
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Failed to find post: #{e.message}"
   end
