@@ -1,7 +1,7 @@
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[600px] w-full bg-white border-2 border-gray-200">
     <h1 class="text-center font-bold text-xl mt-2"><%= @user.display_name %></h1>
-    <p class="text-center text-base">@<%= @user.username_slug %></p>
+    <p class="text-center text-sm">@<%= @user.username_slug %></p>
     <div class="c-tabs flex mb-2">
       <%= link_to user_following_path(@user.username_slug, category: 'following'), data: { turbo_frame: "_top" }, class: "c-tab flex-1 #{active_tab_class('following', initial_category: 'following')} hover:bg-sky-100 text-center py-2" do %>
         フォロー中
