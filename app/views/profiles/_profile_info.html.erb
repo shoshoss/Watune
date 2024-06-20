@@ -92,7 +92,7 @@
 <!-- フォロー中とフォロワーのリンク -->
 <% if current_user == @user %>
   <div class="mt-4 flex justify-center space-x-4">
-    <%= link_to "フォロー中 #{@user.followings.count}", user_following_path(username_slug: @user.username_slug), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
-    <%= link_to "フォロワー #{@user.followers.count}", user_followers_path(username_slug: @user.username_slug), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
+    <%= link_to "フォロー中 #{@user.followings.count}", user_following_path(username_slug: @user.username_slug, category: 'following'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
+    <%= link_to "フォロワー #{@user.followers.count}", user_followers_path(username_slug: @user.username_slug, category: 'followers'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top" } %>
   </div>
 <% end %>

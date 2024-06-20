@@ -3,7 +3,7 @@ class FriendshipsController < ApplicationController
   before_action :ensure_correct_user, only: %i[index]
 
   def index
-    @category = params[:category] || 'followings'
+    @category = params[:category] || 'following'
     @pagy, @users = if @category == 'followers'
                       pagy_countless(@user.followers, items: 15)
                     else
