@@ -9,7 +9,7 @@
 
     <%= render 'profiles/profile_info', user: @user %>
 
-    <!-- カテゴリータブ -->
+    <!-- カテゴリータブ advanceの使用 -->
     <div id="category-tabs-wrapper">
       <div id="category-tabs" class="z-50">
         <% initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open' %>
