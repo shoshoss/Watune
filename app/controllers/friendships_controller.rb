@@ -35,14 +35,14 @@ class FriendshipsController < ApplicationController
   private
 
   def set_user
-    if action_name == 'index'
-      @user = User.find_by(username_slug: params[:username_slug])
-    else
-      @user = User.find(params[:user_id])
-    end
-    unless @user
-      redirect_to root_path, alert: 'ユーザーが見つかりません'
-    end
+    @user = if action_name == 'index'
+              User.find_by(username_slug: params[:username_slug])
+            else
+              User.find(params[:user_id])
+            end
+    return if @user
+
+    redirect_to root_path, alert: 'ユーザーが見つかりません'
   end
 
   def ensure_correct_user
