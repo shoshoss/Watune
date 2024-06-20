@@ -1,10 +1,8 @@
 <div class="flex justify-between items-center mb-2">
   <div class="overflow-x-auto whitespace-nowrap" style="max-width:80%;">
-    <div class="dropdown dropdown-hover">
-      <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline", data: { turbo_frame: "profile_modal" } do %>
-        <%= post.user.display_name %>
-      <% end %>
-    </div>
+    <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "text-lg font-semibold text-black hover:underline", data: { turbo_frame: "profile_modal" } do %>
+      <%= post.user.display_name %>
+    <% end %>
     <br>
     <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
     <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>

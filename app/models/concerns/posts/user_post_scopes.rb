@@ -9,17 +9,14 @@ module Posts
       # 公開設定された自分の投稿を取得するスコープ
       scope :my_posts_open, -> { where(privacy: 'open').order(created_at: :desc) }
 
-      # 仲間への投稿を取得するスコープ
+      # 仲間への投稿を取得するスコープ（自分がselected_usersで投稿したものを取得するスコープ）
       scope :my_posts_following, lambda { |user|
-        direct_posts = joins(:post_users).where(
-          user:,
-          post_users: { role: 'direct_recipient' }
-        )
-        reply_posts = where(user_id: user.id, post_reply_id: Post.select(:id))
+      direct_posts = where(user_id: user.id, privacy: Post.privacies[:selected_users])
+      reply_posts = where(user_id: user.id, post_reply_id: Post.select(:id))
 
-        Post.where(id: direct_posts.select(:id))
-            .or(Post.where(id: reply_posts.select(:id)))
-            .distinct.order(created_at: :desc)
+      Post.where(id: direct_posts.select(:id))
+          .or(Post.where(id: reply_posts.select(:id)))
+          .distinct.order(created_at: :desc)
       }
 
       # 仲間からの投稿を取得するスコープ
