@@ -108,8 +108,9 @@
           <%= render 'shared/next_page' %>
         <% end %>
       <% end %>
-    <% else %>
-      <div class="mb-3">投稿がありません</div>
+
+      <!-- 投稿一覧 -->
+      <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
     <% end %>
   </div>
 </div>
@@ -156,5 +157,12 @@
   document.addEventListener('turbo:load', function () {
     handleNavbarOpacity();
     handleCategoryTabs();
+  });
+
+  document.addEventListener('turbo:frame-load', function(event) {
+    if (event.target.id === 'category-tabs-wrapper' || event.target.id === 'profile-posts') {
+      handleNavbarOpacity();
+      handleCategoryTabs();
+    }
   });
 </script>
