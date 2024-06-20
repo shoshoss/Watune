@@ -11,13 +11,11 @@ Rails.application.routes.draw do
   get 'tou_modal', to: 'static_pages#tou_modal'
 
   resources :users, only: %i[index new create destroy] do
-    resource :friendships, only: %i[index create destroy] do
-      collection do
-        get :followings, to: 'friendships#index', defaults: { category: 'followings' }
-        get :followers, to: 'friendships#index', defaults: { category: 'followers' }
-      end
-    end
+    resource :friendships, only: %i[create destroy]
   end
+  get ':username_slug/followings', to: 'friendships#index', defaults: { category: 'followings' }, as: 'user_followings'
+  get ':username_slug/followers', to: 'friendships#index', defaults: { category: 'followers' }, as: 'user_followers'
+
   get 'guest_login', to: 'users#guest_login', as: 'guest_login'
   # モーダル用の新規登録ルーティング
   get 'signup_modal', to: 'users#new_modal', as: 'new_signup_modal'
