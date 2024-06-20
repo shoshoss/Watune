@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[index new create destroy] do
     resource :friendships, only: %i[create destroy]
   end
-  get ':username_slug/followings', to: 'friendships#index', defaults: { category: 'followings' }, as: 'user_followings'
+  get ':username_slug/following', to: 'friendships#index', defaults: { category: 'following' }, as: 'user_following'
   get ':username_slug/followers', to: 'friendships#index', defaults: { category: 'followers' }, as: 'user_followers'
 
   get 'guest_login', to: 'users#guest_login', as: 'guest_login'
