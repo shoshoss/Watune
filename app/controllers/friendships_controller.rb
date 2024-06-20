@@ -1,5 +1,6 @@
 class FriendshipsController < ApplicationController
   before_action :set_user, only: %i[index create destroy]
+  before_action :ensure_correct_user, only: %i[index]
 
   def index
     @category = params[:category] || 'followings'
@@ -34,7 +35,18 @@ class FriendshipsController < ApplicationController
   private
 
   def set_user
-    @user = User.find(params[:user_id])
+    if action_name == 'index'
+      @user = User.find_by(username_slug: params[:username_slug])
+    else
+      @user = User.find(params[:user_id])
+    end
+    unless @user
+      redirect_to root_path, alert: 'ユーザーが見つかりません'
+    end
+  end
+
+  def ensure_correct_user
+    redirect_to root_path, alert: 'アクセス権がありません' unless current_user == @user
   end
 
   def update_unfollowed_users_count
