@@ -1,5 +1,5 @@
 <% if posts.present? %>
-  <%= turbo_frame_tag "posts" do %>
+  <%= turbo_frame_tag "next-page" do %>
     <% posts.each do |post| %>
       <% post_notifications = (notifications || []).select { |notification| notification.notifiable == post } %>
       <%= render 'posts/post', post: post, notifications: post_notifications %>
