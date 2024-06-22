@@ -15,6 +15,7 @@ module.exports = {
         "deep-orange-500": "#ff5722",
         "pink-200-accent": "#ff4081",
         "pink-400-accent": "#FF00BF",
+        "sky-400-accent": "#00c5ff",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

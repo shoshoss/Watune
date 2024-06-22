@@ -49,15 +49,18 @@ export default class extends Controller {
         .play()
         .then(() => {
           this.updateIcon(icon, true);
+          this.updateButtonColor(button, true); // クラスの変更を追加
         })
         .catch((error) => {
           console.error("Playback failed:", error);
           alert(`音声の再生に失敗しました: ${error.message}`);
           this.updateIcon(icon, false);
+          this.updateButtonColor(button, false); // クラスの変更を追加
         });
     } else {
       audio.pause();
       this.updateIcon(icon, false);
+      this.updateButtonColor(button, false); // クラスの変更を追加
     }
 
     audio.addEventListener("timeupdate", () => {
@@ -72,6 +75,8 @@ export default class extends Controller {
     audio.addEventListener("ended", () => {
       this.updateCurrentTimeDisplay(audioId, 0);
       seekBar.value = 0;
+      this.updateIcon(icon, false);
+      this.updateButtonColor(button, false); // クラスの変更を追加
     });
   }
 
@@ -106,11 +111,21 @@ export default class extends Controller {
 
   hoverEffect() {
     this.playButtonTarget.classList.remove("text-blue-500");
-    this.playButtonTarget.classList.add("text-sky-400");
+    this.playButtonTarget.classList.add("text-sky-400-accent");
   }
 
   unhoverEffect() {
-    this.playButtonTarget.classList.remove("text-sky-400");
+    this.playButtonTarget.classList.remove("text-sky-400-accent");
     this.playButtonTarget.classList.add("text-blue-500");
+  }
+
+  updateButtonColor(button, isPlaying) {
+    if (isPlaying) {
+      button.classList.add("text-sky-400-accent");
+      button.classList.remove("text-blue-500");
+    } else {
+      button.classList.remove("text-sky-400-accent");
+      button.classList.add("text-blue-500");
+    }
   }
 }

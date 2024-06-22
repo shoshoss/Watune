@@ -56,7 +56,7 @@
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
 .btn-choice {
-  @apply inline-block px-4 py-2 text-xl text-sky-400 bg-sky-100 cursor-pointer font-semibold rounded-full;
+  @apply inline-block px-4 py-2 text-xl text-gray-500 bg-sky-100 cursor-pointer font-semibold rounded-full;
 }
 
 .btn-choice-active {

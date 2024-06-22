@@ -8,7 +8,7 @@
       <div class="mx-auto pt-2">
         <!-- 録音コントロール -->
         <section>
-          <canvas class="visualizer w-full h-24 md:h-80" style="background-color: #05aaff;"></canvas>
+          <canvas class="visualizer w-full rounded-lg h-24 md:h-80" style="background-color: #05aaff;"></canvas>
         </section>
 
         <div class="flex justify-around items-center pt-2 px-5">
@@ -24,14 +24,15 @@
         <%= form_with model: @post, data: { controller: "post-modal", action: "turbo:submit-end->post-modal#afterClose" } do |f| %>
           <div class="card-body p-2">
             <%= render 'shared/error_messages', object: f.object %>
-            <div class="form-control pt-2">
-              <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-              <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
-            </div>
 
             <section class="sound-clips">
               <!-- 音声クリップはここに表示 -->
             </section>
+
+            <div class="form-control pt-2">
+              <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
+              <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-modal#checkForm" } %>
+            </div>
 
             <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
             <%= f.hidden_field :duration, class: "duration-field" %>
@@ -64,7 +65,7 @@
             <% end %>
           </div>
           <div class="form-control mt-4 lg:mt-6">
-            <%= f.submit t('helpers.submit.post'), class: "btn text-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded disabled:opacity-50" %>
+            <%= f.submit "ウェーブ（投稿）する", class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg bg-opacity-80 opacity-50 cursor-not-allowed", disabled: true, data: { action: "post-modal#checkForm" } %>
           </div>
         <% end %>
       </div>

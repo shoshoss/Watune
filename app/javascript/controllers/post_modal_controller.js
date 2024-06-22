@@ -12,26 +12,12 @@ export default class extends Controller {
   // 初期設定: コントローラが接続されたときに呼ばれる
   connect() {
     this.element.setAttribute("open", true);
-
-    // モーダルが開いたときにバックグラウンドをクリックして閉じるイベントを追加
-    // this.element.addEventListener("click", this.closeBackground.bind(this));
+    this.checkForm(); // フォームの初期状態をチェック
   }
 
   closeModal() {
     // モーダルを閉じる
     this.element.close();
-  }
-
-  closeBackground(event) {
-    // バックグラウンドをクリックしたかどうかをチェック
-    if (
-      event.target === this.dialogTarget &&
-      this.dialogTarget.hasAttribute("open")
-    ) {
-      console.log("Dialog closed");
-      // モーダルを閉じる
-      this.closeModal();
-    }
   }
 
   afterClose(event) {
@@ -41,6 +27,25 @@ export default class extends Controller {
     }
 
     Turbo.visit(window.location.href, { action: "replace" });
+  }
+
+  // フォームの状態をチェックし、投稿ボタンの有効/無効を切り替えるメソッド
+  checkForm() {
+    const textArea = this.element.querySelector("#body");
+    const hasText = textArea && textArea.value.trim().length > 0;
+    const soundClips = this.element.querySelector(".sound-clips");
+    const hasAudio = soundClips.querySelector("audio") !== null;
+
+    const submitButton = this.element.querySelector('input[type="submit"]');
+    if (hasText || hasAudio) {
+      submitButton.disabled = false;
+      submitButton.classList.remove("opacity-50");
+      submitButton.classList.remove("cursor-not-allowed");
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.add("opacity-50");
+      submitButton.classList.add("cursor-not-allowed");
+    }
   }
 
   // 録音開始
@@ -96,6 +101,7 @@ export default class extends Controller {
     // 経過時間をミリ秒から秒に変換し、切り捨てを行う
     const durationInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
     document.querySelector(".duration-field").value = durationInSeconds;
+    this.checkForm(); // フォームの状態を再チェック
   }
 
   // タイマー更新
@@ -137,6 +143,8 @@ export default class extends Controller {
     // Submitボタンを有効化
     const submitButton = fileInput.form.querySelector('input[type="submit"]');
     submitButton.disabled = false;
+
+    this.checkForm(); // フォームの状態を再チェック
   }
 
   // 音声クリップを生成して表示するメソッド
@@ -170,6 +178,7 @@ export default class extends Controller {
       clipContainer.remove();
       this.element.querySelector(".record").disabled = false;
       this.element.querySelector(".timer").textContent = "00:00"; // タイマーをリセット
+      this.checkForm(); // フォームの状態を再チェック
     };
 
     return deleteButton;
@@ -198,17 +207,19 @@ export default class extends Controller {
 
       analyser.getByteFrequencyData(dataArray); // 周波数データを取得
 
-      this.canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      this.canvasCtx.clearRect(0, 0, WIDTH, HEIGHT); // 画面をクリア
 
       let maxRadius = Math.max(WIDTH, HEIGHT) / 2;
       let step = (maxRadius / bufferLength) * 2;
 
       for (let i = 0; i < bufferLength; i++) {
         let radius = step * i;
-        let amplitude = dataArray[i] / 128.0; // 初期256
-        let color = `hsla(${200 + amplitude * 20}, 100%, 50%, ${
-          0.75 + 0.25 * amplitude // 透明度を動的に変更 初期:0.5,0.5
-        })`; // 波紋の色をより海色に近づける
+        let amplitude = dataArray[i] / 256.0; // 振幅を0-1に正規化
+
+        // 振幅に応じて青色の明るさを調整 (大きいほど明るく)
+        let hue = 200; // 固定の青色
+        let lightness = 50 + amplitude * 50; // 振幅に応じて明るさを調整 (50% - 100%)
+        let color = `hsl(${hue}, 100%, ${lightness}%)`; // 青色の明るさを調整
 
         this.canvasCtx.beginPath();
         this.canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);

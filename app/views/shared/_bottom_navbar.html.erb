@@ -38,14 +38,14 @@
 <% if params[:controller] == "posts" && params[:action] == "show" %>
   <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
               id: "reply-button",
-              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
               data: { turbo_frame: "reply_modal" } do %>
     <i class="fa-regular fa-comment text-2xl"></i>
   <% end %>
 <% else %>
   <%= link_to new_post_path(privacy: 'open'),
               id: "post-button",
-              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
               data: { turbo_frame: "post_modal" } do %>
     <i class="fa-solid fa-gift text-2xl"></i>
   <% end %>
