@@ -31,7 +31,7 @@
 
             <div class="form-control pt-2">
               <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-              <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
+              <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-sm sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-modal#checkForm" } %>
             </div>
 
             <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
@@ -65,7 +65,7 @@
             <% end %>
           </div>
           <div class="form-control mt-4 lg:mt-6">
-            <%= f.submit "ウェーブ（投稿）する", class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg bg-opacity-80" %>
+            <%= f.submit "ウェーブ（投稿）する", class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg bg-opacity-80 opacity-50 cursor-not-allowed", disabled: true, data: { action: "post-modal#checkForm" } %>
           </div>
         <% end %>
       </div>

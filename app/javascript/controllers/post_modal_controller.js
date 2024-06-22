@@ -12,26 +12,12 @@ export default class extends Controller {
   // 初期設定: コントローラが接続されたときに呼ばれる
   connect() {
     this.element.setAttribute("open", true);
-
-    // モーダルが開いたときにバックグラウンドをクリックして閉じるイベントを追加
-    // this.element.addEventListener("click", this.closeBackground.bind(this));
+    this.checkForm(); // フォームの初期状態をチェック
   }
 
   closeModal() {
     // モーダルを閉じる
     this.element.close();
-  }
-
-  closeBackground(event) {
-    // バックグラウンドをクリックしたかどうかをチェック
-    if (
-      event.target === this.dialogTarget &&
-      this.dialogTarget.hasAttribute("open")
-    ) {
-      console.log("Dialog closed");
-      // モーダルを閉じる
-      this.closeModal();
-    }
   }
 
   afterClose(event) {
@@ -41,6 +27,25 @@ export default class extends Controller {
     }
 
     Turbo.visit(window.location.href, { action: "replace" });
+  }
+
+  // フォームの状態をチェックし、投稿ボタンの有効/無効を切り替えるメソッド
+  checkForm() {
+    const textArea = this.element.querySelector("#body");
+    const hasText = textArea && textArea.value.trim().length > 0;
+    const soundClips = this.element.querySelector(".sound-clips");
+    const hasAudio = soundClips.querySelector("audio") !== null;
+
+    const submitButton = this.element.querySelector('input[type="submit"]');
+    if (hasText || hasAudio) {
+      submitButton.disabled = false;
+      submitButton.classList.remove("opacity-50");
+      submitButton.classList.remove("cursor-not-allowed");
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.add("opacity-50");
+      submitButton.classList.add("cursor-not-allowed");
+    }
   }
 
   // 録音開始
@@ -96,6 +101,7 @@ export default class extends Controller {
     // 経過時間をミリ秒から秒に変換し、切り捨てを行う
     const durationInSeconds = Math.floor((Date.now() - this.startTime) / 1000);
     document.querySelector(".duration-field").value = durationInSeconds;
+    this.checkForm(); // フォームの状態を再チェック
   }
 
   // タイマー更新
@@ -137,6 +143,8 @@ export default class extends Controller {
     // Submitボタンを有効化
     const submitButton = fileInput.form.querySelector('input[type="submit"]');
     submitButton.disabled = false;
+
+    this.checkForm(); // フォームの状態を再チェック
   }
 
   // 音声クリップを生成して表示するメソッド
@@ -170,12 +178,12 @@ export default class extends Controller {
       clipContainer.remove();
       this.element.querySelector(".record").disabled = false;
       this.element.querySelector(".timer").textContent = "00:00"; // タイマーをリセット
+      this.checkForm(); // フォームの状態を再チェック
     };
 
     return deleteButton;
   }
 
-  // 可視化処理
   // 可視化処理
   visualize(stream) {
     const source = this.audioCtx.createMediaStreamSource(stream);
