@@ -161,8 +161,8 @@ export default class extends Controller {
     // 削除ボタン
     const deleteButton = this.createDeleteButton(clipContainer);
 
-    clipContainer.appendChild(audio);
     clipContainer.appendChild(deleteButton);
+    clipContainer.appendChild(audio);
 
     this.element.querySelector(".sound-clips").innerHTML = "";
     this.element.querySelector(".sound-clips").appendChild(clipContainer);
@@ -173,7 +173,7 @@ export default class extends Controller {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "削除";
     deleteButton.className =
-      "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded mt-2 self-end"; // 右端に配置
+      "bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded mb-2 flex justify-center"; // 右端に配置
     deleteButton.onclick = () => {
       clipContainer.remove();
       this.element.querySelector(".record").disabled = false;
