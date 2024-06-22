@@ -8,7 +8,7 @@
             <td colspan="3" class="c-tabs">
               <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "profile-posts" },
                   class: "c-tab text-blue-400 #{active_tab_class('all_my_posts', 'only_me', 'my_posts_following', 'my_posts_open', initial_category: initial_category)} hover:text-blue-500" do %>
-                <i class="fas fa-wave mr-1 sm:mr-2"></i><span>私のウェーブ</span>
+                <i class="fa-solid fa-gift mr-1 sm:mr-2"></i><span>私のウェーブ</span>
               <% end %>
             </td>
             <td rowspan="2" class="c-tabs">
