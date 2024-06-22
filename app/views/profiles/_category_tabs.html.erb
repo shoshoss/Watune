@@ -2,8 +2,8 @@
   <div id="category-tabs" class="z-50">
     <% initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open' %>
     <% if current_user == @user %>
-      <div class="flex overflow-x-auto whitespace-nowrap">
-        <table class="grid grid-cols-1">
+      <div class="flex overflow-x-auto whitespace-nowrap pb-2 sm:pb-4">
+        <table class="grid grid-cols-1 mx-auto">
           <tr class="">
             <td colspan="3" class="c-tabs">
               <%= link_to profile_show_path(username_slug: @user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "profile-posts" },
