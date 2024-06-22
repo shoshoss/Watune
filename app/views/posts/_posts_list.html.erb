@@ -1,13 +1,18 @@
-<% if posts.present? %>
-  <%= turbo_frame_tag "next-page" do %>
-    <% posts.each do |post| %>
-      <% post_notifications = (notifications || []).select { |notification| notification.notifiable == post } %>
-      <%= render 'posts/post', post: post, notifications: post_notifications %>
-    <% end %>
-    <% if pagy.next %>
-      <%= render 'shared/next_page' %>
-    <% end %>
-  <% end %>
-<% else %>
-  <div class="mb-3">投稿がありません</div>
-<% end %>
+<!-- 投稿一覧 -->
+<div class="mx-auto max-w-[674px] w-full border border-gray-200">
+  <div id="post-list" class="grid grid-cols-1">
+      <% if posts.present? %>
+        <%= turbo_frame_tag "next-page" do %>
+          <% posts.each do |post| %>
+            <% post_notifications = (notifications || []).select { |notification| notification.notifiable == post } %>
+            <%= render 'posts/post', post: post, notifications: post_notifications %>
+          <% end %>
+          <% if pagy.next %>
+            <%= render 'shared/next_page' %>
+          <% end %>
+        <% end %>
+      <% else %>
+        <div class="mb-3">投稿がありません</div>
+      <% end %>
+  </div>
+</div>
