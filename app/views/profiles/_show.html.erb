@@ -38,33 +38,45 @@
   function handleCategoryTabs() {
     var categoryTabsWrapper = document.getElementById('category-tabs-wrapper');
     var categoryTabs = document.getElementById('category-tabs');
-    var categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
 
-    window.addEventListener('scroll', function () {
-      if (window.pageYOffset > categoryTabsOffsetTop) {
-        categoryTabsWrapper.style.height = categoryTabs.offsetHeight + 'px';
-        categoryTabs.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
-      } else {
-        categoryTabsWrapper.style.height = 'auto';
-        categoryTabs.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
-      }
-    });
+    if (categoryTabsWrapper && categoryTabs) {
+      var categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
+
+      window.addEventListener('scroll', function () {
+        if (window.pageYOffset > categoryTabsOffsetTop) {
+          categoryTabsWrapper.style.height = categoryTabs.offsetHeight + 'px';
+          categoryTabs.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
+        } else {
+          categoryTabsWrapper.style.height = 'auto';
+          categoryTabs.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
+        }
+      });
+    }
+  }
+
+  function initializePage() {
+    handleNavbarOpacity();
+
+    // 現在のURLまたはページパラメータを取得
+    var urlParams = new URLSearchParams(window.location.search);
+
+    // 特定のパラメータが存在する場合にのみ関数を実行
+    if (urlParams.has('category') || document.getElementById('category-tabs-wrapper')) {
+      handleCategoryTabs();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    handleNavbarOpacity();
-    handleCategoryTabs();
+    initializePage();
   });
 
   document.addEventListener('turbo:load', function () {
-    handleNavbarOpacity();
-    handleCategoryTabs();
+    initializePage();
   });
 
   document.addEventListener('turbo:frame-load', function(event) {
-    if (event.target.id === 'category-tabs-wrapper' || event.target.id === 'profile-posts') {
-      handleNavbarOpacity();
-      handleCategoryTabs();
+    if (event.target.id === 'profile-posts') {
+      initializePage();
     }
   });
 </script>
