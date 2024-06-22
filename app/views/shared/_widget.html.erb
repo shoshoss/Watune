@@ -14,14 +14,14 @@
     <% if params[:controller] == "posts" && params[:action] == "show" %>
       <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
                   id: "pc-reply-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
                   data: { turbo_frame: "reply_modal" } do %>
         <i class="fa-regular fa-comment text-6xl"></i>
       <% end %>
     <% else %>
       <%= link_to new_post_path(privacy: 'open'),
                   id: "pc-post-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg bg-opacity-80 hover:bg-sky-500",
                   data: { turbo_frame: "post_modal" } do %>
         <i class="fa-solid fa-gift text-6xl"></i>
       <% end %>
