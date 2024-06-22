@@ -65,8 +65,8 @@
 </div>
 <!-- ユーザー名-->
 <div class="mb-2 flex flex-col justify-center items-center">
-  <%= link_to @user.display_name, profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-lg font-semibold" %>
-  <%= link_to "@#{@user.username_slug}", profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-gray-500" %>
+  <%= link_to @user.display_name, profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-xl sm:text-2xl font-semibold" %>
+  <%= link_to "@#{@user.username_slug}", profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-base sm:text-lg text-gray-500" %>
 </div>
 <!-- 自己紹介 -->
 <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
