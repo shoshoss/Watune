@@ -4,10 +4,10 @@
       <%= post.user.display_name %>
     <% end %>
     <br>
-    <span class="text-sm text-gray-500">@<%= post.user.username_slug %></span>
-    <span class="text-sm text-gray-500">･<%= l post.created_at, format: :long %></span>
+    <span class="text-base text-gray-500">@<%= post.user.username_slug %></span>
+    <span class="text-base text-gray-500">･<%= l post.created_at, format: :long %></span>
     <% if post.direct_recipients.any? %>
-      <div class="text-sm text-gray-500">
+      <div class="text-base text-gray-500">
         <span>宛先:</span>
         <% post.direct_recipients.each do |recipient| %>
           <%= link_to profile_modal_path(username_slug: recipient.username_slug),
@@ -34,7 +34,7 @@
 </div>
 <!-- 返信先の表示 -->
 <% if post.parent_post.present? %>
-  <div class="text-sm text-gray-500 mb-2">
+  <div class="text-base text-gray-500 mb-2">
     返信先: 
     <% post.ancestors.map(&:user).uniq.each do |user| %>
       <% unless post.user.id == user.id %>
