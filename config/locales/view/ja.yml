@@ -48,11 +48,11 @@ ja:
 
   users:
     new:
-      title: "ユーザー登録"
+      title: "新規登録"
       to_login: "ログイン"
       google_signup: "Googleで新規登録"
     new_modal:
-      title: "ユーザー登録"
+      title: "新規登録"
       to_login: "ログイン"
       google_signup: "Googleで新規登録"
     follow_form:
@@ -83,8 +83,8 @@ ja:
       login_failure: "お手数をおかけします。<br>ログインに失敗しました。メールアドレスまたはパスワードが間違っている可能性があります。再度お試しください。"
       logout: "おつかれさまでした！<br>ログアウトしました。<br>またのご利用をお待ちしております。"
     users:
-      signup_success: "ありがとうございます。<br>ユーザー登録が完了しました！"
-      signup_failure: "ユーザー登録に失敗しました。"
+      signup_success: "ありがとうございます。<br>新規登録が完了しました！"
+      signup_failure: "新規登録に失敗しました。"
       guest_login_success: "ありがとうございます。<br>お試しログインしました！<br>画面上部にある「引き継ぎ登録」より<br>データを引き継げます。"
       guest_login_failure: "お試しログインに失敗しました。再度お試しください。"
 
