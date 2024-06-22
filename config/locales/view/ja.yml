@@ -3,7 +3,7 @@ ja:
     submit:
       create: "登録する"
       submit: "保存する"
-      post: "ウェーブする"
+      post: "ウェーブ（投稿）する！"
       update: "更新する"
     label:
       email: "メールアドレス"
@@ -72,7 +72,7 @@ ja:
     signup: "新規登録"
     post: "みんなの投稿"
     post_index: "みんなのウェーブ"
-    post_audio: "ウェーブする"
+    post_audio: "ウェーブへ！"
     bookmark_index: "ブックマーク一覧"
     profile: "プロフィール"
     trial_login: "お試し利用"
