@@ -1,31 +1,31 @@
-<div class="mb-2 flex mx-auto items-stretch max-h-[108px] sm:max-h-[180px]">
+<div class="mb-2 flex mx-auto justify-around max-h-[108px] sm:max-h-[180px]">
   <!-- 左側のダミー要素 -->
-  <div class="pl-[10px] sm:min-w-[150px]">
+  <div class="pl-[10px] min-w-[120px] sm:min-w-[150px]">
     <% if current_user == @user %>
       <div class="invisible">
         <%= link_to "編集へ", "#", class: 'text-lg sm:text-xl btn btn-outline btn-secondary' %>
       </div>
     <% else %>
       <div class="invisible">
-        <%= button_to 'ダミー', "#", class: "w-[115px] btn-following btn-unfollow-hover" %>
+        <%= button_to 'ダミー', "#", class: "w-[106px] btn-following btn-unfollow-hover" %>
       </div>
     <% end %>
   </div>
 
   <!-- アバター画像 -->
-  <div class="flex justify-center flex-grow items-center">
+  <div class="flex justify-center flex-grow items-center ">
     <%= link_to profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" } do %>
       <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar, class: "rounded-full object-cover h-[77px] w-[77px] sm:h-[180px] sm:w-[180px]" %>
+        <%= image_tag @user.avatar, class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
       <% else %>
-        <%= image_tag asset_path('logo-watune-en.png'), class: "rounded-full object-cover h-[77px] w-[77px] sm:h-[180px] sm:w-[180px]" %>
+        <%= image_tag asset_path('logo-watune-en.png'), class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
       <% end %>
     <% end %>
   </div>
 
   <!-- 編集ボタン or フォローボタン -->
-  <div class="flex flex-grow-0 justify-end items-end">
-    <table class="min-w-[115px]">
+  <div class="flex flex-grow-0 items-end min-w-[120px] sm:min-w-[150px]">
+    <table>
       <tr>
         <td>
           <% if current_user == @user %>
