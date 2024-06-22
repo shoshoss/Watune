@@ -176,6 +176,7 @@ export default class extends Controller {
   }
 
   // 可視化処理
+  // 可視化処理
   visualize(stream) {
     const source = this.audioCtx.createMediaStreamSource(stream);
     const analyser = this.audioCtx.createAnalyser();
@@ -198,17 +199,19 @@ export default class extends Controller {
 
       analyser.getByteFrequencyData(dataArray); // 周波数データを取得
 
-      this.canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      this.canvasCtx.clearRect(0, 0, WIDTH, HEIGHT); // 画面をクリア
 
       let maxRadius = Math.max(WIDTH, HEIGHT) / 2;
       let step = (maxRadius / bufferLength) * 2;
 
       for (let i = 0; i < bufferLength; i++) {
         let radius = step * i;
-        let amplitude = dataArray[i] / 128.0; // 初期256
-        let color = `hsla(${200 + amplitude * 20}, 100%, 50%, ${
-          0.75 + 0.25 * amplitude // 透明度を動的に変更 初期:0.5,0.5
-        })`; // 波紋の色をより海色に近づける
+        let amplitude = dataArray[i] / 256.0; // 振幅を0-1に正規化
+
+        // 振幅に応じて青色の明るさを調整 (大きいほど明るく)
+        let hue = 200; // 固定の青色
+        let lightness = 50 + amplitude * 50; // 振幅に応じて明るさを調整 (50% - 100%)
+        let color = `hsl(${hue}, 100%, ${lightness}%)`; // 青色の明るさを調整
 
         this.canvasCtx.beginPath();
         this.canvasCtx.arc(centerX, centerY, radius, 0, Math.PI * 2);
