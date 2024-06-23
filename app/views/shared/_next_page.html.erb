@@ -1,3 +1,1 @@
-<% if @pagy.next %>
-  <%= turbo_frame_tag "next-page", src: pagy_url_for(@pagy, @pagy.next), loading: "lazy" %>
-<% end %>
+ <%= turbo_frame_tag "next-page", src: pagy_url_for(@pagy, @pagy.next), loading: "lazy" %>

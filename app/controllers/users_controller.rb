@@ -78,7 +78,7 @@ class UsersController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = 'アカウントの削除に失敗しました。'
-      redirect_to profile_path
+      redirect_to profile_show_path(current_user.username_slug)
     end
   end
 

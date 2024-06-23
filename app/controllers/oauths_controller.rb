@@ -25,7 +25,7 @@ class OauthsController < ApplicationController
     # ユーザーでログインを試みる
     @user = login_from(provider)
     if @user
-      redirect_to root_path, status: :see_other, notice: I18n.t('flash_messages.user_sessions.login_success')
+      redirect_to profile_show_path(current_user.username_slug), status: :see_other, notice: I18n.t('flash_messages.user_sessions.login_success')
     else
       @user = find_or_initialize_user(provider)
       is_new_user = @user.new_record?
@@ -106,9 +106,9 @@ class OauthsController < ApplicationController
   # リダイレクト先と通知メッセージを決定する
   def determine_redirect(is_new_user, _provider)
     if is_new_user
-      [edit_profile_path, I18n.t('flash_messages.users.signup_success')]
+      [profile_show_path(current_user.username_slug), I18n.t('flash_messages.users.signup_success')]
     else
-      [root_path, I18n.t('flash_messages.user_sessions.login_success')]
+      [profile_show_path(current_user.username_slug), I18n.t('flash_messages.user_sessions.login_success')]
     end
   end
 end

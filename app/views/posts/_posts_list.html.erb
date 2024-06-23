@@ -7,7 +7,7 @@
             <% post_notifications = (notifications || []).select { |notification| notification.notifiable == post } %>
             <%= render 'posts/post', post: post, notifications: post_notifications %>
           <% end %>
-          <% if pagy.next %>
+          <% if @pagy&.next %>
             <%= render 'shared/next_page' %>
           <% end %>
         <% end %>

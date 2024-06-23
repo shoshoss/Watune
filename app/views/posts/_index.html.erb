@@ -21,18 +21,5 @@
   </div>
 
   <!-- 投稿一覧 -->
-  <div class="mx-auto max-w-[674px] w-full border border-gray-200">
-    <div id="post-list" class="grid grid-cols-1">
-      <% if posts.present? %>
-        <%= turbo_frame_tag "next-page" do %>
-          <%= render posts %>
-          <% if pagy.next %>
-            <%= render 'shared/next_page' %>
-          <% end %>
-        <% end %>
-      <% else %>
-        <div class="mb-3">投稿がありません</div>
-      <% end %>
-    </div>
-  </div>
+  <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
 </div>

@@ -34,7 +34,7 @@ module MetaTagsHelper
   def default_meta_tags
     {
       site: 'Watune（ウェーチュン）',
-      title: 'Watune - 喜びを選択し音で自分自身と仲間に喜びや元氣を与え合うアプリ',
+      title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
       reverse: true,
       separator: '|',
       description: 'Watune（ウェーチュン）は、喜びを選択し日々の生活を送るために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',

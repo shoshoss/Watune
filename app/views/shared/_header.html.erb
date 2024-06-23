@@ -19,9 +19,9 @@
         いいねチャンス数<strong> <%= turbo_frame_tag "likes_chance_count" do %><%= @likes_chance_count %><% end %></strong>
       </span>
       <% if current_user.guest %>
-        <%= link_to 'いいねする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
+        <%= link_to 'いいねへ！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
       <% else %>
-        <%= link_to 'いいねする！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
+        <%= link_to 'いいねへ！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
       <% end %>
     </div>
 
@@ -61,7 +61,7 @@
           <li class="block py-2 text-lg">
             <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}", data: { turbo_frame: "_top" } do %>
               <i class="fas fa-heart text-lg #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}"></i>
-              <span>いいねをする！<strong> <%= @likes_chance_count %>チャンス</strong></span>
+              <span>いいねへ！<strong> <%= @likes_chance_count %>チャンス</strong></span>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
@@ -123,7 +123,7 @@
           <li class="block py-2 text-lg">
             <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}", data: { turbo_frame: "_top" } do %>
               <i class="fas fa-heart text-lg #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}"></i>
-              いいねをする！<strong> <%= @likes_chance_count %>チャンス</strong>
+              いいねへ！<strong> <%= @likes_chance_count %>チャンス</strong>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
