@@ -114,7 +114,7 @@ class PostsController < ApplicationController
     Post.open
         .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
         .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts, :replies, :likes, :liked_users, :bookmarks, :bookmarked_users, :reposted_by_users) # 関連データを一度にロードする
+        .includes(:user, :reposts, :replies, :likes, :bookmarks) # 関連データを一度にロードする
         .order(Arel.sql('reposted_at DESC'))
   end
 
