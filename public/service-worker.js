@@ -2,9 +2,11 @@
 const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
-  "/",
 ];
 const additionalUrlsToCache = [
+  "/",
+  "/privacy_policy",
+  "/terms_of_use",
   "/waves",
   "/icon-192.png",
   "/icon-512.png",
