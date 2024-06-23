@@ -41,6 +41,14 @@ self.addEventListener("activate", (event) => {
 
 // フェッチイベント: ネットワークリクエストが発生したときに処理
 self.addEventListener("fetch", (event) => {
+  // chrome-extension スキームや POST リクエストを除外
+  if (
+    event.request.url.startsWith("chrome-extension") ||
+    event.request.method === "POST"
+  ) {
+    return;
+  }
+
   event.respondWith(
     // キャッシュを確認し、キャッシュがあればそれを返す
     caches.match(event.request).then((response) => {
