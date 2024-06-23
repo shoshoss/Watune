@@ -2,9 +2,9 @@
 const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
+  "/",
 ];
 const additionalUrlsToCache = [
-  "/", // ホームページ
   "/waves",
   "/icon-192.png",
   "/icon-512.png",
@@ -27,23 +27,15 @@ self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     // 不要な古いキャッシュを削除する
-    caches
-      .keys()
-      .then((cacheNames) => {
-        return Promise.all(
-          cacheNames.map((cacheName) => {
-            if (cacheWhitelist.indexOf(cacheName) === -1) {
-              return caches.delete(cacheName);
-            }
-          })
-        );
-      })
-      .then(() => {
-        // アクティベート後に追加のリソースをキャッシュする
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.addAll(additionalUrlsToCache);
-        });
-      })
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
 
@@ -52,16 +44,21 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     // キャッシュを確認し、キャッシュがあればそれを返す
     caches.match(event.request).then((response) => {
-      return (
-        response ||
-        fetch(event.request).then((response) => {
-          // ネットワークから取得したリソースをキャッシュに保存
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-      );
+      if (response) {
+        return response;
+      }
+      // キャッシュにない場合は、ネットワークから取得
+      return fetch(event.request).then((response) => {
+        // ネットワークから取得したリソースをキャッシュに保存
+        if (!response || response.status !== 200 || response.type !== "basic") {
+          return response;
+        }
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+        return response;
+      });
     })
   );
 });
