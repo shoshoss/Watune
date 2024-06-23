@@ -21,7 +21,7 @@ class PostsController < ApplicationController
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
     # 返信データを取得し、ページネーションを設定
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user).order(created_at: :asc), items: 15)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc), items: 15)
     # 親投稿を取得
     @parent_posts = @post.ancestors
   end
@@ -114,7 +114,7 @@ class PostsController < ApplicationController
     Post.open
         .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
         .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts, :replies, :likes) # 関連データを一度にロードする
+        .includes(:user, :reposts, :replies, :likes, :liked_users, :bookmarks, :bookmarked_users, :reposted_by_users) # 関連データを一度にロードする
         .order(Arel.sql('reposted_at DESC'))
   end
 
