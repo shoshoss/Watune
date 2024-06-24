@@ -37,7 +37,7 @@ module MetaTagsHelper
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
       reverse: true,
       separator: '|',
-      description: 'Watune（ウェーチュン）は、喜びを選択し日々の生活を送るために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
+      description: 'Watune（ウェーチュン）は、喜びを選び、日々の生活をより豊かにするために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
       keywords: 'Watune, ウェーチュン, 前向き, メッセージ, 音声, 元氣, 喜び, 選択, 共有, SNS, アプリ, Webアプリ, 音声アプリ, サービス',
       canonical: request.original_url,
       noindex: !Rails.env.production?,
@@ -50,7 +50,7 @@ module MetaTagsHelper
     {
       site_name: 'Watune（ウェーチュン）',
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
-      description: 'このWebアプリは、喜びを選択し日々の生活を送るために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
+      description: 'このWebアプリは、喜びを選び、日々の生活をより豊かにするために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
       url: request.original_url,
       image: full_url('/ogp.webp'),
       locale: 'ja_JP'
@@ -62,7 +62,7 @@ module MetaTagsHelper
       card: 'summary_large_image',
       site: '@WatuneApp',
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
-      description: 'このWebアプリは、喜びを選択し日々の生活を送るために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
+      description: 'このWebアプリは、喜びを選び、日々の生活をより豊かにするために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
       image: full_url('/ogp.webp')
     }
   end
