@@ -6,7 +6,6 @@ ActiveStorage.start();
 // サービスワーカーを登録するコードを追加
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    // ページロード後に一定時間待機してからサービスワーカーを登録
     setTimeout(() => {
       navigator.serviceWorker.register("/service-worker.js").then(
         (registration) => {
@@ -19,6 +18,13 @@ if ("serviceWorker" in navigator) {
           console.log("ServiceWorker registration failed: ", error);
         }
       );
-    }, 3000); // 3秒待機してからサービスワーカーを登録
+    }, 2000);
   });
 }
+
+// 退会処理用のスクリプトを読み込む
+document.addEventListener("DOMContentLoaded", () => {
+  const script = document.createElement("script");
+  script.src = "/unregister_service_worker.js";
+  document.head.appendChild(script);
+});

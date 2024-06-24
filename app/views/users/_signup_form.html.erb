@@ -6,6 +6,7 @@
   <%= render 'shared/flash_message' %>
 </div>
 <%= form_with model: @user, url: create_signup_modal_path, method: :post do |f| %>
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
   <% unless current_user&.guest? %>
     <!-- Googleで新規登録のボタン -->
     <div class="flex items-center justify-center mb-8">
