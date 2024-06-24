@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "reply_modal" do %>
-  <dialog id="reply_modal_dialog" class="modal bg-gray-500 bg-opacity-50" data-controller="reply-modal">
+  <dialog id="reply_modal_dialog" class="z-44 modal bg-gray-500 bg-opacity-50" data-controller="reply-modal">
     <div class="modal-box p-0 m-0">
       <div class="flex justify-end items-center">
         <i class="p-2 fa-solid fa-xmark h-6 w-6  hover:text-blue-500" data-action="click->reply-modal#closeModal"></i>
@@ -8,14 +8,14 @@
       <div class="bg-white">
         <% if @parent_posts.present? %>
           <% @parent_posts.each do |parent_post| %>
-            <%= render 'posts/post', post: parent_post %>
+            <%= render 'replies/post_content', post: parent_post %>
           <% end %>
         <% end %>
       </div>
       <div class="bg-white">
           <% unless @parent_posts.include?(@post.parent_post) %>
             <% if @post.parent_post.present? %>
-              <%= render 'posts/post', post: @post.parent_post %>
+              <%= render 'replies/post_content', post: @post.parent_post %>
             <% elsif @post.post_reply_id.present? %>
               <div class="text-lg text-gray-500 mb-2">
                 親の投稿が削除されました。
