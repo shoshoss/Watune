@@ -32,6 +32,9 @@ class Post < ApplicationRecord
   has_many :reposts, class_name: 'Repost', dependent: :destroy, inverse_of: :original_post
   has_many :reposted_by_users, through: :reposts, source: :user
 
+  # ポリモーフィックな関連付けを追加（通知）
+  has_many :notifications, as: :notifiable
+
   # 音声添付ファイル
   has_one_attached :audio
 
