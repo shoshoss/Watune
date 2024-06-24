@@ -85,10 +85,10 @@
             <% end %>
           </li>
           <li class="py-2">
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete, turbo_action: '_top' }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "loadScript('/unregister_service_worker.js')" %>
+            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete, turbo_action: 'advance' }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "unregisterServiceWorker()" %>
           </li>
           <li class="py-2">
-            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会（アカウント削除）しますか？', turbo_action: '_tap' }, class: 'btn btn-danger', onclick: "loadScript('/unregister_service_worker.js')" %>
+            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか（アカウント削除）？', turbo_action: 'advance' }, class: 'btn btn-danger' %>
           </li>
         </ul>
       </div>
@@ -147,10 +147,10 @@
             <% end %>
           </li>
           <li class="py-2">
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete, turbo_action: 'advance' }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "loadScript('/assets/unregister_service_worker.js')" %>
+            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete, turbo_action: 'advance' }, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "unregisterServiceWorker()" %>
           </li>
           <li class="py-2">
-            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会（アカウント削除）しますか？', turbo_action: 'advance' }, class: 'btn btn-danger', onclick: "loadScript('/assets/unregister_service_worker.js')" %>
+            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか（アカウント削除）？', turbo_action: 'advance' }, class: 'btn btn-danger' %>
           </li>
         </ul>
       </div>
@@ -159,9 +159,18 @@
 </div>
 
 <script>
-  function loadScript(url) {
-    const script = document.createElement('script');
-    script.src = url;
-    document.head.appendChild(script);
+  function unregisterServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      }).finally(() => {
+        // サービスワーカーの解除後にページをリロード
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000); // 少し待機してからリロード
+      });
+    }
   }
 </script>
