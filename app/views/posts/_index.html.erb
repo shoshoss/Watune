@@ -3,7 +3,7 @@
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
 <% content_for(:title, t('.title')) %>
-<div class="container">
+<div class="container max-w-[674px]">
   <% unless logged_in? %>
     <div class="flex justify-center my-4">
       <%= link_to 'このアプリについて', "#{root_path}#about", data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>

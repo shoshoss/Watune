@@ -22,7 +22,7 @@
               </div>
             <% end %>
           <% end %>
-          <%= render 'posts/post', post: @post %>
+          <%= render 'replies/post_content', post: @post %>
         </div>
       <%= render 'replies/form_modal', post: @post, reply: @reply %>
       <div class="modal-action">
