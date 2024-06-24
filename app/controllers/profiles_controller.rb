@@ -106,6 +106,7 @@ class ProfilesController < ApplicationController
   # フィルタリングされた投稿を取得
   # N+1クエリ問題を回避するために関連データを一緒にロード
   def set_posts
-    @pagy, @posts = pagy_countless(filtered_posts.includes(:user, :reposts, :replies, :likes, :bookmarks, post_users: :user), items: 10)
+    @pagy, @posts = pagy_countless(filtered_posts.includes(:user, :reposts, :replies, :likes, :bookmarks, post_users: :user),
+                                   items: 10)
   end
 end

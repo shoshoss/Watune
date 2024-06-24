@@ -21,7 +21,8 @@ class PostsController < ApplicationController
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
     # 返信データを取得し、ページネーションを設定
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc), items: 15)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
+                                     items: 15)
     # 親投稿を取得
     @parent_posts = @post.ancestors
   end
