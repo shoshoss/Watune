@@ -60,7 +60,7 @@ module MetaTagsHelper
   def default_twitter_tags
     {
       card: 'summary_large_image',
-      site: '@shonosuke53a',
+      site: '@WatuneApp',
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
       description: 'このWebアプリは、喜びを選択し日々の生活を送るために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
       image: full_url('/ogp.webp')
@@ -104,7 +104,7 @@ module MetaTagsHelper
   def build_twitter_meta_tags(options)
     {
       card: 'summary_large_image',
-      site: options[:twitter_site] || '@shonosuke53a',
+      site: options[:twitter_site] || '@WatuneApp',
       title: options[:title].presence || options[:site],
       description: options[:description],
       image: options[:image].presence || full_url('/ogp.webp')
