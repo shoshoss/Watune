@@ -20,6 +20,7 @@ const noCacheUrls = [
   "/shared/_before_profile_edit_flash.html.erb",
   "/posts/new.html.erb",
   "/profiles/_edit_modal.html.erb", // プロフィール編集モーダル画面
+  "/posts/_edit_form.html.erb", // 投稿編集画面
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
@@ -106,5 +107,17 @@ self.addEventListener("message", (event) => {
     });
   } else if (event.data.action === "skipWaiting") {
     self.skipWaiting();
+  } else if (event.data.action === "clearProfileCache") {
+    caches.open(CACHE_NAME).then((cache) => {
+      noCacheUrls.forEach((url) => {
+        cache.delete(url);
+      });
+    });
+  } else if (event.data.action === "clearPostCache") {
+    caches.open(CACHE_NAME).then((cache) => {
+      noCacheUrls.forEach((url) => {
+        cache.delete(url);
+      });
+    });
   }
 });

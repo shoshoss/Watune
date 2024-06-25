@@ -17,6 +17,14 @@ export default class extends Controller {
       return;
     }
 
+    // キャッシュをクリアする
+    if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        action: "clearPostCache",
+      });
+    }
+
+    // リダイレクト処理
     Turbo.visit(window.location.href, { action: "replace" });
   }
 }
