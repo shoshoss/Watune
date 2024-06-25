@@ -6,21 +6,57 @@ ActiveStorage.start();
 // サービスワーカーを登録するコードを追加
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    setTimeout(() => {
-      navigator.serviceWorker.register("/service-worker.js").then(
-        (registration) => {
-          console.log(
-            "ServiceWorker registration successful with scope: ",
-            registration.scope
-          );
-        },
-        (error) => {
-          console.log("ServiceWorker registration failed: ", error);
+    navigator.serviceWorker.register("/service-worker.js").then(
+      (registration) => {
+        console.log(
+          "ServiceWorker registration successful with scope: ",
+          registration.scope
+        );
+
+        // 新しいサービスワーカーがインストールされた場合に更新を促す
+        if (registration.waiting) {
+          registration.waiting.postMessage({ action: "skipWaiting" });
         }
-      );
-    }, 2000);
+
+        registration.addEventListener("updatefound", () => {
+          const newWorker = registration.installing;
+          newWorker.addEventListener("statechange", () => {
+            if (
+              newWorker.state === "installed" &&
+              navigator.serviceWorker.controller
+            ) {
+              newWorker.postMessage({ action: "skipWaiting" });
+            }
+          });
+        });
+
+        // サービスワーカーが登録された後に追加リソースをバックグラウンドでキャッシュ
+        navigator.serviceWorker.ready.then((swRegistration) => {
+          swRegistration.active.postMessage({
+            action: "cacheAdditionalResources",
+          });
+        });
+      },
+      (error) => {
+        console.log("ServiceWorker registration failed: ", error);
+      }
+    );
   });
 }
+
+// フォローやフォロー解除時のイベントリスナーを追加
+document.addEventListener("turbo:load", () => {
+  const followButtons = document.querySelectorAll(".follow-button");
+  followButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          action: "updateWidget",
+        });
+      }
+    });
+  });
+});
 
 // 退会処理用のスクリプトを読み込む
 document.addEventListener("DOMContentLoaded", () => {
