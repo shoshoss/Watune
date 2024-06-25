@@ -16,6 +16,7 @@ const noCacheUrls = [
   "/shared/_header.html.erb",
   "/shared/_widget.html.erb",
   "/shared/_login_modal_button.html.erb",
+  "/posts/new.html.erb", // 新規投稿画面をキャッシュしない
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
