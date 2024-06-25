@@ -11,7 +11,7 @@
       <div id="before_profile_edit_flash_modal">
         <%= render 'shared/before_profile_edit_flash' %>
       </div>
-      <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
+        <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
 
         <div class="card-body mx-auto p-2">

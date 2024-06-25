@@ -51,15 +51,15 @@ export default class extends Controller {
 
   submitEnd(event) {
     if (event.detail.success) {
-      // 成功時にはTurboを無効化してリダイレクトを実行する
-      Turbo.session.drive = false;
-
       // キャッシュをクリアする
       if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
         navigator.serviceWorker.controller.postMessage({
           action: "clearProfileCache",
         });
       }
+
+      // 成功時にはTurboを無効化してリダイレクトを実行する
+      Turbo.session.drive = false;
 
       const redirectPath =
         event.detail.fetchResponse.response.headers.get("Location");

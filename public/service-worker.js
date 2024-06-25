@@ -21,6 +21,7 @@ const noCacheUrls = [
   "/posts/new.html.erb",
   "/profiles/_edit_modal.html.erb", // プロフィール編集モーダル画面
   "/posts/_edit_form.html.erb", // 投稿編集画面
+  "/profiles/_profile_info.html.erb", // プロフィール情報もキャッシュしないように追加
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
@@ -62,7 +63,10 @@ self.addEventListener("fetch", (event) => {
   }
 
   // キャッシュしないリソースの処理
-  if (noCacheUrls.some((url) => event.request.url.includes(url))) {
+  if (
+    noCacheUrls.some((url) => event.request.url.includes(url)) ||
+    event.request.headers.get("Turbo-Frame")
+  ) {
     event.respondWith(
       fetch(event.request).then((response) => {
         // 更新されたリソースをキャッシュしない
