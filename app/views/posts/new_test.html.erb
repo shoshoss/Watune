@@ -4,7 +4,7 @@
     <button id="recordButton" class="record text-xl bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 md:px-10 rounded">
       録音<br class="md:hidden">開始
     </button>
-    <button id="stopButton" class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded">
+    <button id="stopButton" class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded" style="display: none;">
       録音<br class="md:hidden">完了
     </button>
   </div>
@@ -12,47 +12,128 @@
   <!-- 音声プレーヤー -->
   <audio id="audioPlayer" controls class="w-full mt-4"></audio>
 
-  <%= form_with model: @post, data: { controller: "post-test" } do |f| %>
-    <div class="card-body p-2">
-      <%= render 'shared/error_messages', object: f.object %>
+  <%= form_with model: @post, url: create_test_post_path do |f| %>
+  <!-- フォームの内容 -->
+  <div class="card-body p-2">
+    <%= render 'shared/error_messages', object: f.object %>
 
+    <div class="form-control pt-2">
+      <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
+      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
+    </div>
+
+    <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+    <%= f.hidden_field :duration, class: "duration-field" %>
+
+    <!-- 送信先設定 -->
+    <%= turbo_frame_tag "privacy-settings" do %>
       <div class="form-control pt-2">
-        <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-        <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
+        <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
+        <div class="flex space-x-4 pt-2">
+          <%= link_to '自分へ', new_test_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= link_to '仲間へ', new_test_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= link_to 'みんなへ', new_test_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+        </div>
+        <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
       </div>
 
-      <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
-      <%= f.hidden_field :duration, class: "duration-field" %>
-
-      <!-- 送信先設定 -->
-      <%= turbo_frame_tag "privacy-settings" do %>
+      <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
         <div class="form-control pt-2">
-          <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
-          <div class="flex space-x-4 pt-2">
-            <%= link_to '自分へ', new_test_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
-            <%= link_to '仲間へ', new_test_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
-            <%= link_to 'みんなへ', new_test_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
+          <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+            <% current_user.following_ordered_by_sent_posts.each do |following| %>
+              <label class="inline-flex items-center m-2">
+                <%= check_box_tag 'post[recipient_ids][]', following.id, params[:selected_user_ids]&.include?(following.id.to_s), class: 'form-checkbox h-5 w-5 text-blue-600' %>
+                <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
+              </label>
+            <% end %>
           </div>
-          <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
         </div>
-
-        <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
-          <div class="form-control pt-2">
-            <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
-            <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
-              <% current_user.following_ordered_by_sent_posts.each do |following| %>
-                <label class="inline-flex items-center m-2">
-                  <%= check_box_tag 'post[recipient_ids][]', following.id, params[:selected_user_ids]&.include?(following.id.to_s), class: 'form-checkbox h-5 w-5 text-blue-600' %>
-                  <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
-                </label>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
       <% end %>
-    </div>
-    <div class="form-control mt-4 lg:mt-6">
-      <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg" %>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+  <div class="form-control mt-4 lg:mt-6">
+    <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg" %>
+  </div>
+<% end %>
+
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const recordButton = document.getElementById("recordButton");
+    const stopButton = document.getElementById("stopButton");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const audioInput = document.querySelector("input[type='file'][name='post[audio]']");
+    const durationInput = document.querySelector(".duration-field");
+    const form = document.querySelector("form");
+
+    if (!recordButton || !stopButton || !audioPlayer || !audioInput || !durationInput || !form) {
+      console.error("Form elements not found");
+      return;
+    }
+
+    let mediaRecorder;
+    let chunks = [];
+    let startTime;
+
+    recordButton.addEventListener("click", () => {
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then((stream) => {
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+          startTime = Date.now();
+
+          recordButton.style.display = "none";
+          stopButton.style.display = "block";
+
+          mediaRecorder.ondataavailable = (event) => {
+            chunks.push(event.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(chunks, { type: mediaRecorder.mimeType });
+            audioPlayer.src = URL.createObjectURL(audioBlob);
+            const duration = (Date.now() - startTime) / 1000;
+            durationInput.value = duration.toFixed(2);
+
+            const fileExtension = mediaRecorder.mimeType.split("/")[1].split(";")[0];
+            const file = new File([audioBlob], `audio.${fileExtension}`, { type: mediaRecorder.mimeType });
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            audioInput.files = dt.files;
+          };
+        })
+        .catch((err) => console.error("Error accessing media devices.", err));
+    });
+
+    stopButton.addEventListener("click", () => {
+      mediaRecorder.stop();
+      recordButton.style.display = "block";
+      stopButton.style.display = "none";
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      formData.append("post[audio]", audioInput.files[0]);
+
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          "X-CSRF-Token": document.querySelector("[name=csrf-token]").content,
+          "Accept": "application/json", // JSONを期待する
+        },
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json(); // JSONとしてレスポンスを処理
+      })
+      .then(data => console.log("Success:", data))
+      .catch(error => console.error("Error:", error));
+    });
+  });
+</script>

@@ -40,7 +40,7 @@ class Post < ApplicationRecord
 
   # バリデーション
   validates :body, length: { maximum: 10_000 }
-  validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
+  validates :duration, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 },
                        allow_nil: true
 
   # プライバシー設定
