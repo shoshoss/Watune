@@ -16,7 +16,10 @@ const noCacheUrls = [
   "/shared/_header.html.erb",
   "/shared/_widget.html.erb",
   "/shared/_login_modal_button.html.erb",
-  "/posts/new.html.erb", // 新規投稿画面をキャッシュしない
+  "/shared/_flash_message.html.erb",
+  "/shared/_before_profile_edit_flash.html.erb",
+  "/posts/new.html.erb",
+  "/profiles/_edit_modal.html.erb", // プロフィール編集モーダル画面
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
