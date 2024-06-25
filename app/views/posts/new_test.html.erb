@@ -1,0 +1,58 @@
+<div class="mx-auto pt-2">
+  <!-- 録音コントロール -->
+  <div class="flex justify-around items-center pt-2 px-5">
+    <button id="recordButton" class="record text-xl bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 md:px-10 rounded">
+      録音<br class="md:hidden">開始
+    </button>
+    <button id="stopButton" class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded">
+      録音<br class="md:hidden">完了
+    </button>
+  </div>
+
+  <!-- 音声プレーヤー -->
+  <audio id="audioPlayer" controls class="w-full mt-4"></audio>
+
+  <%= form_with model: @post, data: { controller: "post-test" } do |f| %>
+    <div class="card-body p-2">
+      <%= render 'shared/error_messages', object: f.object %>
+
+      <div class="form-control pt-2">
+        <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
+        <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
+      </div>
+
+      <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+      <%= f.hidden_field :duration, class: "duration-field" %>
+
+      <!-- 送信先設定 -->
+      <%= turbo_frame_tag "privacy-settings" do %>
+        <div class="form-control pt-2">
+          <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
+          <div class="flex space-x-4 pt-2">
+            <%= link_to '自分へ', new_test_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
+            <%= link_to '仲間へ', new_test_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
+            <%= link_to 'みんなへ', new_test_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+          </div>
+          <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
+        </div>
+
+        <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
+          <div class="form-control pt-2">
+            <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
+            <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+              <% current_user.following_ordered_by_sent_posts.each do |following| %>
+                <label class="inline-flex items-center m-2">
+                  <%= check_box_tag 'post[recipient_ids][]', following.id, params[:selected_user_ids]&.include?(following.id.to_s), class: 'form-checkbox h-5 w-5 text-blue-600' %>
+                  <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
+                </label>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="form-control mt-4 lg:mt-6">
+      <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg" %>
+    </div>
+  <% end %>
+</div>

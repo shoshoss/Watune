@@ -54,6 +54,9 @@ Rails.application.routes.draw do
   get '/:username_slug/status/:id/reply_modal', to: 'replies#new_modal', as: 'new_reply_modal'
   post '/:username_slug/status/:id/reply_modal', to: 'replies#create_modal', as: 'create_reply_modal'
 
+  # テスト用の音声投稿ページのルートを追加
+  get 'posts/new_test', to: 'posts#new_test', as: 'new_test_post'
+
   # PostUserのルーティング（投稿受信者管理）
   resources :post_users, only: %i[show create destroy]
 
