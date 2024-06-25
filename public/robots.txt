@@ -1,1 +1,8 @@
 # See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+
+# すべてのクローラーに対してすべてのコンテンツをクロール許可
+User-agent: *
+Disallow:
+
+# サイトマップの場所を通知
+Sitemap: http://www.watune.com/sitemap.xml.gz
