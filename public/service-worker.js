@@ -4,13 +4,18 @@ const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
 ];
 const additionalUrlsToCache = [
-  "/",
-  "/privacy_policy",
-  "/terms_of_use",
-  "/waves",
   "/icon-192.png",
   "/icon-512.png",
   "/apple-touch-icon.png",
+];
+
+// キャッシュしないリソースを定義
+const noCacheUrls = [
+  "/shared/_before_login_header.html.erb",
+  "/shared/_sidebar.html.erb",
+  "/shared/_header.html.erb",
+  "/shared/_widget.html.erb",
+  "/shared/_login_modal_button.html.erb",
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
@@ -32,7 +37,7 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (!cacheWhitelist.includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
@@ -48,6 +53,22 @@ self.addEventListener("fetch", (event) => {
     event.request.url.startsWith("chrome-extension") ||
     event.request.method === "POST"
   ) {
+    return;
+  }
+
+  // キャッシュしないリソースの処理
+  if (noCacheUrls.some((url) => event.request.url.includes(url))) {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        // 更新されたリソースをキャッシュしない
+        if (response && response.status === 200 && response.type === "basic") {
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.delete(event.request); // 古いキャッシュを削除
+          });
+        }
+        return response;
+      })
+    );
     return;
   }
 
@@ -71,4 +92,15 @@ self.addEventListener("fetch", (event) => {
       });
     })
   );
+});
+
+// バックグラウンドで追加リソースをキャッシュ
+self.addEventListener("message", (event) => {
+  if (event.data.action === "cacheAdditionalResources") {
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(additionalUrlsToCache);
+    });
+  } else if (event.data.action === "skipWaiting") {
+    self.skipWaiting();
+  }
 });
