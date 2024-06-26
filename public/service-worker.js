@@ -24,6 +24,7 @@ const noCacheUrls = [
   "/profiles/_profile_info.html.erb", // プロフィール情報もキャッシュしないように追加
   "/posts/new_test.html.erb",
   "/shared/_footer.html.erb",
+  "/posts/_posts_list.html.erb",
   "/posts/_index.html.erb",
   "/posts/_show.html.erb",
   "/profiles/_show.html.erb",
