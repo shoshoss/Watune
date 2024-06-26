@@ -26,7 +26,8 @@ export default class extends Controller {
       return;
     }
 
-    Turbo.visit(window.location.href, { action: "replace" });
+    // ページのキャッシュをクリアして再読み込み
+    location.reload(true);
   }
 
   // フォームの状態をチェックし、投稿ボタンの有効/無効を切り替えるメソッド

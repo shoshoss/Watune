@@ -25,6 +25,9 @@ const noCacheUrls = [
   "/posts/new_test.html.erb",
   "/shared/_footer.html.erb",
   "/posts/_posts_list.html.erb",
+  "/posts/_index.html.erb",
+  "/posts/_show.html.erb",
+  "/profiles/_show.html.erb",
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
