@@ -61,7 +61,7 @@ Rails.application.routes.draw do
   post 'posts/create_test', to: 'posts#create_test', as: 'create_test_post'
 
   get '/posts/index_test', to: 'posts#index_test', as: :index_test_post
-  
+
   # PostUserのルーティング（投稿受信者管理）
   resources :post_users, only: %i[show create destroy]
 
