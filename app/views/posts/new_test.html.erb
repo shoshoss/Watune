@@ -1,19 +1,32 @@
 <div class="mx-auto pt-2">
+  <!-- 録音コントロール -->
   <div class="flex justify-around items-center pt-2 px-5">
-    <button id="recordButton" class="record text-xl bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 md:px-10 rounded">録音<br class="md:hidden">開始</button>
-    <button id="stopButton" class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded" style="display: none;">録音<br class="md:hidden">完了</button>
+    <button id="recordButton" class="record text-xl bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 md:px-10 rounded">
+      録音<br class="md:hidden">開始
+    </button>
+    <button id="stopButton" class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded" style="display: none;">
+      録音<br class="md:hidden">完了
+    </button>
   </div>
+
+  <!-- 音声プレーヤー -->
   <audio id="audioPlayer" controls class="w-full mt-4"></audio>
+
   <%= form_with model: @post, url: create_test_post_path, local: true do |f| %>
+  <!-- フォームの内容 -->
   <div class="card-body p-2">
     <%= render 'shared/error_messages', object: f.object %>
+
     <div class="form-control pt-2">
       <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
       <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
     </div>
+
     <%= f.file_field :audio, accept: 'audio/*', class: "hidden" %>
     <%= f.hidden_field :duration, class: "duration-field" %>
     <%= f.hidden_field :privacy, value: params[:privacy] || @post.privacy %>
+
+    <!-- 送信先設定 -->
     <%= turbo_frame_tag "privacy-settings" do %>
       <div class="form-control pt-2">
         <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
@@ -24,6 +37,7 @@
         </div>
         <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || @post.privacy %>">
       </div>
+
       <% if params[:privacy] == 'selected_users' || @post.privacy == 'selected_users' %>
         <div class="form-control pt-2">
           <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
@@ -84,7 +98,8 @@
             const duration = (Date.now() - startTime) / 1000;
             durationInput.value = duration.toFixed(2);
 
-            const file = new File([audioBlob], `recording.${mediaRecorder.mimeType.split('/')[1]}`, { type: mediaRecorder.mimeType });
+            const fileExtension = mediaRecorder.mimeType.split("/")[1].split(";")[0];
+            const file = new File([audioBlob], `recording.${fileExtension}`, { type: mediaRecorder.mimeType });
             const dt = new DataTransfer();
             dt.items.add(file);
             audioInput.files = dt.files;
