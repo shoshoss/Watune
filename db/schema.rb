@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_13_022804) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_25_211120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -114,7 +114,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_13_022804) do
     t.integer "privacy", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "duration"
+    t.decimal "duration", precision: 10, scale: 2
     t.integer "post_reply_id"
     t.index ["post_reply_id"], name: "index_posts_on_post_reply_id"
     t.index ["privacy"], name: "index_posts_on_privacy"

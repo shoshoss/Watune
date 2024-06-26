@@ -22,6 +22,9 @@ const noCacheUrls = [
   "/profiles/_edit_modal.html.erb", // プロフィール編集モーダル画面
   "/posts/_edit_form.html.erb", // 投稿編集画面
   "/profiles/_profile_info.html.erb", // プロフィール情報もキャッシュしないように追加
+  "/posts/new_test.html.erb",
+  "/shared/_footer.html.erb",
+  "/posts/_posts_list.html.erb",
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
@@ -63,14 +66,12 @@ self.addEventListener("fetch", (event) => {
   }
 
   // キャッシュしないリソースの処理
-  if (
-    noCacheUrls.some((url) => event.request.url.includes(url)) ||
-    event.request.headers.get("Turbo-Frame")
-  ) {
+  if (noCacheUrls.some((url) => event.request.url.includes(url))) {
     event.respondWith(
       fetch(event.request).then((response) => {
         // 更新されたリソースをキャッシュしない
         if (response && response.status === 200 && response.type === "basic") {
+          // 更新されたリソースをキャッシュしない
           caches.open(CACHE_NAME).then((cache) => {
             cache.delete(event.request); // 古いキャッシュを削除
           });
@@ -78,27 +79,38 @@ self.addEventListener("fetch", (event) => {
         return response;
       })
     );
+    // バックグラウンドで最新データを取得し、キャッシュを更新
+    event.waitUntil(
+      fetch(event.request).then((response) => {
+        if (response && response.status === 200 && response.type === "basic") {
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, response.clone());
+          });
+        }
+      })
+    );
     return;
   }
 
   event.respondWith(
-    // キャッシュを確認し、キャッシュがあればそれを返す
-    caches.match(event.request).then((response) => {
-      if (response) {
-        return response;
-      }
-      // キャッシュにない場合は、ネットワークから取得
-      return fetch(event.request).then((response) => {
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
         // ネットワークから取得したリソースをキャッシュに保存
-        if (!response || response.status !== 200 || response.type !== "basic") {
-          return response;
+        if (
+          networkResponse &&
+          networkResponse.status === 200 &&
+          networkResponse.type === "basic"
+        ) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-        return response;
+        return networkResponse;
       });
+
+      // キャッシュされたレスポンスを返しつつ、バックグラウンドで最新データをフェッチ
+      return cachedResponse || fetchPromise;
     })
   );
 });

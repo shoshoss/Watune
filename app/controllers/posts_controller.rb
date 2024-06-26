@@ -4,8 +4,29 @@ class PostsController < ApplicationController
   skip_before_action :require_login, only: %i[index show]
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
-  before_action :set_followings_by_post_count, only: %i[new edit create update]
+  before_action :set_followings_by_post_count, only: %i[new_test create_test new edit create update]
   before_action :authorize_view!, only: [:show]
+
+  # テスト用の音声投稿フォームを表示するアクション
+  def new_test
+    @post = Post.new
+    params[:privacy] ||= @post.privacy
+  end
+
+  def create_test
+    @post = current_user.posts.build(post_params.except(:recipient_ids))
+    if @post.save
+      if post_params[:recipient_ids].present?
+        PostCreationJob.perform_later(@post.id, post_params[:recipient_ids],
+                                      @post.privacy)
+      end
+      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
+      render json: { message: "Post created successfully", post: @post }, status: :created
+    else
+      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+      render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
 
   # 投稿一覧を表示するアクション
   def index
