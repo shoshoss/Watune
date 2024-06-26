@@ -21,7 +21,7 @@ class PostsController < ApplicationController
                                       @post.privacy)
       end
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      render json: { message: "Post created successfully", post: @post }, status: :created
+      render json: { message: 'Post created successfully', post: @post }, status: :created
     else
       flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
       render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
