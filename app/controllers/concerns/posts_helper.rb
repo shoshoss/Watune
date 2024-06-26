@@ -3,6 +3,12 @@ module PostsHelper
 
   private
 
+  def rename_audio_file(post)
+    audio = post.audio
+    new_filename = "#{post.id}_#{SecureRandom.uuid}#{File.extname(audio.filename.to_s)}"
+    audio.blob.update(filename: new_filename)
+  end
+
   # 特定の投稿をセットする
   def set_post
     @post = Post.find(params[:id])

@@ -17,16 +17,19 @@ class PostsController < ApplicationController
   def index_test
     @show_reply_line = false
     # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+    @pagy, @posts = pagy_countless(current_user.posts.order(created_at: :desc), items: 10)
   end
 
   def create_test
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      flash[:notice] = '投稿が作成されました。'
+      if @post.audio.attached?
+        rename_audio_file(@post)
+      end
+      flash[:notice] = "投稿が作成されました。"
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:alert] = '投稿の作成に失敗しました。'
+      flash.now[:alert] = "投稿の作成に失敗しました。"
       render :new_test
     end
   end
