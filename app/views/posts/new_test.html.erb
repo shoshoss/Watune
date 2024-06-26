@@ -1,3 +1,4 @@
+<!-- app/views/posts/new_test.html.erb -->
 <div class="mx-auto pt-2">
   <!-- 録音コントロール -->
   <div class="flex justify-around items-center pt-2 px-5">
@@ -12,7 +13,7 @@
   <!-- 音声プレーヤー -->
   <audio id="audioPlayer" controls class="w-full mt-4"></audio>
 
-  <%= form_with model: @post, url: create_test_post_path do |f| %>
+  <%= form_with model: @post, url: create_test_post_path, local: true do |f| %>
   <!-- フォームの内容 -->
   <div class="card-body p-2">
     <%= render 'shared/error_messages', object: f.object %>
@@ -22,8 +23,9 @@
       <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
     </div>
 
-    <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+    <%= f.file_field :audio, accept: 'audio/wav', class: "hidden" %>
     <%= f.hidden_field :duration, class: "duration-field" %>
+    <%= f.hidden_field :privacy, value: params[:privacy] || @post.privacy %>
 
     <!-- 送信先設定 -->
     <%= turbo_frame_tag "privacy-settings" do %>
@@ -53,87 +55,92 @@
     <% end %>
   </div>
   <div class="form-control mt-4 lg:mt-6">
-    <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg" %>
+    <%= f.submit '投稿する', class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg" %>
   </div>
-<% end %>
+  <% end %>
 
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const recordButton = document.getElementById("recordButton");
-    const stopButton = document.getElementById("stopButton");
-    const audioPlayer = document.getElementById("audioPlayer");
-    const audioInput = document.querySelector("input[type='file'][name='post[audio]']");
-    const durationInput = document.querySelector(".duration-field");
-    const form = document.querySelector("form");
+  document.addEventListener("DOMContentLoaded", () => {
+  const recordButton = document.getElementById("recordButton");
+  const stopButton = document.getElementById("stopButton");
+  const audioPlayer = document.getElementById("audioPlayer");
+  const audioInput = document.querySelector("input[type='file'][name='post[audio]']");
+  const durationInput = document.querySelector(".duration-field");
+  const form = document.querySelector("form");
 
-    if (!recordButton || !stopButton || !audioPlayer || !audioInput || !durationInput || !form) {
-      console.error("Form elements not found");
-      return;
+  if (!recordButton || !stopButton || !audioPlayer || !audioInput || !durationInput || !form) {
+    console.error("Form elements not found");
+    return;
+  }
+
+  let mediaRecorder;
+  let chunks = [];
+  let startTime;
+
+  recordButton.addEventListener("click", () => {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then((stream) => {
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.start();
+        startTime = Date.now();
+
+        recordButton.style.display = "none";
+        stopButton.style.display = "block";
+
+        mediaRecorder.ondataavailable = (event) => {
+          chunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(chunks, { type: mediaRecorder.mimeType });
+          const audioURL = URL.createObjectURL(audioBlob);
+          audioPlayer.src = audioURL;
+          const duration = (Date.now() - startTime) / 1000;
+          durationInput.value = duration.toFixed(2);
+
+          const fileExtension = mediaRecorder.mimeType.split("/")[1].split(";")[0] === "webm" ? "webm" : "mp4";
+          const file = new File([audioBlob], `recording.${fileExtension}`, { type: mediaRecorder.mimeType });
+          const dt = new DataTransfer();
+          dt.items.add(file);
+          audioInput.files = dt.files;
+        };
+      })
+      .catch((err) => console.error("Error accessing media devices.", err));
+  });
+
+  stopButton.addEventListener("click", () => {
+    mediaRecorder.stop();
+    recordButton.style.display = "block";
+    stopButton.style.display = "none";
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    if (audioInput.files.length > 0) {
+      formData.append("post[audio]", audioInput.files[0]);
     }
 
-    let mediaRecorder;
-    let chunks = [];
-    let startTime;
-
-    recordButton.addEventListener("click", () => {
-      navigator.mediaDevices.getUserMedia({ audio: true })
-        .then((stream) => {
-          mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-          startTime = Date.now();
-
-          recordButton.style.display = "none";
-          stopButton.style.display = "block";
-
-          mediaRecorder.ondataavailable = (event) => {
-            chunks.push(event.data);
-          };
-
-          mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(chunks, { type: mediaRecorder.mimeType });
-            audioPlayer.src = URL.createObjectURL(audioBlob);
-            const duration = (Date.now() - startTime) / 1000;
-            durationInput.value = duration.toFixed(2);
-
-            const fileExtension = mediaRecorder.mimeType.split("/")[1].split(";")[0];
-            const file = new File([audioBlob], `audio.${fileExtension}`, { type: mediaRecorder.mimeType });
-            const dt = new DataTransfer();
-            dt.items.add(file);
-            audioInput.files = dt.files;
-          };
-        })
-        .catch((err) => console.error("Error accessing media devices.", err));
-    });
-
-    stopButton.addEventListener("click", () => {
-      mediaRecorder.stop();
-      recordButton.style.display = "block";
-      stopButton.style.display = "none";
-    });
-
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const formData = new FormData(form);
-      formData.append("post[audio]", audioInput.files[0]);
-
-      fetch(form.action, {
-        method: "POST",
-        body: formData,
-        headers: {
-          "X-CSRF-Token": document.querySelector("[name=csrf-token]").content,
-          "Accept": "application/json", // JSONを期待する
-        },
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json(); // JSONとしてレスポンスを処理
-      })
-      .then(data => console.log("Success:", data))
-      .catch(error => console.error("Error:", error));
-    });
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRF-Token": document.querySelector("[name=csrf-token]").content,
+        "Accept": "application/json",
+      },
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then(data => console.log("Success:", data))
+    .catch(error => console.error("Error:", error));
   });
+});
+
+
 </script>

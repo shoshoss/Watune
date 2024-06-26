@@ -1,0 +1,3 @@
+<%= turbo_frame_tag "test_posts_index" do %>
+  <%= render partial: 'posts/index_test', locals: { posts: @posts, pagy: @pagy } %>
+<% end %>

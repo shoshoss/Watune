@@ -13,18 +13,23 @@ class PostsController < ApplicationController
     params[:privacy] ||= @post.privacy
   end
 
+  def index_test
+    @show_reply_line = false
+    # 無限スクロールのための投稿データを取得
+    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+  end
+
   def create_test
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      if post_params[:recipient_ids].present?
-        PostCreationJob.perform_later(@post.id, post_params[:recipient_ids],
-                                      @post.privacy)
+      if @post.audio.attached?
+        convert_to_mp3(@post.audio)
       end
-      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      render json: { message: 'Post created successfully', post: @post }, status: :created
+      flash[:notice] = "投稿が作成されました。"
+      redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
-      render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
+      flash.now[:alert] = "投稿の作成に失敗しました。"
+      render :new_test
     end
   end
 
@@ -145,5 +150,35 @@ class PostsController < ApplicationController
     return if @post.visible_to?(current_user)
 
     redirect_to root_path, alert: 'この投稿を見る権限がありません。'
+  end
+
+  def convert_to_mp3(audio)
+    input_file = audio.download
+    temp_file = Tempfile.new(['input', File.extname(audio.filename.to_s)])
+    temp_file.binmode
+    temp_file.write(input_file.read)
+    temp_file.rewind
+
+    output_file = "#{Rails.root}/tmp/#{SecureRandom.uuid}.mp3"
+
+    begin
+      Rails.logger.info("Converting audio to MP3: #{temp_file.path}")
+      movie = FFMPEG::Movie.new(temp_file.path)
+      movie.transcode(output_file, audio_codec: 'libmp3lame')
+
+      Rails.logger.info("MP3 conversion complete: #{output_file}")
+
+      audio.attach(
+        io: File.open(output_file),
+        filename: "#{SecureRandom.uuid}.mp3",
+        content_type: 'audio/mpeg'
+      )
+    rescue => e
+      Rails.logger.error("MP3 conversion failed: #{e.message}")
+    ensure
+      temp_file.close
+      temp_file.unlink
+      File.delete(output_file) if File.exist?(output_file)
+    end
   end
 end
