@@ -23,7 +23,6 @@ class PostsController < ApplicationController
   def create_test
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      convert_to_mp3(@post.audio) if @post.audio.attached?
       flash[:notice] = '投稿が作成されました。'
       redirect_to user_post_path(current_user.username_slug, @post)
     else
