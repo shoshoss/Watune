@@ -13,6 +13,12 @@ class PostsController < ApplicationController
     params[:privacy] ||= @post.privacy
   end
 
+  def index_test
+    @show_reply_line = false
+    # 無限スクロールのための投稿データを取得
+    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+  end
+
   def create_test
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
