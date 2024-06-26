@@ -23,13 +23,11 @@ class PostsController < ApplicationController
   def create_test
     @post = current_user.posts.build(post_params.except(:recipient_ids))
     if @post.save
-      if @post.audio.attached?
-        rename_audio_file(@post)
-      end
-      flash[:notice] = "投稿が作成されました。"
+      rename_audio_file(@post) if @post.audio.attached?
+      flash[:notice] = '投稿が作成されました。'
       redirect_to user_post_path(current_user.username_slug, @post)
     else
-      flash.now[:alert] = "投稿の作成に失敗しました。"
+      flash.now[:alert] = '投稿の作成に失敗しました。'
       render :new_test
     end
   end
