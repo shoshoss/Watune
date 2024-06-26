@@ -14,10 +14,10 @@ class PostsController < ApplicationController
     params[:privacy] ||= @post.privacy
   end
 
-  def index
+  def index_test
     @show_reply_line = false
     # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+    @pagy, @posts = pagy_countless(Post.order(created_at: :desc), items: 20)
   end
 
   def create_test
