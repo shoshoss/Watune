@@ -9,7 +9,7 @@ export default class extends Controller {
   startTime;
   recordingInterval;
 
-  // 初期設定: コントローラが接続されたときに呼ばれる
+  // 初期設定 コントローラが接続されたときに呼ばれる
   connect() {
     this.element.setAttribute("open", true);
     this.checkForm(); // フォームの初期状態をチェック
@@ -122,18 +122,18 @@ export default class extends Controller {
 
   // 録音停止後の処理
   handleRecordingStop(chunks) {
+    // 録音データをBlobに変換
     const blob = new Blob(chunks, { type: this.mediaRecorder.mimeType });
     const audioURL = window.URL.createObjectURL(blob);
     this.createSoundClip(audioURL);
 
     // MIMEタイプから適切なファイル拡張子を決定
-    const fileExtension =
-      this.mediaRecorder.mimeType.split("/")[1].split(";")[0] === "webm"
-        ? "webm"
-        : "mp4";
+    const mimeType = this.mediaRecorder.mimeType;
+    const fileExtension = mimeType.split("/")[1].split(";")[0];
 
+    // 録音データをファイルに変換
     const file = new File([blob], `recording.${fileExtension}`, {
-      type: this.mediaRecorder.mimeType,
+      type: mimeType,
     });
 
     const dt = new DataTransfer();
