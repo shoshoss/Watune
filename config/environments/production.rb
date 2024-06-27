@@ -11,6 +11,10 @@ Rails.application.configure do
   # フルエラーレポートを無効にし、キャッシュを有効にします。
   config.consider_all_requests_local = false
 
+  # アセット関連の設定
+  config.assets.compile = false
+  config.assets.css_compressor = nil
+
   # 静的ファイルを`public/`から提供するのを無効にします。NGINX/Apacheを使用することを前提としています。
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present? || ENV['RENDER'].present?
 
