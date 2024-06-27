@@ -2,6 +2,20 @@
 Rails.application.configure do
   # ここに指定された設定はconfig/application.rbよりも優先されます。
 
+  # DNSリバインディング保護とその他の`Host`ヘッダー攻撃を有効にします。
+  config.hosts << 'www.watune.com'
+  config.hosts << 'wavecongra.onrender.com'
+  config.hosts << 'www.wavecongra.com'
+  config.hosts << 'wavecongra.com'
+  config.hosts << 'watune.com'
+
+  # リダイレクト設定
+  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
+    r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
+      ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
+    })
+  end
+
   # リクエスト間でコードをリロードしません。
   config.enable_reloading = false
 
@@ -61,17 +75,4 @@ Rails.application.configure do
   # CSS圧縮を無効にします。
   config.assets.css_compressor = nil
 
-  # DNSリバインディング保護とその他の`Host`ヘッダー攻撃を有効にします。
-  config.hosts << 'wavecongra.onrender.com'
-  config.hosts << 'www.wavecongra.com'
-  config.hosts << 'wavecongra.com'
-  config.hosts << 'www.watune.com'
-  config.hosts << 'watune.com'
-
-  # リダイレクト設定
-  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
-      ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
-    })
-  end
 end
