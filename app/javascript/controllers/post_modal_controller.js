@@ -9,7 +9,7 @@ export default class extends Controller {
   startTime;
   recordingInterval;
 
-  // 初期設定: コントローラが接続されたときに呼ばれる
+  // 初期設定 コントローラが接続されたときに呼ばれる
   connect() {
     this.element.setAttribute("open", true);
     this.checkForm(); // フォームの初期状態をチェック
