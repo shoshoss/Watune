@@ -1,8 +1,8 @@
 <div class="mb-2 mr-5">
   <% if post.audio.attached? %>
-    <audio id="audio-<%= post.id %>" preload="metadata" controls>
+    <audio id="audio-<%= post.id %>" preload="metadata" controls controlsList="nodownload" oncontextmenu="return false;">
       <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
-      お使いのブラウザはオーディオプレイヤーをサポートしていません。
+      お使いのブラウザはオーディオプレーヤーをサポートしていません。
     </audio>
     <div class="flex justify-between">
       <div id="current-time-<%= post.id %>">00:00</div>
@@ -19,31 +19,59 @@
         <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl md:text-4xl"></i>
       </button>
     </div>
+    <div class="flex justify-center mt-2">
+      <button class="speed-button text-blue-500 hover:text-sky-400-accent" data-audio-id="<%= post.id %>" data-speed="1">1x</button>
+      <button class="speed-button text-blue-500 hover:text-sky-400-accent ml-2" data-audio-id="<%= post.id %>" data-speed="1.5">1.5x</button>
+      <button class="speed-button text-blue-500 hover:text-sky-400-accent ml-2" data-audio-id="<%= post.id %>" data-speed="2">2x</button>
+    </div>
   <% end %>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const audioElements = document.querySelectorAll("audio");
+  // オーディオ要素の準備
+  const audioElements = document.querySelectorAll("audio");
+  audioElements.forEach(audio => {
+    const source = audio.querySelector("source");
+    const canPlay = audio.canPlayType(source.type);
 
-    audioElements.forEach(audio => {
-      const source = audio.querySelector("source");
-      const canPlay = audio.canPlayType(source.type);
-
-      if (canPlay === "") {
+    if (canPlay === "") {
+      console.error(`Cannot play type: ${source.type}`);
+      source.type = "audio/mp4";
+      const newCanPlay = audio.canPlayType(source.type);
+      if (newCanPlay === "") {
         console.error(`Cannot play type: ${source.type}`);
-        // ソースタイプを変更する（例: video/mp4 -> audio/mp4）
-        source.type = "audio/mp4";
-        const newCanPlay = audio.canPlayType(source.type);
-
-        if (newCanPlay === "") {
-          console.error(`Cannot play type: ${source.type}`);
-        } else {
-          console.log(`Changed type to: ${source.type}`);
-        }
       } else {
-        console.log(`Can play type: ${source.type}`);
+        console.log(`Changed type to: ${source.type}`);
+        audio.load();
       }
+    } else {
+      console.log(`Can play type: ${source.type}`);
+    }
+  });
+
+  // 倍速再生ボタンのイベントリスナーを追加
+  const speedButtons = document.querySelectorAll(".speed-button");
+  speedButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+      const audioId = event.currentTarget.dataset.audioId;
+      const speed = event.currentTarget.dataset.speed;
+      const audioElement = document.getElementById(`audio-${audioId}`);
+      if (audioElement) {
+        audioElement.playbackRate = speed;
+      }
+
+      // すべてのボタンから選択クラスを削除
+      speedButtons.forEach(btn => {
+        btn.classList.remove("font-bold", "text-sky-400-accent");
+        btn.classList.add("text-blue-500");
+      });
+
+      // 選択されたボタンに選択クラスを追加
+      event.currentTarget.classList.add("font-bold", "text-sky-400-accent");
+      event.currentTarget.classList.remove("text-blue-500");
     });
   });
+});
+
 </script>
