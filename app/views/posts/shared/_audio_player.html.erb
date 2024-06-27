@@ -1,7 +1,7 @@
 <!-- オーディオプレイヤー -->
 <div class="mb-2 mr-5">
   <% if post.audio.attached? %>
-    <audio id="audio-<%= post.id %>" preload="metadata">
+    <audio id="audio-<%= post.id %>" class="w-full" preload="metadata" controls controlsList="nodownload" oncontextmenu="return false;">
       <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
       お使いのブラウザはオーディオプレイヤーをサポートしていません。
     </audio>
