@@ -124,7 +124,7 @@ module MetaTagsHelper
     domain = if Rails.env.development?
                'http://0.0.0.0:3000'
              else
-               'https://www.watune.com'
+               'https://wavecongra.onrender.com'
              end
     "#{domain}#{path}"
   end
