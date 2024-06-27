@@ -20,6 +20,26 @@ export default class extends Controller {
     const audio = document.getElementById(`audio-${audioId}`);
     const icon = document.getElementById(`audio-icon-${audioId}`);
 
+    // ソースタイプの確認と変更
+    const source = audio.querySelector("source");
+    const canPlay = audio.canPlayType(source.type);
+
+    if (canPlay === "") {
+      console.error(`Cannot play type: ${source.type}`);
+      source.type = "audio/mp4"; // 必要に応じて変更
+      const newCanPlay = audio.canPlayType(source.type);
+
+      if (newCanPlay === "") {
+        console.error(`Cannot play type: ${source.type}`);
+      } else {
+        console.log(`Changed type to: ${source.type}`);
+        // ソースタイプが変更された場合、オーディオを再ロード
+        audio.load();
+      }
+    } else {
+      console.log(`Can play type: ${source.type}`);
+    }
+
     // すべての他の音声を停止し、そのアイコンを更新
     document.querySelectorAll("audio").forEach((a) => {
       if (a.id !== `audio-${audioId}` && !a.paused) {
