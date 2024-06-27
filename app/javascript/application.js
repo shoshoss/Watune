@@ -3,7 +3,7 @@ import "controllers";
 import * as ActiveStorage from "@rails/activestorage";
 ActiveStorage.start();
 
-// サービスワーカーを登録するコードを追加
+// サービスワーカーを登録するコード
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js").then(
