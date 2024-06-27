@@ -52,33 +52,9 @@ module PostsHelper
     redirect_to root_path, alert: 'この投稿を見る権限がありません。'
   end
 
-  def convert_to_mp3(audio)
-    input_file = audio.download
-    temp_file = Tempfile.new(['input', File.extname(audio.filename.to_s)])
-    temp_file.binmode
-    temp_file.write(input_file.read)
-    temp_file.rewind
-
-    output_file = Rails.root.join("tmp/#{SecureRandom.uuid}.mp3").to_s
-
-    begin
-      Rails.logger.info("Converting audio to MP3: #{temp_file.path}")
-      movie = FFMPEG::Movie.new(temp_file.path)
-      movie.transcode(output_file, audio_codec: 'libmp3lame')
-
-      Rails.logger.info("MP3 conversion complete: #{output_file}")
-
-      audio.attach(
-        io: File.open(output_file),
-        filename: "#{SecureRandom.uuid}.mp3",
-        content_type: 'audio/mpeg'
-      )
-    rescue StandardError => e
-      Rails.logger.error("MP3 conversion failed: #{e.message}")
-    ensure
-      temp_file.close
-      temp_file.unlink
-      FileUtils.rm_f(output_file)
-    end
+  def convert_audio(file_path)
+    output_path = file_path.sub(File.extname(file_path), '.mp3')
+    system("ffmpeg -i #{file_path} #{output_path}")
+    output_path
   end
 end
