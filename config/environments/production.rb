@@ -69,9 +69,9 @@ Rails.application.configure do
   config.hosts << 'watune.com'
 
   # リダイレクト設定
-  config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
-    r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
-      ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
-    })
-  end
+  # config.middleware.insert_before(Rack::Runtime, Rack::Rewrite) do
+  #   r301(/.*/, 'https://www.watune.com$&', if: proc { |rack_env|
+  #     ['wavecongra.onrender.com', 'www.wavecongra.com', 'wavecongra.com'].include?(rack_env['SERVER_NAME'])
+  #   })
+  # end
 end
