@@ -62,9 +62,6 @@ Rails.application.configure do
   # マイグレーション後にスキーマをダンプしません。
   config.active_record.dump_schema_after_migration = false
 
-  # CSS圧縮を無効にします。
-  config.assets.css_compressor = nil
-
   # DNSリバインディング保護とその他の`Host`ヘッダー攻撃を有効にします。
   config.hosts << 'wavecongra.onrender.com'
   config.hosts << 'www.wavecongra.com'
