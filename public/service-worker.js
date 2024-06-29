@@ -41,12 +41,16 @@ const noCacheUrls = [
 // インストールイベント: サービスワーカーのインストール時に発生
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache");
-      return cache.addAll(essentialUrlsToCache).catch((error) => {
+    // キャッシュを開き、必須リソースをキャッシュする
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => {
+        console.log("Opened cache");
+        return cache.addAll(essentialUrlsToCache);
+      })
+      .catch((error) => {
         console.error("Failed to cache essential URLs:", error);
-      });
-    })
+      })
   );
 });
 
@@ -76,7 +80,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Google OAuth 認証用のパスとコールバックパスをバイパス
+  // OAuth認証用のパスとコールバックパスをバイパス
   if (
     event.request.url.includes("/oauth/google") ||
     event.request.url.includes("/oauth/callback")
@@ -87,36 +91,36 @@ self.addEventListener("fetch", (event) => {
 
   // キャッシュしないリソースの処理
   if (noCacheUrls.some((url) => event.request.url.includes(url))) {
-    event.respondWith(fetch(event.request, { redirect: "follow" }));
+    event.respondWith(fetch(event.request));
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request, { redirect: "follow" })
-        .then((networkResponse) => {
-          // ネットワークから取得したリソースをキャッシュに保存
-          if (
-            networkResponse &&
-            networkResponse.status === 200 &&
-            networkResponse.type === "basic"
-          ) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
-            });
-          }
-          return networkResponse;
-        })
-        .catch((error) => {
-          console.error("Fetch failed:", error);
-          // キャッシュされたレスポンスが存在する場合に返す
+    caches
+      .match(event.request)
+      .then((cachedResponse) => {
+        if (cachedResponse) {
           return cachedResponse;
-        });
-
-      // キャッシュされたレスポンスを返しつつ、バックグラウンドで最新データをフェッチ
-      return cachedResponse || fetchPromise;
-    })
+        }
+        return fetch(event.request, { redirect: "follow" }).then(
+          (networkResponse) => {
+            if (
+              networkResponse &&
+              networkResponse.status === 200 &&
+              networkResponse.type === "basic"
+            ) {
+              const responseToCache = networkResponse.clone();
+              caches.open(CACHE_NAME).then((cache) => {
+                cache.put(event.request, responseToCache);
+              });
+            }
+            return networkResponse;
+          }
+        );
+      })
+      .catch((error) => {
+        console.error("Fetch failed:", error);
+      })
   );
 });
 
