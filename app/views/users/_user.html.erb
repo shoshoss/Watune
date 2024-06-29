@@ -5,17 +5,17 @@
     <% end %>
     <div class="ml-2 flex-1 overflow-hidden">
       <h3 class="text-md font-semibold truncate">
-        <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "no-underline text-inherit hover:underline" %>
+        <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "text-[15px] no-underline text-inherit hover:underline" %>
       </h3>
       <p class="text-gray-500 truncate">
-        <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "no-underline text-inherit hover:underline" %>
+        <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "text-[15px] no-underline text-inherit hover:underline" %>
       </p>
     </div>
     <div id="user-<%= user.id %>-follow">
       <%= render partial: 'users/follow_button', locals: { user: user } %>
     </div>
   </div>
-  <div class="w-full p-2 text-base sm:text-md overflow-y-auto max-h-[calc(1.5rem*5)]">
+  <div class="w-full p-2 text-[15px] sm:text-[15px] overflow-y-auto max-h-[calc(1.5rem*5)]">
     <% if user.self_introduction.present? %>
       <% user.self_introduction.split(/\r\n|\r|\n/).each_with_index do |line, index| %>
         <% if line.empty? %>
@@ -23,7 +23,7 @@
             <br>
           </div>
         <% else %>
-          <div class="text-base sm:text-md">
+          <div class="text-[15px] sm:text-[15px]">
             <%= line %><br>
           </div>
         <% end %>

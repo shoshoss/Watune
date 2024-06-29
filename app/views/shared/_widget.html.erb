@@ -1,11 +1,11 @@
-<div class="w-[350px] hidden lg:block overflow-y-auto">
+<div class="pl-[32px] pr-[15px] w-[350px] hidden lg:block overflow-y-auto">
   <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg my-4 shadow-lg">
-    <h2 class="text-xl text-center font-bold pt-2 mb-4">未フォローのユーザー</h2>
-    <div id="widget-users-list">
+    <h2 class="text-xl text-center font-bold px-[12px] py-[16px]">未フォローのユーザー</h2>
+    <div id="widget-users-list px-[12px] py-[16px]">
       <%= render partial: 'users/user', collection: users, as: :user %>
     </div>
     <div id="widget-load-more" class="mt-4 text-center">
-      <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "btn-load-more" %>
+      <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "text-[#1D9BF0] text-[15px] py-4 px-2 block hover:underline focus:outline-none focus:ring-2 focus:ring-[#1D9BF0]" %>
     </div>
   </div>
 
@@ -14,14 +14,14 @@
     <% if params[:controller] == "posts" && params[:action] == "show" %>
       <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
                   id: "pc-reply-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:opacity-100",
                   data: { turbo_frame: "reply_modal" } do %>
         <i class="fa-regular fa-comment text-6xl"></i>
       <% end %>
     <% else %>
       <%= link_to new_post_path(privacy: 'open'),
                   id: "pc-post-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg hover:bg-sky-500",
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100",
                   data: { turbo_frame: "post_modal" } do %>
         <i class="fa-solid fa-gift text-6xl"></i>
       <% end %>
