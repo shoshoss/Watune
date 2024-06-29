@@ -65,12 +65,12 @@
 </div>
 <!-- ユーザー名-->
 <div class="mb-2 flex flex-col justify-center items-center">
-  <%= link_to @user.display_name, profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-xl sm:text-2xl font-semibold" %>
-  <%= link_to "@#{@user.username_slug}", profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-base sm:text-lg text-gray-500" %>
+  <%= link_to @user.display_name, profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-xl font-semibold" %>
+  <%= link_to "@#{@user.username_slug}", profile_show_path(username_slug: @user.username_slug), data: { turbo_frame: "_top" }, class: "text-[15px] text-gray-500" %>
 </div>
 <!-- 自己紹介 -->
 <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
-  <div class="p-2 text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
+  <div class="p-2 text-[15px] overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)]">
     <%# 連続する改行に特別なクラスを適用する %>
     <% if @user.self_introduction.present? %>
       <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
