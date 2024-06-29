@@ -1,7 +1,8 @@
 <%= turbo_frame_tag dom_id(post, :repost) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
-  <div data-controller="audio" id="repost-id-<%= post.id %>"
-        class="hover:bg-sky-100 overflow-y-hidden border-b p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+  <div data-controller="audio" data-action="click->audio#navigateToPost" data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
+       id="repost-id-<%= post.id %>"
+       class="cursor-pointer hover:bg-sky-100 overflow-y-hidden border-b p-[8px] <%= 'bg-orange-100' if unread_notification %>">
     <div class="flex items-center space-x-2 overflow-x-auto whitespace-nowrap pb-2 pl-[8px]">
       <i class="fa-solid fa-retweet text-base text-green-500"></i>
       <% post.reposts.order(created_at: :desc).each_with_index do |repost, index| %>

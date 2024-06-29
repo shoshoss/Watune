@@ -170,10 +170,20 @@ export default class extends Controller {
   }
 
   navigateToPost(event) {
+    const ignoredElements = [
+      ".play-audio-button",
+      ".audio-icon",
+      'input[type="range"]',
+      "a",
+      "button",
+    ];
+    if (ignoredElements.some((selector) => event.target.closest(selector))) {
+      return; // クリック対象が無視リストのいずれかに一致する場合は何もしない
+    }
     const postBody = event.currentTarget;
     const url = postBody.dataset.url;
     if (url) {
-      window.location.href = url;
+      Turbo.visit(url); // Turboを使用して遷移
     }
   }
 }
