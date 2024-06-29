@@ -3,15 +3,16 @@
 <%= turbo_frame_tag 'reply_modal' %>
 <% content_for(:title, t('.title')) %>
 <div class="flex justify-center min-h-screen">
-  <div class="max-w-[674px] w-full bg-white border-2 border-gray-200">
-    <h1 class="text-4xl font-bold mt-4 mb-8 text-center"><%= t('.title') %></h1>
-    <%= render 'profiles/profile_info', user: @user %>
-    <%= turbo_frame_tag "profile-posts" do %>
-      <!-- タブメニュー -->
-      <%= render 'profiles/category_tabs', user: @user %>
-      <!-- 投稿一覧 -->
-      <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
-    <% end %>
+  <div class="max-w-[600px] w-full bg-white border border-gray-200">
+    <div class="pt-8">
+      <%= render 'profiles/profile_info', user: @user %>
+      <%= turbo_frame_tag "profile-posts" do %>
+        <!-- タブメニュー -->
+        <%= render 'profiles/category_tabs', user: @user %>
+        <!-- 投稿一覧 -->
+        <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
+      <% end %>
+    </div>
   </div>
 </div>
 
