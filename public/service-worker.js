@@ -2,7 +2,11 @@
 const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
+  "/about", // その他の静的ページをキャッシュ
+  "/privacy_policy",
+  "/terms_of_use",
 ];
+
 const additionalUrlsToCache = [
   "/icon-192.png",
   "/icon-512.png",
@@ -11,6 +15,7 @@ const additionalUrlsToCache = [
 
 // キャッシュしないリソースを定義
 const noCacheUrls = [
+  "/",
   "/shared/_before_login_header.html.erb",
   "/shared/_sidebar.html.erb",
   "/shared/_header.html.erb",
@@ -28,15 +33,17 @@ const noCacheUrls = [
   "/posts/_index.html.erb",
   "/posts/_show.html.erb",
   "/profiles/_show.html.erb",
+  "/notifications/_notification.html.erb",
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    // キャッシュを開き、必須リソースをキャッシュする
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache");
-      return cache.addAll(essentialUrlsToCache);
+      return cache.addAll(essentialUrlsToCache).catch((error) => {
+        console.error("Failed to cache essential URLs:", error);
+      });
     })
   );
 });
@@ -45,7 +52,6 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
-    // 不要な古いキャッシュを削除する
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
@@ -78,6 +84,7 @@ self.addEventListener("fetch", (event) => {
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request, { redirect: "follow" })
         .then((networkResponse) => {
+          // ネットワークから取得したリソースをキャッシュに保存
           if (
             networkResponse &&
             networkResponse.status === 200 &&
@@ -90,7 +97,9 @@ self.addEventListener("fetch", (event) => {
           }
           return networkResponse;
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("Fetch failed:", error);
+          // キャッシュされたレスポンスが存在する場合に返す
           return cachedResponse;
         });
 
@@ -104,7 +113,9 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener("message", (event) => {
   if (event.data.action === "cacheAdditionalResources") {
     caches.open(CACHE_NAME).then((cache) => {
-      cache.addAll(additionalUrlsToCache);
+      cache.addAll(additionalUrlsToCache).catch((error) => {
+        console.error("Failed to cache additional resources:", error);
+      });
     });
   } else if (event.data.action === "skipWaiting") {
     self.skipWaiting();
