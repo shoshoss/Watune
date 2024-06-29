@@ -4,9 +4,7 @@ class StaticPagesController < ApplicationController
 
   def top; end
 
-  def about
-    @user = User.new
-  end
+  def about; end
 
   def privacy_policy; end
 
