@@ -1,7 +1,7 @@
 <div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
-    <div class="flex flex-col justify-center max-w-[670px] mx-auto">
+    <div class="z-0 flex flex-col justify-center max-w-[670px] mx-auto">
       <%= link_to guest_login_path, class: "invisible trial-btn text-xl sm:text-2xl mb-6" do %>
         お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
       <% end %>
@@ -116,7 +116,7 @@
   .hero-content {
     padding: 2rem;
     border-radius: 1rem;
-    z-index: 10; /* 背景動画より上に表示するためのz-index */
+    z-index: 5; /* 背景動画より上に表示するためのz-index */
   }
   img.absolute {
     position: absolute;
