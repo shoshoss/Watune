@@ -1,12 +1,12 @@
 <!-- 投稿内容 -->
-  <div class="mb-2 text-sm sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all">
+  <div class="mb-2 text-[15px] overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all">
     <% post.body.split(/\r\n|\r|\n/).each do |line| %>
       <% if line.empty? %>
-        <div class="text-xxs sm:text-xs">
+        <div class="text-xxs">
           <br>
         </div>
       <% else %>
-        <div class="text-sm sm:text-lg">
+        <div class="text-[15px]">
           <%= line %><br>
         </div>
       <% end %>
