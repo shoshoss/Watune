@@ -20,6 +20,7 @@ export default class extends Controller {
     const audio = document.getElementById(`audio-${audioId}`);
     const icon = document.getElementById(`audio-icon-${audioId}`);
     const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
+    const postBody = document.querySelector(`div[data-audio-id="${audioId}"]`);
 
     // すべての他の音声を停止し、そのアイコンを更新
     document.querySelectorAll("audio").forEach((a) => {
@@ -29,10 +30,34 @@ export default class extends Controller {
           document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
           false // 他の音声アイコンを「再生」状態に戻す
         );
+        this.updateButtonColor(
+          document.querySelector(
+            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+          ),
+          false // 他の音声ボタンの色を元に戻す
+        );
+        this.updateTextColor(
+          document.querySelector(
+            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+          ),
+          false // 他の投稿文章の色を元に戻す
+        );
       } else if (a.id !== `audio-${audioId}` && a.paused) {
         // 再生されていない他の音声のアイコンも再生状態に戻す
         this.updateIcon(
           document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
+          false
+        );
+        this.updateButtonColor(
+          document.querySelector(
+            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+          ),
+          false
+        );
+        this.updateTextColor(
+          document.querySelector(
+            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+          ),
           false
         );
       }
@@ -50,17 +75,20 @@ export default class extends Controller {
         .then(() => {
           this.updateIcon(icon, true);
           this.updateButtonColor(button, true); // クラスの変更を追加
+          this.updateTextColor(postBody, true); // クラスの変更を追加
         })
         .catch((error) => {
           console.error("Playback failed:", error);
           alert(`音声の再生に失敗しました: ${error.message}`);
           this.updateIcon(icon, false);
           this.updateButtonColor(button, false); // クラスの変更を追加
+          this.updateTextColor(postBody, false); // クラスの変更を追加
         });
     } else {
       audio.pause();
       this.updateIcon(icon, false);
       this.updateButtonColor(button, false); // クラスの変更を追加
+      this.updateTextColor(postBody, false); // クラスの変更を追加
     }
 
     audio.addEventListener("timeupdate", () => {
@@ -77,6 +105,7 @@ export default class extends Controller {
       seekBar.value = 0;
       this.updateIcon(icon, false);
       this.updateButtonColor(button, false); // クラスの変更を追加
+      this.updateTextColor(postBody, false); // クラスの変更を追加
     });
   }
 
@@ -126,6 +155,16 @@ export default class extends Controller {
     } else {
       button.classList.remove("text-sky-400-accent");
       button.classList.add("text-blue-500");
+    }
+  }
+
+  updateTextColor(postBody, isPlaying) {
+    if (isPlaying) {
+      postBody.classList.add("text-sky-400-accent");
+      postBody.classList.remove("text-blue-500");
+    } else {
+      postBody.classList.remove("text-sky-400-accent");
+      postBody.classList.add("text-blue-500");
     }
   }
 }
