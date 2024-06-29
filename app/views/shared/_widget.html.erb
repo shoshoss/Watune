@@ -1,10 +1,10 @@
 <div class="pl-[32px] pr-[15px] w-[350px] hidden lg:block overflow-y-auto">
   <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg my-4 shadow-lg">
-    <h2 class="text-xl text-center font-bold px-[12px] py-[16px]">未フォローのユーザー</h2>
-    <div id="widget-users-list px-[12px] py-[16px]">
+    <h2 class="text-xl text-center font-bold px-[16px] py-[12px]">未フォローのユーザー</h2>
+    <div id="widget-users-list">
       <%= render partial: 'users/user', collection: users, as: :user %>
     </div>
-    <div id="widget-load-more" class="mt-4 text-center">
+    <div id="widget-load-more" class="text-center">
       <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "text-[#1D9BF0] text-[15px] py-4 px-2 block hover:underline focus:outline-none focus:ring-2 focus:ring-[#1D9BF0]" %>
     </div>
   </div>

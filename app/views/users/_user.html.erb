@@ -1,4 +1,4 @@
-<div class="user-item flex flex-col items-start hover:bg-sky-100 p-2">
+<div class="user-item flex flex-col items-start hover:bg-sky-100 px-[16px] py-[12px]">
   <div class="flex items-center w-full">
     <%= link_to profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" }, class: "flex items-center no-underline flex-shrink-0 hover:underline" do %>
       <%= image_tag(user.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "rounded-full h-[40px] w-[40px] flex-shrink-0") %>
@@ -14,20 +14,5 @@
     <div id="user-<%= user.id %>-follow">
       <%= render partial: 'users/follow_button', locals: { user: user } %>
     </div>
-  </div>
-  <div class="w-full p-2 text-[15px] sm:text-[15px] overflow-y-auto max-h-[calc(1.5rem*5)]">
-    <% if user.self_introduction.present? %>
-      <% user.self_introduction.split(/\r\n|\r|\n/).each_with_index do |line, index| %>
-        <% if line.empty? %>
-          <div class="text-xxs sm:text-xs">
-            <br>
-          </div>
-        <% else %>
-          <div class="text-[15px] sm:text-[15px]">
-            <%= line %><br>
-          </div>
-        <% end %>
-      <% end %>
-    <% end %>
   </div>
 </div>
