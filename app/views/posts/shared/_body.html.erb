@@ -1,15 +1,15 @@
 <!-- 投稿内容 -->
-<div class="mb-2 cursor-pointer text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
+<div class="mb-2 cursor-pointer text-[15px] overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
       data-action="click->audio#navigateToPost"
       data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
       data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
   <% post.body.split(/\r\n|\r|\n/).each do |line| %>
     <% if line.empty? %>
-      <div class="text-xxs sm:text-xs">
+      <div class="text-xxs">
         <br>
       </div>
     <% else %>
-      <div class="text-base sm:text-lg">
+      <div class="text-base">
         <%= line %><br>
       </div>
     <% end %>
