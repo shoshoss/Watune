@@ -1,8 +1,8 @@
-<div class="pl-[32px] pr-[15px] w-[350px] hidden lg:block overflow-y-auto">
-  <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border-2 rounded-lg my-4 shadow-lg">
+<div class="px-[20px] w-[350px] hidden lg:block overflow-y-auto">
+  <div id="new-user-widget" class="<%= hide_widget_on_users_index %> border rounded-lg my-4">
     <h2 class="text-xl text-center font-bold px-[16px] py-[12px]">未フォローのユーザー</h2>
     <div id="widget-users-list">
-      <%= render partial: 'users/user', collection: users, as: :user %>
+      <%= render partial: 'users/user', collection: users, as: :user, locals: { location: :widget } %>
     </div>
     <div id="widget-load-more" class="text-center">
       <%= link_to 'さらに表示', users_path, data: { turbo_frame: "_top" }, class: "text-[#1D9BF0] text-[15px] py-4 px-2 block hover:underline focus:outline-none focus:ring-2 focus:ring-[#1D9BF0]" %>
@@ -10,7 +10,7 @@
   </div>
 
   <!-- PC画面での投稿ボタン -->
-  <div class="fixed pl-[100px] bottom-24">
+  <div class="fixed pl-[100px] bottom-10">
     <% if params[:controller] == "posts" && params[:action] == "show" %>
       <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
                   id: "pc-reply-button",
