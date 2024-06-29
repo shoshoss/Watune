@@ -1,18 +1,17 @@
 <!-- 投稿内容 -->
-<div<% if post.audio.attached? %> data-action="mouseover->audio#hoverEffect mouseout->audio#unhoverEffect" data-audio-id="<%= post.id %>"<% end %>>
-  <div class="mb-2 cursor-pointer text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
-        data-action="click->audio#playPause"
-        data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
-    <% post.body.split(/\r\n|\r|\n/).each do |line| %>
-      <% if line.empty? %>
-        <div class="text-xxs sm:text-xs">
-          <br>
-        </div>
-      <% else %>
-        <div class="text-base sm:text-lg">
-          <%= line %><br>
-        </div>
-      <% end %>
+<div class="mb-2 cursor-pointer text-base sm:text-lg overflow-y-auto max-h-[calc(1.5rem*10)] md:max-h-[calc(1.5rem*15)] whitespace-normal break-words break-all"
+      data-action="click->audio#navigateToPost"
+      data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
+      data-audio-id="<%= post.audio.attached? ? post.id : "no-audio-#{post.id}" %>">
+  <% post.body.split(/\r\n|\r|\n/).each do |line| %>
+    <% if line.empty? %>
+      <div class="text-xxs sm:text-xs">
+        <br>
+      </div>
+    <% else %>
+      <div class="text-base sm:text-lg">
+        <%= line %><br>
+      </div>
     <% end %>
-  </div>
+  <% end %>
 </div>

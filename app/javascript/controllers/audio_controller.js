@@ -15,6 +15,7 @@ export default class extends Controller {
   }
 
   playPause(event) {
+    event.stopPropagation(); // クリックイベントの伝播を停止
     const button = event.currentTarget;
     const audioId = button.dataset.audioId;
     const audio = document.getElementById(`audio-${audioId}`);
@@ -32,13 +33,13 @@ export default class extends Controller {
         );
         this.updateButtonColor(
           document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+            `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
           false // 他の音声ボタンの色を元に戻す
         );
         this.updateTextColor(
           document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+            `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
           false // 他の投稿文章の色を元に戻す
         );
@@ -50,13 +51,13 @@ export default class extends Controller {
         );
         this.updateButtonColor(
           document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+            `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
           false
         );
         this.updateTextColor(
           document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}"]`
+            `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
           false
         );
@@ -165,6 +166,14 @@ export default class extends Controller {
     } else {
       postBody.classList.remove("text-sky-400-accent");
       postBody.classList.add("text-blue-500");
+    }
+  }
+
+  navigateToPost(event) {
+    const postBody = event.currentTarget;
+    const url = postBody.dataset.url;
+    if (url) {
+      window.location.href = url;
     }
   }
 }
