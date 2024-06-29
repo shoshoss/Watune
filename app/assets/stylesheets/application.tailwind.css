@@ -79,12 +79,12 @@
 
 /* フォローボタン */
 .btn-follow {
-  @apply bg-black text-white font-bold text-base sm:text-lg px-2 py-2 rounded-full hover:bg-orange-400;
+  @apply bg-black text-white font-bold btn-sm text-sm rounded-full hover:bg-orange-400;
 }
 
 /* フォロー中ボタン */
 .btn-following {
-  @apply bg-orange-400 text-white font-bold text-base sm:text-lg px-2 py-2 rounded-full;
+  @apply bg-orange-400 text-white font-bold btn-sm text-sm rounded-full;
   position: relative;
 }
 
