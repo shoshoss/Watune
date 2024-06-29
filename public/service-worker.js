@@ -19,9 +19,9 @@ const noCacheUrls = [
   "/shared/_flash_message.html.erb",
   "/shared/_before_profile_edit_flash.html.erb",
   "/posts/new.html.erb",
-  "/profiles/_edit_modal.html.erb", // プロフィール編集モーダル画面
-  "/posts/_edit_form.html.erb", // 投稿編集画面
-  "/profiles/_profile_info.html.erb", // プロフィール情報もキャッシュしないように追加
+  "/profiles/_edit_modal.html.erb",
+  "/posts/_edit_form.html.erb",
+  "/profiles/_profile_info.html.erb",
   "/posts/new_test.html.erb",
   "/shared/_footer.html.erb",
   "/posts/_posts_list.html.erb",
@@ -70,47 +70,29 @@ self.addEventListener("fetch", (event) => {
 
   // キャッシュしないリソースの処理
   if (noCacheUrls.some((url) => event.request.url.includes(url))) {
-    event.respondWith(
-      fetch(event.request).then((response) => {
-        // 更新されたリソースをキャッシュしない
-        if (response && response.status === 200 && response.type === "basic") {
-          // 更新されたリソースをキャッシュしない
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.delete(event.request); // 古いキャッシュを削除
-          });
-        }
-        return response;
-      })
-    );
-    // バックグラウンドで最新データを取得し、キャッシュを更新
-    event.waitUntil(
-      fetch(event.request).then((response) => {
-        if (response && response.status === 200 && response.type === "basic") {
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-          });
-        }
-      })
-    );
+    event.respondWith(fetch(event.request, { redirect: "follow" }));
     return;
   }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request).then((networkResponse) => {
-        // ネットワークから取得したリソースをキャッシュに保存
-        if (
-          networkResponse &&
-          networkResponse.status === 200 &&
-          networkResponse.type === "basic"
-        ) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      });
+      const fetchPromise = fetch(event.request, { redirect: "follow" })
+        .then((networkResponse) => {
+          if (
+            networkResponse &&
+            networkResponse.status === 200 &&
+            networkResponse.type === "basic"
+          ) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return cachedResponse;
+        });
 
       // キャッシュされたレスポンスを返しつつ、バックグラウンドで最新データをフェッチ
       return cachedResponse || fetchPromise;
