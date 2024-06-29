@@ -183,7 +183,7 @@ export default class extends Controller {
     const postBody = event.currentTarget;
     const url = postBody.dataset.url;
     if (url) {
-      window.location.href = url;
+      Turbo.visit(url); // Turboを使用して遷移
     }
   }
 }

@@ -5,6 +5,13 @@
 <%= turbo_frame_tag "post_show" do %>
   <div class="container min-h-screen max-w-[600px] mx-auto border border-gray-200">
     <div class="grid grid-cols-1 gap-4">
+      <!-- 戻るボタン -->
+      <div class="bg-white p-4">
+        <button onclick="window.history.back();" class="text-sm btn-sm btn-outline btn-primary">
+          <i class="fas fa-arrow-left"></i> 戻る
+        </button>
+      </div>
+      
       <!-- 親投稿の一覧表示 -->
       <div class="bg-white">
         <% if @parent_posts.present? %>
