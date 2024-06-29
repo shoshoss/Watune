@@ -5,21 +5,19 @@
       <source src="<%= url_for(post.audio) %>" type="<%= post.audio.content_type %>">
       お使いのブラウザはオーディオプレイヤーをサポートしていません。
     </audio>
-    <input type="range" min="0" max="<%= post.duration %>" value="0" step="1" class="range range-info range-sm md:range-md" data-action="input->audio#seek" data-audio-id="<%= post.id %>">
+    <input type="range" min="0" max="<%= post.duration %>" value="0" step="1" class="range range-info range-sm md:range-md w-full mt-2" data-action="input->audio#seek" data-audio-id="<%= post.id %>">
     <div class="flex justify-between">
-      <div id="current-time-<%= post.id %>">00:00</div>
-      <div>
+      <div id="current-time-<%= post.id %>" class="mr-2">00:00</div>
+      <button class="py-2 px-5 play-audio-button transition duration-300 ease-in-out transform hover:scale-110 cursor-pointer text-blue-500 hover:text-sky-400-accent"
+              data-audio-target="playButton"
+              data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
+        <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl md:text-4xl"></i>
+      </button>
+      <div class="ml-2">
         <% duration_minutes = post.duration / 60 %>
         <% duration_seconds = post.duration % 60 %>
         <%= format('%02d:%02d', duration_minutes, duration_seconds) %>
       </div>
-    </div>
-    <div class="cursor-pointer text-center text-blue-500 hover:text-sky-400-accent"
-          data-audio-target="playButton"
-          data-action="click->audio#playPause" data-audio-id="<%= post.id %>">
-      <button class="mt-2 play-audio-button transition duration-300 ease-in-out transform hover:scale-110">
-        <i id="audio-icon-<%= post.id %>" class="fas fa-play audio-icon text-3xl md:text-4xl"></i>
-      </button>
     </div>
   <% end %>
 </div>
