@@ -15,7 +15,9 @@ const additionalUrlsToCache = [
 
 // キャッシュしないリソースを定義
 const noCacheUrls = [
-  "/",
+  "/", // ルートパスをキャッシュしない
+  "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
+  "/oauth/callback", // OAuthコールバックパスをキャッシュしない
   "/shared/_before_login_header.html.erb",
   "/shared/_sidebar.html.erb",
   "/shared/_header.html.erb",
@@ -71,6 +73,15 @@ self.addEventListener("fetch", (event) => {
     event.request.url.startsWith("chrome-extension") ||
     event.request.method === "POST"
   ) {
+    return;
+  }
+
+  // Google OAuth 認証用のパスとコールバックパスをバイパス
+  if (
+    event.request.url.includes("/oauth/google") ||
+    event.request.url.includes("/oauth/callback")
+  ) {
+    event.respondWith(fetch(event.request));
     return;
   }
 

@@ -1,1 +1,7 @@
-<%= render 'static_pages/about' %>
+<% if logged_in? %>
+  <%= turbo_frame_tag "posts_index" do %>
+    <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy } %>
+  <% end %>
+<% else %>
+  <%= render 'static_pages/about' %>
+<% end %>
