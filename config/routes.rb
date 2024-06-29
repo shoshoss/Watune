@@ -3,9 +3,9 @@
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
-  # get '/sitemap.xml.gz', to: redirect('/public/sitemap.xml.gz')
-
   root 'static_pages#top'
+
+  get 'about', to: 'static_pages#about'
   get 'privacy_policy', to: 'static_pages#privacy_policy'
   get 'terms_of_use', to: 'static_pages#terms_of_use'
   # モーダル用のプライバシーと利用規約
