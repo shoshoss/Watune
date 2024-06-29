@@ -1,13 +1,11 @@
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[600px] w-full bg-white border border-gray-200">
-    <h1 class="text-4xl font-bold mt-4 text-center">通知設定</h1>
+    <h1 class="text-xl font-bold mt-4 text-center">メール通知設定</h1>
 
-    <%= form_with model: @user, url: notification_settings_path, local: true, class: "m-5 space-y-6" do |form| %>
+    <%= form_with model: @user, url: notification_settings_path, local: true, class: "m-5" do |form| %>
       
       <!-- Gmail通知設定 -->
-      <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-        <h2 class="text-2xl font-semibold mb-4">Gmail通知</h2>
-        
+      <div class="bg-white rounded-lg">        
         <div class="form-control mb-6">
           <%= form.label :notification_email, '通知メールアドレス', class: 'label text-lg font-bold' %>
           <%= form.email_field :notification_email, value: @user.notification_email.presence || @user.email, class: 'input input-info input-bordered w-full text-lg' %>
