@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def not_authenticated
     flash[:danger] = t('defaults.flash_message.require_login')
-    redirect_to new_login_modal_path, status: :found
+    redirect_to login_path, status: :found
   end
 
   # いいねチャンス数を設定
