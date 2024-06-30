@@ -1,7 +1,9 @@
+<%= turbo_frame_tag "main-content" do %>
 <% if users.present? %>
   <% users.each do |user| %>
     <%= render partial: 'users/user', locals: { user: user, location: :widget } %>
   <% end %>
 <% else %>
   <p>ユーザーが見つかりませんでした。</p>
+<% end %>
 <% end %>

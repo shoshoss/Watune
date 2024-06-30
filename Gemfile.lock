@@ -440,7 +440,7 @@ DEPENDENCIES
   config (~> 5.4)
   cssbundling-rails
   debug
-  enum_help (~> 0.0.19)
+  enum_help
   factory_bot_rails (>= 6.4)
   faker (>= 3.3)
   flamegraph (>= 0.9)

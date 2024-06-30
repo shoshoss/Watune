@@ -1,1 +1,4 @@
 <%= turbo_stream.remove "new-user-widget" %>
+<%= turbo_stream.replace "main-content" do %>
+  <%= render partial: 'users/index', locals: { user: @recent_users, pagy: @pagy } %>
+<% end %>

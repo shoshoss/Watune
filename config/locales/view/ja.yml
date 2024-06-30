@@ -47,6 +47,8 @@ ja:
       password_forget: "パスワードをお忘れの方はこちら"
 
   users:
+    index:
+      title: "未フォローのユーザー"
     new:
       title: "新規登録"
       to_login: "ログイン"

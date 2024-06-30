@@ -1,5 +1,6 @@
+<%= turbo_frame_tag "main-content" do %>
 <% content_for(:title, t('.title')) %>
-<div id="main-content" class="flex justify-center min-h-screen p-5">
+<div class="flex justify-center min-h-screen p-5">
   <div class="max-w-lg w-full py-5 bg-white rounded-lg shadow-lg">
       <h1 class="text-3xl font-bold mt-4 mb-4 text-center">パスワードリセット</h1>
       <div class="text-lg text-center px-5">メールアドレスを入力しますと<br>パスワードのリセット方法に<br>関するメールが送信されます。</div>
@@ -18,3 +19,4 @@
     </div>
   </div>
 </div>
+<% end %>

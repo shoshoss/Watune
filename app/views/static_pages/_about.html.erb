@@ -1,4 +1,5 @@
-<div id="main-content" class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
+<%= turbo_frame_tag "main-content" do %>
+<div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
     <div class="z-0 flex flex-col justify-center max-w-[670px] mx-auto">
@@ -102,6 +103,7 @@
     <% end %>
   <% end %>
 </div>
+<% end %>
 
 <style>
   .min-h-custom-screen {
