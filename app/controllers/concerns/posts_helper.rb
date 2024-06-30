@@ -25,7 +25,7 @@ module PostsHelper
 
   # 投稿のパラメータを許可する
   def post_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :post_reply_id, recipient_ids: [])
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :fixed_category, :custom_category, :post_reply_id, recipient_ids: [])
   end
 
   # フォローしているユーザーを投稿数でソートする

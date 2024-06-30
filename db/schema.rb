@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_25_211120) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_30_063200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_211120) do
     t.index ["post_id"], name: "index_bookmarks_on_post_id"
     t.index ["user_id", "post_id"], name: "index_bookmarks_on_user_id_and_post_id", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "category_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_name"], name: "index_categories_on_category_name", unique: true
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -116,6 +123,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_211120) do
     t.datetime "updated_at", null: false
     t.decimal "duration", precision: 10, scale: 2
     t.integer "post_reply_id"
+    t.integer "fixed_category", default: 0, null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_posts_on_category_id"
     t.index ["post_reply_id"], name: "index_posts_on_post_reply_id"
     t.index ["privacy"], name: "index_posts_on_privacy"
     t.index ["user_id"], name: "index_posts_on_user_id"
@@ -166,6 +176,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_25_211120) do
   add_foreign_key "notifications", "users", column: "sender_id"
   add_foreign_key "post_users", "posts"
   add_foreign_key "post_users", "users"
+  add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
   add_foreign_key "reposts", "posts"
   add_foreign_key "reposts", "users"
