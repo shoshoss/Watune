@@ -1,13 +1,13 @@
 <aside id="after-sidebar" class="p-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-10 pt-2">
-    <%= link_to profile_show_path(current_user.username_slug), data: { turbo_frame: "advance" } do %>
+    <%= link_to profile_show_path(current_user.username_slug), data: { turbo_frame: 'main-content' } do %>
       <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to root_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}", data: { turbo_frame: "advance" } do %>
+      <%= link_to root_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}" do %>
         <i class="fa-solid fa-house text-2xl #{'text-blue-500' if current_page?(root_path)}"></i>
         <h2 class="text-xl font-bold flex-grow">ホーム</h2>
       <% end %>
@@ -21,7 +21,7 @@
     </li>
     <!-- 通知 -->
     <li>
-      <%= link_to notifications_path, method: :post, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}", data: { turbo_frame: "advance" } do %>
+      <%= link_to notifications_path, method: :post, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}" do %>
         <div class="relative">
           <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
           <% unread_notifications_count = current_user.received_notifications.unread.count %>
@@ -36,7 +36,7 @@
     </li>
     <!-- 通知設定 -->
     <li>
-      <%= link_to edit_notification_settings_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(edit_notification_settings_path)}", data: { turbo_frame: "advance" } do %>
+      <%= link_to edit_notification_settings_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
         <h2 class="text-xl font-bold flex-grow">メール通知設定</h2>
       <% end %>

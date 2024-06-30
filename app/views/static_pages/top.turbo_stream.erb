@@ -1,0 +1,9 @@
+<% if logged_in? %>
+  <%= turbo_stream.replace "main-content" do %>
+    <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications  } %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace "main-content" do %>
+    <%= render 'static_pages/about' %>
+  <% end %>
+<% end %>

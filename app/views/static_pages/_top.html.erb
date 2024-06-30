@@ -1,0 +1,5 @@
+<% if logged_in? %>
+  <%= render partial: 'posts/index', locals: { posts: posts, pagy: pagy, notifications: notifications } %>
+<% else %>
+  <%= render 'static_pages/about' %>
+<% end %>

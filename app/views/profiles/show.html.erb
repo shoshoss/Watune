@@ -1,7 +1,5 @@
 <% if @user.present? %>
-  <%= turbo_frame_tag "profile_show" do %>
-    <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, notifications: @notifications , pagy: @pagy } %>
-  <% end %>
+  <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, notifications: @notifications, initial_category: @initial_category, pagy: @pagy } %>
 <% else %>
   <p>ユーザーが見つかりません。</p>
 <% end %>
