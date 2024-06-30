@@ -75,11 +75,11 @@
     <% if @user.self_introduction.present? %>
       <% @user.self_introduction.split(/\r\n|\r|\n/).each do |line| %>
         <% if line.empty? %>
-          <div class="text-xxs sm:text-xs">
+          <div class="text-[5px]">
             <br>
           </div>
         <% else %>
-          <div class="text-base sm:text-lg">
+          <div class="text-base">
             <%= line %><br>
           </div>
         <% end %>
