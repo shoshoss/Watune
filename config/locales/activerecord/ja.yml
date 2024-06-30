@@ -5,12 +5,9 @@ ja:
       post: 投稿
       profile: プロフィール
       comment: コメント
+
     attributes:
       user:
-        enum:
-          role:
-            general: 一般
-            admin: 管理者
         id: ID
         created_at: 作成日時
         updated_at: 更新日時
@@ -25,8 +22,10 @@ ja:
         post_image: サムネイル
         user: 作成者
         duration: 録音時間
+        fixed_category: カテゴリー
       comment:
         body: コメント
+
     errors:
       models:
         user:
@@ -54,3 +53,19 @@ ja:
               too_long: "は%{count}文字以内で入力してください"
             duration:
               numericality: "は1時間未満である必要があります"
+
+  enums:
+    user:
+      role:
+        general: 一般
+        admin: 管理者
+    post:
+      fixed_category:
+        congra: 感謝・応援
+        music: 音楽
+        children: 子どもの声
+        tech: 技術
+        english: 英語
+        reading: 朗読
+        monologue: ひとり言
+        other: カスタムカテゴリー

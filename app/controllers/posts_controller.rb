@@ -67,7 +67,7 @@ class PostsController < ApplicationController
 
   # 新しい投稿を作成するアクション
   def create
-    @post = current_user.posts.build(post_params.except(:recipient_ids))
+    @post = current_user.posts.build(post_params.except(:recipient_ids, :custom_category))
 
     if post_params[:fixed_category] == "other"
       custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])

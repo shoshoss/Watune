@@ -36,11 +36,11 @@
 
             <div class="form-control pt-2">
               <%= f.label :fixed_category, 'カテゴリー', class: "block text-lg font-semibold", for: "fixed_category" %>
-              <%= f.select :fixed_category, Post.fixed_categories.keys.map { |k| [k.humanize, k] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", data: { action: "change->post-modal#toggleCustomCategoryInput" } %>
+              <%= f.select :fixed_category, Post.fixed_categories_i18n.invert.map { |key, value| [key, value] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", data: { action: "change->post-modal#toggleCustomCategoryInput" } %>
             </div>
 
-            <div class="form-control pt-2 hidden" id="custom_category_input">
-              <%= f.label :custom_category, 'カスタムカテゴリー', class: "block text-lg font-semibold", for: "custom_category" %>
+            <div class="form-control hidden" id="custom_category_input">
+              <%= f.label :custom_category, 'カスタムカテゴリー', class: "hidden block text-lg font-semibold", for: "custom_category" %>
               <%= f.text_field :custom_category, id: 'custom_category', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", placeholder: "カテゴリーを入力" %>
             </div>
 

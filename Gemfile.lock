@@ -138,6 +138,8 @@ GEM
     deep_merge (1.2.2)
     diff-lcs (1.5.1)
     drb (2.2.1)
+    enum_help (0.0.19)
+      activesupport (>= 3.0.0)
     erubi (1.12.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
@@ -438,6 +440,7 @@ DEPENDENCIES
   config (~> 5.4)
   cssbundling-rails
   debug
+  enum_help (~> 0.0.19)
   factory_bot_rails (>= 6.4)
   faker (>= 3.3)
   flamegraph (>= 0.9)
