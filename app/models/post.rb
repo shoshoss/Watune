@@ -7,6 +7,8 @@ class Post < ApplicationRecord
   # ユーザーとの関係
   belongs_to :user
 
+  belongs_to :category, optional: true
+
   # リプライ関係
   has_many :replies, class_name: 'Post', foreign_key: :post_reply_id, inverse_of: :parent_post
   belongs_to :parent_post, class_name: 'Post', foreign_key: :post_reply_id, optional: true, inverse_of: :replies
@@ -45,6 +47,20 @@ class Post < ApplicationRecord
 
   # プライバシー設定
   enum privacy: { only_me: 0, reply: 1, open: 2, selected_users: 10, community: 20, only_direct: 30 }
+
+  # カテゴリー設定
+  enum fixed_category: {
+    congra: 0,
+    music: 10,
+    children: 20,
+    tech: 30,
+    english: 40,
+    reading: 50,
+    monologue: 60,
+    other: 70
+  }
+
+  validates :fixed_category, presence: true
 
   # 投稿の可視性を判定するメソッド
   def visible_to?(user)
