@@ -18,24 +18,6 @@ const noCacheUrls = [
   "/", // ルートパスをキャッシュしない
   "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
   "/oauth/callback", // OAuthコールバックパスをキャッシュしない
-  "/shared/_before_login_header.html.erb",
-  "/shared/_sidebar.html.erb",
-  "/shared/_header.html.erb",
-  "/shared/_widget.html.erb",
-  "/shared/_login_modal_button.html.erb",
-  "/shared/_flash_message.html.erb",
-  "/shared/_before_profile_edit_flash.html.erb",
-  "/posts/new.html.erb",
-  "/profiles/_edit_modal.html.erb",
-  "/posts/_edit_form.html.erb",
-  "/profiles/_profile_info.html.erb",
-  "/posts/new_test.html.erb",
-  "/shared/_footer.html.erb",
-  "/posts/_posts_list.html.erb",
-  "/posts/_index.html.erb",
-  "/posts/_show.html.erb",
-  "/profiles/_show.html.erb",
-  "/notifications/_notification.html.erb",
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
