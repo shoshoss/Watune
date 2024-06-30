@@ -1,14 +1,14 @@
 <div class="user-item flex flex-col items-start hover:bg-sky-100 px-[16px] py-[12px]">
   <div class="flex items-center w-full">
-    <%= link_to profile_show_path(username_slug: user.username_slug), class: "flex items-center no-underline flex-shrink-0 hover:underline" do %>
+    <%= link_to profile_show_path(username_slug: user.username_slug), class: "flex items-center no-underline flex-shrink-0 hover:underline", data: { turbo_frame: 'main-content' } do %>
       <%= image_tag(user.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "rounded-full h-[40px] w-[40px] flex-shrink-0") %>
     <% end %>
     <div class="ml-2 flex-1 overflow-hidden">
       <h3 class="text-md font-semibold truncate">
-        <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), class: "text-[15px] no-underline text-inherit hover:underline" %>
+        <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), class: "text-[15px] no-underline text-inherit hover:underline", data: { turbo_frame: 'main-content' } %>
       </h3>
       <p class="text-gray-500 truncate">
-        <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), class: "text-[15px] no-underline text-inherit hover:underline" %>
+        <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), class: "text-[15px] no-underline text-inherit hover:underline", data: { turbo_frame: 'main-content' } %>
       </p>
     </div>
     <div id="user-<%= user.id %>-follow">
