@@ -14,7 +14,7 @@
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(current_user.username_slug), class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}", data: { turbo_frame: "advance" } do %>
+      <%= link_to profile_show_path(current_user.username_slug), class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
         <h2 class="text-xl font-bold flex-grow">プロフィール</h2>
       <% end %>
