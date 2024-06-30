@@ -7,8 +7,8 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(posts_path)}", data: { turbo_frame: "advance" } do %>
-        <i class="fa-solid fa-house text-2xl #{'text-blue-500' if current_page?(posts_path)}"></i>
+      <%= link_to root_path, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}", data: { turbo_frame: "advance" } do %>
+        <i class="fa-solid fa-house text-2xl #{'text-blue-500' if current_page?(root_path)}"></i>
         <h2 class="text-xl font-bold flex-grow">ホーム</h2>
       <% end %>
     </li>
