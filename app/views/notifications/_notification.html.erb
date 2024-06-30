@@ -1,61 +1,61 @@
 <div class="notification <%= 'bg-orange-100' if notification.unread %>">
   <% if notification.action == 'like' %>
     <div class="flex items-center p-2">
-      <i class="fas fa-heart text-[#F91980] text-xl sm:text-3xl "></i>
+      <i class="fas fa-heart text-[#F91980] min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたの投稿にいいねしました。</span>
+      <span class="text-[15px]">さんがあなたの投稿にいいねしました。</span>
     </div>
     <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'reply' %>
     <div class="flex items-center p-2">
-      <i class="fas fa-reply text-blue-500 text-xl sm:text-3xl"></i>
+      <i class="fas fa-reply text-blue-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたへ返信しました。</span>
+      <span class="text-[15px]">さんがあなたへ返信しました。</span>
     </div>
     <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'repost' %>
     <div class="flex items-center p-2">
-      <i class="fa-solid fa-retweet text-green-500 text-xl sm:text-3xl"></i>
+      <i class="fa-solid fa-retweet text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたの投稿をリポストしました。</span>
+      <span class="text-[15px]">さんがあなたの投稿をリウェーブしました。</span>
     </div>
     <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% elsif notification.action == 'follow' %>
     <div class="flex items-center p-2">
-      <i class="fas fa-user-plus text-green-500 text-xl sm:text-3xl"></i>
+      <i class="fas fa-user-plus text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたをフォローしました。</span>
+      <span class="text-[15px]">さんがあなたをフォローしました。</span>
     </div>
   <% elsif notification.action == 'direct' %>
     <div class="flex items-center p-2">
-      <i class="fa-regular fa-envelope text-orange-400 text-xl sm:text-3xl"></i>
+      <i class="fa-regular fa-envelope text-orange-400 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "ml-2 rounded-full h-8 w-8 md:h-14 md:w-14") %>
+        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "ml-2 text-sm sm:text-lg font-semibold", data: { turbo_frame: "profile_modal" } do %>
+      <%= link_to profile_modal_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "profile_modal" } do %>
         <%= notification.sender.display_name %>
       <% end %>
-      <span class="text-sm sm:text-lg">さんがあなたへ投稿しました。</span>
+      <span class="text-[15px]">さんがあなたへ投稿しました。</span>
     </div>
     <%= render partial: 'notifications/post', locals: { post: notification.notifiable } %>
   <% else %>

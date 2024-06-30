@@ -19,7 +19,7 @@
 
     <div class="form-control pt-2">
       <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
+      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3" %>
     </div>
 
     <%= f.file_field :audio, accept: 'audio/*', class: "hidden" %>
