@@ -2,6 +2,6 @@
 <div class="flex justify-end">
   <% if @post && post == @post %>
   <% else %>
-    <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id), data: { turbo_frame: "_top" }, class: "mb-2 text-base btn-sm sm:text-lg sm:btn-md text-white rounded-lg btn btn-outline btn-info" %>
+    <%= link_to '詳細を見る', user_post_path(username_slug: post.user.username_slug, id: post.id), data: { turbo_frame: "advance" }, class: "mb-2 text-base btn-sm sm:text-lg sm:btn-md text-white rounded-lg btn btn-outline btn-info" %>
   <% end %>
 </div>
