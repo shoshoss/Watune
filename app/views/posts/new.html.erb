@@ -34,6 +34,16 @@
               <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-modal#checkForm" } %>
             </div>
 
+            <div class="form-control pt-2">
+              <%= f.label :fixed_category, 'カテゴリー', class: "block text-lg font-semibold", for: "fixed_category" %>
+              <%= f.select :fixed_category, Post.fixed_categories.keys.map { |k| [k.humanize, k] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", data: { action: "change->post-modal#toggleCustomCategoryInput" } %>
+            </div>
+
+            <div class="form-control pt-2 hidden" id="custom_category_input">
+              <%= f.label :custom_category, 'カスタムカテゴリー', class: "block text-lg font-semibold", for: "custom_category" %>
+              <%= f.text_field :custom_category, id: 'custom_category', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", placeholder: "カテゴリーを入力" %>
+            </div>
+
             <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
             <%= f.hidden_field :duration, class: "duration-field" %>
 
@@ -100,6 +110,17 @@
         // モーダルの高さを調整
         modalBox.style.height = 'auto';
         modalBox.style.height = modalBox.scrollHeight + 'px';
+      }
+    });
+
+    document.addEventListener('change', function(event) {
+      if (event.target.id === 'post_fixed_category') {
+        const customCategoryInput = document.getElementById('custom_category_input');
+        if (event.target.value === 'other') {
+          customCategoryInput.classList.remove('hidden');
+        } else {
+          customCategoryInput.classList.add('hidden');
+        }
       }
     });
   </script>

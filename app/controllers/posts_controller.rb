@@ -68,6 +68,12 @@ class PostsController < ApplicationController
   # 新しい投稿を作成するアクション
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids))
+
+    if post_params[:fixed_category] == "other"
+      custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
+      @post.category = custom_category
+    end
+
     if @post.save
       if post_params[:recipient_ids].present?
         PostCreationJob.perform_later(@post.id, post_params[:recipient_ids],
@@ -84,6 +90,11 @@ class PostsController < ApplicationController
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
+      if post_params[:fixed_category] == "other"
+        custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
+        @post.update(category: custom_category)
+      end
+
       if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
         PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy)
       end
