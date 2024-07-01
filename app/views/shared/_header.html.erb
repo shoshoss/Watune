@@ -1,9 +1,9 @@
 <!-- ヘッダーのHTML -->
-<div id="after-header" class="navbar">
+<div id="after-header" data-controller="navbar">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to root_path, data: { turbo_frame: 'main-content' } do %>
+      <%= link_to root_path, data: { turbo_frame: '_top', action: "click->navbar#setActive", corresponding_link_id: "sidebar-home-link" }, id: "header-logo-link" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
           <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
@@ -27,43 +27,43 @@
                   data: { turbo_frame: "post_modal" } %>
       
       <!-- ユーザーメニュー -->
-      <div class="z-40 dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
+      <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 300px; max-width: 670px;">
+        <ul tabindex="0" class="menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">
-            <%= link_to t('header.about'), about_path, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(about_path)}" %>
+            <%= link_to t('header.about'), about_path, id: "header-about-link", class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(about_path)}", data: { turbo_frame: "main-content", action: "click->navbar#setActive", corresponding_link_id: "sidebar-about-link" } %>
           </li>
           <li class="block py-2">
-            <%= link_to root_path, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" do %>
+            <%= link_to root_path, id: "header-home-link", class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}", data: { turbo_frame: "main-content", action: "click->navbar#setActive", corresponding_link_id: "sidebar-home-link" } do %>
               <i class="fa-solid fa-house taxt-[15px] sm:text-lg #{'text-blue-500' if current_page?(root_path)}"></i>
               <span>ホーム</span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to profile_show_path(current_user.username_slug), class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
+            <%= link_to profile_show_path(current_user.username_slug), id: "header-profile-link", class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}", data: { turbo_frame: "main-content", action: "click->navbar#setActive", corresponding_link_id: "sidebar-profile-link" } do %>
               <i class="fas fa-user taxt-[15px] sm:text-lg #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
               <span>プロフィール</span>
             <% end %>
           </li>
           <li class="block py-2 taxt-[15px] sm:text-lg">
-            <%= link_to users_path, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}" do %>
+            <%= link_to users_path, id: "header-users-link", class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}", data: { turbo_frame: "main-content", action: "click->navbar#setActive", corresponding_link_id: "sidebar-users-link" } do %>
               <i class="fas fa-users taxt-[15px] sm:text-lg #{'text-blue-500' if current_page?(users_path)}"></i>
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong></span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to edit_notification_settings_path, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}" do %>
+            <%= link_to edit_notification_settings_path, id: "header-settings-link", class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}", data: { turbo_frame: "main-content", action: "click->navbar#setActive", corresponding_link_id: "sidebar-settings-link" } do %>
               <i class="fas fa-cog taxt-[15px] sm:text-lg #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
               <span>通知設定</span>
             <% end %>
           </li>
           <li class="py-2">
-            <%= link_to 'ログアウト', logout_path, method: :delete, data: { turbo_method: :delete, turbo_action: 'advance' }, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "unregisterServiceWorker()" %>
+            <%= link_to 'ログアウト', logout_path, id: "header-logout-link", method: :delete, data: { turbo_method: :delete, turbo_action: 'advance' }, class: "taxt-[15px] sm:text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4", onclick: "unregisterServiceWorker()" %>
           </li>
           <li class="py-2">
-            <%= link_to '退会する', user_path(current_user), method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか（アカウント削除）？', turbo_action: 'advance' }, class: 'btn btn-danger btn-sm text-sm' %>
+            <%= link_to '退会する', user_path(current_user), id: "header-delete-account-link", method: :delete, data: { turbo_method: :delete, turbo_confirm: '本当に退会しますか（アカウント削除）？', turbo_action: 'advance' }, class: 'btn btn-danger btn-sm text-sm' %>
           </li>
         </ul>
       </div>

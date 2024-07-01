@@ -23,6 +23,7 @@ export default class extends Controller {
         "font-bold",
         "border-b-4",
         "border-sky-400-accent",
+        "bg-sky-100",
         "active"
       )
     );
@@ -39,6 +40,7 @@ export default class extends Controller {
           "font-bold",
           "border-b-4",
           "border-sky-400-accent",
+          "bg-sky-100",
           "active"
         );
         if (correspondingLink) {
@@ -82,6 +84,7 @@ export default class extends Controller {
             "font-bold",
             "border-b-4",
             "border-sky-400-accent",
+            "bg-white",
             "active"
           );
         },

@@ -106,3 +106,10 @@
 .btn-following:hover::after {
   opacity: 1;
 }
+
+/* アクティブリンクのカスタムスタイル */
+.dropdown .menu li a.active {
+  @apply bg-white;
+  @apply text-blue-500;
+  @apply font-bold;
+}
