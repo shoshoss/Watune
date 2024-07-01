@@ -88,6 +88,9 @@ export default class extends Controller {
             "bg-white",
             "active"
           );
+
+          // ページの上部へスクロール
+          window.scrollTo(0, 0);
         },
         { once: true }
       );
