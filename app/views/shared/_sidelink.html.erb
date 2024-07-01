@@ -1,23 +1,20 @@
-<ul class="space-y-2">
-  <!-- みんなのWave -->
+<ul id="sidelink" class="space-y-2" data-controller="navbar">
   <li>
-    <%= link_to root_path, data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(root_path)}" do %>
-      <i class="fa-solid fa-house text-2xl #{'text-blue-500' if current_page?(root_path)}"></i>
+    <%= link_to root_path, id: "sidebar-home-link", data: { action: "click->navbar#setActive", corresponding_link_id: "bottom-navbar-home-link" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300" do %>
+      <i class="fa-solid fa-house text-2xl"></i>
       <h2 class="text-xl font-bold flex-grow">ホーム</h2>
     <% end %>
   </li>
-  <!-- プロフィール -->
   <li>
-    <%= link_to profile_show_path(current_user.username_slug), data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(profile_show_path(current_user.username_slug))}" do %>
-      <i class="fas fa-user text-2xl #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
+    <%= link_to profile_show_path(current_user.username_slug), id: "sidebar-profile-link", data: { action: "click->navbar#setActive", corresponding_link_id: "bottom-navbar-profile-link" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300" do %>
+      <i class="fas fa-user text-2xl"></i>
       <h2 class="text-xl font-bold flex-grow">プロフィール</h2>
     <% end %>
   </li>
-  <!-- 通知 -->
   <li>
-    <%= link_to notifications_path, data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(notifications_path)}" do %>
+    <%= link_to notifications_path, id: "sidebar-notifications-link", data: { action: "click->navbar#setActive", corresponding_link_id: "bottom-navbar-notifications-link" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300" do %>
       <div class="relative">
-        <i class="fas fa-bell text-2xl #{'text-blue-500' if current_page?(notifications_path)}"></i>
+        <i class="fas fa-bell text-2xl"></i>
         <% unread_notifications_count = current_user.received_notifications.unread.count %>
         <% if unread_notifications_count > 0 %>
           <span class="absolute -top-2 -right-2 inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
@@ -28,10 +25,9 @@
       <h2 class="text-xl font-bold flex-grow">通知</h2>
     <% end %>
   </li>
-  <!-- 通知設定 -->
   <li>
-    <%= link_to edit_notification_settings_path, data: { turbo_frame: "_top" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300 #{active_if(edit_notification_settings_path)}" do %>
-      <i class="fas fa-cog text-2xl #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
+    <%= link_to edit_notification_settings_path, id: "sidebar-settings-link", data: { action: "click->navbar#setActive", corresponding_link_id: "bottom-navbar-settings-link" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full transition-colors duration-300" do %>
+      <i class="fas fa-cog text-2xl"></i>
       <h2 class="text-xl font-bold flex-grow">メール通知設定</h2>
     <% end %>
   </li>

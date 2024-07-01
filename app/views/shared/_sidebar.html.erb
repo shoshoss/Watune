@@ -4,9 +4,7 @@
       <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
-  <div id="sidelink">
-    <%= render 'shared/sidelink' %>
-  </div>
+  <%= render 'shared/sidelink' %>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
