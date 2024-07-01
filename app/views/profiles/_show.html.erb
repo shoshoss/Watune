@@ -2,15 +2,16 @@
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
 <% content_for(:title, t('.title')) %>
+<%= turbo_frame_tag "main-content" do %>
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[670px] w-full bg-white border-x">
     <div class="pt-8">
-      <%= render 'profiles/profile_info', user: @user %>
+      <%= render 'profiles/profile_info', user: user %>
       <%= turbo_frame_tag "profile-posts" do %>
         <!-- タブメニュー -->
-        <%= render 'profiles/category_tabs', user: @user %>
+        <%= render 'profiles/category_tabs', user: user, initial_category: initial_category %>
         <!-- 投稿一覧 -->
-        <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
+        <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
       <% end %>
     </div>
   </div>
@@ -79,3 +80,4 @@
     }
   });
 </script>
+<% end %>

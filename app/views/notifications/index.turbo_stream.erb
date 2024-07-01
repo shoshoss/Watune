@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "main-content" do %>
+  <%= render partial: 'notifications/index', locals: { pagy: @pagy, notifications: @notifications } %>
+<% end %>

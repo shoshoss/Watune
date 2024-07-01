@@ -50,6 +50,7 @@
 </head>
 
 <body class="font-sans bg-white flex flex-col min-h-screen">
+
   <!-- ヘッダー -->
   <% if logged_in? %>
     <header class="sm:sticky sm:top-0 z-10 bg-white w-full shadow max-w-screen-xl mx-auto">
@@ -89,10 +90,11 @@
     <% end %>
   </div>
 
+  <!-- スマホ用ボトムメニューバー -->
+  <%= render 'shared/bottom_navbar' if logged_in? %>
+
   <!-- フッター -->
   <%= render 'shared/footer' %>
 
-  <!-- スマホ用ボトムメニューバー -->
-  <%= render 'shared/bottom_navbar' if logged_in? %>
 </body>
 </html>

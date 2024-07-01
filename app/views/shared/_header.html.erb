@@ -4,14 +4,12 @@
     <!-- ロゴ -->
     <div class="hidden md-plus:block shrink-0 mx-5">
       <%= link_to root_path do %>
-        <%= image_tag ' logo-watune.png', alt: 'ロゴ', class: "h-[48px] w-[200px] rounded-full",
-            data: { turbo_frame: "advance" } %>
+        <%= image_tag ' logo-watune.png', alt: 'ロゴ', class: "h-[48px] w-[200px] rounded-full" %>
       <% end %>
     </div>
     <div class="md-plus:hidden mx-2">
       <%= link_to root_path do %>
-        <%= image_tag asset_path('logo-watune-en.png'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]",
-            data: { turbo_frame: "advance" } %>
+        <%= image_tag asset_path('logo-watune-en.png'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]" %>
       <% end %>
     </div>
 
@@ -22,12 +20,10 @@
       </span>
       <% if current_user.guest %>
         <%= link_to 'いいねへ！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
-            class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg',
-            data: { turbo_frame: "advance" } %>
+            class: 'hidden sm-plus:flex btn btn-outline btn-secondary rounded-full sm-plus:btn-md sm-plus:text-lg' %>
       <% else %>
         <%= link_to 'いいねへ！', profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
-            class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg',
-            data: { turbo_frame: "advance" } %>
+            class: 'btn btn-outline btn-secondary btn-sm rounded-full text-sm sm-plus:btn-md sm-plus:text-lg' %>
       <% end %>
     </div>
 
@@ -49,40 +45,39 @@
       <!-- ユーザーメニュー -->
       <div class="z-40 dropdown dropdown-hover dropdown-end ml-2 shrink-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
-          <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12", data: { turbo_frame: "advance" } %>
+          <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">
-            <%= link_to t('header.about'), about_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(about_path)}", data: { turbo_frame: "advance" } %>
+            <%= link_to t('header.about'), about_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" do %>
               <i class="fa-solid fa-house text-lg #{'text-blue-500' if current_page?(root_path)}"></i>
               <span>ホーム</span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}", data: { turbo_frame: "advance" } do %>
+            <%= link_to profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-lg #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
               <span>プロフィール</span>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
             <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'),
-                class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}",
-                data: { turbo_frame: "advance" } do %>
+                class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}" do %>
               <i class="fas fa-heart text-lg #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}"></i>
               <span>いいねへ！<strong> <%= @likes_chance_count %>チャンス</strong></span>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
-            <%= link_to users_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to users_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-lg #{'text-blue-500' if current_page?(users_path)}"></i>
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong></span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to edit_notification_settings_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to edit_notification_settings_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-lg #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
               <span>通知設定</span>
             <% end %>
@@ -123,31 +118,31 @@
             <%= link_to t('header.about'), about_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to root_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(root_path)}" do %>
               <i class="fa-solid fa-house text-lg #{'text-blue-500' if current_page?(root_path)}"></i>
               <span>ホーム</span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}", data: { turbo_frame: "advance" } do %>
+            <%= link_to profile_show_path(current_user.username_slug), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-lg #{'text-blue-500' if current_page?(profile_show_path(current_user.username_slug))}"></i>
               <span>プロフィール</span>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
-            <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}", data: { turbo_frame: "advance" } do %>
+            <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'), class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}" do %>
               <i class="fas fa-heart text-lg #{'text-blue-500' if current_page?(profile_show_path(username_slug: current_user.username_slug, category: 'all_likes_chance'))}"></i>
               いいねへ！<strong> <%= @likes_chance_count %>チャンス</strong>
             <% end %>
           </li>
           <li class="block py-2 text-lg">
-            <%= link_to users_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to users_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-lg #{'text-blue-500' if current_page?(users_path)}"></i>
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to edit_notification_settings_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}", data: { turbo_frame: "advance" } do %>
+            <%= link_to edit_notification_settings_path, class: "text-lg hover:bg-sky-100 rounded-full transition-colors duration-300 px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-lg #{'text-blue-500' if current_page?(edit_notification_settings_path)}"></i>
               <span>通知設定</span>
             <% end %>

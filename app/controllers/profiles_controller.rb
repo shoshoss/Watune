@@ -6,13 +6,18 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示アクション
   def show
-    @show_reply_line = false
     @notifications = current_user&.received_notifications&.unread
     @initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open'
 
-    return unless @user
+    if @user.nil?
+      redirect_to root_path, alert: 'ユーザーが見つかりません。'
+      return
+    end
 
-    redirect_to root_path, alert: 'ユーザーが見つかりません。' if @user.nil?
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   # プロフィール編集アクション

@@ -79,7 +79,7 @@ gem 'rack-rewrite', '~> 1.5'
 # OGPメタタグの設定を効率的に行うため
 gem 'meta-tags', '~> 2.21'
 
-gem 'enum_help', '~> 0.0.19'
+gem 'enum_help'
 
 group :development, :test do
   # リクエストの速度を表示するためのrack-mini-profiler

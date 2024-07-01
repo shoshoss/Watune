@@ -5,14 +5,12 @@
     <!-- ロゴ -->
     <div class="hidden md:block shrink-0">
       <%= link_to root_path do %>
-        <%= image_tag ' logo-watune.png', alt: 'ロゴ', class: "h-[48px] lg:h-[64px] w-[200px] lg:w-[300px] w-auto rounded-full",
-            data: { turbo_frame: "advance" } %>
+        <%= image_tag ' logo-watune.png', alt: 'ロゴ', class: "h-[48px] lg:h-[64px] w-[200px] lg:w-[300px] w-auto rounded-full" %>
       <% end %>
     </div>
     <div class="md:hidden">
       <%= link_to root_path do %>
-        <%= image_tag asset_path('logo-watune-en.png'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]",
-            data: { turbo_frame: "advance" } %>
+        <%= image_tag asset_path('logo-watune-en.png'), alt: 'ロゴ', class: "rounded-full h-[50px] w-[50px]" %>
       <% end %>
     </div>
 
