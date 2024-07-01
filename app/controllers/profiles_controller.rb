@@ -8,7 +8,7 @@ class ProfilesController < ApplicationController
   def show
     @notifications = current_user&.received_notifications&.unread
     @initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open'
-    
+
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return
