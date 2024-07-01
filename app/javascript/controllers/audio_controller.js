@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static targets = ["playButton"];
@@ -183,7 +184,12 @@ export default class extends Controller {
     const postBody = event.currentTarget;
     const url = postBody.dataset.url;
     if (url) {
-      Turbo.visit(url); // Turboを使用して遷移
+      const frame = document.getElementById("main-content");
+      if (frame) {
+        frame.src = url; // Turboフレームのsrcを更新して遷移
+      } else {
+        Turbo.visit(url); // フレームがない場合は通常のTurbo訪問
+      }
     }
   }
 }
