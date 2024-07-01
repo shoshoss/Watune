@@ -6,6 +6,7 @@ export default class extends Controller {
       "turbo:frame-load",
       this.updateActiveLink.bind(this)
     );
+    this.updateActiveLink(); // 初期のアクティブリンクを設定
   }
 
   disconnect() {
@@ -23,7 +24,7 @@ export default class extends Controller {
         "font-bold",
         "border-b-4",
         "border-sky-400-accent",
-        "bg-sky-100",
+        "bg-white",
         "active"
       )
     );
@@ -40,7 +41,7 @@ export default class extends Controller {
           "font-bold",
           "border-b-4",
           "border-sky-400-accent",
-          "bg-sky-100",
+          "bg-white",
           "active"
         );
         if (correspondingLink) {
