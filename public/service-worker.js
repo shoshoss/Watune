@@ -18,6 +18,7 @@ const noCacheUrls = [
   "/", // ルートパスをキャッシュしない
   "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
   "/oauth/callback", // OAuthコールバックパスをキャッシュしない
+  "/notifications/unread_count", // 通知の数を取得するパスをキャッシュしない
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
