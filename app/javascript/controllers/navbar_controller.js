@@ -6,7 +6,8 @@ export default class extends Controller {
       "turbo:frame-load",
       this.updateActiveLink.bind(this)
     );
-    this.updateActiveLink(); // 初期のアクティブリンクを設定
+    this.updateActiveLink();
+    this.updateUnreadNotifications(); // 初期の未読通知数を設定
   }
 
   disconnect() {
@@ -58,18 +59,15 @@ export default class extends Controller {
     const url = new URL(target.href);
     const frame = document.querySelector("turbo-frame#main-content");
 
-    // Turbo Frameのsrcを更新して部分更新
     if (frame) {
       frame.src = url.href;
-
-      // URLを変更する
       history.pushState({}, "", url.href);
 
-      // Turbo Frameの更新が完了した後にアクティブリンクを設定
       frame.addEventListener(
         "turbo:frame-load",
         () => {
           this.updateActiveLink();
+          this.updateUnreadNotifications(); // 未読通知数を更新
 
           const correspondingLinkId = target.getAttribute(
             "data-corresponding-link-id"
@@ -88,12 +86,36 @@ export default class extends Controller {
             "bg-white",
             "active"
           );
-
-          // ページの上部へスクロール
           window.scrollTo(0, 0);
         },
         { once: true }
       );
+    }
+  }
+
+  async updateUnreadNotifications() {
+    try {
+      const response = await fetch("/notifications/unread_count", {
+        cache: "no-store",
+      });
+      const data = await response.json();
+      this.renderUnreadCount(data.unread_count);
+    } catch (error) {
+      console.error("Failed to fetch unread notifications count:", error);
+    }
+  }
+
+  renderUnreadCount(count) {
+    const unreadCountElement = document.getElementById(
+      "unread-notifications-count"
+    );
+    if (unreadCountElement) {
+      unreadCountElement.textContent = count;
+      if (count > 0) {
+        unreadCountElement.classList.remove("hidden");
+      } else {
+        unreadCountElement.classList.add("hidden");
+      }
     }
   }
 }

@@ -35,7 +35,11 @@ Rails.application.routes.draw do
   get 'login_modal', to: 'user_sessions#new_modal', as: 'new_login_modal'
   post 'login_modal', to: 'user_sessions#create_modal', as: 'create_login_modal'
 
-  resources :notifications, only: %i[index]
+  resources :notifications, only: %i[index] do
+    collection do
+      get :unread_count
+    end
+  end
   resource :notification_settings, only: %i[edit update]
 
   # パスワードリセットのルーティング

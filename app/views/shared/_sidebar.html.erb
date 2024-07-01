@@ -19,15 +19,12 @@
       <% end %>
     </li>
     <li>
-      <%= link_to notifications_path, id: "sidebar-notifications-link", data: { action: "click->navbar#setActive", corresponding_link_id: "header-notifications-link" }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full" do %>
+      <%= link_to notifications_path, id: "sidebar-notifications-link", data: { action: "click->navbar#setActive", corresponding_link_id: "header-notifications-link", turbo_method: :post }, class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full" do %>
         <div class="relative">
           <i class="fas fa-bell text-2xl"></i>
-          <% unread_notifications_count = current_user.received_notifications.unread.count %>
-          <% if unread_notifications_count > 0 %>
-            <span class="absolute -top-2 -right-2 inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
-              <%= unread_notifications_count %>
-            </span>
-          <% end %>
+          <span id="unread-notifications-count" class="absolute -top-2 -right-2 inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center hidden">
+            <%= current_user.received_notifications.unread.count %>
+          </span>
         </div>
         <h2 class="text-xl font-bold flex-grow">通知</h2>
       <% end %>

@@ -21,4 +21,9 @@ class NotificationsController < ApplicationController
     notifications_scope.update_all(unread: false) if @category == 'all'
     # rubocop:enable Rails/SkipsModelValidations
   end
+
+  def unread_count
+    unread_count = current_user.received_notifications.unread.count
+    render json: { unread_count: unread_count }
+  end
 end
