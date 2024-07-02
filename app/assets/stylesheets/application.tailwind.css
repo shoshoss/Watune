@@ -108,8 +108,9 @@
 }
 
 /* アクティブリンクのカスタムスタイル */
-.dropdown .menu li a.active {
+.active-link {
   @apply bg-white;
   @apply text-blue-500;
   @apply font-bold;
+  @apply border-b-4 border-sky-400;
 }

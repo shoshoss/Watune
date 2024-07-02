@@ -1,11 +1,7 @@
 <%= turbo_stream.update "main-content" do %>
-  <%= render 'profiles/show', user: @user, posts: @posts, notifications: @notifications, initial_category: @initial_category, pagy: @pagy %>
+  <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
 <% end %>
 
-<%= turbo_stream.update "after-sidebar" do %>
-  <%= render 'shared/sidebar' %>
-<% end %>
-
-<%= turbo_stream.update "bottom-navbar" do %>
-  <%= render 'shared/bottom_navbar' %>
+<%= turbo_stream.update "after-widget" do %>
+  <%= render 'shared/widget', users: @recent_users %>
 <% end %>

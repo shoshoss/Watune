@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus";
-import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static targets = ["playButton"];
@@ -30,20 +29,20 @@ export default class extends Controller {
         a.pause();
         this.updateIcon(
           document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
-          false
-        ); // 他の音声アイコンを「再生」状態に戻す
+          false // 他の音声アイコンを「再生」状態に戻す
+        );
         this.updateButtonColor(
           document.querySelector(
             `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
-          false
-        ); // 他の音声ボタンの色を元に戻す
+          false // 他の音声ボタンの色を元に戻す
+        );
         this.updateTextColor(
           document.querySelector(
             `div[data-audio-id="${a.id.replace("audio-", "")}`
           ),
-          false
-        ); // 他の投稿文章の色を元に戻す
+          false // 他の投稿文章の色を元に戻す
+        );
       } else if (a.id !== `audio-${audioId}` && a.paused) {
         // 再生されていない他の音声のアイコンも再生状態に戻す
         this.updateIcon(
@@ -183,36 +182,8 @@ export default class extends Controller {
     }
     const postBody = event.currentTarget;
     const url = postBody.dataset.url;
-    const postId = postBody.dataset.postId; // 投稿のIDを取得
-    if (url && postId) {
-      const frame = document.getElementById("main-content");
-      if (frame) {
-        // 現在の状態を履歴に追加
-        history.pushState(
-          { turboFrameSrc: frame.src, postId: postId },
-          "",
-          url
-        );
-
-        // Turboフレームのsrcを更新して遷移
-        frame.src = url;
-      } else {
-        Turbo.visit(url); // フレームがない場合は通常のTurbo訪問
-      }
-    }
-  }
-
-  handlePopState(event) {
-    const frame = document.getElementById("main-content");
-    if (frame && event.state && event.state.turboFrameSrc) {
-      frame.src = event.state.turboFrameSrc;
-      const postId = event.state.postId;
-      if (postId) {
-        const postElement = document.querySelector(`[id='${postId}']`);
-        if (postElement) {
-          postElement.scrollIntoView({ behavior: "smooth" });
-        }
-      }
+    if (url) {
+      Turbo.visit(url); // Turboを使用して遷移
     }
   }
 }

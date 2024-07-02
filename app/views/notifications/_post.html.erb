@@ -1,8 +1,9 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
-  <div data-controller="audio back-button" data-action="click->audio#navigateToPost" data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
+  <div data-controller="audio" data-action="click->audio#navigateToPost" data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
        data-post-id="<%= dom_id(post) %>"
-       id="<%= dom_id(post) %>" 
+       id="<%= dom_id(post) %>"
+       data-turbo-action="advance"
        class="cursor-pointer flex hover:bg-sky-100 overflow-hidden border-b py-[12px] px-[16px] <%= 'bg-orange-100' if unread_notification %>">
 
     <%= render 'notifications/post_body', post: post %>

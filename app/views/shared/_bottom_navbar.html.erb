@@ -10,17 +10,13 @@
         <i class="fas fa-user text-2xl"></i>
       <% end %>
     </li>
-    <li class="flex-1 text-center relative">
-      <%= link_to notifications_path, id: "bottom-navbar-notifications-link", data: { action: "click->navbar#setActive", corresponding_link_id: "sidebar-notifications-link" }, class: "block py-2" do %>
-        <i class="fas fa-bell text-2xl"></i>
-        <% unread_notifications_count = current_user.received_notifications.unread.count %>
-        <% if unread_notifications_count > 0 %>
-          <span class="absolute top-0 right-[20px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center">
-            <%= unread_notifications_count %>
-          </span>
-        <% end %>
-      <% end %>
-    </li>
+    <%= render partial: 'shared/notification_link', locals: { 
+      link_id: "bottom-navbar-notifications-link", 
+      link_class: "block py-2", 
+      corresponding_link_id: "sidebar-notifications-link", 
+      menu_class: "flex-1 text-center relative", 
+      show_text: false 
+    } %>
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'), id: "bottom-navbar-messages-link", data: { action: "click->navbar#setActive", corresponding_link_id: "sidebar-messages-link" }, class: "block py-2" do %>
         <i class="fa-regular fa-envelope text-2xl"></i>

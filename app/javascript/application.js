@@ -64,18 +64,3 @@ document.addEventListener("DOMContentLoaded", () => {
   script.src = "/unregister_service_worker.js";
   document.head.appendChild(script);
 });
-
-// popstate イベントリスナーの設定
-window.addEventListener("popstate", (event) => {
-  const frame = document.getElementById("main-content");
-  if (frame && event.state && event.state.turboFrameSrc) {
-    frame.src = event.state.turboFrameSrc;
-    const postId = event.state.postId;
-    if (postId) {
-      const postElement = document.querySelector(`[id='${postId}']`);
-      if (postElement) {
-        postElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }
-});
