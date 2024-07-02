@@ -1,7 +1,9 @@
 import { Controller } from "@hotwired/stimulus";
+import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   connect() {
+    window.addEventListener("popstate", this.handlePopState.bind(this));
     document.addEventListener(
       "turbo:frame-load",
       this.updateActiveLink.bind(this)
@@ -11,6 +13,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    window.removeEventListener("popstate", this.handlePopState.bind(this));
     document.removeEventListener(
       "turbo:frame-load",
       this.updateActiveLink.bind(this)
@@ -60,8 +63,10 @@ export default class extends Controller {
     const frame = document.querySelector("turbo-frame#main-content");
 
     if (frame) {
+      // 現在の状態を履歴に追加
+      history.pushState({ turboFrameSrc: frame.src }, "", url.href);
+
       frame.src = url.href;
-      history.pushState({}, "", url.href);
 
       frame.addEventListener(
         "turbo:frame-load",
@@ -86,10 +91,16 @@ export default class extends Controller {
             "bg-white",
             "active"
           );
-          window.scrollTo(0, 0);
         },
         { once: true }
       );
+    }
+  }
+
+  handlePopState(event) {
+    const frame = document.querySelector("turbo-frame#main-content");
+    if (frame && event.state && event.state.turboFrameSrc) {
+      frame.src = event.state.turboFrameSrc;
     }
   }
 

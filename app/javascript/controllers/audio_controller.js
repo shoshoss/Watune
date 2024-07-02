@@ -186,6 +186,9 @@ export default class extends Controller {
     if (url) {
       const frame = document.getElementById("main-content");
       if (frame) {
+        // 現在の状態を履歴に追加
+        history.pushState({ turboFrameSrc: frame.src }, "", url);
+
         frame.src = url; // Turboフレームのsrcを更新して遷移
       } else {
         Turbo.visit(url); // フレームがない場合は通常のTurbo訪問
