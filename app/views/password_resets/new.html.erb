@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "main-content" do %>
+<turbo-frame id="main-content">
 <% content_for(:title, t('.title')) %>
 <div class="flex justify-center min-h-screen p-5">
   <div class="max-w-lg w-full py-5 bg-white rounded-lg shadow-lg">
@@ -19,4 +19,4 @@
     </div>
   </div>
 </div>
-<% end %>
+</turbo-frame>

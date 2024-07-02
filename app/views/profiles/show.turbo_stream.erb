@@ -1,9 +1,9 @@
-<%= turbo_stream.replace "main-content" do %>
-  <%= render 'profiles/show', locals: { user: @user, posts: @posts, notifications: @notifications, initial_category: @initial_category, pagy: @pagy } %>
+<%= turbo_stream.update "main-content" do %>
+  <%= render 'profiles/show', user: @user, posts: @posts, notifications: @notifications, initial_category: @initial_category, pagy: @pagy %>
 <% end %>
 
-<%= turbo_stream.replace "sidelink" do %>
-  <%= render 'shared/sidelink' %>
+<%= turbo_stream.update "after-sidebar" do %>
+  <%= render 'shared/sidebar' %>
 <% end %>
 
 <%= turbo_stream.update "bottom-navbar" do %>

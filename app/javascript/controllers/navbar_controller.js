@@ -91,6 +91,7 @@ export default class extends Controller {
             "bg-white",
             "active"
           );
+          window.scrollTo(0, 0);
         },
         { once: true }
       );

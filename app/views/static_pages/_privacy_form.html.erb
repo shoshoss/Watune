@@ -1,5 +1,5 @@
+<turbo-frame id="main-content">
 <% content_for(:title, t('.title')) %>
-<%= turbo_frame_tag "main-content" do %>
   <h1 class="text-4xl font-bold mb-8 text-center">プライバシーポリシー</h1>
   <div class="list text-base leading-7 text-gray-800">
     
@@ -61,12 +61,12 @@
       <p>お客様の情報の開示、情報の訂正、利用停止、削除をご希望の場合は、<a href="https://forms.gle/JoLYwFC22taSE3sE9" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-600">お問い合わせフォーム（未実装）</a>よりご連絡ください。</p>
     </div>
   </div>
-<% end %>
 
 <style>
   .list li {
-  list-style-type: disc; /* リストの左側に黒丸 */
+    list-style-type: disc; /* リストの左側に黒丸 */
   margin-left: 24px; /* リストの左側に余白 */
   text-align: left;
   }
 </style>
+</turbo-frame>

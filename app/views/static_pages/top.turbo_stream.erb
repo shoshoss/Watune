@@ -1,1 +1,11 @@
-<%= render partial: 'static_pages/top', locals: { posts: @posts, pagy: @pagy, notifications: @notifications  } %>
+<%= turbo_stream.update "main-content" do %>
+  <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
+<% end %>
+
+<%= turbo_stream.update "after-sidebar" do %>
+  <%= render 'shared/sidebar' %>
+<% end %>
+
+<%= turbo_stream.update "bottom-navbar" do %>
+  <%= render 'shared/bottom_navbar' %>
+<% end %>

@@ -1,9 +1,9 @@
+<turbo-frame id="main-content">
 <%= turbo_frame_tag "profile_edit_modal" %>
 <%= turbo_frame_tag 'profile_modal' %>
 <%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag 'reply_modal' %>
-<%= turbo_frame_tag "post_show" do %>
-<%= turbo_frame_tag "main-content" do %>
+
   <div class="container min-h-screen max-w-[670px] mx-auto border-x">
     <div class="flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
       <!-- 戻るボタン -->
@@ -76,8 +76,6 @@
       <% end %>
     </div>
   </div>
-<% end %>
-<% end %>
 
 <script>
   document.addEventListener('turbo:load', function() {
@@ -126,3 +124,4 @@
     }
   });
 </script>
+</turbo-frame>

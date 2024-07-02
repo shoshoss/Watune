@@ -6,11 +6,6 @@ export default class extends Controller {
 
   connect() {
     this.updateAllIconsToPlay(); // 初期化時に全アイコンを再生ボタンに設定
-    window.addEventListener("popstate", this.handlePopState.bind(this));
-  }
-
-  disconnect() {
-    window.removeEventListener("popstate", this.handlePopState.bind(this));
   }
 
   updateAllIconsToPlay() {
