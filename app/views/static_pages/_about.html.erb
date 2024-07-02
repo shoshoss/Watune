@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "main-content" do %>
+<turbo-frame id="main-content">
 <div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
   <div class="hero-overlay bg-opacity-60"></div>
   <div class="hero-content text-center relative text-neutral-content">
@@ -157,5 +157,4 @@
     window.addEventListener('resize', adjustHeroHeight);
   });
 </script>
-
-<% end %>
+</turbo-frame>

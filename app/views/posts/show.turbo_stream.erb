@@ -1,3 +1,7 @@
-<%= turbo_stream.replace "main-content" do %>
+<%= turbo_stream.update "main-content" do %>
   <%= render 'posts/show', locals: { user: @user, post: @post, replies: @replies, pagy: @pagy } %>
+<% end %>
+
+<%= turbo_stream.update "after-widget" do %>
+  <%= render 'shared/widget', users: @recent_users %>
 <% end %>

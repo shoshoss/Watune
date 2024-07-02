@@ -1,5 +1,5 @@
+<turbo-frame id="main-content">
 <% content_for(:title, t('.title')) %>
-<%= turbo_frame_tag "main-content" do %>
   <h1 class="text-4xl font-bold mb-8 text-center">利用規約</h1>
   <div class="list text-base leading-7 text-gray-800">
     <!-- 第1条 適用 -->
@@ -56,12 +56,12 @@
     </div>
 
   </div>
-<% end %>
 
 <style>
   .list li {
-  list-style-type: disc; /* リストの左側に黒丸 */
+    list-style-type: disc; /* リストの左側に黒丸 */
   margin-left: 24px; /* リストの左側に余白 */
   text-align: left;
   }
 </style>
+</turbo-frame>

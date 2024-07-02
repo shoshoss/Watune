@@ -1,6 +1,5 @@
 // app/javascript/controllers/navbar_controller.js
 import { Controller } from "@hotwired/stimulus";
-import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   static targets = ["notificationCount"];
@@ -40,29 +39,14 @@ export default class extends Controller {
     });
   }
 
-  async setActive(event) {
+  setActive(event) {
     event.preventDefault();
 
     const target = event.currentTarget;
+    const url = new URL(target.href);
+    history.pushState({}, "", url);
 
-    try {
-      const response = await fetch(target.href, {
-        headers: {
-          Accept: "text/vnd.turbo-stream.html", // Turbo Streamレスポンスを期待
-        },
-      });
-
-      if (response.ok) {
-        const html = await response.text();
-        Turbo.renderStreamMessage(html);
-        history.pushState({}, "", target.href);
-        this.updateActiveLink();
-      } else {
-        console.error("Failed to fetch Turbo Stream:", response);
-      }
-    } catch (error) {
-      console.error("Error fetching Turbo Stream:", error);
-    }
+    this.updateActiveLink();
   }
 
   async updateUnreadNotifications() {

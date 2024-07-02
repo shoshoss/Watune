@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(post) do %>
   <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
-    <div data-controller="audio" id="post-id-<%= post.id %>", 
+    <div data-controller="audio" data-post-id="<%= dom_id(post) %>" id="<%= dom_id(post) %>" data-turbo-action="advance"
       class="flex hover:bg-sky-100 overflow-hidden border-b py-[12px] px-[16px] <%= 'bg-orange-100' if unread_notification %>">
       
       <%= render 'posts/test_post_body', post: post %>

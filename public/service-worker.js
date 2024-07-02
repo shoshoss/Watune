@@ -117,17 +117,5 @@ self.addEventListener("message", (event) => {
     });
   } else if (event.data.action === "skipWaiting") {
     self.skipWaiting();
-  } else if (event.data.action === "clearProfileCache") {
-    caches.open(CACHE_NAME).then((cache) => {
-      noCacheUrls.forEach((url) => {
-        cache.delete(url);
-      });
-    });
-  } else if (event.data.action === "clearPostCache") {
-    caches.open(CACHE_NAME).then((cache) => {
-      noCacheUrls.forEach((url) => {
-        cache.delete(url);
-      });
-    });
   }
 });

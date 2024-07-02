@@ -67,7 +67,7 @@ class ProfilesController < ApplicationController
 
   # ユーザーを設定
   def set_user
-    @user = User.find_by(username_slug: params[:username_slug])
+    @user = User.find_by(username_slug: params[:username_slug] || current_user.username_slug)
   end
 
   def set_current_user
@@ -114,4 +114,5 @@ class ProfilesController < ApplicationController
     @pagy, @posts = pagy_countless(filtered_posts.includes(:user, :reposts, :replies, :likes, :bookmarks, post_users: :user),
                                    items: 10)
   end
+
 end

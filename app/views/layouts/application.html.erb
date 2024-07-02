@@ -68,7 +68,9 @@
   <div class="flex-1 flex flex-col md:flex-row max-w-screen-xl mx-auto w-full">
     <!-- サイドバー -->
     <% if logged_in? %>
-      <%= render 'shared/sidebar' %>
+      <div id="after-sidebar">
+        <%= render 'shared/sidebar' %>
+      </div>
     <% else %>
       <div id="no-sidebar"></div>
     <% end %>
@@ -84,7 +86,9 @@
 
     <!-- ウィジェット -->
     <% if logged_in? %>
-      <%= render 'shared/widget', users: @recent_users %>
+      <div id="after-widget">
+        <%= render 'shared/widget', users: @recent_users %>
+      </div>
     <% else %>
       <div id="no-widget"></div>
     <% end %>

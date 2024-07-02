@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "main-content" do %>
+<turbo-frame id="main-content">
 <%= turbo_frame_tag 'post_edit_modal' %>
 <%= turbo_frame_tag "profile_edit_modal" %>
 <%= turbo_frame_tag 'profile_modal' %>
@@ -26,4 +26,4 @@
     <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
   </div>
 </div>
-<% end %>
+</turbo-frame>
