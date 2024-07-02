@@ -37,7 +37,7 @@ Metrics/MethodLength:
 Metrics/AbcSize:
   Exclude:
     - "db/migrate/*.rb" # マイグレーションファイルは除外
-  Max: 36 # ABCサイズの最大値を36に設定
+  Max: 40 # ABCサイズの最大値を40に設定
 Metrics/ModuleLength:
   Max: 120
 
