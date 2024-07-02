@@ -1,9 +1,11 @@
-<li class="<%= defined?(menu_class) ? menu_class : 'relative' %>" data-controller="notification">
-  <%= link_to notifications_path, id: link_id, data: { turbo_method: :post, active_path: notifications_path }, class: link_class do %>
-    <i class="fas fa-bell text-2xl"></i>
-    <span class="absolute <%= defined?(notification_position_class) ? notification_position_class : 'top-0 right-[20px]' %> inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" data-notification-target="notificationCount" style="<%= current_user.received_notifications.unread.count > 0 ? 'display: block;' : 'display: none;' %>">
-      <%= current_user.received_notifications.unread.count %>
-    </span>
-    <%= defined?(show_text) && show_text ? '<h2 class="text-lg flex-grow">通知</h2>'.html_safe : '' %>
+<li class="<%= defined?(menu_class) ? menu_class : '' %>" data-controller="notification">
+  <%= link_to notifications_path, id: link_id, method: :post, class: link_class do %>
+    <div class="justify-self-center relative w-[27px] h-[27px]">
+      <i class="fas fa-bell text-2xl"></i>
+      <span class="absolute <%= defined?(notification_position_class) ? notification_position_class : 'top-0 right-[20px]' %> inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" data-notification-target="notificationCount" style="<%= current_user.received_notifications.unread.count > 0 ? 'display: block;' : 'display: none;' %>">
+        <%= current_user.received_notifications.unread.count %>
+      </span>
+    </div>
+    <%= defined?(show_text) && show_text ? '<h2 class="text-lg">通知</h2>'.html_safe : '' %>
   <% end %>
 </li>

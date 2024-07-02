@@ -12,10 +12,10 @@
     </li>
     <%= render partial: 'shared/notification_link', locals: { 
       link_id: "bottom-navbar-notifications-link", 
-      link_class: "block py-2 #{active_if(notifications_path)}", 
+      link_class: "flex grid justify-items-stretch block py-2 #{active_if(notifications_path)}", 
       corresponding_link_id: "sidebar-notifications-link", 
-      menu_class: "flex-1 text-center relative", 
-      notification_position_class: "top-[0px] right-[38px]",
+      menu_class: "flex-1 text-center", 
+      notification_position_class: "-top-[8px] -right-[6px]",
       show_text: false 
     } %>
     <li class="flex-1 text-center">
