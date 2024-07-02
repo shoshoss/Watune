@@ -24,6 +24,6 @@ class NotificationsController < ApplicationController
 
   def unread_count
     unread_count = current_user.received_notifications.unread.count
-    render json: { unread_count: unread_count }
+    render json: { unread_count: }
   end
 end

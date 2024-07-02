@@ -114,5 +114,4 @@ class ProfilesController < ApplicationController
     @pagy, @posts = pagy_countless(filtered_posts.includes(:user, :reposts, :replies, :likes, :bookmarks, post_users: :user),
                                    items: 10)
   end
-
 end
