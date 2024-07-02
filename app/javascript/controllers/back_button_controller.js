@@ -1,30 +1,50 @@
 import { Controller } from "@hotwired/stimulus";
-import { Turbo } from "@hotwired/turbo-rails";
 
 export default class extends Controller {
   connect() {
-    this.saveCurrentURL();
-    document.addEventListener("turbo:before-cache", this.saveScrollPosition);
+    this.saveCurrentState();
     document.addEventListener(
-      "turbo:load",
-      this.restoreScrollPosition.bind(this)
+      "turbo:before-cache",
+      this.saveScrollPosition.bind(this)
     );
-    this.setupBackButton();
+    window.addEventListener("popstate", this.handlePopState.bind(this));
+
+    // デバッグ用ログ
+    console.log("BackButtonController connected");
+
+    // 戻るボタンのイベントリスナーを追加
+    const backButton = document.getElementById("back-button");
+    if (backButton) {
+      backButton.addEventListener(
+        "click",
+        this.handleBackButtonClick.bind(this)
+      );
+    }
   }
 
   disconnect() {
-    document.removeEventListener("turbo:before-cache", this.saveScrollPosition);
     document.removeEventListener(
-      "turbo:load",
-      this.restoreScrollPosition.bind(this)
+      "turbo:before-cache",
+      this.saveScrollPosition.bind(this)
     );
+    window.removeEventListener("popstate", this.handlePopState.bind(this));
   }
 
-  saveCurrentURL() {
+  saveCurrentState() {
     const frame = document.getElementById("main-content");
     if (frame) {
-      history.replaceState({ turboFrame: frame.src }, "", window.location.href);
+      const postId = this.getCurrentPostId(); // 現在のポストIDを取得
+      history.replaceState(
+        { turboFrame: frame.src, postId: postId },
+        "",
+        window.location.href
+      );
     }
+  }
+
+  getCurrentPostId() {
+    const postElement = document.querySelector("[data-post-id]");
+    return postElement ? postElement.dataset.postId : null;
   }
 
   saveScrollPosition() {
@@ -39,76 +59,32 @@ export default class extends Controller {
 
   restoreScrollPosition() {
     const repliesContainer = document.getElementById("replies");
-    const scrollToTopButton = document.getElementById("scroll-to-top");
-    const scrollToBottomButton = document.getElementById("scroll-to-bottom");
-
-    function scrollToTop() {
-      repliesContainer.scrollTop = 0;
+    const savedScrollPosition = sessionStorage.getItem("repliesScrollPosition");
+    if (repliesContainer && savedScrollPosition !== null) {
+      repliesContainer.scrollTop = savedScrollPosition;
+      sessionStorage.removeItem("repliesScrollPosition");
     }
+  }
 
-    function scrollToBottom() {
-      repliesContainer.scrollTop = repliesContainer.scrollHeight;
-    }
-
-    function checkScroll() {
-      if (repliesContainer.scrollHeight > repliesContainer.clientHeight) {
-        scrollToTopButton.style.display = "block";
-        scrollToBottomButton.style.display = "block";
-      } else {
-        scrollToTopButton.style.display = "none";
-        scrollToBottomButton.style.display = "none";
-      }
-    }
-
-    if (scrollToTopButton && scrollToBottomButton && repliesContainer) {
-      scrollToTopButton.addEventListener("click", scrollToTop);
-      scrollToBottomButton.addEventListener("click", scrollToBottom);
-
-      // ページロード時にスクロールをチェック
-      checkScroll();
-
-      // 新しい返信が追加されたときにスクロールをチェック
-      const observer = new MutationObserver(function (mutationsList, observer) {
-        for (let mutation of mutationsList) {
-          if (mutation.type === "childList") {
-            checkScroll();
-            if (scrollToBottomButton.style.display === "block") {
-              scrollToBottom();
-            }
-          }
+  handlePopState(event) {
+    const frame = document.getElementById("main-content");
+    if (frame && event.state && event.state.turboFrame) {
+      frame.src = event.state.turboFrame;
+      const postId = event.state.postId;
+      if (postId) {
+        const postElement = document.querySelector(`[id='${postId}']`);
+        if (postElement) {
+          postElement.scrollIntoView({ behavior: "smooth" });
         }
-      });
-
-      observer.observe(repliesContainer, { childList: true, subtree: true });
-
-      // 前回のスクロール位置を復元
-      const savedScrollPosition = sessionStorage.getItem(
-        "repliesScrollPosition"
-      );
-      if (savedScrollPosition !== null) {
-        repliesContainer.scrollTop = savedScrollPosition;
-        sessionStorage.removeItem("repliesScrollPosition");
       }
     }
   }
 
-  setupBackButton() {
-    const backButton = document.getElementById("back-button");
+  handleBackButtonClick(event) {
+    event.preventDefault();
+    console.log("Back button clicked");
 
-    if (backButton) {
-      backButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        const previousState = history.state;
-        if (previousState && previousState.turboFrame) {
-          const frame = document.getElementById("main-content");
-          if (frame) {
-            frame.src = previousState.turboFrame;
-            history.back();
-          }
-        } else {
-          window.history.back();
-        }
-      });
-    }
+    // 履歴を戻す
+    window.history.back();
   }
 }

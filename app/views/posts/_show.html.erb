@@ -4,10 +4,10 @@
 <%= turbo_frame_tag 'reply_modal' %>
 <%= turbo_frame_tag "post_show" do %>
 <%= turbo_frame_tag "main-content" do %>
-  <div class="container min-h-screen max-w-[670px] mx-auto border-x" data-controller="back-button">
-    <!-- 戻るボタン -->
+  <div class="container min-h-screen max-w-[670px] mx-auto border-x">
     <div class="flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
-      <div class="flex items-center w-[56px] h-[53px]">
+      <!-- 戻るボタン -->
+      <div class="flex items-center w-[56px] h-[53px]" data-controller="back-button">
         <button id="back-button" class="rounded-full w-[34px] h-[34px] text-center hover:bg-sky-100">
           <i class="fas fa-arrow-left w-[20px] h-[20px]"></i>
         </button>
