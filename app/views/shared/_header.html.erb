@@ -1,7 +1,7 @@
-<div id="after-header" data-controller="navbar">
+<div id="after-header">
   <div class="flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to root_path, id: "header-logo-link", data: { turbo_action: "advance", turbo_frame: "_top", action: "click->navbar#setActive", corresponding_link_id: "sidebar-home-link", active_path: root_path } do %>
+      <%= link_to root_path, id: "header-logo-link", data: { turbo_action: "advance", turbo_frame: "_top" }, class: "#{active_if(root_path)}" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
           <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
@@ -19,35 +19,36 @@
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">
-            <%= link_to t('header.about'), about_path, id: "header-about-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4", data: { turbo_action: "advance", action: "click->navbar#setActive", corresponding_link_id: "sidebar-about-link", active_path: about_path } %>
+            <%= link_to t('header.about'), about_path, id: "header-about-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to root_path, id: "header-home-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4", data: { turbo_action: "advance", action: "click->navbar#setActive", corresponding_link_id: "sidebar-home-link", active_path: root_path } do %>
+            <%= link_to root_path, id: "header-home-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(root_path)}" do %>
               <i class="fa-solid fa-house text-[15px] sm:text-lg"></i>
               <span>ホーム</span>
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to profile_show_path(current_user.username_slug), id: "header-profile-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4", data: { turbo_action: "advance", action: "click->navbar#setActive", corresponding_link_id: "sidebar-profile-link", active_path: profile_show_path(current_user.username_slug) } do %>
+            <%= link_to profile_show_path(current_user.username_slug), id: "header-profile-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-[15px] sm:text-lg"></i>
               <span>プロフィール</span>
             <% end %>
           </li>
           <li class="block py-2 text-[15px] sm:text-lg">
-            <%= link_to users_path, id: "header-users-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4", data: { turbo_action: "advance", action: "click->navbar#setActive", corresponding_link_id: "sidebar-users-link", active_path: users_path } do %>
+            <%= link_to users_path, id: "header-users-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-[15px] sm:text-lg"></i>
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong></span>
             <% end %>
           </li>
           <%= render partial: 'shared/notification_link', locals: { 
             link_id: "header-notifications-link", 
-            link_class: "flex items-center block py-2 text-[15px] sm:text-lg hover:bg-sky-100 rounded-full", 
+            link_class: "flex items-center block py-2 text-[15px] sm:text-lg hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
             corresponding_link_id: "sidebar-notifications-link", 
             menu_class: "flex-1 text-center relative", 
+            notification_position_class: "top-[0px] right-[240px]",
             show_text: true
           } %>
           <li class="block py-2">
-            <%= link_to edit_notification_settings_path, id: "header-settings-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4", data: { turbo_action: "advance", action: "click->navbar#setActive", corresponding_link_id: "sidebar-settings-link", active_path: edit_notification_settings_path } do %>
+            <%= link_to edit_notification_settings_path, id: "header-settings-link", class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-[15px] sm:text-lg"></i>
               <span>通知設定</span>
             <% end %>
