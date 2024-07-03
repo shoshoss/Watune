@@ -18,7 +18,7 @@
       <% end %>
     </div>
     <div class="mx-auto max-w-[670px] w-full">
-      <div id="post-list" class="grid grid-cols-1">
+      <div class="grid grid-cols-1">
         <% if notifications.present? %>
           <%= turbo_frame_tag "next-page" do %>
             <% notifications.each do |notification| %>

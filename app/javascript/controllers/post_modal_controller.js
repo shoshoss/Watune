@@ -25,9 +25,7 @@ export default class extends Controller {
       // フォームのバリデーションエラーの場合はここで何もしない
       return;
     }
-
-    // ページのキャッシュをクリアして再読み込み
-    location.reload(true);
+    this.closeModal();
   }
 
   // フォームの状態をチェックし、投稿ボタンの有効/無効を切り替えるメソッド
@@ -124,10 +122,16 @@ export default class extends Controller {
   handleRecordingStop(chunks) {
     // 録音データをBlobに変換
     const blob = new Blob(chunks, { type: this.mediaRecorder.mimeType });
-    const audioURL = window.URL.createObjectURL(blob);
-    this.createSoundClip(audioURL);
 
-    // MIMEタイプから適切なファイル拡張子を決定
+    // Blobから生成されたURLを取得
+    const audioURL = window.URL.createObjectURL(blob);
+    this.previewAudioURL = audioURL; // プレビュー用のオーディオURLを設定
+    this.previewAudioType = this.mediaRecorder.mimeType; // プレビュー用のMIMEタイプを設定
+
+    // プレビュー用のサウンドクリップを作成
+    this.createSoundClip(audioURL, this.mediaRecorder.mimeType);
+
+    // MIMEタイプからファイル拡張子を決定
     const mimeType = this.mediaRecorder.mimeType;
     const fileExtension = mimeType.split("/")[1].split(";")[0];
 
@@ -136,6 +140,7 @@ export default class extends Controller {
       type: mimeType,
     });
 
+    // DataTransferオブジェクトを使用してファイル入力にファイルを設定
     const dt = new DataTransfer();
     dt.items.add(file);
     const fileInput = document.querySelector('input[type="file"]');
@@ -145,11 +150,12 @@ export default class extends Controller {
     const submitButton = fileInput.form.querySelector('input[type="submit"]');
     submitButton.disabled = false;
 
-    this.checkForm(); // フォームの状態を再チェック
+    // フォームの状態を再チェック
+    this.checkForm();
   }
 
   // 音声クリップを生成して表示するメソッド
-  createSoundClip(audioURL) {
+  createSoundClip(audioURL, mimeType) {
     const clipContainer = document.createElement("div");
     clipContainer.className =
       "clip flex flex-col items-center w-full max-w-screen-lg mx-auto my-2 p-2 border border-gray-200 rounded overflow-hidden";
@@ -157,14 +163,17 @@ export default class extends Controller {
     const audio = document.createElement("audio");
     audio.controls = true;
     audio.src = audioURL;
+    audio.type = mimeType;
     audio.className = "w-full";
 
-    // 削除ボタン
+    // 削除ボタンを作成
     const deleteButton = this.createDeleteButton(clipContainer);
 
+    // クリップコンテナにオーディオと削除ボタンを追加
     clipContainer.appendChild(deleteButton);
     clipContainer.appendChild(audio);
 
+    // 既存のサウンドクリップをクリアし、新しいクリップを追加
     this.element.querySelector(".sound-clips").innerHTML = "";
     this.element.querySelector(".sound-clips").appendChild(clipContainer);
   }
