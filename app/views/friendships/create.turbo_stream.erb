@@ -7,8 +7,7 @@
     <% if current_user.following?(@user) %>
       <%= link_to "あなたへ",
           new_post_path(privacy: 'selected_users', selected_user_ids: [@user.id]),
-          class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
-          data: { turbo_frame: "post_modal" } %>
+          class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300" %>
     <% end %>
   </div>
 <% end %>

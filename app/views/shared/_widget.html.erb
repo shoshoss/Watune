@@ -21,8 +21,7 @@
     <% else %>
       <%= link_to new_post_path(privacy: 'open'),
                   id: "pc-post-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100",
-                  data: { turbo_frame: "post_modal" } do %>
+                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100" do %>
         <i class="fa-solid fa-gift text-6xl"></i>
       <% end %>
     <% end %>

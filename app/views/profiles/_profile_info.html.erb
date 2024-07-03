@@ -32,15 +32,13 @@
           <% if current_user == @user %>
             <%= link_to "自分へ",
                 new_post_path(privacy: 'only_me'),
-                class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
-                data: { turbo_frame: "post_modal" } %>
+                class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300" %>
           <% else %>
             <div id="send-message">
               <% if current_user && current_user.following?(@user) %>
                 <%= link_to "あなたへ",
                     new_post_path(privacy: 'selected_users', selected_user_ids: [@user.id]),
-                    class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300",
-                    data: { turbo_frame: "post_modal" } %>
+                    class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300" %>
               <% end %>
             </div>
           <% end %>

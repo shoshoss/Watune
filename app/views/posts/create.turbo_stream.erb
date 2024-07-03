@@ -1,1 +1,1 @@
-<%= turbo_stream.prepend "post-list", partial: "posts/create_post", locals: { post: @post, preview_audio_url: controller.previewAudioURL, preview_audio_type: controller.previewAudioType } %>
+<%= turbo_stream.prepend "post-list", partial: "posts/post_create", locals: { post: @post, preview_audio_url: controller.previewAudioURL, preview_audio_type: controller.previewAudioType } %>
