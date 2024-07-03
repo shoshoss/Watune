@@ -5,3 +5,7 @@
 <%= turbo_stream.update "after-widget" do %>
   <%= render 'shared/widget', users: @recent_users %>
 <% end %>
+
+<%= turbo_stream.update "flash" do %>
+  <%= render 'shared/flash_message' %>
+<% end %>
