@@ -18,7 +18,6 @@ const noCacheUrls = [
   "/", // ルートパスをキャッシュしない
   "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
   "/oauth/callback", // OAuthコールバックパスをキャッシュしない
-  "/notifications/unread_count", // 通知の数を取得するパスをキャッシュしない
 ];
 
 // インストールイベント: サービスワーカーのインストール時に発生
@@ -82,11 +81,14 @@ self.addEventListener("fetch", (event) => {
     caches
       .match(event.request)
       .then((cachedResponse) => {
+        // キャッシュが見つかった場合、キャッシュを返す
         if (cachedResponse) {
           return cachedResponse;
         }
+        // キャッシュが見つからない場合、ネットワークから取得
         return fetch(event.request, { redirect: "follow" }).then(
           (networkResponse) => {
+            // レスポンスが成功した場合、キャッシュに保存
             if (
               networkResponse &&
               networkResponse.status === 200 &&

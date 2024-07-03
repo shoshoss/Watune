@@ -44,19 +44,25 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// フォローやフォロー解除時のイベントリスナーを追加
+// フォローやフォロー解除時のイベントリスナーを追加（最適化）
 document.addEventListener("turbo:load", () => {
-  const followButtons = document.querySelectorAll(".follow-button");
-  followButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
-        navigator.serviceWorker.controller.postMessage({
-          action: "updateWidget",
-        });
-      }
-    });
-  });
+  const container = document.querySelector("#follow-buttons-container");
+  if (container) {
+    container.removeEventListener("click", handleFollowButtonClick);
+    container.addEventListener("click", handleFollowButtonClick);
+  }
 });
+
+function handleFollowButtonClick(event) {
+  const button = event.target.closest(".follow-button");
+  if (!button) return;
+
+  if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({
+      action: "updateWidget",
+    });
+  }
+}
 
 // 退会処理用のスクリプトを読み込む
 document.addEventListener("DOMContentLoaded", () => {
