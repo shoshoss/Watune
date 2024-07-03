@@ -6,7 +6,7 @@
 <div class="container">
   <% unless logged_in? %>
     <div class="flex justify-center my-4">
-      <%= link_to 'このアプリについて', "#{root_path}#about", data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
+      <%= link_to 'このアプリについて', "#{about_path}#about", data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
     </div>
   <% end %>
 

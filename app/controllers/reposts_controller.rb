@@ -3,7 +3,7 @@ class RepostsController < ApplicationController
 
   def create
     if current_user.repost?(@post)
-      redirect_to root_path, alert: '既にリポスト済みです'
+      redirect_to posts_path, alert: '既にリポスト済みです'
     else
       @repost = current_user.repost(@post)
       @original_post = @post
