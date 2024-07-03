@@ -2,18 +2,17 @@
 const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
-  "/about", // その他の静的ページをキャッシュ
+  "/about", // 静的ページをキャッシュ
   "/privacy_policy",
   "/terms_of_use",
 ];
 
 const additionalUrlsToCache = [
-  "/icon-192.png",
+  "/icon-192.png", // アイコン画像をキャッシュ
   "/icon-512.png",
   "/apple-touch-icon.png",
 ];
 
-// キャッシュしないリソースを定義
 const noCacheUrls = [
   "/", // ルートパスをキャッシュしない
   "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
@@ -23,7 +22,6 @@ const noCacheUrls = [
 // インストールイベント: サービスワーカーのインストール時に発生
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    // キャッシュを開き、必須リソースをキャッシュする
     caches
       .open(CACHE_NAME)
       .then((cache) => {
@@ -44,7 +42,7 @@ self.addEventListener("activate", (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (!cacheWhitelist.includes(cacheName)) {
-            return caches.delete(cacheName);
+            return caches.delete(cacheName); // 古いキャッシュを削除
           }
         })
       );
@@ -77,35 +75,31 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // キャッシュファースト戦略とStale-While-Revalidate戦略を組み合わせる
   event.respondWith(
-    caches
-      .match(event.request)
-      .then((cachedResponse) => {
-        // キャッシュが見つかった場合、キャッシュを返す
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        // キャッシュが見つからない場合、ネットワークから取得
-        return fetch(event.request, { redirect: "follow" }).then(
-          (networkResponse) => {
-            // レスポンスが成功した場合、キャッシュに保存
-            if (
-              networkResponse &&
-              networkResponse.status === 200 &&
-              networkResponse.type === "basic"
-            ) {
-              const responseToCache = networkResponse.clone();
-              caches.open(CACHE_NAME).then((cache) => {
-                cache.put(event.request, responseToCache);
-              });
-            }
-            return networkResponse;
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request, { redirect: "follow" })
+        .then((networkResponse) => {
+          // ネットワークからのレスポンスをキャッシュに保存
+          if (
+            networkResponse &&
+            networkResponse.status === 200 &&
+            networkResponse.type === "basic"
+          ) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
           }
-        );
-      })
-      .catch((error) => {
-        console.error("Fetch failed:", error);
-      })
+          return networkResponse;
+        })
+        .catch((error) => {
+          console.error("Fetch failed:", error);
+        });
+
+      // キャッシュがあればキャッシュを返し、同時にバックグラウンドで更新
+      return cachedResponse || fetchPromise;
+    })
   );
 });
 
