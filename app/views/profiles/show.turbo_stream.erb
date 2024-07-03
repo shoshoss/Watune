@@ -1,5 +1,5 @@
 <%= turbo_stream.update "main-content" do %>
-  <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
+  <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, pagy: @pagy, initial_category: @initial_category, notifications: @notifications } %>
 <% end %>
 
 <%= turbo_stream.update "after-widget" do %>
