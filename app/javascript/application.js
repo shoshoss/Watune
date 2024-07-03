@@ -52,6 +52,9 @@ if ("serviceWorker" in navigator) {
                 `/user_following/${usernameSlug}`,
                 `/user_followers/${usernameSlug}`,
                 `/waves/new`,
+                `/waves/new?privacy=only_me`,
+                `/waves/new?privacy=selected_users`,
+                `/waves/new?privacy=open`,
               ],
             });
           }

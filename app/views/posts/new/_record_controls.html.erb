@@ -1,0 +1,13 @@
+<section>
+  <canvas class="visualizer w-full rounded-lg h-24 md:h-80" style="background-color: #05aaff;"></canvas>
+</section>
+
+<div class="flex justify-around items-center pt-2 px-5">
+  <button class="record text-xl bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5 md:px-10 rounded disabled:opacity-50" data-action="click->post-create#startRecording">
+    録音<br class="md:hidden">開始
+  </button>
+  <span class="timer text-gray-800 font-semibold text-3xl md:text-3xl lg:text-3xl">00:00</span>
+  <button class="stop text-xl bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-5 md:px-10 rounded disabled:opacity-50" data-action="click->post-create#stopRecording" disabled>
+    録音<br class="md:hidden">完了
+  </button>
+</div>
