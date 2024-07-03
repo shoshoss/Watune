@@ -13,7 +13,6 @@ if ("serviceWorker" in navigator) {
           registration.scope
         );
 
-        // 新しいサービスワーカーがインストールされた場合に更新を促す
         if (registration.waiting) {
           registration.waiting.postMessage({ action: "skipWaiting" });
         }
@@ -39,15 +38,13 @@ if ("serviceWorker" in navigator) {
           // ログインユーザー用の特定のリソースをバックグラウンドでキャッシュ
           const usernameSlug = getUsernameSlug(); // ユーザーのusername_slugを取得
           if (usernameSlug) {
-            navigator.serviceWorker.controller.postMessage({
-              action: "cacheUserSpecificResources",
-              urls: [
-                `/profile_show/${usernameSlug}`,
-                "/notification_settings/edit",
-                `/user_following/${usernameSlug}`,
-                `/user_followers/${usernameSlug}`,
-              ],
-            });
+            const audioUrls = extractAudioUrls();
+            if (audioUrls.length > 0) {
+              navigator.serviceWorker.controller.postMessage({
+                action: "cacheAudioFiles",
+                audioUrls: audioUrls,
+              });
+            }
           }
         });
       },
@@ -56,6 +53,19 @@ if ("serviceWorker" in navigator) {
       }
     );
   });
+}
+
+// 音声ファイルのURLを抽出する関数
+function extractAudioUrls() {
+  const audioElements = document.querySelectorAll("audio[src]");
+  const audioUrls = Array.from(audioElements).map((audio) => audio.src);
+  return audioUrls;
+}
+
+// ユーザーのusername_slugを取得する関数
+function getUsernameSlug() {
+  const userDataElement = document.getElementById("user-data");
+  return userDataElement ? userDataElement.dataset.usernameSlug : null;
 }
 
 // フォローやフォロー解除時のイベントリスナーを追加（最適化）
@@ -84,9 +94,3 @@ document.addEventListener("DOMContentLoaded", () => {
   script.src = "/unregister_service_worker.js";
   document.head.appendChild(script);
 });
-
-// ユーザーのusername_slugを取得する関数
-function getUsernameSlug() {
-  const userDataElement = document.getElementById("user-data");
-  return userDataElement ? userDataElement.dataset.usernameSlug : null;
-}

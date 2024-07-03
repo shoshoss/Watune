@@ -24,6 +24,11 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params.except(:recipient_ids))
 
     if @post.save
+      # オーディオファイルにキャッシュヘッダーを設定
+      if @post.audio.attached?
+        set_cache_headers(@post.audio.blob)
+      end
+
       respond_to do |format|
         format.html { redirect_to user_post_path(current_user.username_slug, @post), notice: '投稿が作成されました。' }
         format.json { render json: @post, status: :created }
@@ -73,6 +78,11 @@ class PostsController < ApplicationController
       @post.category = custom_category
     end
     if @post.save
+      # オーディオファイルにキャッシュヘッダーを設定
+      if @post.audio.attached?
+        set_cache_headers(@post.audio)
+      end
+
       if post_params[:recipient_ids].present?
         PostCreationJob.perform_later(@post.id, post_params[:recipient_ids],
                                       @post.privacy)
@@ -91,6 +101,11 @@ class PostsController < ApplicationController
       if post_params[:fixed_category] == 'other'
         custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
         @post.update(category: custom_category)
+      end
+
+      # オーディオファイルにキャッシュヘッダーを設定
+      if @post.audio.attached?
+        set_cache_headers(@post.audio)
       end
 
       if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
