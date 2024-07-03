@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "main-content", data: { controller: "history" } do %>
+<turbo-frame id="main-content">
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[670px] w-full bg-white border border-gray-200">
     <h1 class="text-xl font-bold mt-4 text-center">メール通知設定</h1>
@@ -33,4 +33,5 @@
     <% end %>
   </div>
 </div>
-<% end %>
+</turbo-frame>
+

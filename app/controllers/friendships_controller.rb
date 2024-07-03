@@ -5,13 +5,10 @@ class FriendshipsController < ApplicationController
   # フォローリストまたはフォロワーリストの表示
   def index
     @category = params[:category] || 'following'
-    cache_key = "friendships/#{@user.id}/#{@category}/page_#{params[:page]}"
-    @pagy, @users = Rails.cache.fetch(cache_key, expires_in: 12.hours) do
-      if @category == 'followers'
-        pagy_countless(@user.followers, items: 15)
-      else
-        pagy_countless(@user.followings, items: 15)
-      end
+    if @category == 'followers'
+      @pagy, @users = pagy_countless(@user.followers, items: 15)
+    else
+      @pagy, @users = pagy_countless(@user.followings, items: 15)
     end
     render :index
   end
@@ -20,7 +17,6 @@ class FriendshipsController < ApplicationController
   def create
     current_user.follow(@user)
     update_unfollowed_users_count
-    update_cache_for_create
 
     respond_to do |format|
       format.turbo_stream
@@ -32,7 +28,6 @@ class FriendshipsController < ApplicationController
   def destroy
     current_user.unfollow(@user)
     update_unfollowed_users_count
-    update_cache_for_destroy
 
     respond_to do |format|
       format.turbo_stream
@@ -62,17 +57,5 @@ class FriendshipsController < ApplicationController
   # フォローしていないユーザー数を更新する
   def update_unfollowed_users_count
     @unfollowed_users_count = User.where.not(id: current_user.following_ids).count
-  end
-
-  # フォローが作成されたときのキャッシュを更新する
-  def update_cache_for_create
-    Rails.cache.delete_matched("friendships/#{@user.id}/followers/*")
-    Rails.cache.delete_matched("friendships/#{current_user.id}/following/*")
-  end
-
-  # フォローが削除されたときのキャッシュを更新する
-  def update_cache_for_destroy
-    Rails.cache.delete_matched("friendships/#{@user.id}/followers/*")
-    Rails.cache.delete_matched("friendships/#{current_user.id}/following/*")
   end
 end
