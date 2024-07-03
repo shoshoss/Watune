@@ -35,6 +35,20 @@ if ("serviceWorker" in navigator) {
           swRegistration.active.postMessage({
             action: "cacheAdditionalResources",
           });
+
+          // ログインユーザー用の特定のリソースをバックグラウンドでキャッシュ
+          const usernameSlug = getUsernameSlug(); // ユーザーのusername_slugを取得
+          if (usernameSlug) {
+            navigator.serviceWorker.controller.postMessage({
+              action: "cacheUserSpecificResources",
+              urls: [
+                `/profile_show/${usernameSlug}`,
+                "/notification_settings/edit",
+                `/user_following/${usernameSlug}`,
+                `/user_followers/${usernameSlug}`,
+              ],
+            });
+          }
         });
       },
       (error) => {
@@ -70,3 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
   script.src = "/unregister_service_worker.js";
   document.head.appendChild(script);
 });
+
+// ユーザーのusername_slugを取得する関数
+function getUsernameSlug() {
+  const userDataElement = document.getElementById("user-data");
+  return userDataElement ? userDataElement.dataset.usernameSlug : null;
+}

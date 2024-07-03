@@ -100,5 +100,8 @@
   <!-- フッター -->
   <%= render 'shared/footer' %>
 
+  <!-- username_slugをJavaScriptに渡す ログインユーザのプロフィールの読み込みのため -->
+  <div id="user-data" data-username-slug="<%= current_user&.username_slug %>"></div>
+
 </body>
 </html>

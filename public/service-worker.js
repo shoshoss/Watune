@@ -3,6 +3,7 @@ const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
   "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
   "/about", // 静的ページをキャッシュ
+  "/waves",
   "/privacy_policy",
   "/terms_of_use",
 ];
@@ -103,9 +104,15 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// バックグラウンドで追加リソースをキャッシュ
+// メッセージイベント: クライアントからのメッセージを処理
 self.addEventListener("message", (event) => {
-  if (event.data.action === "cacheAdditionalResources") {
+  if (event.data.action === "cacheUserSpecificResources") {
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(event.data.urls).catch((error) => {
+        console.error("Failed to cache user specific resources:", error);
+      });
+    });
+  } else if (event.data.action === "cacheAdditionalResources") {
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(additionalUrlsToCache).catch((error) => {
         console.error("Failed to cache additional resources:", error);
