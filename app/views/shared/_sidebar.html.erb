@@ -7,7 +7,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to root_path, id: "sidebar-posts-link", class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(root_path)}" do %>
+      <%= link_to posts_path, id: "sidebar-posts-link", class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
         <h2 class="text-lg flex-grow">ホーム</h2>
       <% end %>

@@ -2,8 +2,11 @@ class StaticPagesController < ApplicationController
   skip_before_action :require_login, only: %i[top about privacy_policy terms_of_use privacy_modal tou_modal]
 
   def top
-    # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+    if logged_in?
+      redirect_to posts_path
+    else
+      redirect_to about_path
+    end
   end
 
   def about; end
