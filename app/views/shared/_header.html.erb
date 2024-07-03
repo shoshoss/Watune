@@ -12,7 +12,7 @@
       <% if current_user.guest %>
         <%= link_to '引き継ぐ', new_signup_modal_path, id: "guest-update", class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4', data: { turbo_frame: "signup_modal" } %>
       <% end %>
-      <%= link_to t('header.post_audio'), new_post_path(privacy: 'open'), class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80", data: { turbo_frame: "post_modal" } %>
+      <%= link_to t('header.post_audio'), new_post_path(privacy: 'open'), class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>

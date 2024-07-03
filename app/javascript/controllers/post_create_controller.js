@@ -11,21 +11,7 @@ export default class extends Controller {
 
   // 初期設定 コントローラが接続されたときに呼ばれる
   connect() {
-    this.element.setAttribute("open", true);
     this.checkForm(); // フォームの初期状態をチェック
-  }
-
-  closeModal() {
-    // モーダルを閉じる
-    this.element.close();
-  }
-
-  afterClose(event) {
-    if (!event.detail.success) {
-      // フォームのバリデーションエラーの場合はここで何もしない
-      return;
-    }
-    this.closeModal();
   }
 
   // フォームの状態をチェックし、投稿ボタンの有効/無効を切り替えるメソッド

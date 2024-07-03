@@ -1,0 +1,58 @@
+<%= form_with model: post, data: { controller: "post-create", action: "turbo:submit-end->post-create#afterClose" } do |f| %>
+  <div class="card-body p-2">
+    <%= render 'shared/error_messages', object: f.object %>
+
+    <section class="sound-clips">
+      <!-- 音声クリップはここに表示 -->
+    </section>
+
+    <div class="form-control pt-2">
+      <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
+      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-create#checkForm", "post-create-target" => "body" } %>
+      <div class="text-sm text-gray-500 mt-1" data-post-create-target="characterCount">0 / 500</div>
+    </div>
+
+    <div class="form-control pt-2">
+      <%= f.label :fixed_category, 'カテゴリー', class: "block text-lg font-semibold", for: "fixed_category" %>
+      <%= f.select :fixed_category, Post.fixed_categories_i18n.invert.map { |key, value| [key, value] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg" %>
+    </div>
+
+    <div class="form-control hidden" id="custom_category_input">
+      <%= f.label :custom_category, 'カスタムカテゴリー', class: "hidden block text-lg font-semibold", for: "custom_category" %>
+      <%= f.text_field :custom_category, id: 'custom_category', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", placeholder: "カテゴリーを入力" %>
+    </div>
+
+    <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+    <%= f.hidden_field :duration, class: "duration-field" %>
+
+    <!-- 送信先設定 -->
+    <%= turbo_frame_tag "privacy-settings" do %>
+      <div class="form-control pt-2">
+        <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
+        <div class="flex space-x-4 pt-2">
+          <%= link_to '自分へ', new_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= link_to '仲間へ', new_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= link_to 'みんなへ', new_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+        </div>
+        <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || post.privacy %>">
+      </div>
+
+      <% if params[:privacy] == 'selected_users' || post.privacy == 'selected_users' %>
+        <div class="form-control pt-2">
+          <%= f.label :recipient_ids, '仲間を選択', class: "block text-lg font-semibold" %>
+          <div class="flex flex-col max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-2">
+            <% current_user.following_ordered_by_sent_posts.each do |following| %>
+              <label class="inline-flex items-center m-2">
+                <%= check_box_tag 'post[recipient_ids][]', following.id, params[:selected_user_ids]&.include?(following.id.to_s), class: 'form-checkbox h-5 w-5 text-blue-600' %>
+                <span class="ml-2 text-gray-700"><%= following.display_name %> (@<%= following.username_slug %>)</span>
+              </label>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="form-control mt-4 lg:mt-6">
+    <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg bg-opacity-80 opacity-50 cursor-not-allowed", disabled: true, data: { "post-create-target" => "submitButton" } %>
+  </div>
+<% end %>

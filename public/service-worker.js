@@ -1,25 +1,22 @@
 // キャッシュ名とキャッシュするURLを定義
 const CACHE_NAME = "Watune-cache-v1";
 const essentialUrlsToCache = [
-  "/manifest.webmanifest", // 初期読み込み時に必要な最低限のリソース
-  "/about", // 静的ページをキャッシュ
+  "/manifest.webmanifest",
+  "/about",
+  "/waves",
   "/privacy_policy",
   "/terms_of_use",
 ];
 
 const additionalUrlsToCache = [
-  "/icon-192.png", // アイコン画像をキャッシュ
+  "/icon-192.png",
   "/icon-512.png",
   "/apple-touch-icon.png",
 ];
 
-const noCacheUrls = [
-  "/", // ルートパスをキャッシュしない
-  "/oauth/google", // Google OAuth 認証用のパスをキャッシュしない
-  "/oauth/callback", // OAuthコールバックパスをキャッシュしない
-];
+const noCacheUrls = ["/", "/oauth/google", "/oauth/callback"];
 
-// インストールイベント: サービスワーカーのインストール時に発生
+// インストールイベント
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
@@ -34,7 +31,7 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// アクティベートイベント: サービスワーカーのアクティベート時に発生
+// アクティベートイベント
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -50,7 +47,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// フェッチイベント: ネットワークリクエストが発生したときに処理
+// フェッチイベント
 self.addEventListener("fetch", (event) => {
   // chrome-extension スキームや POST リクエストを除外
   if (
@@ -103,9 +100,15 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// バックグラウンドで追加リソースをキャッシュ
+// メッセージイベント
 self.addEventListener("message", (event) => {
-  if (event.data.action === "cacheAdditionalResources") {
+  if (event.data.action === "cacheUserSpecificResources") {
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(event.data.urls).catch((error) => {
+        console.error("Failed to cache user specific resources:", error);
+      });
+    });
+  } else if (event.data.action === "cacheAdditionalResources") {
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(additionalUrlsToCache).catch((error) => {
         console.error("Failed to cache additional resources:", error);
@@ -113,5 +116,11 @@ self.addEventListener("message", (event) => {
     });
   } else if (event.data.action === "skipWaiting") {
     self.skipWaiting();
+  } else if (event.data.action === "cacheAudioFiles") {
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(event.data.audioUrls).catch((error) => {
+        console.error("Failed to cache audio files:", error);
+      });
+    });
   }
 });

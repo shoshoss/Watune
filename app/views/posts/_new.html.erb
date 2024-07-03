@@ -1,0 +1,60 @@
+<turbo-frame id="main-content">
+<div class="container min-h-screen max-w-[670px] mx-auto border-x">
+  <div class="flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+    <!-- 戻るボタン -->
+    <%= render 'shared/back_button' %>
+    <div class="flex justify-center items-center flex-grow">
+      <p class="text-xl font-bold">ウェーブ（投稿）</p>
+    </div>
+    <div class="invisible w-[56px] h-[53px]">ダミー</div>
+  </div>
+  <div class="container mx-auto p-4" data-controller="post-create">
+    <div class="mx-auto pt-2">
+      <%= render 'posts/new/record_controls' %>
+      <%= render 'posts/new/post_form', post: post %>
+    </div>
+  </div>
+</div>
+
+  <script>
+    // テキストエリアの入力イベントに対する処理
+    document.addEventListener('input', function(event) {
+      // 入力イベントの対象がテキストエリアでない場合は処理しない
+      if (event.target.tagName.toLowerCase() !== 'textarea') return;
+
+      const textarea = event.target;
+      const textLength = textarea.value.length;
+
+      // テキストエリアの高さを調整
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+
+      // 投稿内容の文字数をカウントし、500文字を超えた場合は投稿ボタンを無効化
+      const submitButton = document.querySelector('[data-post-create-target="submitButton"]');
+      const characterCount = document.querySelector('[data-post-create-target="characterCount"]');
+      characterCount.textContent = `${textLength} / 500`;
+
+      if (textLength > 500) {
+        submitButton.disabled = true;
+        submitButton.classList.add('opacity-50');
+        submitButton.classList.add('cursor-not-allowed');
+      } else {
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50');
+        submitButton.classList.remove('cursor-not-allowed');
+      }
+    });
+
+    // カテゴリー選択の変更イベントに対する処理
+    document.addEventListener('change', function(event) {
+      if (event.target.id === 'post_fixed_category') {
+        const customCategoryInput = document.getElementById('custom_category_input');
+        if (event.target.value === 'other') {
+          customCategoryInput.classList.remove('hidden');
+        } else {
+          customCategoryInput.classList.add('hidden');
+        }
+      }
+    });
+  </script>
+</turbo-frame>

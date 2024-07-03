@@ -1,10 +1,14 @@
+// Turbo Railsとコントローラをインポート
 import "@hotwired/turbo-rails";
 import "controllers";
+
+// Active Storageをインポートしてスタート
 import * as ActiveStorage from "@rails/activestorage";
 ActiveStorage.start();
 
-// サービスワーカーを登録するコード
+// サービスワーカーのサポートをチェック
 if ("serviceWorker" in navigator) {
+  // ウィンドウがロードされたときにサービスワーカーを登録
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/service-worker.js").then(
       (registration) => {
@@ -13,11 +17,12 @@ if ("serviceWorker" in navigator) {
           registration.scope
         );
 
-        // 新しいサービスワーカーがインストールされた場合に更新を促す
+        // 新しいサービスワーカーが待機状態の場合、skipWaitingメッセージを送信
         if (registration.waiting) {
           registration.waiting.postMessage({ action: "skipWaiting" });
         }
 
+        // 新しいサービスワーカーが見つかった場合の処理
         registration.addEventListener("updatefound", () => {
           const newWorker = registration.installing;
           newWorker.addEventListener("statechange", () => {
@@ -30,11 +35,29 @@ if ("serviceWorker" in navigator) {
           });
         });
 
-        // サービスワーカーが登録された後に追加リソースをバックグラウンドでキャッシュ
+        // サービスワーカーが準備完了したら追加リソースをキャッシュ
         navigator.serviceWorker.ready.then((swRegistration) => {
           swRegistration.active.postMessage({
             action: "cacheAdditionalResources",
           });
+
+          // ユーザーのusername_slugを取得してユーザー特定のリソースをキャッシュ
+          const usernameSlug = getUsernameSlug();
+          if (usernameSlug) {
+            navigator.serviceWorker.controller.postMessage({
+              action: "cacheUserSpecificResources",
+              urls: [
+                `/profile_show/${usernameSlug}`,
+                "/notification_settings/edit",
+                `/user_following/${usernameSlug}`,
+                `/user_followers/${usernameSlug}`,
+                `/waves/new`,
+                `/waves/new?privacy=only_me`,
+                `/waves/new?privacy=selected_users`,
+                `/waves/new?privacy=open`,
+              ],
+            });
+          }
         });
       },
       (error) => {
@@ -44,7 +67,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// フォローやフォロー解除時のイベントリスナーを追加（最適化）
+// Turboがロードされたときにフォローボタンのイベントリスナーを設定
 document.addEventListener("turbo:load", () => {
   const container = document.querySelector("#follow-buttons-container");
   if (container) {
@@ -53,10 +76,12 @@ document.addEventListener("turbo:load", () => {
   }
 });
 
+// フォローボタンがクリックされたときの処理
 function handleFollowButtonClick(event) {
   const button = event.target.closest(".follow-button");
   if (!button) return;
 
+  // サービスワーカーがアクティブであればupdateWidgetアクションを送信
   if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
     navigator.serviceWorker.controller.postMessage({
       action: "updateWidget",
@@ -64,9 +89,15 @@ function handleFollowButtonClick(event) {
   }
 }
 
-// 退会処理用のスクリプトを読み込む
+// DOMコンテンツが読み込まれたときにサービスワーカーをアンレジスタするスクリプトを読み込む
 document.addEventListener("DOMContentLoaded", () => {
   const script = document.createElement("script");
   script.src = "/unregister_service_worker.js";
   document.head.appendChild(script);
 });
+
+// ユーザーのusername_slugを取得する関数
+function getUsernameSlug() {
+  const userDataElement = document.getElementById("user-data");
+  return userDataElement ? userDataElement.dataset.usernameSlug : null;
+}

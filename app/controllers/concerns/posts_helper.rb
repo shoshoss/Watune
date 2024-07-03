@@ -3,6 +3,11 @@ module PostsHelper
 
   private
 
+  def set_cache_headers(blob)
+    blob.metadata[:cache_control] = 'public, max-age=31536000'
+    blob.save
+  end
+
   def rename_audio_file(post)
     audio = post.audio
     new_filename = "#{post.id}_#{SecureRandom.uuid}#{File.extname(audio.filename.to_s)}"

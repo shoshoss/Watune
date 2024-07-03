@@ -1,4 +1,3 @@
-# app/jobs/post_creation_job.rb
 class PostCreationJob < ApplicationJob
   queue_as :default
 
@@ -12,6 +11,11 @@ class PostCreationJob < ApplicationJob
 
     # 投稿のプライバシー設定が 'selected_users' の場合
     NotificationJob.perform_later('direct', post.id) if privacy == 'selected_users'
+
+    # R2へ音声ファイルを保存する処理を非同期で行う
+    if post.audio.attached?
+      set_cache_headers(post.audio)
+    end
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Failed to find post: #{e.message}"
   end
