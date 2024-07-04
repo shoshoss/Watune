@@ -176,6 +176,7 @@ export default class extends Controller {
       'input[type="range"]',
       "a",
       "button",
+      "audio",
     ];
     if (ignoredElements.some((selector) => event.target.closest(selector))) {
       return; // クリック対象が無視リストのいずれかに一致する場合は何もしない
