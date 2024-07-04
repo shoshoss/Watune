@@ -3,7 +3,7 @@ module PostsHelper
 
   private
 
-  def set_cache_headers(blob)
+  def cache_headers(blob)
     blob.metadata[:cache_control] = 'public, max-age=31536000'
     blob.save
   end

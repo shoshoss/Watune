@@ -53,7 +53,7 @@ if ("serviceWorker" in navigator) {
                   "/notification_settings/edit",
                   `/${usernameSlug}/following`,
                   `/${usernameSlug}/followers`,
-                  `/waves/new`,
+                  "/waves/new",
                   `/waves/new?privacy=only_me`,
                   `/waves/new?privacy=selected_users`,
                   `/waves/new?privacy=open`,

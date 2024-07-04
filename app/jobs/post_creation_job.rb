@@ -13,7 +13,7 @@ class PostCreationJob < ApplicationJob
     NotificationJob.perform_later('direct', post.id) if privacy == 'selected_users'
 
     # R2へ音声ファイルを保存する処理を非同期で行う
-    set_cache_headers(post.audio) if post.audio.attached?
+    cache_headers(post.audio) if post.audio.attached?
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Failed to find post: #{e.message}"
   end
