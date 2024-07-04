@@ -44,19 +44,24 @@ if ("serviceWorker" in navigator) {
           // ユーザーのusername_slugを取得してユーザー特定のリソースをキャッシュ
           const usernameSlug = getUsernameSlug();
           if (usernameSlug) {
-            navigator.serviceWorker.controller.postMessage({
-              action: "cacheUserSpecificResources",
-              urls: [
-                `/profile_show/${usernameSlug}`,
-                "/notification_settings/edit",
-                `/user_following/${usernameSlug}`,
-                `/user_followers/${usernameSlug}`,
-                `/waves/new`,
-                `/waves/new?privacy=only_me`,
-                `/waves/new?privacy=selected_users`,
-                `/waves/new?privacy=open`,
-              ],
-            });
+            if (navigator.serviceWorker.controller) {
+              navigator.serviceWorker.controller.postMessage({
+                action: "cacheUserSpecificResources",
+                urls: [
+                  `/${usernameSlug}`,
+                  "/notifications",
+                  "/notification_settings/edit",
+                  `/${usernameSlug}/user_following`,
+                  `/${usernameSlug}/user_followers`,
+                  `/waves/new`,
+                  `/waves/new?privacy=only_me`,
+                  `/waves/new?privacy=selected_users`,
+                  `/waves/new?privacy=open`,
+                ],
+              });
+            } else {
+              console.error("ServiceWorker controller is null");
+            }
           }
         });
       },

@@ -1,4 +1,4 @@
-<%= form_with model: post, data: { controller: "post-create", action: "turbo:submit-end->post-create#afterClose" } do |f| %>
+<%= form_with model: post, data: { controller: "post-create" } do |f| %>
   <div class="card-body p-2">
     <%= render 'shared/error_messages', object: f.object %>
 

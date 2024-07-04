@@ -1,4 +1,3 @@
-// public/unregister_service_worker.js
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.getRegistrations().then((registrations) => {
     for (let registration of registrations) {
@@ -20,11 +19,36 @@ function handleAccountDeletion(event) {
           }
         })
         .finally(() => {
-          // サービスワーカーの解除が完了した後にリダイレクトを実行
-          event.target.closest("form").submit();
+          // セッション関連のキャッシュを削除
+          caches
+            .keys()
+            .then((cacheNames) => {
+              cacheNames.forEach((cacheName) => {
+                if (cacheName.includes("session-cache")) {
+                  caches.delete(cacheName);
+                }
+              });
+            })
+            .finally(() => {
+              // サービスワーカーの解除とキャッシュ削除が完了した後にリダイレクトを実行
+              event.target.closest("form").submit();
+            });
         });
     } else {
-      event.target.closest("form").submit();
+      // セッション関連のキャッシュを削除
+      caches
+        .keys()
+        .then((cacheNames) => {
+          cacheNames.forEach((cacheName) => {
+            if (cacheName.includes("session-cache")) {
+              caches.delete(cacheName);
+            }
+          });
+        })
+        .finally(() => {
+          // キャッシュ削除が完了した後にリダイレクトを実行
+          event.target.closest("form").submit();
+        });
     }
   }
 }
