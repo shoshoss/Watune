@@ -176,15 +176,103 @@ export default class extends Controller {
       'input[type="range"]',
       "a",
       "button",
-      "audio",
+      "audio", // 追加：audio要素を無視リストに追加
     ];
     if (ignoredElements.some((selector) => event.target.closest(selector))) {
       return; // クリック対象が無視リストのいずれかに一致する場合は何もしない
     }
+
     const postBody = event.currentTarget;
     const url = postBody.dataset.url;
-    if (url) {
-      Turbo.visit(url); // Turboを使用して遷移
+    const audioId = postBody.dataset.postId;
+
+    // データURLが空の場合は再生のオンオフを切り替える
+    if (!url) {
+      if (!audioId) {
+        return;
+      }
+      const audioElement = document.getElementById(`audio-${audioId}`);
+      if (audioElement) {
+        // すべての他の音声を停止し、そのアイコンを更新
+        document.querySelectorAll("audio").forEach((a) => {
+          if (a.id !== `audio-${audioId}` && !a.paused) {
+            a.pause();
+            this.updateIcon(
+              document.getElementById(
+                `audio-icon-${a.id.replace("audio-", "")}`
+              ),
+              false // 他の音声アイコンを「再生」状態に戻す
+            );
+            this.updateButtonColor(
+              document.querySelector(
+                `div[data-audio-id="${a.id.replace("audio-", "")}`
+              ),
+              false // 他の音声ボタンの色を元に戻す
+            );
+            this.updateTextColor(
+              document.querySelector(
+                `div[data-audio-id="${a.id.replace("audio-", "")}`
+              ),
+              false // 他の投稿文章の色を元に戻す
+            );
+          } else if (a.id !== `audio-${audioId}` && a.paused) {
+            // 再生されていない他の音声のアイコンも再生状態に戻す
+            this.updateIcon(
+              document.getElementById(
+                `audio-icon-${a.id.replace("audio-", "")}`
+              ),
+              false
+            );
+            this.updateButtonColor(
+              document.querySelector(
+                `div[data-audio-id="${a.id.replace("audio-", "")}`
+              ),
+              false
+            );
+            this.updateTextColor(
+              document.querySelector(
+                `div[data-audio-id="${a.id.replace("audio-", "")}`
+              ),
+              false
+            );
+          }
+        });
+
+        // 音声の再生状態を切り替える
+        if (audioElement.paused) {
+          audioElement
+            .play()
+            .then(() => {
+              this.updateIcon(
+                document.getElementById(`audio-icon-${audioId}`),
+                true
+              );
+              this.updateButtonColor(postBody, true); // クラスの変更を追加
+              this.updateTextColor(postBody, true); // クラスの変更を追加
+            })
+            .catch((error) => {
+              console.error("Playback failed:", error);
+              alert(`音声の再生に失敗しました: ${error.message}`);
+              this.updateIcon(
+                document.getElementById(`audio-icon-${audioId}`),
+                false
+              );
+              this.updateButtonColor(postBody, false); // クラスの変更を追加
+              this.updateTextColor(postBody, false); // クラスの変更を追加
+            });
+        } else {
+          audioElement.pause();
+          this.updateIcon(
+            document.getElementById(`audio-icon-${audioId}`),
+            false
+          );
+          this.updateButtonColor(postBody, false); // クラスの変更を追加
+          this.updateTextColor(postBody, false); // クラスの変更を追加
+        }
+      }
+      return;
     }
+
+    Turbo.visit(url); // Turboを使用して遷移
   }
 }
