@@ -1,5 +1,7 @@
-// キャッシュ名とキャッシュするURLを定義
-const CACHE_NAME = "Watune-cache-v1";
+const CACHE_NAME = "Watune-cache-v1"; // キャッシュ名
+const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連のキャッシュ名
+
+// キャッシュする必要がある重要なURLリスト
 const essentialUrlsToCache = [
   "/manifest.webmanifest",
   "/about",
@@ -8,32 +10,36 @@ const essentialUrlsToCache = [
   "/terms_of_use",
 ];
 
+// 追加でキャッシュするURLリスト
 const additionalUrlsToCache = [
   "/icon-192.png",
   "/icon-512.png",
   "/apple-touch-icon.png",
 ];
 
+// キャッシュしないURLリスト
 const noCacheUrls = ["/", "/oauth/google", "/oauth/callback"];
 
 // インストールイベント
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        console.log("Opened cache");
-        return cache.addAll(essentialUrlsToCache);
-      })
-      .catch((error) => {
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log("Opened cache");
+      return cache.addAll(essentialUrlsToCache).catch((error) => {
         console.error("Failed to cache essential URLs:", error);
-      })
+        essentialUrlsToCache.forEach((url) => {
+          cache.add(url).catch((err) => {
+            console.error(`Failed to cache ${url}:`, err);
+          });
+        });
+      });
+    })
   );
 });
 
 // アクティベートイベント
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME];
+  const cacheWhitelist = [CACHE_NAME, SESSION_CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -103,23 +109,42 @@ self.addEventListener("fetch", (event) => {
 // メッセージイベント
 self.addEventListener("message", (event) => {
   if (event.data.action === "cacheUserSpecificResources") {
-    caches.open(CACHE_NAME).then((cache) => {
+    // ユーザー固有のリソースをキャッシュ
+    caches.open(SESSION_CACHE_NAME).then((cache) => {
       cache.addAll(event.data.urls).catch((error) => {
         console.error("Failed to cache user specific resources:", error);
+        event.data.urls.forEach((url) => {
+          cache.add(url).catch((err) => {
+            console.error(`Failed to cache ${url}:`, err);
+          });
+        });
       });
     });
   } else if (event.data.action === "cacheAdditionalResources") {
+    // 追加のリソースをキャッシュ
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(additionalUrlsToCache).catch((error) => {
         console.error("Failed to cache additional resources:", error);
+        additionalUrlsToCache.forEach((url) => {
+          cache.add(url).catch((err) => {
+            console.error(`Failed to cache ${url}:`, err);
+          });
+        });
       });
     });
   } else if (event.data.action === "skipWaiting") {
+    // 待機中のサービスワーカーをアクティブにする
     self.skipWaiting();
   } else if (event.data.action === "cacheAudioFiles") {
+    // 音声ファイルをキャッシュ
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(event.data.audioUrls).catch((error) => {
         console.error("Failed to cache audio files:", error);
+        event.data.audioUrls.forEach((url) => {
+          cache.add(url).catch((err) => {
+            console.error(`Failed to cache ${url}:`, err);
+          });
+        });
       });
     });
   }
