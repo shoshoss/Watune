@@ -25,7 +25,7 @@ class PostsController < ApplicationController
 
     if @post.save
       # オーディオファイルにキャッシュヘッダーを設定
-      set_cache_headers(@post.audio.blob) if @post.audio.attached?
+      cache_headers(@post.audio.blob) if @post.audio.attached?
 
       respond_to do |format|
         format.html { redirect_to user_post_path(current_user.username_slug, @post), notice: '投稿が作成されました。' }
@@ -120,7 +120,7 @@ class PostsController < ApplicationController
       end
 
       # オーディオファイルにキャッシュヘッダーを設定
-      set_cache_headers(@post.audio) if @post.audio.attached?
+      cache_headers(@post.audio) if @post.audio.attached?
 
       if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
         PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy)
