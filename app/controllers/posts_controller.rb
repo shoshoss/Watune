@@ -1,3 +1,5 @@
+# app/controllers/posts_controller.rb
+
 class PostsController < ApplicationController
   include PostsHelper
   include ActionView::RecordIdentifier
@@ -72,59 +74,24 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids, :custom_category))
 
-    if post_params[:fixed_category] == 'other'
-      custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
-      @post.category = custom_category
-    end
+    assign_custom_category if post_params[:fixed_category] == 'other'
 
     if @post.save
-      # 最低限の処理: 投稿の保存
-      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-
-      # 非同期処理のキック: R2への音声ファイルの保存や通知の作成など
-      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy) if post_params[:recipient_ids].present?
-
-      # リダイレクト先の設定
-      case params[:privacy] || @post.privacy
-      when 'only_me'
-        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other,
-                                                                                                       notice: t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      when 'selected_users'
-        if post_params[:recipient_ids].size == 1
-          recipient = User.find(post_params[:recipient_ids].first)
-          redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other,
-                                                                                                              notice: t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-        else
-          redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'),
-                      status: :see_other, notice: t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-        end
-      when 'open'
-        redirect_to posts_path, status: :see_other,
-                                notice: t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      else
-        redirect_to user_post_path(current_user.username_slug, @post), status: :see_other,
-                                                                       notice: t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-      end
+      handle_successful_create
     else
-      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
-      render :new, status: :unprocessable_entity
+      handle_failed_create
     end
   end
 
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
-      if post_params[:fixed_category] == 'other'
-        custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
-        @post.update(category: custom_category)
-      end
+      assign_custom_category if post_params[:fixed_category] == 'other'
 
       # オーディオファイルにキャッシュヘッダーを設定
       cache_headers(@post.audio) if @post.audio.attached?
 
-      if post_params[:recipient_ids].present? || @post.privacy == 'selected_users'
-        PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy)
-      end
+      PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy) if post_params[:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
       redirect_to user_post_path(current_user.username_slug, @post)
     else
@@ -145,6 +112,52 @@ class PostsController < ApplicationController
           turbo_stream.update('flash', partial: 'shared/flash_message', locals: { flash: })
         ]
       end
+    end
+  end
+
+  private
+
+  # カスタムカテゴリーを設定する
+  def assign_custom_category
+    custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
+    @post.category = custom_category
+  end
+
+  # 成功した投稿作成の処理
+  def handle_successful_create
+    flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
+
+    # 非同期処理のキック: R2への音声ファイルの保存や通知の作成など
+    PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy) if post_params[:recipient_ids].present?
+
+    redirect_based_on_privacy
+  end
+
+  # 失敗した投稿作成の処理
+  def handle_failed_create
+    flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+    render :new, status: :unprocessable_entity
+  end
+
+  # プライバシー設定に基づくリダイレクト先を決定する
+  def redirect_based_on_privacy
+    case params[:privacy] || @post.privacy
+    when 'only_me'
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other,
+                                                                                                     notice: flash[:notice]
+    when 'selected_users'
+      if post_params[:recipient_ids].size == 1
+        recipient = User.find(post_params[:recipient_ids].first)
+        redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other,
+                                                                                                            notice: flash[:notice]
+      else
+        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'),
+                    status: :see_other, notice: flash[:notice]
+      end
+    when 'open'
+      redirect_to posts_path, status: :see_other, notice: flash[:notice]
+    else
+      redirect_to user_post_path(current_user.username_slug, @post), status: :see_other, notice: flash[:notice]
     end
   end
 end
