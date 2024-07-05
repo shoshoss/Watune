@@ -2,31 +2,31 @@
   <div id="category-tabs" class="z-10">
     <div class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2">
       <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{('active' if params[:category].nil?) || active_if(posts_path(category: 'recommended'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-star mr-1 sm:mr-2"></i><span>おすすめ</span>
+        <i class="fa fa-star text-yellow-500 mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
       <%= link_to posts_path(category: 'music'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'music'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-music mr-1 sm:mr-2"></i><span>音楽</span>
+        <i class="fa fa-music text-blue-500 mr-1 sm:mr-2"></i><span>音楽</span>
       <% end %>
       <%= link_to posts_path(category: 'app_review'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'app_review'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-star-half-alt mr-1 sm:mr-2"></i><span>アプリレビュー</span>
+        <i class="fa fa-star-half-alt text-green-500 mr-1 sm:mr-2"></i><span>アプリレビュー</span>
       <% end %>
       <%= link_to posts_path(category: 'child'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'child'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-child mr-1 sm:mr-2"></i><span>子供の声</span>
+        <i class="fa fa-child text-pink-500 mr-1 sm:mr-2"></i><span>子供の声</span>
       <% end %>
       <%= link_to posts_path(category: 'favorite'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'favorite'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-heart mr-1 sm:mr-2"></i><span>好きなこと</span>
+        <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなこと</span>
       <% end %>
       <%= link_to posts_path(category: 'other'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'other'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-ellipsis-h mr-1 sm:mr-2"></i><span>その他</span>
+        <i class="fa fa-ellipsis-h text-gray-500 mr-1 sm:mr-2"></i><span>その他</span>
       <% end %>
       <%= link_to posts_path(category: 'grateful'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'grateful'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa-solid fa-hands-praying mr-1 sm:mr-2"></i><span>感謝</span>
+        <i class="fa-solid fa-hands-praying text-purple-500 mr-1 sm:mr-2"></i><span>感謝</span>
       <% end %>
       <%= link_to posts_path(category: 'blessing'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'blessing'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-hand-sparkles mr-1 sm:mr-2"></i><span>祝福</span>
+        <i class="fa fa-hand-sparkles text-yellow-500 mr-1 sm:mr-2"></i><span>祝福</span>
       <% end %>
       <%= link_to posts_path(category: 'monologue'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'monologue'))} hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-comment-dots mr-1 sm:mr-2"></i><span>ひとりごと</span>
+        <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>
       <% end %>
     </div>
   </div>
