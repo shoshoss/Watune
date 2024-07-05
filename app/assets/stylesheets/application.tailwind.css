@@ -7,6 +7,22 @@
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
 
+.c-post-tab {
+  @apply flex-1 px-4 py-2 text-center text-lg hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
+}
+
+.active {
+  @apply border-b-4 border-sky-400-accent text-blue-500 font-bold;
+}
+
+.c-post-tab span {
+  @apply text-black;
+}
+
+.c-active span {
+  @apply text-black;
+}
+
 /* プロフィールのタブのレイアウト */
 /* タブの基本スタイル */
 .c-tabs {
@@ -22,7 +38,7 @@
 }
 
 .c-tab-active {
-  @apply border-b-4 border-sky-400 font-semibold;
+  @apply border-b-4 border-sky-400 font-bold;
 }
 
 .c-tab-active span {
@@ -56,7 +72,7 @@
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
 .btn-choice {
-  @apply inline-block px-4 py-2 text-xl text-gray-500 bg-sky-100 cursor-pointer font-semibold rounded-full;
+  @apply inline-block px-4 py-2 text-xl text-gray-500 bg-sky-100 cursor-pointer font-bold rounded-full;
 }
 
 .btn-choice-active {

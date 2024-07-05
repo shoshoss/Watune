@@ -1,5 +1,3 @@
-# app/controllers/posts_controller.rb
-
 class PostsController < ApplicationController
   include PostsHelper
   include ActionView::RecordIdentifier
@@ -44,8 +42,10 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     @show_reply_line = false
-    # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+    category = params[:category] || 'recommended'
+
+    # 選択されたカテゴリーに基づいて投稿を取得
+    @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
   end
 
   # 投稿詳細を表示するアクション
@@ -55,8 +55,7 @@ class PostsController < ApplicationController
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
     # 返信データを取得し、ページネーションを設定
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
-                                     items: 15)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc), items: 15)
     # 親投稿を取得
     @parent_posts = @post.ancestors
   end
@@ -74,7 +73,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids, :custom_category))
 
-    assign_custom_category if post_params[:fixed_category] == 'other'
+    assign_custom_category if post_params[:custom_category].present?
 
     if @post.save
       handle_successful_create
@@ -86,7 +85,7 @@ class PostsController < ApplicationController
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
-      assign_custom_category if post_params[:fixed_category] == 'other'
+      assign_custom_category if post_params[:custom_category].present?
 
       # オーディオファイルにキャッシュヘッダーを設定
       cache_headers(@post.audio) if @post.audio.attached?
@@ -117,9 +116,35 @@ class PostsController < ApplicationController
 
   private
 
-  # カスタムカテゴリーを設定する
+  # 指定されたカテゴリーに基づいて投稿を取得するメソッド
+  def fetch_posts_by_category(category)
+    case category
+    when 'recommended'
+      Post.open.where.not(fixed_category: Post.fixed_categories[:monologue]).optimized_order
+    when 'music'
+      Post.open.where(fixed_category: Post.fixed_categories[:music]).optimized_order
+    when 'app_review'
+      Post.open.where(fixed_category: Post.fixed_categories[:app_review]).optimized_order
+    when 'child'
+      Post.open.where(fixed_category: Post.fixed_categories[:child]).optimized_order
+    when 'favorite'
+      Post.open.where(fixed_category: Post.fixed_categories[:favorite]).optimized_order
+    when 'other'
+      Post.open.where(fixed_category: Post.fixed_categories[:other]).optimized_order
+    when 'grateful'
+      Post.open.where(fixed_category: Post.fixed_categories[:grateful]).optimized_order
+    when 'blessing'
+      Post.open.where(fixed_category: Post.fixed_categories[:blessing]).optimized_order
+    when 'monologue'
+      Post.open.where(fixed_category: Post.fixed_categories[:monologue]).optimized_order
+    else
+      Post.open.optimized_order
+    end
+  end
+
+  # カスタムカテゴリーを設定するメソッド
   def assign_custom_category
-    custom_category = Category.find_or_create_by(category_name: post_params[:custom_category])
+    custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category], add_category_name: post_params[:custom_category])
     @post.category = custom_category
   end
 
@@ -143,16 +168,13 @@ class PostsController < ApplicationController
   def redirect_based_on_privacy
     case params[:privacy] || @post.privacy
     when 'only_me'
-      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other,
-                                                                                                     notice: flash[:notice]
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other, notice: flash[:notice]
     when 'selected_users'
       if post_params[:recipient_ids].size == 1
         recipient = User.find(post_params[:recipient_ids].first)
-        redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other,
-                                                                                                            notice: flash[:notice]
+        redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other, notice: flash[:notice]
       else
-        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'),
-                    status: :see_other, notice: flash[:notice]
+        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'), status: :see_other, notice: flash[:notice]
       end
     when 'open'
       redirect_to posts_path, status: :see_other, notice: flash[:notice]

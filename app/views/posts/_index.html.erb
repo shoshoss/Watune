@@ -1,29 +1,113 @@
 <turbo-frame id="main-content">
-<%= turbo_frame_tag 'post_edit_modal' %>
-<%= turbo_frame_tag "profile_edit_modal" %>
-<%= turbo_frame_tag 'profile_modal' %>
-<%= turbo_frame_tag 'reply_modal' %>
+  <%= turbo_frame_tag 'post_edit_modal' %>
+  <%= turbo_frame_tag "profile_edit_modal" %>
+  <%= turbo_frame_tag 'profile_modal' %>
+  <%= turbo_frame_tag 'reply_modal' %>
 
-<div class="flex justify-center min-h-screen">
-  <div class="max-w-[670px] w-full bg-white border-x">
-    <% unless logged_in? %>
-      <div class="flex justify-center my-4">
-        <%= link_to 'このアプリについて', "#{about_path}#about", data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
-      </div>
-    <% end %>
-
-    <!-- 検索フォーム -->
-    <div class="hidden px-2 mx-auto">
-      <form class="mb-3">
-        <div class="flex">
-          <input class="w-full px-4 py-2 mr-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white" type="search" placeholder="検索ワード">
-          <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">検索</button>
+  <div class="flex justify-center min-h-screen">
+    <div class="max-w-[670px] w-full bg-white border-x">
+      <% unless logged_in? %>
+        <div class="flex justify-center my-4">
+          <%= link_to 'このアプリについて', "#{about_path}#about", data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
         </div>
-      </form>
-    </div>
+      <% end %>
 
-    <!-- 投稿一覧 -->
-    <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
+      <!-- 検索フォーム -->
+      <div class="hidden px-2 mx-auto">
+        <form class="mb-3">
+          <div class="flex">
+            <input class="w-full px-4 py-2 mr-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white" type="search" placeholder="検索ワード">
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">検索</button>
+          </div>
+        </form>
+      </div>
+
+      <%= turbo_frame_tag "open-posts" do %>
+        <!-- タブメニュー -->
+        <%= render 'posts/index/category_tabs' %>
+        <!-- 投稿一覧 -->
+        <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
+      <% end %>
+    </div>
   </div>
-</div>
+
+  <script>
+    // ナビバーの透明度を調整する関数
+    function handleNavbarOpacity() {
+      var navbar = document.getElementById('bottom-navbar');
+      if (!navbar) return; // navbarが存在しない場合は何もしない
+
+      var lastScrollTop = 0;
+
+      window.addEventListener('scroll', function () {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+          navbar.style.opacity = '0.5';
+        } else {
+          navbar.style.opacity = '1';
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+      });
+    }
+
+document.addEventListener('DOMContentLoaded', function() {
+  handleNavbarOpacity();
+});
+
+
+    // カテゴリータブを固定する関数
+    function handleCategoryTabs() {
+      var categoryTabsWrapper = document.getElementById('post-category-tabs-wrapper');
+      var categoryTabs = document.getElementById('post-category-tabs');
+
+      if (categoryTabsWrapper && categoryTabs) {
+        var categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
+
+        window.addEventListener('scroll', function () {
+          if (window.pageYOffset > categoryTabsOffsetTop) {
+            categoryTabsWrapper.style.height = categoryTabs.offsetHeight + 'px';
+            categoryTabs.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
+          } else {
+            categoryTabsWrapper.style.height = 'auto';
+            categoryTabs.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
+          }
+        });
+      }
+    }
+
+    // タブの位置を保持する関数
+    function saveTabScrollPosition() {
+      var container = document.getElementById('post-category-tabs-container');
+      localStorage.setItem('tabScrollPosition', container.scrollLeft);
+    }
+
+    // タブの位置を復元する関数
+    function restoreTabScrollPosition() {
+      var container = document.getElementById('post-category-tabs-container');
+      var scrollPosition = localStorage.getItem('tabScrollPosition');
+      if (scrollPosition) {
+        container.scrollLeft = scrollPosition;
+      }
+    }
+
+    // ページ初期化関数
+    function initializePage() {
+      handleNavbarOpacity();
+      handleCategoryTabs();
+      restoreTabScrollPosition();
+    }
+
+    document.addEventListener('DOMContentLoaded', initializePage);
+    document.addEventListener('turbo:load', initializePage);
+    document.addEventListener('turbo:frame-load', function(event) {
+      if (event.target.id === 'open-posts') {
+        initializePage();
+      }
+    });
+
+    // タブクリック時に位置を保存するイベントリスナーを追加
+    document.querySelectorAll('.c-post-tab').forEach(function(tab) {
+      tab.addEventListener('click', saveTabScrollPosition);
+    });
+  </script>
 </turbo-frame>

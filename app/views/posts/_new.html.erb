@@ -45,16 +45,5 @@
       }
     });
 
-    // カテゴリー選択の変更イベントに対する処理
-    document.addEventListener('change', function(event) {
-      if (event.target.id === 'post_fixed_category') {
-        const customCategoryInput = document.getElementById('custom_category_input');
-        if (event.target.value === 'other') {
-          customCategoryInput.classList.remove('hidden');
-        } else {
-          customCategoryInput.classList.add('hidden');
-        }
-      }
-    });
   </script>
 </turbo-frame>

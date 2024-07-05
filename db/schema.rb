@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_30_063200) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_05_044958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_30_063200) do
     t.string "category_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "add_category_name"
+    t.index ["add_category_name"], name: "index_categories_on_add_category_name"
     t.index ["category_name"], name: "index_categories_on_category_name", unique: true
   end
 
