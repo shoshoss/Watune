@@ -48,7 +48,7 @@ class Post < ApplicationRecord
     blessing: 1,
     music: 10,
     app_review: 20,
-    children: 30,
+    child: 30,
     favorite: 40,
     monologue: 50,
     other: 70

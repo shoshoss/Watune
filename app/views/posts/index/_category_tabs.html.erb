@@ -1,96 +1,33 @@
 <div id="category-tabs-wrapper">
   <div id="category-tabs" class="z-10">
-    <% if current_user == user %>
-      <div class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 sm:pb-4">
-
-
-      <%= link_to posts_path(category: 'open_all'), data: { turbo_frame: "open-posts" }, class: "c-tab #{active_tab_class('open_all', initial_category: initial_category)} hover:bg-sky-100 text-center py-2" do %>
-        すべて
+    <div class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2">
+      <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{('active' if params[:category].nil?) || active_if(posts_path(category: 'recommended'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-star mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
-      <%= link_to posts_path(category: 'friends'), data: { turbo_frame: "open-posts" }, class: "c-tab #{active_tab_class('friends', initial_category: initial_category)} hover:bg-sky-100 text-center py-2" do %>
-        仲間から
+      <%= link_to posts_path(category: 'music'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'music'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-music mr-1 sm:mr-2"></i><span>音楽</span>
       <% end %>
-      <%= link_to posts_path(category: 'open_other'), data: { turbo_frame: "open-posts" }, class: "c-tab #{active_tab_class('open_other', initial_category: initial_category)} hover:bg-sky-100 text-center py-2" do %>
-        その他
+      <%= link_to posts_path(category: 'app_review'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'app_review'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-star-half-alt mr-1 sm:mr-2"></i><span>アプリレビュー</span>
       <% end %>
-        <table class="grid grid-cols-1 mx-auto">
-          <tr class="">
-            <td colspan="3" class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'all_my_posts'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-blue-400 #{active_tab_class('all_my_posts', 'only_me', 'my_posts_following', 'my_posts_open', initial_category: initial_category)} hover:text-blue-500" do %>
-                <i class="fa-solid fa-gift mr-1 sm:mr-2"></i><span>私のウェーブ</span>
-              <% end %>
-            </td>
-            <td rowspan="2" class="c-tabs">
-            <%= link_to profile_show_path(username_slug: user.username_slug, category: 'posts_to_you'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-orange-400 #{active_tab_class('posts_to_you', initial_category: initial_category)} hover:text-orange-400" do %>
-                <i class="fa-regular fa-envelope mr-1 sm:mr-2"></i><span>仲間から</span>
-              <% end %>
-            </td>
-            <td colspan="2" class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'all_likes_chance'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-pink-200-accent #{active_tab_class('all_likes_chance', 'my_likes_chance', 'public_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
-                <i class="fa-solid fa-handshake-angle mr-1 sm:mr-2"></i><span>いいねチャンス</span>
-              <% end %>
-            </td>
-            <td rowspan="2" class="c-tabs">
-            <%= link_to profile_show_path(username_slug: user.username_slug, category: 'liked'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-red-400 #{active_tab_class('liked', initial_category: initial_category)} hover:text-red-500" do %>
-                <i class="fa-solid fa-hand-holding-heart mr-1 sm:mr-2"></i><span>いいね</span>
-              <% end %>
-            </td>
-            <td rowspan="2" class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'bookmarked'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-yellow-400-accent #{active_tab_class('bookmarked', initial_category: initial_category)} hover:text-yellow-700-accent" do %>
-                <i class="fas fa-bookmark mr-1 sm:mr-2"></i><span>お気に入り</span>
-              <% end %>
-            </td>
-          </tr>
-          <tr class="">
-            <td class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'only_me'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-blue-400 #{active_tab_class('only_me', initial_category: initial_category)} hover:text-blue-500" do %>
-                <i class="fas fa-user mr-1 sm:mr-2"></i><span>自分へ</span>
-              <% end %>
-            </td>
-            <td class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_following'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-blue-400 #{active_tab_class('my_posts_following', initial_category: initial_category)} hover:text-blue-500" do %>
-                <i class="fa-regular fa-handshake mr-1 sm:mr-2"></i><span>仲間へ</span>
-              <% end %>
-            </td>
-            <td class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-blue-400 #{active_tab_class('my_posts_open', initial_category: initial_category)} hover:text-blue-500" do %>
-                <i class="fas fa-globe mr-1 sm:mr-2"></i><span>みんなへ</span>
-              <% end %>
-            </td>
-            <td class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_likes_chance'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-pink-200-accent #{active_tab_class('my_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
-                <i class="fas fa-user-check mr-1 sm:mr-2"></i><span>自分の</span>
-              <% end %>
-            </td>
-            <td class="c-tabs">
-              <%= link_to profile_show_path(username_slug: user.username_slug, category: 'public_likes_chance'), data: { turbo_frame: "profile-posts" },
-                  class: "c-tab text-pink-200-accent #{active_tab_class('public_likes_chance', initial_category: initial_category)} hover:text-pink-400-accent" do %>
-                <i class="fas fa-users mr-1 sm:mr-2"></i><span>みんなの</span>
-              <% end %>
-            </td>
-          </tr>
-        </table>
-      </div>
-    <% else %>
-      <div class="c-tabs flex overflow-x-auto whitespace-nowrap">
-        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_open'), data: { turbo_frame: "profile-posts" },
-            class: "c-tab text-blue-400 #{active_tab_class('my_posts_open', initial_category: initial_category)} hover:text-blue-500" do %>
-          <i class="fas fa-globe mr-1 sm:mr-2"></i> みんなへ
-        <% end %>
-        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'shared_with_you'), data: { turbo_frame: "profile-posts" },
-            class: "c-tab text-blue-400 #{active_tab_class('shared_with_you', initial_category: initial_category)} hover:text-blue-500" do %>
-          <i class="fas fa-share-alt mr-1 sm:mr-2"></i> あなたと共有
-        <% end %>
-      </div>
-    <% end %>
+      <%= link_to posts_path(category: 'child'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'child'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-child mr-1 sm:mr-2"></i><span>子供の声</span>
+      <% end %>
+      <%= link_to posts_path(category: 'favorite'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'favorite'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-heart mr-1 sm:mr-2"></i><span>好きなこと</span>
+      <% end %>
+      <%= link_to posts_path(category: 'other'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'other'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-ellipsis-h mr-1 sm:mr-2"></i><span>その他</span>
+      <% end %>
+      <%= link_to posts_path(category: 'grateful'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'grateful'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa-solid fa-hands-praying mr-1 sm:mr-2"></i><span>感謝</span>
+      <% end %>
+      <%= link_to posts_path(category: 'blessing'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'blessing'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-hand-sparkles mr-1 sm:mr-2"></i><span>祝福</span>
+      <% end %>
+      <%= link_to posts_path(category: 'monologue'), data: { turbo_frame: "open-posts" }, class: "c-post-tab #{active_if(posts_path(category: 'monologue'))} hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-comment-dots mr-1 sm:mr-2"></i><span>ひとりごと</span>
+      <% end %>
+    </div>
   </div>
 </div>

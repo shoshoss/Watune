@@ -42,8 +42,10 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     @show_reply_line = false
-    # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(fetch_posts, items: 10)
+    category = params[:category] || 'recommended'
+
+    # 選択されたカテゴリーに基づいて投稿を取得
+    @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
   end
 
   # 投稿詳細を表示するアクション
@@ -113,6 +115,32 @@ class PostsController < ApplicationController
   end
 
   private
+
+  # 指定されたカテゴリーに基づいて投稿を取得するメソッド
+  def fetch_posts_by_category(category)
+    case category
+    when 'recommended'
+      Post.open.where.not(fixed_category: Post.fixed_categories[:monologue]).order(created_at: :desc)
+    when 'music'
+      Post.open.where(fixed_category: Post.fixed_categories[:music]).order(created_at: :desc)
+    when 'app_review'
+      Post.open.where(fixed_category: Post.fixed_categories[:app_review]).order(created_at: :desc)
+    when 'child'
+      Post.open.where(fixed_category: Post.fixed_categories[:child]).order(created_at: :desc)
+    when 'favorite'
+      Post.open.where(fixed_category: Post.fixed_categories[:favorite]).order(created_at: :desc)
+    when 'other'
+      Post.open.where(fixed_category: Post.fixed_categories[:other]).order(created_at: :desc)
+    when 'grateful'
+      Post.open.where(fixed_category: Post.fixed_categories[:grateful]).order(created_at: :desc)
+    when 'blessing'
+      Post.open.where(fixed_category: Post.fixed_categories[:blessing]).order(created_at: :desc)
+    when 'monologue'
+      Post.open.where(fixed_category: Post.fixed_categories[:monologue]).order(created_at: :desc)
+    else
+      Post.open.order(created_at: :desc)
+    end
+  end
 
   # カスタムカテゴリーを設定するメソッド
   def assign_custom_category
