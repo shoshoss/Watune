@@ -68,10 +68,26 @@
       }
     }
 
+    // タブの位置を保持する関数
+    function saveTabScrollPosition() {
+      var container = document.getElementById('category-tabs-container');
+      localStorage.setItem('tabScrollPosition', container.scrollLeft);
+    }
+
+    // タブの位置を復元する関数
+    function restoreTabScrollPosition() {
+      var container = document.getElementById('category-tabs-container');
+      var scrollPosition = localStorage.getItem('tabScrollPosition');
+      if (scrollPosition) {
+        container.scrollLeft = scrollPosition;
+      }
+    }
+
     // ページ初期化関数
     function initializePage() {
       handleNavbarOpacity();
       handleCategoryTabs();
+      restoreTabScrollPosition();
     }
 
     document.addEventListener('DOMContentLoaded', initializePage);
@@ -80,6 +96,11 @@
       if (event.target.id === 'open-posts') {
         initializePage();
       }
+    });
+
+    // タブクリック時に位置を保存するイベントリスナーを追加
+    document.querySelectorAll('.c-post-tab').forEach(function(tab) {
+      tab.addEventListener('click', saveTabScrollPosition);
     });
   </script>
 </turbo-frame>
