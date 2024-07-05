@@ -50,11 +50,6 @@
       });
     }
 
-document.addEventListener('DOMContentLoaded', function() {
-  handleNavbarOpacity();
-});
-
-
     // カテゴリータブを固定する関数
     function handleCategoryTabs() {
       var categoryTabsWrapper = document.getElementById('post-category-tabs-wrapper');
@@ -78,14 +73,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // タブの位置を保持する関数
     function saveTabScrollPosition() {
       var container = document.getElementById('post-category-tabs-container');
-      localStorage.setItem('tabScrollPosition', container.scrollLeft);
+      if (container) {
+        localStorage.setItem('tabScrollPosition', container.scrollLeft);
+      }
     }
 
     // タブの位置を復元する関数
     function restoreTabScrollPosition() {
       var container = document.getElementById('post-category-tabs-container');
       var scrollPosition = localStorage.getItem('tabScrollPosition');
-      if (scrollPosition) {
+      if (container && scrollPosition) {
         container.scrollLeft = scrollPosition;
       }
     }
@@ -106,8 +103,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // タブクリック時に位置を保存するイベントリスナーを追加
-    document.querySelectorAll('.c-post-tab').forEach(function(tab) {
-      tab.addEventListener('click', saveTabScrollPosition);
+    function addTabClickEventListeners() {
+      document.querySelectorAll('.c-post-tab').forEach(function(tab) {
+        tab.addEventListener('click', saveTabScrollPosition);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', addTabClickEventListeners);
+    document.addEventListener('turbo:load', addTabClickEventListeners);
+    document.addEventListener('turbo:frame-load', function(event) {
+      if (event.target.id === 'open-posts') {
+        addTabClickEventListeners();
+      }
+    });
+
+    // 初回ロード時のナビバー透明度調整
+    document.addEventListener('DOMContentLoaded', function() {
+      handleNavbarOpacity();
     });
   </script>
 </turbo-frame>
