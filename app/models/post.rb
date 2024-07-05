@@ -48,10 +48,11 @@ class Post < ApplicationRecord
     blessing: 1,
     music: 10,
     app_review: 20,
-    child: 30,
-    favorite: 40,
-    monologue: 50,
-    other: 70
+    tech: 30,
+    child: 40,
+    favorite: 50,
+    monologue: 60,
+    other: 100
   }
 
   validates :fixed_category, presence: true
@@ -66,7 +67,7 @@ class Post < ApplicationRecord
     return false if user.nil?
 
     # ログインユーザーかつ承認された受信者であれば投稿を見ることができる
-    post_users.exists?(user: user, approved: true)
+    post_users.exists?(user:, approved: true)
   end
 
   # 親の投稿のユーザー名が重複しないように祖先を取得するメソッド
@@ -102,7 +103,7 @@ class Post < ApplicationRecord
 
   # カスタムカテゴリーを設定するメソッド
   def assign_custom_category(custom_category_name)
-    return unless custom_category_name.present?
+    return if custom_category_name.blank?
 
     custom_category = Category.find_or_create_by(category_name: fixed_category, add_category_name: custom_category_name)
     self.category = custom_category
