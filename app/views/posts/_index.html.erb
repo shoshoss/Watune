@@ -22,9 +22,9 @@
         </form>
       </div>
 
-      <%= turbo_frame_tag "open-posts" do %>
         <!-- タブメニュー -->
-        <%= render 'posts/index/category_tabs' %>
+      <%= render 'posts/index/category_tabs' %>
+      <%= turbo_frame_tag "open-posts" do %>
         <!-- 投稿一覧 -->
         <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
       <% end %>
@@ -79,32 +79,24 @@
       localStorage.setItem('selectedCategory', category);
     }
 
-    // タブの状態とスクロール位置を復元する関数
-    function restoreTabState() {
-      var container = document.getElementById('post-category-tabs-container');
-      var scrollPosition = localStorage.getItem('tabScrollPosition');
-      var selectedCategory = localStorage.getItem('selectedCategory');
-
-      if (container && scrollPosition) {
-        container.scrollLeft = scrollPosition;
-      }
-
-      if (selectedCategory) {
-        document.querySelectorAll('.c-post-tab').forEach(function(tab) {
-          if (tab.href.includes(selectedCategory)) {
-            tab.classList.add('active');
-          } else {
-            tab.classList.remove('active');
-          }
-        });
-      }
+    // タブをクリックした際に他のタブのアクティブクラスを解除する関数
+    function handleTabClick(event) {
+      var tabs = document.querySelectorAll('.c-post-tab');
+      tabs.forEach(function(tab) {
+        tab.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
     }
 
     // ページ初期化関数
     function initializePage() {
       handleNavbarOpacity();
       handleCategoryTabs();
-      restoreTabState();
+
+      var tabs = document.querySelectorAll('.c-post-tab');
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', handleTabClick);
+      });
     }
 
     document.addEventListener('DOMContentLoaded', initializePage);
@@ -112,23 +104,6 @@
     document.addEventListener('turbo:frame-load', function(event) {
       if (event.target.id === 'open-posts') {
         initializePage();
-      }
-    });
-
-    // タブクリック時に状態を保存するイベントリスナーを追加
-    function addTabClickEventListeners() {
-      document.querySelectorAll('.c-post-tab').forEach(function(tab) {
-        tab.addEventListener('click', function() {
-          saveTabState(tab.href.split('category=')[1]);
-        });
-      });
-    }
-
-    document.addEventListener('DOMContentLoaded', addTabClickEventListeners);
-    document.addEventListener('turbo:load', addTabClickEventListeners);
-    document.addEventListener('turbo:frame-load', function(event) {
-      if (event.target.id === 'open-posts') {
-        addTabClickEventListeners();
       }
     });
   </script>
