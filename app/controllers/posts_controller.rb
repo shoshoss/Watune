@@ -5,39 +5,8 @@ class PostsController < ApplicationController
   skip_before_action :require_login, only: %i[index show]
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
-  before_action :set_followings_by_post_count, only: %i[new_test create_test new edit create update]
+  before_action :set_followings_by_post_count, only: %i[new edit create update]
   before_action :authorize_view!, only: [:show]
-
-  # テスト用の音声投稿フォームを表示するアクション
-  def new_test
-    @post = Post.new
-    params[:privacy] ||= @post.privacy
-  end
-
-  def index_test
-    @show_reply_line = false
-    # 無限スクロールのための投稿データを取得
-    @pagy, @posts = pagy_countless(Post.order(created_at: :desc), items: 20)
-  end
-
-  def create_test
-    @post = current_user.posts.build(post_params.except(:recipient_ids))
-
-    if @post.save
-      # オーディオファイルにキャッシュヘッダーを設定
-      cache_headers(@post.audio.blob) if @post.audio.attached?
-
-      respond_to do |format|
-        format.html { redirect_to user_post_path(current_user.username_slug, @post), notice: '投稿が作成されました。' }
-        format.json { render json: @post, status: :created }
-      end
-    else
-      respond_to do |format|
-        format.html { render :new_test, alert: '投稿の作成に失敗しました。' }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
-      end
-    end
-  end
 
   # 投稿一覧を表示するアクション
   def index
@@ -54,7 +23,6 @@ class PostsController < ApplicationController
     # 現在のユーザーの未読通知を取得
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
-    # 返信データを取得し、ページネーションを設定
     @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
                                      items: 15)
     # 親投稿を取得
@@ -119,27 +87,25 @@ class PostsController < ApplicationController
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_category(category)
-    case category
-    when 'recommended'
-      Post.open.where.not(fixed_category: Post.fixed_categories[:monologue]).optimized_order
-    when 'music'
-      Post.open.where(fixed_category: Post.fixed_categories[:music]).optimized_order
-    when 'app_review'
-      Post.open.where(fixed_category: Post.fixed_categories[:app_review]).optimized_order
-    when 'child'
-      Post.open.where(fixed_category: Post.fixed_categories[:child]).optimized_order
-    when 'favorite'
-      Post.open.where(fixed_category: Post.fixed_categories[:favorite]).optimized_order
-    when 'other'
-      Post.open.where(fixed_category: Post.fixed_categories[:other]).optimized_order
-    when 'grateful'
-      Post.open.where(fixed_category: Post.fixed_categories[:grateful]).optimized_order
-    when 'blessing'
-      Post.open.where(fixed_category: Post.fixed_categories[:blessing]).optimized_order
-    when 'monologue'
-      Post.open.where(fixed_category: Post.fixed_categories[:monologue]).optimized_order
+    categories = {
+      'recommended' => Post.fixed_categories[:monologue],
+      'music' => Post.fixed_categories[:music],
+      'app_review' => Post.fixed_categories[:app_review],
+      'child' => Post.fixed_categories[:child],
+      'tech' => Post.fixed_categories[:tech],
+      'favorite' => Post.fixed_categories[:favorite],
+      'other' => Post.fixed_categories[:other],
+      'grateful' => Post.fixed_categories[:grateful],
+      'blessing' => Post.fixed_categories[:blessing],
+      'monologue' => Post.fixed_categories[:monologue]
+    }
+
+    fixed_category = categories[category] || Post.fixed_categories[:recommended]
+
+    if category == 'recommended'
+      Post.open.where.not(fixed_category:).optimized_order
     else
-      Post.open.optimized_order
+      Post.open.where(fixed_category:).optimized_order
     end
   end
 
