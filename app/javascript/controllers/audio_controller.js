@@ -7,6 +7,7 @@ export default class extends Controller {
     this.updateAllIconsToPlay(); // 初期化時に全アイコンを再生ボタンに設定
   }
 
+  // すべての音声アイコンを再生ボタンに設定
   updateAllIconsToPlay() {
     document.querySelectorAll(".audio-icon").forEach((icon) => {
       icon.classList.remove("fa-pause");
@@ -14,6 +15,7 @@ export default class extends Controller {
     });
   }
 
+  // 再生/一時停止ボタンがクリックされたときの処理
   playPause(event) {
     event.stopPropagation(); // クリックイベントの伝播を停止
     const button = event.currentTarget;
@@ -23,73 +25,30 @@ export default class extends Controller {
     const seekBar = document.querySelector(`input[data-audio-id="${audioId}"]`);
     const postBody = document.querySelector(`div[data-audio-id="${audioId}"]`);
 
-    // すべての他の音声を停止し、そのアイコンを更新
-    document.querySelectorAll("audio").forEach((a) => {
-      if (a.id !== `audio-${audioId}` && !a.paused) {
-        a.pause();
-        this.updateIcon(
-          document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
-          false // 他の音声アイコンを「再生」状態に戻す
-        );
-        this.updateButtonColor(
-          document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}`
-          ),
-          false // 他の音声ボタンの色を元に戻す
-        );
-        this.updateTextColor(
-          document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}`
-          ),
-          false // 他の投稿文章の色を元に戻す
-        );
-      } else if (a.id !== `audio-${audioId}` && a.paused) {
-        // 再生されていない他の音声のアイコンも再生状態に戻す
-        this.updateIcon(
-          document.getElementById(`audio-icon-${a.id.replace("audio-", "")}`),
-          false
-        );
-        this.updateButtonColor(
-          document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}`
-          ),
-          false
-        );
-        this.updateTextColor(
-          document.querySelector(
-            `div[data-audio-id="${a.id.replace("audio-", "")}`
-          ),
-          false
-        );
-      }
-    });
+    this.stopAllOtherAudios(audioId); // 他のすべての音声を停止
 
-    // 音声が添付されていない場合はここで処理を終了
-    if (!audio) {
-      return;
-    }
+    if (!audio) return; // 音声が存在しない場合は処理を終了
 
-    // 音声の再生状態を切り替える
     if (audio.paused) {
       audio
         .play()
         .then(() => {
           this.updateIcon(icon, true);
-          this.updateButtonColor(button, true); // クラスの変更を追加
-          this.updateTextColor(postBody, true); // クラスの変更を追加
+          this.updateButtonColor(button, true);
+          this.updateTextColor(audioId, true); // IDを使って更新
         })
         .catch((error) => {
           console.error("Playback failed:", error);
           alert(`音声の再生に失敗しました: ${error.message}`);
           this.updateIcon(icon, false);
-          this.updateButtonColor(button, false); // クラスの変更を追加
-          this.updateTextColor(postBody, false); // クラスの変更を追加
+          this.updateButtonColor(button, false);
+          this.updateTextColor(audioId, false); // IDを使って更新
         });
     } else {
       audio.pause();
       this.updateIcon(icon, false);
-      this.updateButtonColor(button, false); // クラスの変更を追加
-      this.updateTextColor(postBody, false); // クラスの変更を追加
+      this.updateButtonColor(button, false);
+      this.updateTextColor(audioId, false); // IDを使って更新
     }
 
     audio.addEventListener("timeupdate", () => {
@@ -105,11 +64,12 @@ export default class extends Controller {
       this.updateCurrentTimeDisplay(audioId, 0);
       seekBar.value = 0;
       this.updateIcon(icon, false);
-      this.updateButtonColor(button, false); // クラスの変更を追加
-      this.updateTextColor(postBody, false); // クラスの変更を追加
+      this.updateButtonColor(button, false);
+      this.updateTextColor(audioId, false); // IDを使って更新
     });
   }
 
+  // シークバーの位置を変更したときの処理
   seek(event) {
     const seekBar = event.currentTarget;
     const audioId = seekBar.dataset.audioId;
@@ -119,11 +79,13 @@ export default class extends Controller {
     }
   }
 
+  // アイコンの状態を更新
   updateIcon(icon, isPlaying) {
     icon.classList.toggle("fa-play", !isPlaying);
     icon.classList.toggle("fa-pause", isPlaying);
   }
 
+  // 現在の再生時間を表示
   updateCurrentTimeDisplay(audioId, currentTime) {
     const currentElem = document.getElementById(`current-time-${audioId}`);
     if (currentElem) {
@@ -131,6 +93,7 @@ export default class extends Controller {
     }
   }
 
+  // 再生時間をフォーマット
   formatTime(time) {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -139,36 +102,55 @@ export default class extends Controller {
       .padStart(2, "0")}`;
   }
 
+  // ホバー時の色変更
   hoverEffect() {
     this.playButtonTarget.classList.remove("text-blue-500");
     this.playButtonTarget.classList.add("text-sky-400-accent");
   }
 
+  // ホバー解除時の色変更
   unhoverEffect() {
     this.playButtonTarget.classList.remove("text-sky-400-accent");
     this.playButtonTarget.classList.add("text-blue-500");
   }
 
-  updateButtonColor(button, isPlaying) {
+  // ボタンの色を更新
+  updateButtonColor(element, isPlaying) {
     if (isPlaying) {
-      button.classList.add("text-sky-400-accent");
-      button.classList.remove("text-blue-500");
+      element.classList.add("text-sky-400-accent");
+      element.classList.remove("text-blue-500");
     } else {
-      button.classList.remove("text-sky-400-accent");
-      button.classList.add("text-blue-500");
+      element.classList.remove("text-sky-400-accent");
+      element.classList.add("text-blue-500");
     }
   }
 
-  updateTextColor(postBody, isPlaying) {
-    if (isPlaying) {
-      postBody.classList.add("text-sky-400-accent");
-      postBody.classList.remove("text-blue-500");
-    } else {
-      postBody.classList.remove("text-sky-400-accent");
-      postBody.classList.add("text-blue-500");
+  // テキストとアイコンの色を更新
+  updateTextColor(audioId, isPlaying) {
+    const postBody = document.querySelector(`div[data-audio-id="${audioId}"]`);
+    if (postBody) {
+      if (isPlaying) {
+        postBody.classList.add("text-sky-400-accent");
+        postBody.classList.remove("text-blue-500");
+      } else {
+        postBody.classList.remove("text-sky-400-accent");
+        postBody.classList.add("text-blue-500");
+      }
+    }
+
+    const xIcon = document.querySelector(`#x-icon-${audioId}`);
+    if (xIcon) {
+      if (isPlaying) {
+        xIcon.classList.add("text-sky-400-accent");
+        xIcon.classList.remove("text-black-500");
+      } else {
+        xIcon.classList.remove("text-sky-400-accent");
+        xIcon.classList.add("text-black-500");
+      }
     }
   }
 
+  // 投稿をクリックしたときの処理
   navigateToPost(event) {
     const ignoredElements = [
       ".play-audio-button",
@@ -176,7 +158,7 @@ export default class extends Controller {
       'input[type="range"]',
       "a",
       "button",
-      "audio", // 追加：audio要素を無視リストに追加
+      "audio",
     ];
     if (ignoredElements.some((selector) => event.target.closest(selector))) {
       return; // クリック対象が無視リストのいずれかに一致する場合は何もしない
@@ -186,93 +168,82 @@ export default class extends Controller {
     const url = postBody.dataset.url;
     const audioId = postBody.dataset.postId;
 
-    // データURLが空の場合は再生のオンオフを切り替える
+    console.log("navigateToPost", { url, audioId }); // デバッグ用ログ
+
     if (!url) {
-      if (!audioId) {
-        return;
-      }
-      const audioElement = document.getElementById(`audio-${audioId}`);
-      if (audioElement) {
-        // すべての他の音声を停止し、そのアイコンを更新
-        document.querySelectorAll("audio").forEach((a) => {
-          if (a.id !== `audio-${audioId}` && !a.paused) {
-            a.pause();
-            this.updateIcon(
-              document.getElementById(
-                `audio-icon-${a.id.replace("audio-", "")}`
-              ),
-              false // 他の音声アイコンを「再生」状態に戻す
-            );
-            this.updateButtonColor(
-              document.querySelector(
-                `div[data-audio-id="${a.id.replace("audio-", "")}`
-              ),
-              false // 他の音声ボタンの色を元に戻す
-            );
-            this.updateTextColor(
-              document.querySelector(
-                `div[data-audio-id="${a.id.replace("audio-", "")}`
-              ),
-              false // 他の投稿文章の色を元に戻す
-            );
-          } else if (a.id !== `audio-${audioId}` && a.paused) {
-            // 再生されていない他の音声のアイコンも再生状態に戻す
-            this.updateIcon(
-              document.getElementById(
-                `audio-icon-${a.id.replace("audio-", "")}`
-              ),
-              false
-            );
-            this.updateButtonColor(
-              document.querySelector(
-                `div[data-audio-id="${a.id.replace("audio-", "")}`
-              ),
-              false
-            );
-            this.updateTextColor(
-              document.querySelector(
-                `div[data-audio-id="${a.id.replace("audio-", "")}`
-              ),
-              false
-            );
-          }
-        });
-
-        // 音声の再生状態を切り替える
-        if (audioElement.paused) {
-          audioElement
-            .play()
-            .then(() => {
-              this.updateIcon(
-                document.getElementById(`audio-icon-${audioId}`),
-                true
-              );
-              this.updateButtonColor(postBody, true); // クラスの変更を追加
-              this.updateTextColor(postBody, true); // クラスの変更を追加
-            })
-            .catch((error) => {
-              console.error("Playback failed:", error);
-              alert(`音声の再生に失敗しました: ${error.message}`);
-              this.updateIcon(
-                document.getElementById(`audio-icon-${audioId}`),
-                false
-              );
-              this.updateButtonColor(postBody, false); // クラスの変更を追加
-              this.updateTextColor(postBody, false); // クラスの変更を追加
-            });
-        } else {
-          audioElement.pause();
-          this.updateIcon(
-            document.getElementById(`audio-icon-${audioId}`),
-            false
-          );
-          this.updateButtonColor(postBody, false); // クラスの変更を追加
-          this.updateTextColor(postBody, false); // クラスの変更を追加
-        }
-      }
-      return;
+      this.toggleAudioPlayback(audioId, postBody);
+    } else {
+      Turbo.visit(url); // Turboを使用して遷移
     }
+  }
 
-    Turbo.visit(url); // Turboを使用して遷移
+  // 他のすべての音声を停止
+  stopAllOtherAudios(currentAudioId) {
+    document.querySelectorAll("audio").forEach((audio) => {
+      if (audio.id !== `audio-${currentAudioId}` && !audio.paused) {
+        audio.pause();
+        this.updateIcon(
+          document.getElementById(
+            `audio-icon-${audio.id.replace("audio-", "")}`
+          ),
+          false
+        );
+        this.updateButtonColor(
+          document.querySelector(
+            `button[data-audio-id="${audio.id.replace("audio-", "")}`
+          ),
+          false
+        );
+        this.updateTextColor(audio.id.replace("audio-", ""), false); // IDを使って更新
+      }
+    });
+  }
+
+  // 音声の再生/一時停止を切り替える
+  toggleAudioPlayback(audioId, postBody) {
+    const audioElement = document.getElementById(`audio-${audioId}`);
+    if (audioElement) {
+      this.stopAllOtherAudios(audioId);
+
+      if (audioElement.paused) {
+        audioElement
+          .play()
+          .then(() => {
+            this.updateIcon(
+              document.getElementById(`audio-icon-${audioId}`),
+              true
+            );
+            this.updateButtonColor(
+              postBody.querySelector(`button[data-audio-id="${audioId}"]`),
+              true
+            );
+            this.updateTextColor(audioId, true); // IDを使って更新
+          })
+          .catch((error) => {
+            console.error("Playback failed:", error);
+            alert(`音声の再生に失敗しました: ${error.message}`);
+            this.updateIcon(
+              document.getElementById(`audio-icon-${audioId}`),
+              false
+            );
+            this.updateButtonColor(
+              postBody.querySelector(`button[data-audio-id="${audioId}"]`),
+              false
+            );
+            this.updateTextColor(audioId, false); // IDを使って更新
+          });
+      } else {
+        audioElement.pause();
+        this.updateIcon(
+          document.getElementById(`audio-icon-${audioId}`),
+          false
+        );
+        this.updateButtonColor(
+          postBody.querySelector(`button[data-audio-id="${audioId}"]`),
+          false
+        );
+        this.updateTextColor(audioId, false); // IDを使って更新
+      }
+    }
   }
 }
