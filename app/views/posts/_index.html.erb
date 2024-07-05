@@ -35,6 +35,8 @@
     // ナビバーの透明度を調整する関数
     function handleNavbarOpacity() {
       var navbar = document.getElementById('bottom-navbar');
+      if (!navbar) return; // navbarが存在しない場合は何もしない
+
       var lastScrollTop = 0;
 
       window.addEventListener('scroll', function () {
@@ -48,10 +50,15 @@
       });
     }
 
+document.addEventListener('DOMContentLoaded', function() {
+  handleNavbarOpacity();
+});
+
+
     // カテゴリータブを固定する関数
     function handleCategoryTabs() {
-      var categoryTabsWrapper = document.getElementById('category-tabs-wrapper');
-      var categoryTabs = document.getElementById('category-tabs');
+      var categoryTabsWrapper = document.getElementById('post-category-tabs-wrapper');
+      var categoryTabs = document.getElementById('post-category-tabs');
 
       if (categoryTabsWrapper && categoryTabs) {
         var categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
@@ -70,13 +77,13 @@
 
     // タブの位置を保持する関数
     function saveTabScrollPosition() {
-      var container = document.getElementById('category-tabs-container');
+      var container = document.getElementById('post-category-tabs-container');
       localStorage.setItem('tabScrollPosition', container.scrollLeft);
     }
 
     // タブの位置を復元する関数
     function restoreTabScrollPosition() {
-      var container = document.getElementById('category-tabs-container');
+      var container = document.getElementById('post-category-tabs-container');
       var scrollPosition = localStorage.getItem('tabScrollPosition');
       if (scrollPosition) {
         container.scrollLeft = scrollPosition;
