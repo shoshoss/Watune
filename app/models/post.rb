@@ -107,4 +107,7 @@ class Post < ApplicationRecord
     custom_category = Category.find_or_create_by(category_name: fixed_category, add_category_name: custom_category_name)
     self.category = custom_category
   end
+
+  # 投稿を最適な順序で取得するスコープ
+  scope :optimized_order, -> { includes(:user, :category, audio_attachment: :blob).order(created_at: :desc) }
 end

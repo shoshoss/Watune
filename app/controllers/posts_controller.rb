@@ -120,25 +120,25 @@ class PostsController < ApplicationController
   def fetch_posts_by_category(category)
     case category
     when 'recommended'
-      Post.open.where.not(fixed_category: Post.fixed_categories[:monologue]).order(created_at: :desc)
+      Post.open.where.not(fixed_category: Post.fixed_categories[:monologue]).optimized_order
     when 'music'
-      Post.open.where(fixed_category: Post.fixed_categories[:music]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:music]).optimized_order
     when 'app_review'
-      Post.open.where(fixed_category: Post.fixed_categories[:app_review]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:app_review]).optimized_order
     when 'child'
-      Post.open.where(fixed_category: Post.fixed_categories[:child]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:child]).optimized_order
     when 'favorite'
-      Post.open.where(fixed_category: Post.fixed_categories[:favorite]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:favorite]).optimized_order
     when 'other'
-      Post.open.where(fixed_category: Post.fixed_categories[:other]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:other]).optimized_order
     when 'grateful'
-      Post.open.where(fixed_category: Post.fixed_categories[:grateful]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:grateful]).optimized_order
     when 'blessing'
-      Post.open.where(fixed_category: Post.fixed_categories[:blessing]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:blessing]).optimized_order
     when 'monologue'
-      Post.open.where(fixed_category: Post.fixed_categories[:monologue]).order(created_at: :desc)
+      Post.open.where(fixed_category: Post.fixed_categories[:monologue]).optimized_order
     else
-      Post.open.order(created_at: :desc)
+      Post.open.optimized_order
     end
   end
 
