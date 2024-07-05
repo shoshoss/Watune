@@ -73,7 +73,9 @@
     // タブの状態とスクロール位置を保存する関数
     function saveTabState(category) {
       var container = document.getElementById('post-category-tabs-container');
-      localStorage.setItem('tabScrollPosition', container.scrollLeft);
+      if (container) {
+        localStorage.setItem('tabScrollPosition', container.scrollLeft);
+      }
       localStorage.setItem('selectedCategory', category);
     }
 
@@ -83,7 +85,7 @@
       var scrollPosition = localStorage.getItem('tabScrollPosition');
       var selectedCategory = localStorage.getItem('selectedCategory');
 
-      if (scrollPosition) {
+      if (container && scrollPosition) {
         container.scrollLeft = scrollPosition;
       }
 
