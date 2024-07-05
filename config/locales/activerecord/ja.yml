@@ -61,11 +61,11 @@ ja:
         admin: 管理者
     post:
       fixed_category:
-        congra: 感謝・応援
+        grateful: 感謝
+        blessing: 祝福
         music: 音楽
+        app_review: アプリレビュー
         children: 子どもの声
-        tech: 技術
-        english: 英語
-        reading: 朗読
+        favorite: 好きなこと
         monologue: ひとり言
-        other: カスタムカテゴリー
+        other: その他

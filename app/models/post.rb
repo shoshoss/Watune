@@ -50,13 +50,13 @@ class Post < ApplicationRecord
 
   # カテゴリー設定
   enum fixed_category: {
-    congra: 0,
+    grateful: 0,
+    blessing: 1,
     music: 10,
-    children: 20,
-    tech: 30,
-    english: 40,
-    reading: 50,
-    monologue: 60,
+    app_review: 20,
+    children: 30,
+    favorite: 40,
+    monologue: 50,
     other: 70
   }
 

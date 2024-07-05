@@ -1,5 +1,3 @@
-# app/controllers/posts_controller.rb
-
 class PostsController < ApplicationController
   include PostsHelper
   include ActionView::RecordIdentifier
@@ -74,7 +72,7 @@ class PostsController < ApplicationController
   def create
     @post = current_user.posts.build(post_params.except(:recipient_ids, :custom_category))
 
-    assign_custom_category if post_params[:fixed_category] == 'other'
+    assign_custom_category if post_params[:custom_category].present?
 
     if @post.save
       handle_successful_create
@@ -86,7 +84,7 @@ class PostsController < ApplicationController
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
-      assign_custom_category if post_params[:fixed_category] == 'other'
+      assign_custom_category if post_params[:custom_category].present?
 
       # オーディオファイルにキャッシュヘッダーを設定
       cache_headers(@post.audio) if @post.audio.attached?
