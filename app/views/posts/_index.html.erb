@@ -70,20 +70,31 @@
       }
     }
 
-    // タブの位置を保持する関数
-    function saveTabScrollPosition() {
+    // タブの状態とスクロール位置を保存する関数
+    function saveTabState(category) {
       var container = document.getElementById('post-category-tabs-container');
-      if (container) {
-        localStorage.setItem('tabScrollPosition', container.scrollLeft);
-      }
+      localStorage.setItem('tabScrollPosition', container.scrollLeft);
+      localStorage.setItem('selectedCategory', category);
     }
 
-    // タブの位置を復元する関数
-    function restoreTabScrollPosition() {
+    // タブの状態とスクロール位置を復元する関数
+    function restoreTabState() {
       var container = document.getElementById('post-category-tabs-container');
       var scrollPosition = localStorage.getItem('tabScrollPosition');
-      if (container && scrollPosition) {
+      var selectedCategory = localStorage.getItem('selectedCategory');
+
+      if (scrollPosition) {
         container.scrollLeft = scrollPosition;
+      }
+
+      if (selectedCategory) {
+        document.querySelectorAll('.c-post-tab').forEach(function(tab) {
+          if (tab.href.includes(selectedCategory)) {
+            tab.classList.add('active');
+          } else {
+            tab.classList.remove('active');
+          }
+        });
       }
     }
 
@@ -91,7 +102,7 @@
     function initializePage() {
       handleNavbarOpacity();
       handleCategoryTabs();
-      restoreTabScrollPosition();
+      restoreTabState();
     }
 
     document.addEventListener('DOMContentLoaded', initializePage);
@@ -102,10 +113,12 @@
       }
     });
 
-    // タブクリック時に位置を保存するイベントリスナーを追加
+    // タブクリック時に状態を保存するイベントリスナーを追加
     function addTabClickEventListeners() {
       document.querySelectorAll('.c-post-tab').forEach(function(tab) {
-        tab.addEventListener('click', saveTabScrollPosition);
+        tab.addEventListener('click', function() {
+          saveTabState(tab.href.split('category=')[1]);
+        });
       });
     }
 
@@ -115,11 +128,6 @@
       if (event.target.id === 'open-posts') {
         addTabClickEventListeners();
       }
-    });
-
-    // 初回ロード時のナビバー透明度調整
-    document.addEventListener('DOMContentLoaded', function() {
-      handleNavbarOpacity();
     });
   </script>
 </turbo-frame>
