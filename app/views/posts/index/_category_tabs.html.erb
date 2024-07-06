@@ -1,7 +1,7 @@
 <div id="post-category-tabs-wrapper">
   <div id="post-category-tabs" class="z-10">
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2">
-      <%= link_to posts_path(category: 'recommended'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{ active_if(posts_path(category: 'recommended')) || ('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'recommended'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{ ('active' if params[:category].nil?) || active_if(posts_path(category: 'recommended')) } hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-star text-yellow-700-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
       <%= link_to posts_path(category: 'music'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{active_if(posts_path(category: 'music'))} hover:bg-sky-100 text-center py-2" do %>

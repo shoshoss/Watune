@@ -12,16 +12,16 @@ const essentialUrlsToCache = [
 
 // カテゴリごとの追加URLリスト
 const categoryUrlsToCache = [
-  "/waves?category=recommended",
-  "/waves?category=music",
-  "/waves?category=app_review",
-  "/waves?category=tech",
-  "/waves?category=child",
-  "/waves?category=favorite",
-  "/waves?category=grateful",
-  "/waves?category=blessing",
-  "/waves?category=other",
-  "/waves?category=monologue",
+  `/waves?category=recommended`,
+  `/waves?category=music`,
+  `/waves?category=app_review`,
+  `/waves?category=tech`,
+  `/waves?category=child`,
+  `/waves?category=favorite`,
+  `waves?category=grateful`,
+  `/waves?category=blessing`,
+  `/waves?category=other`,
+  `/waves?category=monologue`,
 ];
 
 // 追加でキャッシュするURLリスト
