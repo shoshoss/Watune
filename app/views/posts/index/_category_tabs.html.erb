@@ -16,7 +16,7 @@
       <%= link_to posts_path(category: 'child'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{active_if(posts_path(category: 'child'))} hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-smile-o text-pink-400 mr-1 sm:mr-2"></i><span>子供の声</span>
       <% end %>
-      <%= link_to posts_path(category: 'favorite'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{active_if(posts_path(category: 'favorite'))} hover:bg-sky-100 text中心 py-2" do %>
+      <%= link_to posts_path(category: 'favorite'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{active_if(posts_path(category: 'favorite'))} hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなこと</span>
       <% end %>
       <%= link_to posts_path(category: 'grateful'), data: { action: "post-index#handleTabClick" }, class: "c-post-tab #{active_if(posts_path(category: 'grateful'))} hover:bg-sky-100 text-center py-2" do %>

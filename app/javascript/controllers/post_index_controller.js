@@ -5,7 +5,6 @@ export default class extends Controller {
     this.saveScrollPosition = this.saveScrollPosition.bind(this);
     this.restoreScrollPosition = this.restoreScrollPosition.bind(this);
     this.handleCategoryTabs = this.handleCategoryTabs.bind(this);
-    this.handleTabClick = this.handleTabClick.bind(this);
 
     // スクロール位置を復元
     this.restoreScrollPosition();
@@ -17,24 +16,12 @@ export default class extends Controller {
     // カテゴリータブの固定処理
     this.handleCategoryTabs();
     window.addEventListener("scroll", this.handleCategoryTabs);
-
-    // タブクリックのイベントリスナーを追加
-    const tabs = document.querySelectorAll(".c-post-tab");
-    tabs.forEach((tab) => {
-      tab.addEventListener("click", this.handleTabClick);
-    });
   }
 
   disconnect() {
     // イベントリスナーを解除
     window.removeEventListener("scroll", this.saveScrollPosition);
     document.removeEventListener("turbo:before-cache", this.saveScrollPosition);
-
-    // タブクリックのイベントリスナーを解除
-    const tabs = document.querySelectorAll(".c-post-tab");
-    tabs.forEach((tab) => {
-      tab.removeEventListener("click", this.handleTabClick);
-    });
   }
 
   handleCategoryTabs() {
