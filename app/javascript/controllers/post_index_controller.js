@@ -41,4 +41,11 @@ export default class extends Controller {
       window.scrollTo(0, parseInt(scrollPosition, 10));
     }
   }
+
+  saveState(event) {
+    const category = event.currentTarget.getAttribute("href").split("=")[1];
+    this.saveScrollPosition();
+    localStorage.setItem("selectedCategory", category);
+    console.log(`Category selected: ${category}`);
+  }
 }
