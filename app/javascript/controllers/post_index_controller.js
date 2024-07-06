@@ -5,6 +5,7 @@ export default class extends Controller {
     this.saveScrollPosition = this.saveScrollPosition.bind(this);
     this.restoreScrollPosition = this.restoreScrollPosition.bind(this);
     this.handleCategoryTabs = this.handleCategoryTabs.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
 
     // スクロール位置を復元
     this.restoreScrollPosition();
@@ -16,36 +17,24 @@ export default class extends Controller {
     // カテゴリータブの固定処理
     this.handleCategoryTabs();
     window.addEventListener("scroll", this.handleCategoryTabs);
+
+    // タブクリックのイベントリスナーを追加
+    const tabs = document.querySelectorAll(".c-post-tab");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", this.handleTabClick);
+    });
   }
 
   disconnect() {
     // イベントリスナーを解除
     window.removeEventListener("scroll", this.saveScrollPosition);
     document.removeEventListener("turbo:before-cache", this.saveScrollPosition);
-    window.removeEventListener("scroll", this.handleCategoryTabs);
-  }
 
-  saveScrollPosition() {
-    const category =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
-    localStorage.setItem(`scrollPosition-${category}`, window.scrollY);
-    console.log(
-      `Saving scroll position for category ${category}: ${window.scrollY}`
-    );
-  }
-
-  restoreScrollPosition() {
-    const category =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
-    const scrollPosition = localStorage.getItem(`scrollPosition-${category}`);
-    console.log(
-      `Restoring scroll position for category ${category}: ${scrollPosition}`
-    );
-    if (scrollPosition) {
-      window.scrollTo(0, parseInt(scrollPosition, 10));
-    }
+    // タブクリックのイベントリスナーを解除
+    const tabs = document.querySelectorAll(".c-post-tab");
+    tabs.forEach((tab) => {
+      tab.removeEventListener("click", this.handleTabClick);
+    });
   }
 
   handleCategoryTabs() {
@@ -83,11 +72,40 @@ export default class extends Controller {
     }
   }
 
-  saveState(event) {
-    event.preventDefault(); // デフォルトのリンク動作を防止
-    const category = event.currentTarget.getAttribute("href").split("=")[1];
+  saveScrollPosition() {
+    const category =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    localStorage.setItem(`scrollPosition-${category}`, window.scrollY);
+    console.log(
+      `Saving scroll position for category ${category}: ${window.scrollY}`
+    );
+  }
+
+  restoreScrollPosition() {
+    const category =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    const scrollPosition = localStorage.getItem(`scrollPosition-${category}`);
+    console.log(
+      `Restoring scroll position for category ${category}: ${scrollPosition}`
+    );
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition, 10));
+    }
+  }
+
+  handleTabClick(event) {
+    event.preventDefault();
+    const url = new URL(event.currentTarget.href);
+    const category = url.searchParams.get("category");
+    this.saveState(category);
+    Turbo.visit(url, { action: "replace" });
+  }
+
+  saveState(category) {
     this.saveScrollPosition();
     localStorage.setItem("selectedCategory", category);
-    Turbo.visit(event.currentTarget.getAttribute("href"));
+    console.log(`Saving state for category ${category}`);
   }
 }
