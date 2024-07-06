@@ -60,13 +60,12 @@ Rails.application.routes.draw do
   get '/:username_slug/status/:id/reply_modal', to: 'replies#new_modal', as: 'new_reply_modal'
   post '/:username_slug/status/:id/reply_modal', to: 'replies#create_modal', as: 'create_reply_modal'
 
-  # テスト用の音声投稿ページのルートを追加
-  get 'posts/new_test', to: 'posts#new_test', as: 'new_test_post'
-
-  # テスト用の新しい投稿作成ルート
-  post 'posts/create_test', to: 'posts#create_test', as: 'create_test_post'
-
-  get '/posts/index_test', to: 'posts#index_test', as: :index_test_post
+  # TestPostsController用のルートを追加
+  namespace :test_posts do
+    get 'new', to: 'test_posts#new', as: 'new'
+    post 'create', to: 'test_posts#create', as: 'create'
+    get 'index', to: 'test_posts#index', as: 'index'
+  end
 
   # PostUserのルーティング（投稿受信者管理）
   resources :post_users, only: %i[show create destroy]

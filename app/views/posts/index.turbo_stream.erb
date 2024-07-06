@@ -2,6 +2,10 @@
   <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
 <% end %>
 
+<%= turbo_stream.update "open-posts" do %>
+  <%= render 'posts/posts_list', posts: @posts, pagy: @pagy, notifications: @notifications %>
+<% end %>
+
 <%= turbo_stream.update "after-widget" do %>
   <%= render 'shared/widget', users: @recent_users %>
 <% end %>
