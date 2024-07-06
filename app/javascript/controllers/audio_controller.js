@@ -173,6 +173,14 @@ export default class extends Controller {
     if (!url) {
       this.toggleAudioPlayback(audioId, postBody);
     } else {
+      const category =
+        new URLSearchParams(window.location.search).get("category") ||
+        "recommended";
+      localStorage.setItem("lastVisitedCategory", category); // 最後に訪れたカテゴリを保存
+      localStorage.setItem(`scrollPosition-${category}`, window.scrollY);
+      console.log(
+        `Saving scroll position for category ${category}: ${window.scrollY}`
+      );
       Turbo.visit(url); // Turboを使用して遷移
     }
   }

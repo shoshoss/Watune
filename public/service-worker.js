@@ -8,6 +8,16 @@ const essentialUrlsToCache = [
   "/waves",
   "/privacy_policy",
   "/terms_of_use",
+  "/waves?category=recommended",
+  "/waves?category=music",
+  "/waves?category=app_review",
+  "/waves?category=tech",
+  "/waves?category=child",
+  "/waves?category=favorite",
+  "/waves?category=grateful",
+  "/waves?category=blessing",
+  "/waves?category=other",
+  "/waves?category=monologue",
 ];
 
 // 追加でキャッシュするURLリスト

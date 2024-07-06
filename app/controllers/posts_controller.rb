@@ -87,26 +87,26 @@ class PostsController < ApplicationController
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_category(category)
-    categories = {
-      'recommended' => Post.fixed_categories[:monologue],
-      'music' => Post.fixed_categories[:music],
-      'app_review' => Post.fixed_categories[:app_review],
-      'child' => Post.fixed_categories[:child],
-      'tech' => Post.fixed_categories[:tech],
-      'favorite' => Post.fixed_categories[:favorite],
-      'other' => Post.fixed_categories[:other],
-      'grateful' => Post.fixed_categories[:grateful],
-      'blessing' => Post.fixed_categories[:blessing],
-      'monologue' => Post.fixed_categories[:monologue]
-    }
+    posts = Post.open.optimized_order
 
-    fixed_category = categories[category] || Post.fixed_categories[:recommended]
+    unless category == 'recommended'
+      categories = {
+        'music' => Post.fixed_categories[:music],
+        'app_review' => Post.fixed_categories[:app_review],
+        'child' => Post.fixed_categories[:child],
+        'tech' => Post.fixed_categories[:tech],
+        'favorite' => Post.fixed_categories[:favorite],
+        'other' => Post.fixed_categories[:other],
+        'grateful' => Post.fixed_categories[:grateful],
+        'blessing' => Post.fixed_categories[:blessing],
+        'monologue' => Post.fixed_categories[:monologue]
+      }
 
-    if category == 'recommended'
-      Post.open.where.not(fixed_category:).optimized_order
-    else
-      Post.open.where(fixed_category:).optimized_order
+      fixed_category = categories[category] || Post.fixed_categories[:recommended]
+      posts = posts.where(fixed_category: fixed_category)
     end
+
+    posts
   end
 
   # カスタムカテゴリーを設定するメソッド
