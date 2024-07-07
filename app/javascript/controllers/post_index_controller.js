@@ -71,8 +71,8 @@ export default class extends Controller {
     const category = event.currentTarget.href.split("category=")[1];
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft - 10); // 10pxの余裕を持たせる
+      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180;
+      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
       localStorage.setItem("tabScrollPosition", scrollPosition);
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
