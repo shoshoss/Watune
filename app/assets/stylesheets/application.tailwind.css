@@ -12,7 +12,7 @@
 }
 
 .active {
-  @apply border-b-4 border-sky-400-accent text-blue-500 font-bold;
+  @apply font-bold border-b-4 border-sky-400-accent text-blue-500;
 }
 
 .no-active {

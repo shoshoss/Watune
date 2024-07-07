@@ -75,7 +75,7 @@ module ApplicationHelper
   end
 
   def active_if(path)
-    current_page?(path) ? 'active' : 'no-active'
+    current_page?(path) ? 'font-bold border-b-4 border-sky-400-accent text-blue-500' : 'font-medium border-b-2 border-gray-200'
   end
 
   # ユーザー数と投稿数を表示
