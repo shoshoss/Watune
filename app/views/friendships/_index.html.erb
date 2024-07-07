@@ -10,10 +10,10 @@
       <div class="invisible w-[56px] h-[53px]">ダミー</div>
     </div>
     <div class="c-tabs flex mb-2">
-      <%= link_to user_following_path(user.username_slug, category: 'following'), data: { turbo_frame: "main-content", turbo_action: :advance }, class: "c-tab flex-1 #{active_tab_class('following', initial_category: 'following')} hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to user_following_path(user.username_slug, category: 'following'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab flex-1 #{active_tab_class('following', initial_category: 'following')} hover:bg-sky-100 text-center py-2" do %>
         フォロー中
       <% end %>
-      <%= link_to user_followers_path(user.username_slug, category: 'followers'), data: { turbo_frame: "_top" }, class: "c-tab flex-1 #{active_tab_class('followers', initial_category: 'followers')} hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to user_followers_path(user.username_slug, category: 'followers'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab flex-1 #{active_tab_class('followers', initial_category: 'followers')} hover:bg-sky-100 text-center py-2" do %>
         フォロワー
       <% end %>
     </div>
