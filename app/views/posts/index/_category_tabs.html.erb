@@ -40,7 +40,7 @@
       <% end %>
       <!-- タブの後ろに追加の空白を挿入 -->
       <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
-        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
+        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), data: { turbo_frame: "_top" }, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
       </div>
     </div>
   </div>
