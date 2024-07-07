@@ -22,8 +22,7 @@ export default class extends Controller {
 
     let lastScrollTop = 0;
     window.addEventListener("scroll", () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
       navbar.style.opacity = scrollTop > lastScrollTop ? "0.5" : "1";
       lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
     });
@@ -39,7 +38,7 @@ export default class extends Controller {
 
     const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
     window.addEventListener("scroll", () => {
-      if (window.pageYOffset > categoryTabsOffsetTop) {
+      if (window.scrollY > categoryTabsOffsetTop) {
         categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
         categoryTabs.classList.add(
           "fixed",
