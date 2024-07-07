@@ -1,6 +1,11 @@
 <div id="post-category-tabs-wrapper">
   <div id="post-category-tabs" class="z-10">
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2" data-controller="post-index">
+      <div class="flex items-center pl-2">
+        <button id="back-button" class="rounded-full w-[34px] h-[34px] text-center hover:bg-sky-100" onclick="window.history.back()">
+          <i class="fas fa-arrow-left w-[20px] h-[20px]"></i>
+        </button>
+      </div>
       <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts", action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab #{('active' if params[:category].nil?) || active_if(posts_path(category: 'recommended'))} hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-star text-yellow-700-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>

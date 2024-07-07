@@ -1,6 +1,6 @@
 
 <%= turbo_frame_tag 'login_modal' %>
-<div class="navbar px-2 sm:px-4">
+<div class="navbar p-2 sm:px-4">
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="mx-2 md-plus:mx-5 shrink-0">
@@ -16,7 +16,7 @@
     <div class="flex flex-1 justify-end items-center">
 
       <!-- 新規登録、ゲスト登録、ログインを開くリンク -->
-      <%= link_to t('header.trial_login'), guest_login_path, method: :post, data: { turbo_action: 'advance' }, class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4' %>
+      <%= link_to t('header.trial_login'), guest_login_path, method: :post, data: { turbo_frame: "_top" }, class: 'btn btn-outline btn-secondary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4' %>
       <%= link_to t('header.signup'), new_signup_modal_path, class: 'btn btn-outline btn-accent btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "signup_modal" } %>
       <%= link_to t('header.login'), new_login_modal_path, class: 'btn btn-outline btn-primary btn-sm sm:btn-lg rounded-full transition-colors duration-300 mx-1 sm:mx-4', data: { turbo_frame: "login_modal" } %>
 

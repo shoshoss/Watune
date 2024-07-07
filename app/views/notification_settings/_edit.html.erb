@@ -1,7 +1,14 @@
 <turbo-frame id="main-content">
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[670px] w-full bg-white border border-gray-200">
-    <h1 class="text-xl font-bold mt-4 text-center">メール通知設定</h1>
+    <div class="mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+      <!-- 戻るボタン -->
+      <%= render 'shared/back_button' %>
+      <div class="flex justify-center items-center flex-grow">
+        <h1 class="text-xl font-bold text-center">メール通知設定</h1>
+      </div>
+      <div class="invisible w-[56px] h-[53px]">ダミー</div>
+    </div>
 
     <%= form_with model: user, url: notification_settings_path, local: true, class: "m-5" do |form| %>
       

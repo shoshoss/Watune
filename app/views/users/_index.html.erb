@@ -2,7 +2,14 @@
 <% content_for(:title, t('.title')) %>
   <div class="flex justify-center min-h-screen">
     <div class="max-w-[670px] w-full bg-white border border-gray-200">
-      <h2 class="text-xl text-center font-bold pt-2 mb-4">未フォローのユーザー</h2>
+      <div class="mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+        <!-- 戻るボタン -->
+        <%= render 'shared/back_button' %>
+        <div class="flex justify-center items-center flex-grow">
+          <h1 class="text-xl text-center font-bold">未フォローのユーザー</h1>
+        </div>
+        <div class="invisible w-[56px] h-[53px]">ダミー</div>
+      </div>
       <% if users.present? %>
         <%= turbo_frame_tag "next-page" do %>
           <div>
