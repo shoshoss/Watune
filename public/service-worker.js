@@ -10,6 +10,20 @@ const essentialUrlsToCache = [
   "/terms_of_use",
 ];
 
+// カテゴリごとの追加URLリスト
+const categoryUrlsToCache = [
+  `/waves?category=recommended`,
+  `/waves?category=music`,
+  `/waves?category=app_review`,
+  `/waves?category=tech`,
+  `/waves?category=child`,
+  `/waves?category=favorite`,
+  `/waves?category=grateful`,
+  `/waves?category=blessing`,
+  `/waves?category=other`,
+  `/waves?category=monologue`,
+];
+
 // 追加でキャッシュするURLリスト
 const additionalUrlsToCache = [
   "/icon-192.png",
@@ -25,14 +39,16 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log("Opened cache");
-      return cache.addAll(essentialUrlsToCache).catch((error) => {
-        console.error("Failed to cache essential URLs:", error);
-        essentialUrlsToCache.forEach((url) => {
-          cache.add(url).catch((err) => {
-            console.error(`Failed to cache ${url}:`, err);
+      return cache
+        .addAll([...essentialUrlsToCache, ...categoryUrlsToCache])
+        .catch((error) => {
+          console.error("Failed to cache essential URLs:", error);
+          [...essentialUrlsToCache, ...categoryUrlsToCache].forEach((url) => {
+            cache.add(url).catch((err) => {
+              console.error(`Failed to cache ${url}:`, err);
+            });
           });
         });
-      });
     })
   );
 });
