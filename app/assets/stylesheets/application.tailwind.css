@@ -15,6 +15,10 @@
   @apply border-b-4 border-sky-400-accent text-blue-500 font-bold;
 }
 
+.no-active {
+  @apply font-medium border-b-2 border-gray-200;
+}
+
 .c-post-tab span {
   @apply text-black;
 }

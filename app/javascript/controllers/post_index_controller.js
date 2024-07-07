@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-
   // クラス内のプロパティを定義
   static targets = ["tab"];
 
@@ -33,18 +32,15 @@ export default class extends Controller {
   }
 
   // カテゴリータブの固定を制御
-
   handleCategoryTabs() {
     const categoryTabsWrapper = document.getElementById(
       "post-category-tabs-wrapper"
     );
     const categoryTabs = document.getElementById("post-category-tabs");
-
     if (!categoryTabsWrapper || !categoryTabs) return;
 
     const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
     window.addEventListener("scroll", () => {
-
       if (window.scrollY > categoryTabsOffsetTop) {
         categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
         categoryTabs.classList.add(
@@ -68,7 +64,6 @@ export default class extends Controller {
           "z-10"
         );
       }
-
     });
   }
 
@@ -114,6 +109,5 @@ export default class extends Controller {
     const selectedCategory =
       localStorage.getItem("selectedCategory") || "recommended";
     document.cookie = `selected_category=${selectedCategory}; path=/`;
-
   }
 }
