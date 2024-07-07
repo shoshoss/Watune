@@ -54,7 +54,7 @@ Rails.application.routes.draw do
     resources :bookmarks, only: %i[create destroy]
     resources :reposts, only: %i[create destroy]
   end
-  get '/waves/category/:category', to: 'posts#index', as: 'category_posts'
+  
   get '/:username_slug/status/:id', to: 'posts#show', as: :user_post
 
   post '/:username_slug/status/:id/replies', to: 'replies#create', as: 'user_post_replies'

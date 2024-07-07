@@ -1,7 +1,7 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path, id: "header-logo-link", data: { turbo_frame: "_top" }, class: "#{active_if(posts_path)}" do %>
+      <%= link_to posts_path, id: "header-logo-link", data: { turbo_frame: "main-content", turbo_action: :advance }, class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
           <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
@@ -12,7 +12,7 @@
       <% if current_user.guest %>
         <%= link_to '引き継ぐ', new_signup_modal_path, id: "guest-update", class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4', data: { turbo_frame: "signup_modal" } %>
       <% end %>
-      <%= link_to t('header.post_audio'), new_post_path(privacy: 'open'), class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
+      <%= link_to t('header.post_audio'), new_post_path(privacy: 'open'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>

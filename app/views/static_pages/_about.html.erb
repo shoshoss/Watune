@@ -19,7 +19,7 @@
         </p>
       </div>
       <a href="#about" class="mt-6 rounded-full text-xl sm:text-2xl btn btn-info  bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
-      <%= link_to "ウェーブ（投稿）を見てみる", posts_path, data: { turbo_frame: "_top" }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+      <%= link_to "ウェーブ（投稿）を見てみる", posts_path, data: { turbo_frame: "main-content", turbo_action: :advance, turbo_action: :advance, turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
     </div>
   </div>
 </div>

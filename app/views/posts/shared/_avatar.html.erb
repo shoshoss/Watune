@@ -1,6 +1,6 @@
 <div class="flex flex-col items-center justify-between flex-shrink-0 relative mr-[8px] z-0">
   <!-- アバター -->
-  <%= link_to profile_show_path(username_slug: post.user.username_slug), data: { turbo_frame: "_top" } do %>
+  <%= link_to profile_show_path(username_slug: post.user.username_slug), data: { turbo_frame: "main-content", turbo_action: :advance } do %>
     <%= image_tag(post.user.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "class=z-0 rounded-full h-[40px] w-[40px]") %>
   <% end %>
 

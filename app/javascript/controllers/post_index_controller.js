@@ -8,6 +8,9 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
+
+    // 初期ロード時にクッキーを確認してリダイレクト
+    this.redirectToCategoryFromCookie();
   }
 
   // ページの初期化
@@ -144,5 +147,20 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
+  }
+
+  // クッキーからカテゴリーを取得してリダイレクト
+  redirectToCategoryFromCookie() {
+    const currentPath = window.location.pathname + window.location.search;
+    const currentCategory = this.getCurrentCategory();
+
+    if (
+      !currentPath.includes(`category=${currentCategory}`) &&
+      currentCategory !== "recommended"
+    ) {
+      const newUrl = `/waves?category=${currentCategory}`;
+      Turbo.visit(newUrl, { frame: "_top" });
+      this.updateActiveTab(currentCategory);
+    }
   }
 }
