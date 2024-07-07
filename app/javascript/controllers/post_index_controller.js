@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-
-  // クラス内のプロパティを定義
+  // ターゲットを定義
   static targets = ["tab"];
 
   connect() {
     this.initializePage();
+    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
+    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
   }
 
   // ページの初期化
@@ -14,8 +15,6 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-
-    // ページがロードされたときに、保存されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
   }
 
@@ -33,18 +32,15 @@ export default class extends Controller {
   }
 
   // カテゴリータブの固定を制御
-
   handleCategoryTabs() {
     const categoryTabsWrapper = document.getElementById(
       "post-category-tabs-wrapper"
     );
     const categoryTabs = document.getElementById("post-category-tabs");
-
     if (!categoryTabsWrapper || !categoryTabs) return;
 
     const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
     window.addEventListener("scroll", () => {
-
       if (window.scrollY > categoryTabsOffsetTop) {
         categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
         categoryTabs.classList.add(
@@ -68,52 +64,79 @@ export default class extends Controller {
           "z-10"
         );
       }
-
     });
   }
 
   // タブの状態を保存
   saveTabState(event) {
-    event.preventDefault();
+    event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
-      localStorage.setItem("tabScrollPosition", container.scrollLeft);
+      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
+      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
+      localStorage.setItem("tabScrollPosition", scrollPosition);
+      console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
     localStorage.setItem("selectedCategory", category);
 
     // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "open-posts" });
+    Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
     // 選択されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
+    // アクティブなタブを更新
+    this.updateActiveTab(category);
   }
 
   // タブの状態を復元
   restoreTabState() {
     const container = document.getElementById("post-category-tabs-container");
     const scrollPosition = localStorage.getItem("tabScrollPosition");
-    if (container && scrollPosition) {
-      container.scrollLeft = parseInt(scrollPosition);
-    }
-
-    const selectedCategory = localStorage.getItem("selectedCategory");
-    if (selectedCategory) {
-      this.tabTargets.forEach((tab) => {
-        if (tab.href.includes(selectedCategory)) {
-          tab.classList.add("active");
-        } else {
-          tab.classList.remove("active");
-        }
+    if (container && scrollPosition !== null) {
+      const parsedScrollPosition = parseFloat(scrollPosition);
+      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
+      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
+      requestAnimationFrame(() => {
+        container.scrollTo({
+          left: parsedScrollPosition,
+          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
+        });
       });
     }
+
+    const selectedCategory = this.getCurrentCategory();
+    if (selectedCategory) {
+      this.updateActiveTab(selectedCategory);
+    }
+  }
+
+  // 現在のカテゴリーを取得
+  getCurrentCategory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("category") || "recommended";
   }
 
   // 選択されたカテゴリーをサーバーに送信
   setCategoryCookie() {
-    const selectedCategory =
-      localStorage.getItem("selectedCategory") || "recommended";
+    const selectedCategory = this.getCurrentCategory();
     document.cookie = `selected_category=${selectedCategory}; path=/`;
+  }
 
+  // アクティブなタブを更新
+  updateActiveTab(selectedCategory) {
+    this.tabTargets.forEach((tab) => {
+      if (tab.href.includes(selectedCategory)) {
+        tab.classList.add("active");
+      } else {
+        tab.classList.remove("active");
+      }
+    });
+  }
+
+  // URLが変更されたときにアクティブなタブを更新
+  updateActiveTabFromUrl() {
+    const category = this.getCurrentCategory();
+    this.updateActiveTab(category);
   }
 }

@@ -22,8 +22,7 @@ class PostsController < ApplicationController
     # 現在のユーザーの未読通知を取得
     @notifications = current_user&.received_notifications&.unread
     @reply = Post.new
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
-                                     items: 15)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc), items: 15)
     # 親投稿を取得
     @parent_posts = @post.ancestors
   end
@@ -110,8 +109,7 @@ class PostsController < ApplicationController
 
   # カスタムカテゴリーを設定するメソッド
   def assign_custom_category
-    custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category],
-                                                 add_category_name: post_params[:custom_category])
+    custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category], add_category_name: post_params[:custom_category])
     @post.category = custom_category
   end
 
@@ -135,16 +133,13 @@ class PostsController < ApplicationController
   def redirect_based_on_privacy
     case params[:privacy] || @post.privacy
     when 'only_me'
-      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other,
-                                                                                                     notice: flash[:notice]
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other, notice: flash[:notice]
     when 'selected_users'
       if post_params[:recipient_ids].size == 1
         recipient = User.find(post_params[:recipient_ids].first)
-        redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other,
-                                                                                                            notice: flash[:notice]
+        redirect_to profile_show_path(username_slug: recipient.username_slug, category: 'shared_with_you'), status: :see_other, notice: flash[:notice]
       else
-        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'),
-                    status: :see_other, notice: flash[:notice]
+        redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'), status: :see_other, notice: flash[:notice]
       end
     when 'open'
       redirect_to posts_path, status: :see_other, notice: flash[:notice]
