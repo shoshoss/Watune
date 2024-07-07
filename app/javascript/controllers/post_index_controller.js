@@ -13,8 +13,6 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-
-    // ページがロードされたときに、保存されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
   }
 
@@ -69,11 +67,14 @@ export default class extends Controller {
 
   // タブの状態を保存
   saveTabState(event) {
-    event.preventDefault();
+    event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
-      localStorage.setItem("tabScrollPosition", container.scrollLeft);
+      const maxScrollLeft = container.scrollWidth - container.clientWidth;
+      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft - 10); // 10pxの余裕を持たせる
+      localStorage.setItem("tabScrollPosition", scrollPosition);
+      console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
     localStorage.setItem("selectedCategory", category);
 
@@ -82,8 +83,7 @@ export default class extends Controller {
 
     // 選択されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
-
-    // タブのアクティブ状態を更新
+    // アクティブなタブを更新
     this.updateActiveTab(category);
   }
 
@@ -91,8 +91,16 @@ export default class extends Controller {
   restoreTabState() {
     const container = document.getElementById("post-category-tabs-container");
     const scrollPosition = localStorage.getItem("tabScrollPosition");
-    if (container && scrollPosition) {
-      container.scrollLeft = parseInt(scrollPosition);
+    if (container && scrollPosition !== null) {
+      const parsedScrollPosition = parseFloat(scrollPosition);
+      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
+      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
+      requestAnimationFrame(() => {
+        container.scrollTo({
+          left: parsedScrollPosition,
+          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
+        });
+      });
     }
 
     const selectedCategory = localStorage.getItem("selectedCategory");
@@ -108,7 +116,7 @@ export default class extends Controller {
     document.cookie = `selected_category=${selectedCategory}; path=/`;
   }
 
-  // タブのアクティブ状態を更新
+  // アクティブなタブを更新
   updateActiveTab(selectedCategory) {
     this.tabTargets.forEach((tab) => {
       if (tab.href.includes(selectedCategory)) {
