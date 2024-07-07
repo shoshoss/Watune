@@ -1,6 +1,8 @@
 <div class="max-w-[263.75px] sm:max-w-[432px] flex justify-between items-center mb-2">
   <div class="overflow-x-auto whitespace-nowrap pb-2 max-w-[80%]">
-    <%= link_to profile_modal_path(username_slug: post.user.username_slug), class: "flex items-center text-lg font-semibold text-black hover:underline", data: { turbo_frame: "profile_modal" } do %>
+    <%= link_to profile_show_path(username_slug: post.user.username_slug),
+        data: { turbo_frame: "main-content", turbo_action: :advance },
+        class: "flex items-center text-lg font-semibold text-black hover:underline" do %>
       <%= post.user.display_name %>
     <% end %>
     <span class="text-base text-gray-500">@<%= post.user.username_slug %></span>
@@ -9,9 +11,9 @@
       <div class="text-base text-gray-500">
         <span>宛先:</span>
         <% post.direct_recipients.each do |recipient| %>
-          <%= link_to profile_modal_path(username_slug: recipient.username_slug),
+          <%= link_to profile_show_path(username_slug: recipient.username_slug),
                       class: "text-blue-500 font-semibold hover:underline",
-                      data: { turbo_frame: "profile_modal" } do %>
+                      data: { turbo_frame: "_top", turbo_action: :advance } do %>
             <%= recipient.display_name %><span class="font-normal">さん</span>
           <% end %>
         <% end %>
@@ -37,9 +39,9 @@
     返信先: 
     <% post.ancestors.map(&:user).uniq.each do |user| %>
       <% unless post.user.id == user.id %>
-        <%= link_to profile_modal_path(username_slug: user.username_slug),
+        <%= link_to profile_show_path(username_slug: user.username_slug),
                     class: "text-blue-500 font-semibold hover:underline",
-                    data: { turbo_frame: "profile_modal" } do %>
+                    data: { turbo_frame: "_top", turbo_action: :advance } do %>
           <%= user.display_name %><span class="font-normal">さん</span>
         <% end %>
       <% end %>
