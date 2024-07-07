@@ -1,7 +1,7 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path, id: "header-logo-link", data: { turbo_frame: "main-content", turbo_action: :advance }, class: "#{active_if(posts_path)}" do %>
+      <%= link_to posts_path, id: "header-logo-link", data: { turbo_frame: "_top", turbo_action: :advance }, class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
           <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
