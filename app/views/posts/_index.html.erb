@@ -1,4 +1,4 @@
-<turbo-frame id="main-content">
+<turbo-frame id="main-content" data-controller="post-index">
   <%= turbo_frame_tag 'post_edit_modal' %>
   <%= turbo_frame_tag "profile_edit_modal" %>
   <%= turbo_frame_tag 'profile_modal' %>
@@ -22,9 +22,9 @@
         </form>
       </div>
 
+      <!-- タブメニュー -->
+      <%= render 'posts/index/category_tabs' %>
       <%= turbo_frame_tag "open-posts" do %>
-        <!-- タブメニュー -->
-        <%= render 'posts/index/category_tabs' %>
         <!-- 投稿一覧 -->
         <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
       <% end %>
