@@ -81,7 +81,10 @@ export default class extends Controller {
     localStorage.setItem("selectedCategory", category);
 
     // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
+    Turbo.visit(event.currentTarget.href, {
+      frame: "open-posts",
+      action: "advance",
+    });
 
     // 選択されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
