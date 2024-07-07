@@ -13,36 +13,37 @@
       </div>
       <div class="invisible w-[56px] h-[53px]">ダミー</div>
     </div>
-
-    <div class="c-tabs flex mb-2">
-      <%= link_to notifications_path(category: 'all'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
-        すべて
-      <% end %>
-      <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
-        仲間から
-      <% end %>
-      <%= link_to notifications_path(category: 'others'), data: { turbo_frame: "_top" }, class: "c-tab #{active_tab_class('others', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
-        その他
-      <% end %>
-    </div>
-    <div class="mx-auto max-w-[670px] w-full">
-      <div class="grid grid-cols-1">
-        <% if notifications.present? %>
-          <%= turbo_frame_tag "next-page" do %>
-            <% notifications.each do |notification| %>
-              <%= render partial: 'notifications/notification', locals: { notification: notification } %>
-            <% end %>
-            <% if @pagy.next %>
-              <%= render 'shared/next_page' %>
-            <% end %>
-          <% end %>
-        <% else %>
-          <div class="mb-3 text-center text-sm sm:text-lg">
-            新しい通知はありません。
-          </div>
+    <%= turbo_frame_tag "notify" do %>
+      <div class="c-tabs flex mb-2">
+        <%= link_to notifications_path(category: 'all'), data: { turbo_frame: "notify", turbo_action: :advance }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+          すべて
+        <% end %>
+        <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "notify", turbo_action: :advance }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+          仲間から
+        <% end %>
+        <%= link_to notifications_path(category: 'others'), data: { turbo_frame: "notify", turbo_action: :advance }, class: "c-tab #{active_tab_class('others', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+          その他
         <% end %>
       </div>
-    </div>
+      <div class="mx-auto max-w-[670px] w-full">
+        <div class="grid grid-cols-1">
+          <% if notifications.present? %>
+            <%= turbo_frame_tag "next-page" do %>
+              <% notifications.each do |notification| %>
+                <%= render partial: 'notifications/notification', locals: { notification: notification } %>
+              <% end %>
+              <% if @pagy.next %>
+                <%= render 'shared/next_page' %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <div class="mb-3 text-center text-sm sm:text-lg">
+              新しい通知はありません。
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
 </turbo-frame>
