@@ -14,6 +14,7 @@ export default class extends Controller {
     this.handleCategoryTabs();
     this.restoreTabState();
     this.setCategoryCookie();
+    this.resetScrollOnTabClick();
   }
 
   // ナビバーの透明度を制御
@@ -71,7 +72,7 @@ export default class extends Controller {
     const category = event.currentTarget.href.split("category=")[1];
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
-      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180;
+      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
       localStorage.setItem("tabScrollPosition", scrollPosition);
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
@@ -123,6 +124,15 @@ export default class extends Controller {
         tab.classList.add("active");
       } else {
         tab.classList.remove("active");
+      }
+    });
+  }
+
+  // タブをクリックした後にスクロール位置をトップに設定
+  resetScrollOnTabClick() {
+    document.addEventListener("turbo:frame-load", (event) => {
+      if (event.target.id === "open-posts") {
+        document.documentElement.scrollTop = 0;
       }
     });
   }
