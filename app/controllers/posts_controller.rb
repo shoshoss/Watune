@@ -10,7 +10,11 @@ class PostsController < ApplicationController
 
   # 投稿一覧を表示するアクション
   def index
+    # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
     category = params[:category] || cookies[:selected_category] || 'recommended'
+    
+    # 選択されたカテゴリーをクッキーに保存
+    cookies[:selected_category] = { value: category, expires: 1.year.from_now }
 
     # 選択されたカテゴリーに基づいて投稿を取得
     @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
