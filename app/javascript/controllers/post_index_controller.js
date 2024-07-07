@@ -13,6 +13,9 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
+
+    // ページがロードされたときに、保存されたカテゴリーをサーバーに送信
+    this.setCategoryCookie();
   }
 
   // ナビバーの透明度を制御
@@ -76,6 +79,9 @@ export default class extends Controller {
 
     // Turbo Frameのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "open-posts" });
+
+    // 選択されたカテゴリーをサーバーに送信
+    this.setCategoryCookie();
   }
 
   // タブの状態を復元
@@ -96,5 +102,12 @@ export default class extends Controller {
         }
       });
     }
+  }
+
+  // 選択されたカテゴリーをサーバーに送信
+  setCategoryCookie() {
+    const selectedCategory =
+      localStorage.getItem("selectedCategory") || "recommended";
+    document.cookie = `selected_category=${selectedCategory}; path=/`;
   }
 }
