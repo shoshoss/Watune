@@ -82,6 +82,9 @@ export default class extends Controller {
 
     // 選択されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
+
+    // タブのアクティブ状態を更新
+    this.updateActiveTab(category);
   }
 
   // タブの状態を復元
@@ -94,13 +97,7 @@ export default class extends Controller {
 
     const selectedCategory = localStorage.getItem("selectedCategory");
     if (selectedCategory) {
-      this.tabTargets.forEach((tab) => {
-        if (tab.href.includes(selectedCategory)) {
-          tab.classList.add("active");
-        } else {
-          tab.classList.remove("active");
-        }
-      });
+      this.updateActiveTab(selectedCategory);
     }
   }
 
@@ -109,5 +106,16 @@ export default class extends Controller {
     const selectedCategory =
       localStorage.getItem("selectedCategory") || "recommended";
     document.cookie = `selected_category=${selectedCategory}; path=/`;
+  }
+
+  // タブのアクティブ状態を更新
+  updateActiveTab(selectedCategory) {
+    this.tabTargets.forEach((tab) => {
+      if (tab.href.includes(selectedCategory)) {
+        tab.classList.add("active");
+      } else {
+        tab.classList.remove("active");
+      }
+    });
   }
 }

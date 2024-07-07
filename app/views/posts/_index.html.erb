@@ -22,8 +22,8 @@
         </form>
       </div>
 
-      <!-- タブメニュー -->
-      <%= render 'posts/index/category_tabs' %>
+        <!-- タブメニュー -->
+        <%= render 'posts/index/category_tabs' %>
       <%= turbo_frame_tag "open-posts" do %>
         <!-- 投稿一覧 -->
         <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
