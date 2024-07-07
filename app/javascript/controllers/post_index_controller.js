@@ -1,11 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  // クラス内のプロパティを定義
+  // ターゲットを定義
   static targets = ["tab"];
 
   connect() {
     this.initializePage();
+    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
+    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
   }
 
   // ページの初期化
@@ -14,7 +16,6 @@ export default class extends Controller {
     this.handleCategoryTabs();
     this.restoreTabState();
     this.setCategoryCookie();
-    this.resetScrollOnTabClick();
   }
 
   // ナビバーの透明度を制御
@@ -80,7 +81,7 @@ export default class extends Controller {
     localStorage.setItem("selectedCategory", category);
 
     // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "open-posts" });
+    Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
     // 選択されたカテゴリーをサーバーに送信
     this.setCategoryCookie();
@@ -104,16 +105,21 @@ export default class extends Controller {
       });
     }
 
-    const selectedCategory = localStorage.getItem("selectedCategory");
+    const selectedCategory = this.getCurrentCategory();
     if (selectedCategory) {
       this.updateActiveTab(selectedCategory);
     }
   }
 
+  // 現在のカテゴリーを取得
+  getCurrentCategory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("category") || "recommended";
+  }
+
   // 選択されたカテゴリーをサーバーに送信
   setCategoryCookie() {
-    const selectedCategory =
-      localStorage.getItem("selectedCategory") || "recommended";
+    const selectedCategory = this.getCurrentCategory();
     document.cookie = `selected_category=${selectedCategory}; path=/`;
   }
 
@@ -128,12 +134,9 @@ export default class extends Controller {
     });
   }
 
-  // タブをクリックした後にスクロール位置をトップに設定
-  resetScrollOnTabClick() {
-    document.addEventListener("turbo:frame-load", (event) => {
-      if (event.target.id === "open-posts") {
-        document.documentElement.scrollTop = 0;
-      }
-    });
+  // URLが変更されたときにアクティブなタブを更新
+  updateActiveTabFromUrl() {
+    const category = this.getCurrentCategory();
+    this.updateActiveTab(category);
   }
 }
