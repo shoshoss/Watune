@@ -37,6 +37,7 @@
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
+                  data: { turbo_frame: "_top" },
                   id: "sidebar-new-post-link",
                   class: "flex text-white text-2xl btn btn-info rounded-full bg-opacity-80" %>
   </div>

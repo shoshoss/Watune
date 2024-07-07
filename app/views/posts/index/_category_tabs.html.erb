@@ -7,7 +7,7 @@
       </button>
     </div>
     <!-- タブのリンク -->
-    <div id="post-category-tabs-container" class="pr-[190px] c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
+    <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
       <%= link_to posts_path(category: 'recommended'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-star text-yellow-700-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
@@ -38,6 +38,10 @@
       <%= link_to posts_path(category: 'blessing'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-hand-sparkles text-yellow-700-accent mr-1 sm:mr-2"></i><span>祝福</span>
       <% end %>
+      <!-- タブの後ろに追加の空白を挿入 -->
+      <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
+        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), data: { turbo_frame: "_top" }, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
+      </div>
     </div>
   </div>
 </div>
