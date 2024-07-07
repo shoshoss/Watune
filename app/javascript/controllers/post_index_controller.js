@@ -114,7 +114,13 @@ export default class extends Controller {
   // 現在のカテゴリーを取得
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("category") || "recommended";
+    const categoryFromUrl = urlParams.get("category");
+    const categoryFromCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("selected_category="))
+      ?.split("=")[1];
+
+    return categoryFromUrl || categoryFromCookie || "recommended";
   }
 
   // 選択されたカテゴリーをサーバーに送信

@@ -56,7 +56,7 @@ class UsersController < ApplicationController
     @user = User.create!(email:, password: SecureRandom.hex(10), guest: true)
     auto_login(@user)
     set_flash(:before_profile_edit_flash, I18n.t('flash_messages.users.guest_login_success'))
-    redirect_to posts_path
+    redirect_to posts_path(category: 'recommended')
     respond_to do |format|
       format.html
       format.turbo_stream
