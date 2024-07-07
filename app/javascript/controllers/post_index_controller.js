@@ -1,28 +1,38 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+
+  // クラス内のプロパティを定義
+  static targets = ["tab"];
+
   connect() {
-    this.saveScrollPosition = this.saveScrollPosition.bind(this);
-    this.restoreScrollPosition = this.restoreScrollPosition.bind(this);
-    this.handleCategoryTabs = this.handleCategoryTabs.bind(this);
+    this.initializePage();
+  }
 
-    // スクロール位置を復元
-    this.restoreScrollPosition();
-
-    // スクロール位置を保存
-    window.addEventListener("scroll", this.saveScrollPosition);
-    document.addEventListener("turbo:before-cache", this.saveScrollPosition);
-
-    // カテゴリータブの固定処理
+  // ページの初期化
+  initializePage() {
+    this.handleNavbarOpacity();
     this.handleCategoryTabs();
-    window.addEventListener("scroll", this.handleCategoryTabs);
+    this.restoreTabState();
+
+    // ページがロードされたときに、保存されたカテゴリーをサーバーに送信
+    this.setCategoryCookie();
   }
 
-  disconnect() {
-    // イベントリスナーを解除
-    window.removeEventListener("scroll", this.saveScrollPosition);
-    document.removeEventListener("turbo:before-cache", this.saveScrollPosition);
+  // ナビバーの透明度を制御
+  handleNavbarOpacity() {
+    const navbar = document.getElementById("bottom-navbar");
+    if (!navbar) return;
+
+    let lastScrollTop = 0;
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      navbar.style.opacity = scrollTop > lastScrollTop ? "0.5" : "1";
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    });
   }
+
+  // カテゴリータブの固定を制御
 
   handleCategoryTabs() {
     const categoryTabsWrapper = document.getElementById(
@@ -30,8 +40,10 @@ export default class extends Controller {
     );
     const categoryTabs = document.getElementById("post-category-tabs");
 
-    if (categoryTabsWrapper && categoryTabs) {
-      const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
+    if (!categoryTabsWrapper || !categoryTabs) return;
+
+    const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
+    window.addEventListener("scroll", () => {
 
       if (window.scrollY > categoryTabsOffsetTop) {
         categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
@@ -56,43 +68,52 @@ export default class extends Controller {
           "z-10"
         );
       }
-    }
+
+    });
   }
 
-  saveScrollPosition() {
-    const category =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
-    localStorage.setItem(`scrollPosition-${category}`, window.scrollY);
-    console.log(
-      `Saving scroll position for category ${category}: ${window.scrollY}`
-    );
-  }
-
-  restoreScrollPosition() {
-    const category =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
-    const scrollPosition = localStorage.getItem(`scrollPosition-${category}`);
-    console.log(
-      `Restoring scroll position for category ${category}: ${scrollPosition}`
-    );
-    if (scrollPosition) {
-      window.scrollTo(0, parseInt(scrollPosition, 10));
-    }
-  }
-
-  handleTabClick(event) {
+  // タブの状態を保存
+  saveTabState(event) {
     event.preventDefault();
-    const url = new URL(event.currentTarget.href);
-    const category = url.searchParams.get("category");
-    this.saveState(category);
-    Turbo.visit(url, { action: "replace" });
+    const category = event.currentTarget.href.split("category=")[1];
+    const container = document.getElementById("post-category-tabs-container");
+    if (container) {
+      localStorage.setItem("tabScrollPosition", container.scrollLeft);
+    }
+    localStorage.setItem("selectedCategory", category);
+
+    // Turbo Frameのロードをトリガー
+    Turbo.visit(event.currentTarget.href, { frame: "open-posts" });
+
+    // 選択されたカテゴリーをサーバーに送信
+    this.setCategoryCookie();
   }
 
-  saveState(category) {
-    this.saveScrollPosition();
-    localStorage.setItem("selectedCategory", category);
-    console.log(`Saving state for category ${category}`);
+  // タブの状態を復元
+  restoreTabState() {
+    const container = document.getElementById("post-category-tabs-container");
+    const scrollPosition = localStorage.getItem("tabScrollPosition");
+    if (container && scrollPosition) {
+      container.scrollLeft = parseInt(scrollPosition);
+    }
+
+    const selectedCategory = localStorage.getItem("selectedCategory");
+    if (selectedCategory) {
+      this.tabTargets.forEach((tab) => {
+        if (tab.href.includes(selectedCategory)) {
+          tab.classList.add("active");
+        } else {
+          tab.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  // 選択されたカテゴリーをサーバーに送信
+  setCategoryCookie() {
+    const selectedCategory =
+      localStorage.getItem("selectedCategory") || "recommended";
+    document.cookie = `selected_category=${selectedCategory}; path=/`;
+
   }
 }
