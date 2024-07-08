@@ -115,15 +115,15 @@ class Post < ApplicationRecord
   end
 
   # 最新活動日時で投稿を並べ替えるスコープ
-  scope :ordered_by_latest_activity, -> {
+  scope :ordered_by_latest_activity, lambda {
     includes(:user, :category, audio_attachment: :blob)
-    .order(latest_activity: :desc)
+      .order(latest_activity: :desc)
   }
 
   private
 
   def update_latest_activity
-    latest_time = [self.created_at, reposts.maximum(:created_at)].compact.max
+    latest_time = [created_at, reposts.maximum(:created_at)].compact.max
     update(latest_activity: latest_time)
   end
 end
