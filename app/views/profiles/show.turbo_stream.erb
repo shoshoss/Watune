@@ -1,4 +1,4 @@
-<%= turbo_stream.update "main-content" do %>
+<%= turbo_stream.replace "main-content" do %>
   <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, pagy: @pagy, initial_category: @initial_category, notifications: @notifications } %>
 <% end %>
 
