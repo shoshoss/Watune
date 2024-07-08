@@ -1,35 +1,44 @@
 <aside class="px-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-5 pt-2">
-    <%= link_to profile_show_path(current_user.username_slug), class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
+    <%= link_to profile_show_path(current_user.username_slug),
+                data: { turbo_frame: "_top" },
+                class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
       <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path, id: "sidebar-posts-link", class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
+      <%= link_to posts_path,
+                  data: { turbo_frame: "_top" },
+                  id: "sidebar-posts-link",
+                  class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
         <h2 class="text-lg flex-grow">ホーム</h2>
       <% end %>
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(current_user.username_slug), id: "sidebar-profile-link", class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
+      <%= link_to profile_show_path(current_user.username_slug),
+                  data: { turbo_frame: "_top" },
+                  id: "sidebar-profile-link",
+                  class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
         <h2 class="text-lg flex-grow">プロフィール</h2>
       <% end %>
     </li>
     <!-- 通知 -->
-    <%= render partial: 'shared/notification_link', locals: { 
-      link_id: "sidebar-notifications-link", 
-      link_class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
-      notification_position_class: "-top-[7px] -right-[3px]",
-      show_text: true,
-    } %>
+    <%= render partial: 'shared/notification_link',
+               locals: { 
+                link_id: "sidebar-notifications-link", 
+                link_class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
+                notification_position_class: "-top-[7px] -right-[3px]",
+                show_text: true,
+               } %>
     <!-- 通知設定 -->
     <li>
       <%= link_to edit_notification_settings_path,
-          data: { turbo_frame: "_top", turbo_action: :advance },
+          data: { turbo_frame: "_top" },
           id: "sidebar-settings-link",
           class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl"></i>
@@ -40,7 +49,7 @@
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
-                  data: { turbo_frame: "_top", turbo_action: :advance },
+                  data: { turbo_frame: "_top" },
                   id: "sidebar-new-post-link",
                   class: "flex text-white text-2xl btn btn-info rounded-full bg-opacity-80" %>
   </div>
