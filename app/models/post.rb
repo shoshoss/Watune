@@ -26,6 +26,11 @@ class Post < ApplicationRecord
   has_many :community_recipients, -> { where(post_users: { role: 'community_recipient' }) }, through: :post_users, source: :user
 
   # リポスト関係
+
+  # リポストが作成されたときに最新活動日時を更新
+  after_create :update_latest_activity
+  after_update :update_latest_activity, if: :saved_change_to_created_at?
+
   has_many :reposts, class_name: 'Repost', dependent: :destroy, inverse_of: :original_post
   has_many :reposted_by_users, through: :reposts, source: :user
 
@@ -109,6 +114,16 @@ class Post < ApplicationRecord
     self.category = custom_category
   end
 
-  # 投稿を最適な順序で取得するスコープ
-  scope :optimized_order, -> { includes(:user, :category, audio_attachment: :blob).order(created_at: :desc) }
+  # 最新活動日時で投稿を並べ替えるスコープ
+  scope :ordered_by_latest_activity, -> {
+    includes(:user, :category, audio_attachment: :blob)
+    .order(latest_activity: :desc)
+  }
+
+  private
+
+  def update_latest_activity
+    latest_time = [self.created_at, reposts.maximum(:created_at)].compact.max
+    update(latest_activity: latest_time)
+  end
 end

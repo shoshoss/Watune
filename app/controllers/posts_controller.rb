@@ -1,3 +1,4 @@
+# app/controllers/posts_controller.rb
 class PostsController < ApplicationController
   include PostsHelper
   include ActionView::RecordIdentifier
@@ -90,7 +91,7 @@ class PostsController < ApplicationController
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_category(category)
-    posts = Post.open.optimized_order
+    posts = Post.open.ordered_by_latest_activity
 
     unless category == 'recommended'
       categories = {
