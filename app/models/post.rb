@@ -51,7 +51,7 @@ class Post < ApplicationRecord
   enum fixed_category: {
     congratulation: 1,
     music: 10,
-    self_introduction: 5,
+    self_introduction: 70,
     app_review: 20,
     tech: 30,
     child: 40,
