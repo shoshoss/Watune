@@ -99,6 +99,6 @@ class ProfilesController < ApplicationController
   def set_posts
     category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
     @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
-                                   items: 10)
+                                   items: 5)
   end
 end
