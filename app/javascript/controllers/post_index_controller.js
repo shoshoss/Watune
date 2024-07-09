@@ -109,9 +109,7 @@ export default class extends Controller {
     }
 
     const selectedCategory = this.getCurrentCategory();
-    if (selectedCategory) {
-      this.updateActiveTab(selectedCategory);
-    }
+    this.updateActiveTab(selectedCategory);
   }
 
   // 現在のカテゴリーを取得
@@ -134,15 +132,17 @@ export default class extends Controller {
 
   // 選択されたカテゴリーをクッキーに保存
   setCategoryCookie(selectedCategory) {
+    const category = selectedCategory || "recommended";
     const expires = new Date();
     expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
-    document.cookie = `selected_post_category=${selectedCategory}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
+    document.cookie = `selected_post_category=${category}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
   }
 
   // アクティブなタブを更新
   updateActiveTab(selectedCategory) {
+    const category = selectedCategory || "recommended";
     this.tabTargets.forEach((tab) => {
-      if (tab.href.includes(selectedCategory)) {
+      if (tab.href.includes(category)) {
         tab.classList.add("active");
       } else {
         tab.classList.remove("active");
@@ -168,6 +168,8 @@ export default class extends Controller {
       const newUrl = `/waves?category=${currentCategory}`;
       Turbo.visit(newUrl, { frame: "_top" });
       this.updateActiveTab(currentCategory);
+    } else if (currentCategory === "recommended") {
+      this.updateActiveTab("recommended");
     }
   }
 }
