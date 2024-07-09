@@ -20,7 +20,7 @@ class PostsController < ApplicationController
     end
 
     # 選択されたカテゴリーに基づいて投稿を取得
-    @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
+    @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 5)
   end
 
   # 投稿詳細を表示するアクション
