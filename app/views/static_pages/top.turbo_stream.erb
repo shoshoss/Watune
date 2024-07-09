@@ -1,7 +1,3 @@
 <%= turbo_stream.replace "main-content" do %>
-  <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
-<% end %>
-
-<%= turbo_stream.update "after-widget" do %>
-  <%= render 'shared/widget', users: @recent_users %>
+  <%= render partial: 'static_pages/top' %>
 <% end %>

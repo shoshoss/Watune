@@ -8,38 +8,76 @@
     </div>
     <!-- タブのリンク -->
     <div id="profile-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="profile-show">
-      <%= link_to profile_show_path(username_slug: user.username_slug, category: 'all_my_posts'),
-                  method: :post,
-                  data: { action: "click->profile-show#saveTabState",
-                          profile_show_target: "tab" },
-                  class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa-solid fa-gift text-blue-400 mr-1 sm:mr-2"></i><span>私のウェーブ</span>
+      <% if current_user == user %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'all_my_posts'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fa-solid fa-gift text-blue-400 mr-1 sm:mr-2"></i><span>私のウェーブ</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'only_me'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fas fa-user text-blue-400 mr-1 sm:mr-2"></i><span>自分へ</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_following'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab } hover:bg-sky-100 text-center py-2" do %>
+          <i class="fa-regular fa-handshake text-blue-400 mr-1 sm:mr-2"></i><span>仲間へ</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_open'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
+          <i class="fas fa-globe text-blue-400 mr-1 sm:mr-2"></i><span>みんなへ</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'posts_to_you'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fa-regular fa-envelope text-orange-400 mr-1 sm:mr-2"></i><span>仲間から</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'bookmarked'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fas fa-bookmark text-yellow-400-accent mr-1 sm:mr-2"></i><span>お気に入り</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'liked'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fa-solid fa-hand-holding-heart text-red-400 mr-1 sm:mr-2"></i><span>いいね</span>
+        <% end %>
+        <!-- タブの後ろに追加の空白を挿入 -->
+        <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
+          <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
+        </div>
+      <% else %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_open'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fas fa-globe text-blue-400 mr-1 sm:mr-2"></i><span>みんなへ</span>
+        <% end %>
+        <%= link_to profile_show_path(username_slug: user.username_slug, category: 'shared_with_you'),
+                    method: :post,
+                    data: { action: "click->profile-show#saveTabState",
+                            profile_show_target: "tab" },
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+          <i class="fas fa-globe text-blue-400 mr-1 sm:mr-2"></i><span>あなたと共有</span>
+        <% end %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: user.username_slug, category: 'posts_to_you'),
-                  method: :post,
-                  data: { action: "click->profile-show#saveTabState",
-                          profile_show_target: "tab" },
-                  class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa-regular fa-envelope text-orange-400 mr-1 sm:mr-2"></i><span>仲間から</span>
-      <% end %>
-      <%= link_to profile_show_path(username_slug: user.username_slug, category: 'bookmarked'),
-                  method: :post,
-                  data: { action: "click->profile-show#saveTabState",
-                          profile_show_target: "tab" },
-                  class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
-        <i class="fas fa-bookmark text-yellow-400-accent mr-1 sm:mr-2"></i><span>お気に入り</span>
-      <% end %>
-      <%= link_to profile_show_path(username_slug: user.username_slug, category: 'liked'),
-                  method: :post,
-                  data: { action: "click->profile-show#saveTabState",
-                          profile_show_target: "tab" },
-                  class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa-solid fa-hand-holding-heart text-yellow-700-accent text-red-400 mr-1 sm:mr-2"></i><span>いいね</span>
-      <% end %>
-      <!-- タブの後ろに追加の空白を挿入 -->
-      <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
-        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
-      </div>
     </div>
   </div>
 </div>

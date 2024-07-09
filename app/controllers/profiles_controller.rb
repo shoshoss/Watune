@@ -7,7 +7,11 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @notifications = current_user&.received_notifications&.unread
-    @initial_category = current_user == @user ? 'all_my_posts' : 'my_posts_open'
+
+    # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
+    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    # 選択されたカテゴリーをクッキーに保存
+    cookies[:selected_profile_category] = { value: category, expires: 1.year.from_now }
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
@@ -38,11 +42,6 @@ class ProfilesController < ApplicationController
       flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
     else
       flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
-    end
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to profile_show_path(@user.username_slug) }
     end
   end
 
@@ -79,29 +78,16 @@ class ProfilesController < ApplicationController
     params.require(:user).permit(:display_name, :email, :avatar, :username_slug, :self_introduction)
   end
 
-  # 初期カテゴリを決定
-  def determine_initial_category
-    current_user == @user ? 'all_my_posts' : 'my_posts_open'
-  end
-
   # 投稿をフィルタリング
-  def filtered_posts
-    category = params[:category] || determine_initial_category
-
+  def filtered_posts(category)
     scopes = {
       'all_my_posts' => @user.posts.order(created_at: :desc),
       'only_me' => @user.posts.only_me.order(created_at: :desc),
+      'my_posts_following' => Post.my_posts_following(@user),
       'my_posts_open' => @user.posts.my_posts_open.order(created_at: :desc),
-      'all_likes_chance' => Post.with_likes_count_all(@user),
-      'my_likes_chance' => Post.not_liked_by_user(@user),
-      'public_likes_chance' => Post.public_likes_chance(@user),
+      'posts_to_you' => Post.posts_to_you(@user),
       'bookmarked' => @user.bookmarked_posts.order('bookmarks.created_at DESC'),
       'liked' => @user.liked_posts.order('likes.created_at DESC'),
-      'posts_to_you' => Post.posts_to_you(@user),
-      'my_posts_following' => Post.my_posts_following(@user),
-      'community_posts' => Post.joins(:post_users)
-                               .where(post_users: { user: @user, role: 'community_recipient' })
-                               .order(created_at: :desc),
       'shared_with_you' => Post.shared_with_you(current_user, @user)
     }
 
@@ -111,7 +97,8 @@ class ProfilesController < ApplicationController
   # フィルタリングされた投稿を取得
   # N+1クエリ問題を回避するために関連データを一緒にロード
   def set_posts
-    @pagy, @posts = pagy_countless(filtered_posts.includes(:user, :reposts, :replies, :likes, :bookmarks, post_users: :user),
+    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
                                    items: 10)
   end
 end

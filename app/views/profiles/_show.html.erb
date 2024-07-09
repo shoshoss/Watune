@@ -16,7 +16,7 @@
       <%= render 'profiles/profile_info', user: user %>
       <%= turbo_frame_tag "profile-posts" do %>
         <!-- タブメニュー -->
-        <%= render 'profiles/category_tabs', user: user, initial_category: initial_category %>
+        <%= render 'profiles/category_tabs', user: user %>
         <!-- 投稿一覧 -->
         <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
       <% end %>

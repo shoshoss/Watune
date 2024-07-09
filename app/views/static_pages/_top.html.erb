@@ -1,5 +1,157 @@
-<% if logged_in? %>
-  <%= render partial: 'posts/index', locals: { posts: posts, pagy: pagy, notifications: notifications } %>
-<% else %>
-  <%= render 'static_pages/about' %>
-<% end %>
+<turbo-frame id="main-content">
+<div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="hero-content text-center relative text-neutral-content">
+    <div class="z-0 flex flex-col justify-center max-w-[670px] mx-auto">
+      <%= link_to guest_login_path, class: "invisible trial-btn text-xl sm:text-2xl mb-6" do %>
+        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
+      <% end %>
+      <div class="max-w-lg rounded-full py-16 sm:py-28 bg-orange-500 bg-opacity-80">
+        <h1 class="text-2xl sm:text-4xl font-bold text-black leading-tight">
+          音で繋がるSNS！
+        </h1>
+        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">
+          あなたの音声メッセージで、
+          <br>つながりと元気を届けよう
+        </p>
+      </div>
+      <a href="#about" class="mt-6 rounded-full text-xl sm:text-2xl btn btn-info  bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+      <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), data: { turbo_frame: "_top", turbo_action: :advance, turbo_action: :advance, turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+    </div>
+  </div>
+</div>
+
+<div id="about" class="flex flex-col max-w-[670px] justify-center text-gray-900 container mx-auto py-12" style="background-image: url('#'); background-size: cover; background-position: center;">
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-3 py-8 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">サービス概要</h2>
+      <p class="text-lg font-semibold">
+        本アプリ（Watune）は、<br class="sm:hidden">喜びを選び、
+        <br>日々の生活をより豊かにするために、
+        <br>音による前向きな<br class="sm:hidden">メッセージやメロディーを通じて、
+        <br>自分と仲間に<br class="sm:hidden">元氣を与え合うサービスです。
+      </p>
+    </div>
+  </section>
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">アプリへの想い</h2>
+      <p class="text-lg font-semibold">
+        以前、体調を崩して退職した後、
+        <br>約一年間うつに近い状態で<br class="sm:hidden">苦しんだ経験から
+        <br>自己肯定の重要性を認識しました。
+        <br>この経験は、まず自分自身への感謝が<br class="sm:hidden">どれほど大切かを痛感しました。
+        <br>そして、大切な人からの応援や支えは<br class="sm:hidden">かけがえのないものでした。
+        <br>そこで自分や仲間の投稿を通じて
+        <br>少しでも自分を好きでいられるように、
+        <br>少しでも前向きになれるサービスを<br class="sm:hidden">提供したいと思い、
+        <br>本アプリを<br class="sm:hidden">開発させていただきました。
+      </p>
+    </div>
+  </section>
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-3 py-12 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">アプリ名の由来</h2>
+      <p class="text-lg font-semibold">
+        Watune（ウェーチュン）は、
+        <br>Wave Tune（ウェーブチューン）
+        <br> 「Wave（波、波紋）」と<br class="sm:hidden">「Tune（旋律、メロディー）」を
+        <br>組み合わせた造語です。
+        <br>心地の良い前向きな音が
+        <br>波紋のように広がっている<br class="sm:hidden">という意味を込めています。
+      </p>
+    </div>
+  </section>
+  <section class="mb-12 text-center">
+    <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-5 py-12 sm:p-12 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">対象ユーザー</h2>
+      <p class="text-lg font-semibold">
+        本アプリは、<br class="sm:hidden">前向きであり続けたい人々や
+        <br>切磋琢磨したい人々を<br class="sm:hidden">対象としています。
+        <br>学びのアウトプットや<br class="sm:hidden">アイデアの音声メモ、
+        <br>思い出の記録としても<br class="sm:hidden">ご利用いただけます。
+      </p>
+    </div>
+  </section>
+  <section class="mb-8 text-center">
+    <div class="rounded-full bg-sky-400-accent bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
+      <h2 class="text-3xl font-bold mb-4">こだわりポイント</h2>
+      <ul class="list-none p-0 text-lg font-semibold text-center">
+        <li class="leading-none mb-2">・音声による投稿<br class="sm:hidden">（1投稿60分未満）</li>
+        <li class="leading-none mb-2">・投稿をカテゴリー分けした<br class="sm:hidden">プロフィール画面</li>
+        <li class="leading-none">・スマホでも閲覧や操作がしやすいように</li>
+      </ul>
+    </div>
+  </section>
+
+  <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+  <% unless current_user %>
+    <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
+    お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能
+    <% end %>
+    <!-- Googleで新規登録のボタン -->
+    <div class="flex items-center justify-center mb-8">
+      <%= link_to auth_at_provider_path(provider: :google),
+                  method: :post,
+                  class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg",
+                  data: { turbo: false } do %>
+        <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+        <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
+    <% end %>
+  <% end %>
+</div>
+
+<style>
+  .min-h-custom-screen {
+    min-height: calc(100vh - var(--header-height));
+  }
+  .header {
+    --header-height: 4rem; /* 仮のヘッダー高さ */
+  }
+  .hero {
+    position: relative;
+  }
+  .hero-content {
+    padding: 2rem;
+    border-radius: 1rem;
+    z-index: 5; /* 背景動画より上に表示するためのz-index */
+  }
+  img.absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 半透明の黒色オーバーレイ */
+    z-index: -1;
+  }
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function adjustHeroHeight() {
+      const header = document.querySelector('.navbar');
+      const hero = document.querySelector('.hero');
+      if (header && hero) {
+        hero.style.minHeight = `calc(100vh - ${header.offsetHeight}px)`;
+      }
+    }
+
+    adjustHeroHeight();
+    window.addEventListener('resize', adjustHeroHeight);
+  });
+</script>
+</turbo-frame>

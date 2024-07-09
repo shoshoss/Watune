@@ -3,9 +3,7 @@ class StaticPagesController < ApplicationController
 
   def top
     if logged_in?
-      redirect_to posts_path
-    else
-      redirect_to about_path
+      redirect_to posts_path( category: (cookies[:selected_post_category] || 'recommended'))
     end
   end
 
