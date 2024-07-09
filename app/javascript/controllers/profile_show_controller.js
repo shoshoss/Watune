@@ -74,6 +74,8 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
+    if (!category) return; // カテゴリーが取得できない場合は何もしない
+
     const container = document.getElementById(
       "profile-category-tabs-container"
     );
@@ -90,7 +92,7 @@ export default class extends Controller {
 
     // 必要な場合のみクッキーを設定
     if (this.getCurrentCategory() !== category) {
-      this.setCategoryCookie();
+      this.setCategoryCookie(category);
     }
 
     // アクティブなタブを更新
@@ -140,18 +142,20 @@ export default class extends Controller {
   }
 
   // 選択されたカテゴリーをサーバーに送信
-  setCategoryCookie() {
-    const selectedCategory = this.getCurrentCategory();
+  setCategoryCookie(selectedCategory) {
+    const category =
+      selectedCategory || this.getCurrentCategory() || "my_posts_open";
     const expires = new Date();
     expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
-    document.cookie = `selected_profile_category=${selectedCategory}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
-    localStorage.setItem("selectedCategory", selectedCategory);
+    document.cookie = `selected_profile_category=${category}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
+    localStorage.setItem("selectedCategory", category);
   }
 
   // アクティブなタブを更新
   updateActiveTab(selectedCategory) {
+    const category = selectedCategory || "my_posts_open";
     this.tabTargets.forEach((tab) => {
-      if (tab.href.includes(selectedCategory)) {
+      if (tab.href.includes(category)) {
         tab.classList.add("active");
       } else {
         tab.classList.remove("active");
