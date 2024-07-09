@@ -1,29 +1,4 @@
 <turbo-frame id="main-content">
-<div class="hero min-h-custom-screen relative" style="background-image: url('/images/sakura.JPG');">
-  <div class="hero-overlay bg-opacity-60"></div>
-  <div class="hero-content text-center relative text-neutral-content">
-    <div class="z-0 flex flex-col justify-center max-w-[670px] mx-auto">
-      <%= link_to guest_login_path, class: "invisible trial-btn text-xl sm:text-2xl mb-6" do %>
-        お試しでいますぐ始める！<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能！
-      <% end %>
-      <div class="max-w-lg rounded-full py-16 sm:py-28 bg-orange-500 bg-opacity-80">
-        <h1 class="text-2xl sm:text-4xl font-bold text-black leading-tight">
-          音でつながる
-          <br>前向きなエネルギー
-        </h1>
-        <p class="text-md mt-4 sm:text-2xl font-semibold text-black leading-tight">
-          あなたの
-          <br>音声メッセージが
-          <br>自分自身と仲間に
-          <br>暖かさや元氣を与える
-        </p>
-      </div>
-      <a href="#about" class="mt-6 rounded-full text-xl sm:text-2xl btn btn-info  bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
-      <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), data: { turbo_frame: "_top", turbo_action: :advance, turbo_action: :advance, turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
-    </div>
-  </div>
-</div>
-
 <div id="about" class="flex flex-col max-w-[670px] justify-center text-gray-900 container mx-auto py-12" style="background-image: url('#'); background-size: cover; background-position: center;">
   <section class="mb-12 text-center">
     <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-3 py-8 sm:p-8 mx-auto max-w-2xl">
@@ -104,57 +79,4 @@
   <% end %>
 </div>
 
-<style>
-  .min-h-custom-screen {
-    min-height: calc(100vh - var(--header-height));
-  }
-  .header {
-    --header-height: 4rem; /* 仮のヘッダー高さ */
-  }
-  .hero {
-    position: relative;
-  }
-  .hero-content {
-    padding: 2rem;
-    border-radius: 1rem;
-    z-index: 5; /* 背景動画より上に表示するためのz-index */
-  }
-  img.absolute {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-  }
-  .hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 半透明の黒色オーバーレイ */
-    z-index: -1;
-  }
-  .container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-</style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    function adjustHeroHeight() {
-      const header = document.querySelector('.navbar');
-      const hero = document.querySelector('.hero');
-      if (header && hero) {
-        hero.style.minHeight = `calc(100vh - ${header.offsetHeight}px)`;
-      }
-    }
-
-    adjustHeroHeight();
-    window.addEventListener('resize', adjustHeroHeight);
-  });
-</script>
 </turbo-frame>

@@ -18,7 +18,7 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-    this.setCategoryCookie();
+    this.updateActiveTab(this.getCurrentCategory());
   }
 
   // ナビバーの透明度を制御
@@ -88,8 +88,11 @@ export default class extends Controller {
     // Turbo Frameのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
-    // 選択されたカテゴリーをサーバーに送信
-    this.setCategoryCookie();
+    // 必要な場合のみクッキーを設定
+    if (this.getCurrentCategory() !== category) {
+      this.setCategoryCookie();
+    }
+
     // アクティブなタブを更新
     this.updateActiveTab(category);
   }
@@ -126,14 +129,23 @@ export default class extends Controller {
       .split("; ")
       .find((row) => row.startsWith("selected_profile_category="))
       ?.split("=")[1];
+    const categoryFromLocalStorage = localStorage.getItem("selectedCategory");
 
-    return categoryFromUrl || categoryFromCookie || "my_posts_open";
+    return (
+      categoryFromUrl ||
+      categoryFromCookie ||
+      categoryFromLocalStorage ||
+      "my_posts_open"
+    );
   }
 
   // 選択されたカテゴリーをサーバーに送信
   setCategoryCookie() {
     const selectedCategory = this.getCurrentCategory();
-    document.cookie = `selected_profile_category=${selectedCategory}; path=/`;
+    const expires = new Date();
+    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
+    document.cookie = `selected_profile_category=${selectedCategory}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
+    localStorage.setItem("selectedCategory", selectedCategory);
   }
 
   // アクティブなタブを更新

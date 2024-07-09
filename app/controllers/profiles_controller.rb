@@ -11,7 +11,7 @@ class ProfilesController < ApplicationController
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
     category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
     # 選択されたカテゴリーをクッキーに保存
-    cookies[:selected_profile_category] = { value: category, expires: 1.year.from_now }
+    cookies[:selected_profile_category] = { value: category, expires: 1.year.from_now } if params[:category]
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'

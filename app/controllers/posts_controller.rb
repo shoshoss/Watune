@@ -15,7 +15,9 @@ class PostsController < ApplicationController
     category = params[:category] || cookies[:selected_post_category] || 'recommended'
 
     # 選択されたカテゴリーをクッキーに保存
-    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now }
+    if params[:category]
+      cookies[:selected_post_category] = { value: category, expires: 1.year.from_now }
+    end
 
     # 選択されたカテゴリーに基づいて投稿を取得
     @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
