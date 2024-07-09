@@ -6,24 +6,6 @@
       <!-- 音声クリップはここに表示 -->
     </section>
 
-    <div class="form-control pt-2">
-      <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
-      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-create#checkForm", "post-create-target" => "body" } %>
-      <div class="text-sm text-gray-500 mt-1" data-post-create-target="characterCount">0 / 500</div>
-    </div>
-
-    <div class="form-control pt-2">
-      <%= f.label :fixed_category, 'カテゴリー', class: "block text-lg font-semibold", for: "fixed_category" %>
-      <%= f.select :fixed_category, Post.fixed_categories_i18n.invert.map { |key, value| [key, value] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg" %>
-    </div>
-
-    <div class="form-control pt-2">
-      <%= f.label :custom_category, '追加カテゴリー', class: "block text-lg font-semibold", for: "custom_category" %>
-      <%= f.text_field :custom_category, id: 'custom_category', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", placeholder: "必要に応じて入力" %>
-    </div>
-
-    <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
-    <%= f.hidden_field :duration, class: "duration-field" %>
 
     <!-- 送信先設定 -->
     <%= turbo_frame_tag "privacy-settings" do %>
@@ -50,6 +32,28 @@
           </div>
         </div>
       <% end %>
+
+    <!-- カテゴリー設定 -->
+    <div class="form-control pt-2">
+      <%= f.label :fixed_category, 'カテゴリー', class: "block text-lg font-semibold", for: "fixed_category" %>
+      <%= f.select :fixed_category, Post.fixed_categories_i18n.invert.map { |key, value| [key, value] }, { include_blank: false }, class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg" %>
+    </div>
+
+    <div class="form-control pt-2">
+      <%= f.label :custom_category, '追加カテゴリー', class: "block text-lg font-semibold", for: "custom_category" %>
+      <%= f.text_field :custom_category, id: 'custom_category', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg", placeholder: "必要に応じて入力" %>
+    </div>
+
+    <!-- 投稿内容 -->
+    <div class="form-control pt-2">
+      <%= f.label :body, '投稿内容', class: "block text-lg font-semibold", for: "body" %>
+      <%= f.text_area :body, id: 'body', class: "block mt-1 p-2 text-base border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-500 resize-none overflow-y-auto", rows: "3", data: { action: "input->post-create#checkForm", "post-create-target" => "body" } %>
+      <div class="text-sm text-gray-500 mt-1" data-post-create-target="characterCount">0 / 500</div>
+    </div>
+
+    <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
+    <%= f.hidden_field :duration, class: "duration-field" %>
+
     <% end %>
   </div>
   <div class="form-control mt-4 lg:mt-6">

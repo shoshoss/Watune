@@ -51,16 +51,6 @@
       </p>
     </div>
   </section>
-  <section class="mb-8 text-center">
-    <div class="rounded-full bg-sky-400-accent bg-opacity-50 p-3 sm:p-8 mx-auto max-w-2xl">
-      <h2 class="text-3xl font-bold mb-4">こだわりポイント</h2>
-      <ul class="list-none p-0 text-lg font-semibold text-center">
-        <li class="leading-none mb-2">・音声による投稿<br class="sm:hidden">（1投稿60分未満）</li>
-        <li class="leading-none mb-2">・投稿をカテゴリー分けした<br class="sm:hidden">プロフィール画面</li>
-        <li class="leading-none">・スマホでも閲覧や操作がしやすいように</li>
-      </ul>
-    </div>
-  </section>
 
   <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
   <% unless current_user %>
