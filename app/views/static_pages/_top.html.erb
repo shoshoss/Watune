@@ -12,7 +12,6 @@
             <br>つながりと元氣をともに！
           </p>
         </div>
-        <a href="#about" class="mt-6 rounded-full text-xl sm:text-2xl btn btn-info bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
         <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), data: { turbo_frame: "_top", turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
       </div>
     </div>
