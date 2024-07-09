@@ -50,7 +50,7 @@ module MetaTagsHelper
     {
       site_name: 'Watune（ウェーチュン）',
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
-      description: 'このWebアプリは、喜びを選び、日々の生活をより豊かにするために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
+      description: 'このWebアプリは、音声を通じて前向きなメッセージやメロディーを共有するSNSです。',
       url: request.original_url,
       image: full_url('/ogp.webp'),
       locale: 'ja_JP'
@@ -62,7 +62,7 @@ module MetaTagsHelper
       card: 'summary_large_image',
       site: '@WatuneApp',
       title: 'Watune - 音で自分自身と仲間に喜びや元氣を与え合うアプリ',
-      description: 'このWebアプリは、喜びを選び、日々の生活をより豊かにするために、音による前向きなメッセージやメロディーを通じて、自分と仲間に元氣を与え合うサービスです。',
+      description: 'このWebアプリは、音声を通じて前向きなメッセージやメロディーを共有するSNSです。',
       image: full_url('/ogp.webp')
     }
   end

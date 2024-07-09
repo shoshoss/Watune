@@ -4,7 +4,7 @@
   <div class="flex items-center justify-between w-full">
     <!-- ロゴ -->
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to root_path, data: { turbo_frame: '_top', action: "click->navbar#setActive", corresponding_link_id: "sidebar-home-link" }, id: "header-logo-link" do %>
+      <%= link_to root_path, data: { turbo_frame: '_top'}, id: "header-logo-link" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
           <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">

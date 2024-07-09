@@ -3,8 +3,8 @@
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 
-  root 'static_pages#top'
-
+  root 'static_pages#root'
+  get 'top', to: 'static_pages#top'
   get 'about', to: 'static_pages#about'
   get 'privacy_policy', to: 'static_pages#privacy_policy'
   get 'terms_of_use', to: 'static_pages#terms_of_use'
