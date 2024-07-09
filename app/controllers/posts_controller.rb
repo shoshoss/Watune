@@ -12,10 +12,12 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    category = params[:category] || cookies[:selected_category] || 'recommended'
+    category = params[:category] || cookies[:selected_post_category] || 'recommended'
 
     # 選択されたカテゴリーをクッキーに保存
-    cookies[:selected_category] = { value: category, expires: 1.year.from_now }
+    if params[:category]
+      cookies[:selected_post_category] = { value: category, expires: 1.year.from_now }
+    end
 
     # 選択されたカテゴリーに基づいて投稿を取得
     @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 10)
@@ -101,8 +103,8 @@ class PostsController < ApplicationController
         'tech' => Post.fixed_categories[:tech],
         'favorite' => Post.fixed_categories[:favorite],
         'other' => Post.fixed_categories[:other],
-        'grateful' => Post.fixed_categories[:grateful],
-        'blessing' => Post.fixed_categories[:blessing],
+        'gratitude' => Post.fixed_categories[:gratitude],
+        'congratulation' => Post.fixed_categories[:congratulation],
         'monologue' => Post.fixed_categories[:monologue]
       }
 

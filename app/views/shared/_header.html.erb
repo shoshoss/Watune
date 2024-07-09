@@ -1,7 +1,7 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path,
+      <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
                   id: "header-logo-link",
                   data: { turbo_frame: "_top", turbo_action: :advance },
                   class: "#{active_if(posts_path)}" do %>
@@ -30,13 +30,13 @@
         <ul tabindex="0" class="menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">
             <%= link_to t('header.about'),
-                        about_path,
+                        top_path,
                         data: { turbo_frame: "_top" },
                         id: "header-about-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to posts_path,
+            <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
                         data: { turbo_frame: "_top" },
                         id: "header-home-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(posts_path)}" do %>
@@ -63,10 +63,11 @@
             <% end %>
           </li>
           <%= render partial: 'shared/notification_link', locals: { 
+            menu_class: "block py-2 text-[15px] sm:text-lg relative", 
             link_id: "header-notifications-link", 
-            link_class: "flex items-center block py-2 text-[15px] sm:text-lg hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
+            link_class: "flex items-center block py-2 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
             corresponding_link_id: "sidebar-notifications-link", 
-            menu_class: "flex-1 text-center relative", 
+            i_class: "text-[15px] sm:text-lg",
             notification_position_class: "-top-[7px] -right-[3px]",
             show_text: true
           } %>
@@ -81,7 +82,6 @@
           </li>
           <li class="py-2">
             <%= link_to 'ログアウト', logout_path,
-                        data: { turbo_frame: "_top" },
                         id: "header-logout-link",
                         method: :delete, data: { turbo_method: :delete },
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4",

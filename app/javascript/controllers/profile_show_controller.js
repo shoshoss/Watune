@@ -18,7 +18,7 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-    this.setCategoryCookie();
+    this.updateActiveTab(this.getCurrentCategory());
   }
 
   // ナビバーの透明度を制御
@@ -37,9 +37,9 @@ export default class extends Controller {
   // カテゴリータブの固定を制御
   handleCategoryTabs() {
     const categoryTabsWrapper = document.getElementById(
-      "post-category-tabs-wrapper"
+      "profile-category-tabs-wrapper"
     );
-    const categoryTabs = document.getElementById("post-category-tabs");
+    const categoryTabs = document.getElementById("profile-category-tabs");
     if (!categoryTabsWrapper || !categoryTabs) return;
 
     const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
@@ -74,7 +74,9 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
-    const container = document.getElementById("post-category-tabs-container");
+    const container = document.getElementById(
+      "profile-category-tabs-container"
+    );
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
@@ -86,15 +88,20 @@ export default class extends Controller {
     // Turbo Frameのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
-    // 選択されたカテゴリーをサーバーに送信
-    this.setCategoryCookie(category);
+    // 必要な場合のみクッキーを設定
+    if (this.getCurrentCategory() !== category) {
+      this.setCategoryCookie();
+    }
+
     // アクティブなタブを更新
     this.updateActiveTab(category);
   }
 
   // タブの状態を復元
   restoreTabState() {
-    const container = document.getElementById("post-category-tabs-container");
+    const container = document.getElementById(
+      "profile-category-tabs-container"
+    );
     const scrollPosition = localStorage.getItem("tabScrollPosition");
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
@@ -120,7 +127,7 @@ export default class extends Controller {
     const categoryFromUrl = urlParams.get("category");
     const categoryFromCookie = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("selected_post_category="))
+      .find((row) => row.startsWith("selected_profile_category="))
       ?.split("=")[1];
     const categoryFromLocalStorage = localStorage.getItem("selectedCategory");
 
@@ -128,15 +135,17 @@ export default class extends Controller {
       categoryFromUrl ||
       categoryFromCookie ||
       categoryFromLocalStorage ||
-      "recommended"
+      "my_posts_open"
     );
   }
 
-  // 選択されたカテゴリーをクッキーに保存
-  setCategoryCookie(selectedCategory) {
+  // 選択されたカテゴリーをサーバーに送信
+  setCategoryCookie() {
+    const selectedCategory = this.getCurrentCategory();
     const expires = new Date();
     expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
-    document.cookie = `selected_post_category=${selectedCategory}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
+    document.cookie = `selected_profile_category=${selectedCategory}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
+    localStorage.setItem("selectedCategory", selectedCategory);
   }
 
   // アクティブなタブを更新
@@ -163,9 +172,9 @@ export default class extends Controller {
 
     if (
       !currentPath.includes(`category=${currentCategory}`) &&
-      currentCategory !== "recommended"
+      currentCategory !== "my_posts_open"
     ) {
-      const newUrl = `/waves?category=${currentCategory}`;
+      const newUrl = `/profile?category=${currentCategory}`;
       Turbo.visit(newUrl, { frame: "_top" });
       this.updateActiveTab(currentCategory);
     }

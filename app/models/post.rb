@@ -49,15 +49,15 @@ class Post < ApplicationRecord
 
   # カテゴリー設定
   enum fixed_category: {
-    grateful: 0,
-    blessing: 1,
+    congratulation: 1,
     music: 10,
     app_review: 20,
     tech: 30,
     child: 40,
     favorite: 50,
     monologue: 60,
-    other: 100
+    other: 100,
+    gratitude: 0,
   }
 
   validates :fixed_category, presence: true

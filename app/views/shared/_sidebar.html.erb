@@ -9,7 +9,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path,
+      <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
                   data: { turbo_frame: "_top" },
                   id: "sidebar-posts-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
@@ -19,7 +19,7 @@
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(username_slug: current_user.username_slug),
+      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: (cookies[:selected_profile_category] || 'my_posts_open')),
                   data: { turbo_frame: "_top" },
                   id: "sidebar-profile-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
@@ -31,7 +31,7 @@
     <%= render partial: 'shared/notification_link',
                locals: { 
                 link_id: "sidebar-notifications-link", 
-                link_class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
+                link_class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
                 notification_position_class: "-top-[7px] -right-[3px]",
                 show_text: true,
                } %>

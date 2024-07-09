@@ -1,5 +1,169 @@
-<% if logged_in? %>
-  <%= render partial: 'posts/index', locals: { posts: posts, pagy: pagy, notifications: notifications } %>
-<% else %>
-  <%= render 'static_pages/about' %>
-<% end %>
+<turbo-frame id="main-content">
+  <div class="hero min-h-custom-screen relative" style="background-image: url('/ogp.webp');">
+    <div class="hero-overlay bg-opacity-60"></div>
+    <div class="hero-content text-center relative text-neutral-content">
+      <div class="z-0 flex flex-col justify-center items-center max-w-[670px] mx-auto">
+        <div class="flex flex-col justify-center items-center rounded-full py-16 sm:py-28 bg-yellow-400-accent bg-opacity-80 w-[350px] h-[350px] sm:w-[350px] sm:h-[350px]">
+          <h1 class="text-4xl font-bold text-black leading-tight">
+            音で繋がるSNS！
+          </h1>
+          <p class="text-md mt-4 text-2xl font-semibold text-black leading-tight">
+            音声メッセージで、
+            <br>つながりと元氣をともに！
+          </p>
+        </div>
+        <a href="#about" class="mt-6 rounded-full text-xl sm:text-2xl btn btn-info bg-opacity-80 hover:bg-opacity-100 shadow-lg">このアプリについて</a>
+        <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), data: { turbo_frame: "_top", turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+      </div>
+    </div>
+  </div>
+
+  <div id="about" class="flex flex-col max-w-[670px] justify-center text-gray-900 container mx-auto py-12" style="background-image: url('#'); background-size: cover; background-position: center;">
+    <section class="mb-12 text-center">
+      <div class="rounded-full bg-sky-400-accent bg-opacity-50 px-3 py-8 sm:p-8 mx-auto max-w-2xl">
+        <h2 class="text-3xl font-bold mb-4">Watune<br class="sm:hidden">(ウェーチュン)とは？</h2>
+        <p class="text-lg font-semibold">
+          本アプリ（Watune）は、<br class="sm:hidden">音声を通じて
+          <br>前向きなメッセージや<br class="sm:hidden">メロディーを
+          <br>共有するSNSです。<br class="sm:hidden">音でつながり、
+          <br>仲間とともに元氣を<br class="sm:hidden">与え合いましょう！
+        </p>
+      </div>
+    </section>
+
+    <section class="mb-12 sm:w-[500px] mx-auto flex flex-col justify-center">
+      <h3 class="text-center text-3xl font-bold mb-4">使い方と機能</h3>
+      <div class="flex flex-col justify-center grid grid-cols-1 sm:grid-cols-1 gap-8">
+        <div class="flex flex-col justify-center bg-white rounded-lg shadow-md p-6">
+          <h4 class="text-xl font-semibold mb-2">音声投稿</h4>
+          <div class="mockup-phone border-info mb-4">
+            <div class="camera"></div>
+            <div class="display">
+              <div class="artboard artboard-demo phone-1">
+                <img src="/images/new-post-mobile.png" alt="投稿画面" class="rounded-lg object-contain h-full w-full">
+              </div>
+            </div>
+          </div>
+          <p class="text-md mb-2">録音中に音の大きさに応じて波紋が表示されます。</p>
+          <p class="text-md">送信先を「自分」「DM」「全体」から選択できます。</p>
+          <ul class="list-disc list-inside ml-4">
+            <li>自分: 自分のプロフィールに限定表示</li>
+            <li>DM: 双方のプロフィールに限定表示</li>
+            <li>全体: 全体の投稿一覧にも表示</li>
+          </ul>
+          <p class="text-sm mb-5">＊DM（ダイレクトメッセージ）は、ユーザーをフォローすることで表示されます。</p>
+
+          <h4 class="text-xl font-semibold mb-2">カテゴリー分け</h4>
+          <p class="text-md mb-2">投稿をカテゴリーに分類できます。</p>
+          <ul class="list-disc list-inside ml-4">
+            <li>祝福</li>
+            <li>音楽</li>
+            <li>アプリレビュー</li>
+            <li>技術</li>
+            <li>子どもの声</li>
+            <li>好きなこと</li>
+            <li>ひとりごと</li>
+            <li>その他</li>
+            <li>感謝</li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col justify-center bg-white rounded-lg shadow-md p-6">
+          <h4 class="text-xl font-semibold mb-2">メール通知設定</h4>
+          <div class="mockup-phone border-info mb-4">
+            <div class="camera"></div>
+            <div class="display">
+              <div class="text-center artboard artboard-demo phone-1">
+                <img src="/images/mail-setting-mobile.png" alt="メール通知の設定画面" class="rounded-lg object-contain h-full w-full">
+              </div>
+            </div>
+          </div>
+          <p class="text-md mb-2">投稿の送信先のDMで選択されたユーザーや返信先のユーザーにメール通知が送られます。</p>
+          <p class="text-md">通知の有無や通知メールアドレスは設定で変更可能です。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="text-center">
+      <div class="px-3 mx-auto max-w-2xl">
+        <p class="text-md">
+          アプリへの想いや由来などは、<br class="sm:hidden">
+          <%= link_to about_path, data: { turbo_frame: "_top" }, class: "font-bold text-blue-500 rounded-full hover:bg-sky-100 text-center p-2" do %>
+            こちらのアプリへの想い
+          <% end %>
+          <br class="sm:hidden">でご紹介しています。
+        </p>
+      </div>
+    </section>
+
+    <div class="text-center mt-8">
+      <%= link_to "ウェーブ（投稿）を見てみる", posts_path( category: (cookies[:selected_post_category] || 'recommended')), class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+      <% unless current_user %>
+        <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
+          お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能
+        <% end %>
+        <!-- Googleで新規登録のボタン -->
+        <div class="flex items-center justify-center mb-8">
+          <%= link_to auth_at_provider_path(provider: :google), method: :post, class: "bg-white bg-opacity-80 px-6 py-3 border flex gap-2 border-blue-200 dark:border-blue-300 rounded-lg text-blue-700 hover:border-blue-400 hover:text-blue-800 hover:shadow-outline transition duration-150 text-lg", data: { turbo: false } do %>
+            <img class="w-8 h-8" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo">
+            <span class="text-xl">Googleで新規登録<br class="md:hidden">またはログイン</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <style>
+    .min-h-custom-screen {
+      min-height: calc(100vh - var(--header-height));
+    }
+    .header {
+      --header-height: 4rem; /* 仮のヘッダー高さ */
+    }
+    .hero {
+      position: relative;
+    }
+    .hero-content {
+      padding: 2rem;
+      border-radius: 1rem;
+      z-index: 5; /* 背景動画より上に表示するためのz-index */
+    }
+    img.absolute {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* 半透明の黒色オーバーレイ */
+      z-index: -1;
+    }
+    .container {
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function adjustHeroHeight() {
+        const header = document.querySelector('.navbar');
+        const hero = document.querySelector('.hero');
+        if (header && hero) {
+          hero.style.minHeight = `calc(100vh - ${header.offsetHeight}px)`;
+        }
+      }
+
+      adjustHeroHeight();
+      window.addEventListener('resize', adjustHeroHeight);
+    });
+  </script>
+</turbo-frame>

@@ -16,7 +16,7 @@
       <%= render 'profiles/profile_info', user: user %>
       <%= turbo_frame_tag "profile-posts" do %>
         <!-- タブメニュー -->
-        <%= render 'profiles/category_tabs', user: user, initial_category: initial_category %>
+        <%= render 'profiles/category_tabs', user: user %>
         <!-- 投稿一覧 -->
         <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
       <% end %>
@@ -24,67 +24,4 @@
   </div>
 </div>
 
-<script>
-  function handleNavbarOpacity() {
-    var navbar = document.getElementById('bottom-navbar');
-    var lastScrollTop = 0;
-
-    window.addEventListener('scroll', function () {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > lastScrollTop) {
-        // スクロールダウン
-        navbar.style.opacity = '0.5';
-      } else {
-        // スクロールアップ
-        navbar.style.opacity = '1';
-      }
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    });
-  }
-
-  function handleCategoryTabs() {
-    var categoryTabsWrapper = document.getElementById('category-tabs-wrapper');
-    var categoryTabs = document.getElementById('category-tabs');
-
-    if (categoryTabsWrapper && categoryTabs) {
-      var categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
-
-      window.addEventListener('scroll', function () {
-        if (window.pageYOffset > categoryTabsOffsetTop) {
-          categoryTabsWrapper.style.height = categoryTabs.offsetHeight + 'px';
-          categoryTabs.classList.add('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
-        } else {
-          categoryTabsWrapper.style.height = 'auto';
-          categoryTabs.classList.remove('fixed', 'top-0', 'left-0', 'w-full', 'bg-white', 'shadow-md', 'z-10');
-        }
-      });
-    }
-  }
-
-  function initializePage() {
-    handleNavbarOpacity();
-
-    // 現在のURLまたはページパラメータを取得
-    var urlParams = new URLSearchParams(window.location.search);
-
-    // 特定のパラメータが存在する場合にのみ関数を実行
-    if (urlParams.has('category') || document.getElementById('category-tabs-wrapper')) {
-      handleCategoryTabs();
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function () {
-    initializePage();
-  });
-
-  document.addEventListener('turbo:load', function () {
-    initializePage();
-  });
-
-  document.addEventListener('turbo:frame-load', function(event) {
-    if (event.target.id === 'profile-posts') {
-      initializePage();
-    }
-  });
-</script>
 </turbo-frame>

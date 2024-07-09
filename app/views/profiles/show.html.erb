@@ -1,5 +1,5 @@
 <% if @user.present? %>
-  <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, notifications: @notifications, initial_category: @initial_category, pagy: @pagy } %>
+  <%= render partial: 'profiles/show', locals: { user: @user, posts: @posts, notifications: @notifications, pagy: @pagy } %>
 <% else %>
   <p>ユーザーが見つかりません。</p>
 <% end %>

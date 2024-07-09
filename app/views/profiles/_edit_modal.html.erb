@@ -11,7 +11,7 @@
       <div id="before_profile_edit_flash_modal">
         <%= render 'shared/before_profile_edit_flash' %>
       </div>
-        <%= form_with model: @user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
+        <%= form_with model: user, url: profile_path, method: :patch, data: { controller: "profile-edit-modal", action: "turbo:submit-end->profile-edit-modal#submitEnd" } do |f| %>
         <%= render 'shared/error_messages', object: f.object %>
 
         <div class="card-body mx-auto p-2">
@@ -22,13 +22,13 @@
               <span class="file-upload-label bg-gray-200 text-gray-700 p-2 rounded cursor-pointer" onclick="document.getElementById('user_avatar').click()">ファイルを選択</span>
               <br class="block sm:hidden mb-2">
               <span id="file-name" class="file-name text-gray-600 sm:ml-2">選択されていません</span>
-              <img id="preview-avatar" src="<%= @user.avatar.attached? ? url_for(@user.avatar) : asset_path('logo-watune-en.png') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
+              <img id="preview-avatar" src="<%= user.avatar.attached? ? url_for(user.avatar) : asset_path('logo-watune-en.png') %>" class="mt-4 rounded-full mx-auto my-2 border w-32 h-32">
             </div>
           </div>
 
           <div class="form-control">
             <%= f.label :display_name, '名前', class: "label-text text-lg font-semibold mb-1", for: "user_display_name" %>
-            <%= f.text_field :display_name, id: "user_display_name", class: "input-style", placeholder: "ウェーチュン#{@user.id}", value: (@user.display_name if @user.display_name.present? && @user.display_name != "ウェーチュン#{@user.id}") %>
+            <%= f.text_field :display_name, id: "user_display_name", class: "input-style", placeholder: "ウェーチュン#{user.id}", value: (user.display_name if @user.display_name.present? && @user.display_name != "ウェーチュン#{@user.id}") %>
           </div>
 
           <div class="form-control mt-2">
