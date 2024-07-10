@@ -1,3 +1,4 @@
+# app/controllers/concerns/posts_helper.rb
 module PostsHelper
   extend ActiveSupport::Concern
 
@@ -65,23 +66,51 @@ module PostsHelper
   def redirect_based_on_privacy
     case params[:privacy] || @post.privacy
     when 'only_me'
+      redirect_to_only_me
+    when 'selected_users'
+      redirect_for_selected_users
+    when 'open'
+      redirect_to_open_category
+    else
+      redirect_to_default
+    end
+  end
+
+  # プライバシー設定が「only_me」の場合のリダイレクト処理
+  def redirect_to_only_me
+    redirect_to profile_show_path(username_slug: current_user.username_slug,
+                                  category: 'only_me'),
+                status: :see_other,
+                notice: flash[:notice]
+  end
+
+  # プライバシー設定が「selected_users」の場合のリダイレクト処理
+  def redirect_for_selected_users
+    recipient_ids = post_params[:recipient_ids]
+    if recipient_ids.blank?
+      redirect_to_only_me
+    elsif recipient_ids.size > 1
       redirect_to profile_show_path(username_slug: current_user.username_slug,
-                                    category: 'only_me'),
+                                    category: 'my_posts_following'),
                   status: :see_other,
                   notice: flash[:notice]
-    when 'selected_users'
-      if recipient_user
-        redirect_to profile_show_path(username_slug: recipient_user.username_slug,
-                                      category: 'shared_with_you'),
-                    status: :see_other,
-                    notice: flash[:notice]
-      end
-    when 'open'
-      category = @post.fixed_category || 'recommended'
-      redirect_to category_path(category), status: :see_other, notice: flash[:notice]
-    else
-      redirect_to user_post_path(current_user.username_slug, @post), status: :see_other, notice: flash[:notice]
+    elsif recipient_user
+      redirect_to profile_show_path(username_slug: recipient_user.username_slug,
+                                    category: 'shared_with_you'),
+                  status: :see_other,
+                  notice: flash[:notice]
     end
+  end
+
+  # プライバシー設定が「open」の場合のリダイレクト処理
+  def redirect_to_open_category
+    category = @post.fixed_category || 'recommended'
+    redirect_to category_path(category), status: :see_other, notice: flash[:notice]
+  end
+
+  # その他のプライバシー設定の場合のリダイレクト処理
+  def redirect_to_default
+    redirect_to user_post_path(current_user.username_slug, @post), status: :see_other, notice: flash[:notice]
   end
 
   # 受信者ユーザーを取得するメソッド
@@ -100,11 +129,13 @@ module PostsHelper
     @parent_posts = @post.ancestors
   end
 
+  # オーディオファイルのキャッシュヘッダーを設定するメソッド
   def cache_headers(blob)
     blob.metadata[:cache_control] = 'public, max-age=31536000'
     blob.save
   end
 
+  # オーディオファイルのファイル名を変更するメソッド
   def rename_audio_file(post)
     audio = post.audio
     new_filename = "#{post.id}_#{SecureRandom.uuid}#{File.extname(audio.filename.to_s)}"
@@ -144,7 +175,7 @@ module PostsHelper
     Post.open
         .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
         .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts, :replies, :likes, :bookmarks) # 関連データを一度にロードする
+        .includes(:user, :reposts, :replies, :likes, :bookmarks)
         .order(Arel.sql('reposted_at DESC'))
   end
 
@@ -155,6 +186,7 @@ module PostsHelper
     redirect_to root_path, alert: 'この投稿を見る権限がありません。'
   end
 
+  # オーディオファイルを変換するメソッド
   def convert_audio(file_path)
     output_path = file_path.sub(File.extname(file_path), '.mp3')
     system("ffmpeg -i #{file_path} #{output_path}")
