@@ -61,13 +61,11 @@ ja:
         admin: 管理者
     post:
       fixed_category:
-        congratulation: 祝福
+        praise_gratitude: 褒めや感謝
         music: 音楽
-        self_introduction: 自己紹介
-        app_review: アプリレビュー
+        app_praise: アプリレビュー
         tech: 技術
         child: 子どもの声
         favorite: 好きなこと
         monologue: ひとりごと
         other: その他
-        gratitude: 感謝

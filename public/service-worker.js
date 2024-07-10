@@ -4,8 +4,8 @@ const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連�
 // キャッシュする必要がある重要なURLリスト
 const essentialUrlsToCache = [
   "/manifest.webmanifest",
+  "/top",
   "/about",
-  "/waves",
   "/privacy_policy",
   "/terms_of_use",
 ];
@@ -14,7 +14,8 @@ const essentialUrlsToCache = [
 const categoryUrlsToCache = [
   `/waves?category=recommended`,
   `/waves?category=music`,
-  `/waves?category=app_review`,
+  `/waves?category=self_praise`,
+  `/waves?category=app_praise`,
   `/waves?category=tech`,
   `/waves?category=child`,
   `/waves?category=favorite`,
@@ -37,19 +38,18 @@ const noCacheUrls = ["/", "/oauth/google", "/oauth/callback"];
 // インストールイベント
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache");
-      return cache
-        .addAll([...essentialUrlsToCache, ...categoryUrlsToCache])
-        .catch((error) => {
-          console.error("Failed to cache essential URLs:", error);
-          [...essentialUrlsToCache, ...categoryUrlsToCache].forEach((url) => {
-            cache.add(url).catch((err) => {
-              console.error(`Failed to cache ${url}:`, err);
-            });
-          });
-        });
-    })
+    caches
+      .open(CACHE_NAME)
+      .then((cache) => {
+        console.log("キャッシュをオープンしました");
+        return cache.addAll([
+          ...essentialUrlsToCache,
+          ...additionalUrlsToCache,
+        ]);
+      })
+      .catch((error) => {
+        console.error("インストール中にキャッシュに失敗しました:", error);
+      })
   );
 });
 
@@ -94,7 +94,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // キャッシュファースト戦略とStale-While-Revalidate戦略を組み合わせる
+  // Stale While Revalidate 戦略の実装
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request, { redirect: "follow" })
@@ -113,7 +113,7 @@ self.addEventListener("fetch", (event) => {
           return networkResponse;
         })
         .catch((error) => {
-          console.error("Fetch failed:", error);
+          console.error("フェッチに失敗しました:", error);
         });
 
       // キャッシュがあればキャッシュを返し、同時にバックグラウンドで更新
@@ -125,40 +125,39 @@ self.addEventListener("fetch", (event) => {
 // メッセージイベント
 self.addEventListener("message", (event) => {
   if (event.data.action === "cacheUserSpecificResources") {
-    // ユーザー固有のリソースをキャッシュ
     caches.open(SESSION_CACHE_NAME).then((cache) => {
       cache.addAll(event.data.urls).catch((error) => {
-        console.error("Failed to cache user specific resources:", error);
+        console.error(
+          "ユーザー固有のリソースのキャッシュに失敗しました:",
+          error
+        );
         event.data.urls.forEach((url) => {
           cache.add(url).catch((err) => {
-            console.error(`Failed to cache ${url}:`, err);
+            console.error(`キャッシュに失敗しました ${url}:`, err);
           });
         });
       });
     });
   } else if (event.data.action === "cacheAdditionalResources") {
-    // 追加のリソースをキャッシュ
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(additionalUrlsToCache).catch((error) => {
-        console.error("Failed to cache additional resources:", error);
+        console.error("追加リソースのキャッシュに失敗しました:", error);
         additionalUrlsToCache.forEach((url) => {
           cache.add(url).catch((err) => {
-            console.error(`Failed to cache ${url}:`, err);
+            console.error(`キャッシュに失敗しました ${url}:`, err);
           });
         });
       });
     });
   } else if (event.data.action === "skipWaiting") {
-    // 待機中のサービスワーカーをアクティブにする
     self.skipWaiting();
   } else if (event.data.action === "cacheAudioFiles") {
-    // 音声ファイルをキャッシュ
     caches.open(CACHE_NAME).then((cache) => {
       cache.addAll(event.data.audioUrls).catch((error) => {
-        console.error("Failed to cache audio files:", error);
+        console.error("音声ファイルのキャッシュに失敗しました:", error);
         event.data.audioUrls.forEach((url) => {
           cache.add(url).catch((err) => {
-            console.error(`Failed to cache ${url}:`, err);
+            console.error(`キャッシュに失敗しました ${url}:`, err);
           });
         });
       });

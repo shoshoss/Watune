@@ -97,15 +97,13 @@ class PostsController < ApplicationController
 
     unless category == 'recommended'
       categories = {
+        'praise_gratitude' => Post.fixed_categories[:praise_gratitude],
         'music' => Post.fixed_categories[:music],
-        'app_review' => Post.fixed_categories[:app_review],
         'child' => Post.fixed_categories[:child],
-        'tech' => Post.fixed_categories[:tech],
         'favorite' => Post.fixed_categories[:favorite],
-        'other' => Post.fixed_categories[:other],
-        'gratitude' => Post.fixed_categories[:gratitude],
-        'congratulation' => Post.fixed_categories[:congratulation],
+        'tech' => Post.fixed_categories[:tech],
         'monologue' => Post.fixed_categories[:monologue]
+        'other' => Post.fixed_categories[:other],
       }
 
       fixed_category = categories[category] || Post.fixed_categories[:recommended]
