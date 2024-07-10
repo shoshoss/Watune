@@ -19,7 +19,7 @@
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: (cookies[:selected_profile_category] || 'my_posts_open')),
+      <%= link_to profile_show_path(username_slug: current_user.username_slug),
                   data: { turbo_frame: "_top" },
                   id: "sidebar-profile-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>

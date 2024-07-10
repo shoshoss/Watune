@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
-  skip_before_action :require_login, only: %i[show modal]
+  skip_before_action :require_login, only: %i[show]
   before_action :set_current_user, only: %i[edit update]
-  before_action :set_user, only: %i[show modal]
+  before_action :set_user, only: %i[show]
   before_action :set_posts, only: %i[show], if: -> { @user.present? }
   before_action :authorize_view!, only: %i[show]
 
@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
     category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     # 選択されたカテゴリーをクッキーに保存
     cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
-
+    
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return
@@ -24,49 +24,11 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # プロフィール編集アクション
-  def edit
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
-  end
-
-  # プロフィール更新アクション
-  def update
-    display_name_param = user_params[:display_name]
-    if @user.update(user_params) && display_name_param.blank?
-      @user.update(display_name: "ウェーチュン#{@user.id}")
-      flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
-    elsif @user.update(user_params)
-      flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
-    else
-      flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
-    end
-  end
-
-  # プロフィールモーダル表示アクション
-  def modal
-    if @user.nil?
-      render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message',
-                                                         locals: { message: 'ユーザーが見つかりません。' })
-      return
-    end
-
-    respond_to do |format|
-      format.html { render partial: 'profiles/profile_modal', locals: { user: @user } }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal',
-                                                                   locals: { user: @user })
-      end
-    end
-  end
-
   private
 
   # ユーザーを設定
   def set_user
-    @user = User.find_by(username_slug: params[:username_slug] || current_user.username_slug)
+    @user = User.find_by(username_slug: params[:username_slug])
   end
 
   # 現在のユーザーを設定
@@ -112,13 +74,13 @@ class ProfilesController < ApplicationController
     end
   end
 
-  # デフォルトのカテゴリーを設定
-  def default_category
-    current_user == @user ? 'all_my_posts' : 'my_posts_open'
-  end
-
-  # クッキーキーを生成
+  # クッキーキーを取得
   def get_cookie_key(key)
     "#{@user.username_slug}_#{key}"
+  end
+
+  # デフォルトカテゴリーを取得
+  def default_category
+    current_user == @user ? 'all_my_posts' : 'my_posts_open'
   end
 end
