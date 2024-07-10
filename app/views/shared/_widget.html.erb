@@ -20,7 +20,7 @@
       <% end %>
     <% else %>
       <%= link_to new_post_path(privacy: 'open'),
-                  data: { turbo_frame: "main-content", turbo_action: :advance},
+                  data: { turbo_frame: "_top", turbo_action: :advance},
                   id: "pc-post-button",
                   class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100" do %>
         <i class="fa-solid fa-gift text-6xl"></i>
