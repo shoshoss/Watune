@@ -9,7 +9,7 @@
     <!-- タブのリンク -->
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
       <%= link_to posts_path(category: 'recommended'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-star text-yellow-700-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
+        <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
       <%= link_to posts_path(category: 'praise_gratitude'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-sun text-orange-400 mr-1 sm:mr-2"></i><span>褒めや感謝</span>
@@ -23,8 +23,8 @@
       <%= link_to posts_path(category: 'child'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-smile-o text-pink-400 mr-1 sm:mr-2"></i><span>子供の声</span>
       <% end %>
-      <%= link_to posts_path(category: 'tech'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa-solid fa-lightbulb text-yellow-700-accent mr-1 sm:mr-2"></i><span>技術</span>
+      <%= link_to posts_path(category: 'skill'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa-solid fa-lightbulb text-yellow-400-accent mr-1 sm:mr-2"></i><span>特技や技術</span>
       <% end %>
       <%= link_to posts_path(category: 'monologue'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>

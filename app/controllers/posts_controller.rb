@@ -103,7 +103,7 @@ class PostsController < ApplicationController
         'music' => Post.fixed_categories[:music],
         'child' => Post.fixed_categories[:child],
         'favorite' => Post.fixed_categories[:favorite],
-        'tech' => Post.fixed_categories[:tech],
+        'skill' => Post.fixed_categories[:skill],
         'monologue' => Post.fixed_categories[:monologue],
         'other' => Post.fixed_categories[:other],
       }

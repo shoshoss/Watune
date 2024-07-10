@@ -53,7 +53,7 @@ class Post < ApplicationRecord
     music: 10,
     favorite: 50,
     child: 40,
-    tech: 30,
+    skill: 30,
     monologue: 60,
     other: 100,
   }
