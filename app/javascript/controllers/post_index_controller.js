@@ -1,3 +1,4 @@
+// app/javascript/controllers/post_index_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -18,7 +19,6 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-    this.setCategoryCookie();
   }
 
   // ナビバーの透明度を制御
@@ -86,7 +86,7 @@ export default class extends Controller {
     // Turbo Frameのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
-    // 選択されたカテゴリーをサーバーに送信
+    // 選択されたカテゴリーをクッキーに保存
     this.setCategoryCookie(category);
     // アクティブなタブを更新
     this.updateActiveTab(category);
