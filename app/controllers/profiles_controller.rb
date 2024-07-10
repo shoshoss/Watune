@@ -9,9 +9,9 @@ class ProfilesController < ApplicationController
   def show
     @notifications = current_user&.received_notifications&.unread
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     # 選択されたカテゴリーをクッキーに保存
-    cookies[:selected_profile_category] = { value: category, expires: 1.year.from_now } if params[:category]
+    cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
@@ -97,18 +97,28 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def set_posts
-    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
                                    items: 5)
   end
 
   # プロフィール表示の許可を確認
   def authorize_view!
-    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     if category == 'only_me' && current_user != @user
       redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
     elsif category == 'selected_users' && !@user.following?(current_user)
       redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
     end
+  end
+
+  # デフォルトのカテゴリーを設定
+  def default_category
+    current_user == @user ? 'all_my_posts' : 'my_posts_open'
+  end
+
+  # クッキーキーを生成
+  def get_cookie_key(key)
+    "#{@user.username_slug}_#{key}"
   end
 end
