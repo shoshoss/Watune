@@ -55,7 +55,7 @@ class Post < ApplicationRecord
     child: 40,
     skill: 30,
     monologue: 60,
-    other: 100,
+    other: 100
   }
 
   validates :fixed_category, presence: true

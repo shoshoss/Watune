@@ -110,6 +110,8 @@ export default class extends Controller {
 
     const selectedCategory = this.getCurrentCategory();
     this.updateActiveTab(selectedCategory);
+    // アクティブなタブにスクロール
+    this.scrollToActiveTab();
   }
 
   // 現在のカテゴリーを取得
@@ -154,6 +156,8 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
+    // アクティブなタブにスクロール
+    this.scrollToActiveTab();
   }
 
   // クッキーからカテゴリーを取得してリダイレクト
@@ -170,6 +174,14 @@ export default class extends Controller {
       this.updateActiveTab(currentCategory);
     } else if (currentCategory === "recommended") {
       this.updateActiveTab("recommended");
+    }
+  }
+
+  // アクティブなタブにスクロールするメソッドを追加
+  scrollToActiveTab() {
+    const activeTab = document.querySelector(".c-post-tab.active");
+    if (activeTab) {
+      activeTab.scrollIntoView({ behavior: "smooth", inline: "center" });
     }
   }
 }

@@ -15,9 +15,7 @@ class PostsController < ApplicationController
     category = params[:category] || cookies[:selected_post_category] || 'recommended'
 
     # 選択されたカテゴリーをクッキーに保存
-    if params[:category]
-      cookies[:selected_post_category] = { value: category, expires: 1.year.from_now }
-    end
+    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now } if params[:category]
 
     # 選択されたカテゴリーに基づいて投稿を取得
     @pagy, @posts = pagy_countless(fetch_posts_by_category(category), items: 5)
@@ -105,7 +103,7 @@ class PostsController < ApplicationController
         'favorite' => Post.fixed_categories[:favorite],
         'skill' => Post.fixed_categories[:skill],
         'monologue' => Post.fixed_categories[:monologue],
-        'other' => Post.fixed_categories[:other],
+        'other' => Post.fixed_categories[:other]
       }
 
       fixed_category = categories[category] || Post.fixed_categories[:recommended]
@@ -138,6 +136,30 @@ class PostsController < ApplicationController
     render :new, status: :unprocessable_entity
   end
 
+  # カテゴリーごとのパス設定
+  def category_path(category)
+    case category
+    when 'recommended'
+      posts_path(category: 'recommended')
+    when 'praise_gratitude'
+      posts_path(category: 'praise_gratitude')
+    when 'music'
+      posts_path(category: 'music')
+    when 'child'
+      posts_path(category: 'child')
+    when 'favorite'
+      posts_path(category: 'favorite')
+    when 'skill'
+      posts_path(category: 'skill')
+    when 'monologue'
+      posts_path(category: 'monologue')
+    when 'other'
+      posts_path(category: 'other')
+    else
+      posts_path(category: 'recommended')
+    end
+  end
+
   # プライバシー設定に基づくリダイレクト先を決定する
   def redirect_based_on_privacy
     case params[:privacy] || @post.privacy
@@ -154,7 +176,8 @@ class PostsController < ApplicationController
                     status: :see_other, notice: flash[:notice]
       end
     when 'open'
-      redirect_to posts_path, status: :see_other, notice: flash[:notice]
+      category = @post.fixed_category || 'recommended'
+      redirect_to category_path(category), status: :see_other, notice: flash[:notice]
     else
       redirect_to user_post_path(current_user.username_slug, @post), status: :see_other, notice: flash[:notice]
     end
