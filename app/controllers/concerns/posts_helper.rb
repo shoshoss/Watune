@@ -24,7 +24,7 @@ module PostsHelper
       Post.recommended
     else
       fixed_category = categories[category] || Post.recommended
-      Post.open.where(fixed_category: fixed_category)
+      Post.open.where(fixed_category:)
     end
   end
 
