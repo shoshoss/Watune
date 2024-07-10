@@ -119,6 +119,8 @@ class Post < ApplicationRecord
       .order(latest_activity: :desc)
   }
 
+  scope :reposted, -> { joins(:reposts).distinct }
+
   private
 
   def update_latest_activity
