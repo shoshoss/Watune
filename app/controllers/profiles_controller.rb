@@ -3,6 +3,7 @@ class ProfilesController < ApplicationController
   before_action :set_current_user, only: %i[edit update]
   before_action :set_user, only: %i[show modal]
   before_action :set_posts, only: %i[show], if: -> { @user.present? }
+  before_action :authorize_view!, only: %i[show]
 
   # プロフィール表示アクション
   def show
@@ -99,5 +100,15 @@ class ProfilesController < ApplicationController
     category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
     @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
                                    items: 5)
+  end
+
+  # プロフィール表示の許可を確認
+  def authorize_view!
+    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    if category == 'only_me' && current_user != @user
+      redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
+    elsif category == 'selected_users' && !@user.following?(current_user)
+      redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
+    end
   end
 end
