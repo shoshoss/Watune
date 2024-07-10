@@ -1,7 +1,7 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
+      <%= link_to posts_path,
                   id: "header-logo-link",
                   data: { turbo_frame: "_top", turbo_action: :advance },
                   class: "#{active_if(posts_path)}" do %>

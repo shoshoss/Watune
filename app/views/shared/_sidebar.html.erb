@@ -9,7 +9,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
+      <%= link_to posts_path,
                   data: { turbo_frame: "_top" },
                   id: "sidebar-posts-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
