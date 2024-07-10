@@ -18,5 +18,4 @@ class StaticPagesController < ApplicationController
   def privacy_modal; end
 
   def tou_modal; end
-
 end

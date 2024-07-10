@@ -10,10 +10,7 @@ module PostsHelper
   end
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
-  def fetch_posts_by_category(category)
-    posts = Post.open.ordered_by_latest_activity
-    return posts.reposted if category == 'recommended'
-
+  def fetch_posts_by_fixed_category(category)
     categories = {
       'praise_gratitude' => Post.fixed_categories[:praise_gratitude],
       'music' => Post.fixed_categories[:music],
@@ -23,8 +20,12 @@ module PostsHelper
       'monologue' => Post.fixed_categories[:monologue],
       'other' => Post.fixed_categories[:other]
     }
-    fixed_category = categories[category] || Post.fixed_categories[:recommended]
-    posts.where(fixed_category:)
+    if category == 'recommended'
+      Post.recommended
+    else
+      fixed_category = categories[category] || Post.fixed_categories[:recommended]
+      Post.open.where(fixed_category: fixed_category)
+    end
   end
 
   # カスタムカテゴリーを設定するメソッド
@@ -165,18 +166,6 @@ module PostsHelper
   # フォローしているユーザーを投稿数でソートする
   def set_followings_by_post_count
     @sorted_followings = current_user.following_ordered_by_sent_posts
-  end
-
-  # 投稿一覧を取得するメソッド
-  def fetch_posts
-    latest_reposts = Repost.select('DISTINCT ON (post_id) *')
-                           .order('post_id, created_at DESC')
-
-    Post.open
-        .select('posts.*, COALESCE(latest_reposts.created_at, posts.created_at) AS reposted_at')
-        .joins("LEFT JOIN (#{latest_reposts.to_sql}) AS latest_reposts ON latest_reposts.post_id = posts.id")
-        .includes(:user, :reposts, :replies, :likes, :bookmarks)
-        .order(Arel.sql('reposted_at DESC'))
   end
 
   # 投稿の表示権限を確認する
