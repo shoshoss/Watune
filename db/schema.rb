@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_08_000117) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_10_233316) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -129,6 +129,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_000117) do
     t.bigint "category_id"
     t.datetime "latest_activity", default: -> { "CURRENT_TIMESTAMP" }
     t.index ["category_id"], name: "index_posts_on_category_id"
+    t.index ["fixed_category"], name: "index_posts_on_fixed_category"
     t.index ["latest_activity"], name: "index_posts_on_latest_activity"
     t.index ["post_reply_id"], name: "index_posts_on_post_reply_id"
     t.index ["privacy"], name: "index_posts_on_privacy"

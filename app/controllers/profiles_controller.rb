@@ -1,17 +1,17 @@
 class ProfilesController < ApplicationController
-  skip_before_action :require_login, only: %i[show modal]
+  skip_before_action :require_login, only: %i[show]
   before_action :set_current_user, only: %i[edit update]
-  before_action :set_user, only: %i[show modal]
+  before_action :set_user, only: %i[show]
   before_action :set_posts, only: %i[show], if: -> { @user.present? }
+  before_action :authorize_view!, only: %i[show]
 
   # プロフィール表示アクション
   def show
     @notifications = current_user&.received_notifications&.unread
-
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     # 選択されたカテゴリーをクッキーに保存
-    cookies[:selected_profile_category] = { value: category, expires: 1.year.from_now } if params[:category]
+    cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
@@ -40,25 +40,10 @@ class ProfilesController < ApplicationController
       flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
     elsif @user.update(user_params)
       flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
+      redirect_to profile_show_path(username_slug: @user.username_slug)
     else
       flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
-    end
-  end
-
-  # プロフィールモーダル表示アクション
-  def modal
-    if @user.nil?
-      render turbo_stream: turbo_stream.replace('flash', partial: 'shared/flash_message',
-                                                         locals: { message: 'ユーザーが見つかりません。' })
-      return
-    end
-
-    respond_to do |format|
-      format.html { render partial: 'profiles/profile_modal', locals: { user: @user } }
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace('profile_modal', partial: 'profiles/profile_modal',
-                                                                   locals: { user: @user })
-      end
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -66,9 +51,10 @@ class ProfilesController < ApplicationController
 
   # ユーザーを設定
   def set_user
-    @user = User.find_by(username_slug: params[:username_slug] || current_user.username_slug)
+    @user = User.find_by(username_slug: params[:username_slug])
   end
 
+  # 現在のユーザーを設定
   def set_current_user
     @user = current_user
   end
@@ -95,10 +81,40 @@ class ProfilesController < ApplicationController
   end
 
   # フィルタリングされた投稿を取得
-  # N+1クエリ問題を回避するために関連データを一緒にロード
   def set_posts
-    category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
-    @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
-                                   items: 5)
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+    @pagy, @posts = pagy_countless(
+      filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob), items: 5
+    )
+  end
+
+  # プロフィール表示の許可を確認
+  def authorize_view!
+    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+    return if category_accessible?(category)
+
+    redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
+  end
+
+  # 特定のカテゴリーへのアクセスを許可するかどうかを確認
+  def category_accessible?(category)
+    case category
+    when 'only_me'
+      current_user == @user
+    when 'selected_users'
+      @user.following?(current_user)
+    else
+      true
+    end
+  end
+
+  # デフォルトのカテゴリーを設定
+  def default_category
+    current_user == @user ? 'all_my_posts' : 'my_posts_open'
+  end
+
+  # クッキーキーを生成
+  def get_cookie_key(key)
+    "#{@user.username_slug}_#{key}"
   end
 end

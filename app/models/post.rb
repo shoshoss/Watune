@@ -26,11 +26,6 @@ class Post < ApplicationRecord
   has_many :community_recipients, -> { where(post_users: { role: 'community_recipient' }) }, through: :post_users, source: :user
 
   # リポスト関係
-
-  # リポストが作成されたときに最新活動日時を更新
-  after_create :update_latest_activity
-  after_update :update_latest_activity, if: :saved_change_to_created_at?
-
   has_many :reposts, class_name: 'Repost', dependent: :destroy, inverse_of: :original_post
   has_many :reposted_by_users, through: :reposts, source: :user
 
@@ -53,9 +48,9 @@ class Post < ApplicationRecord
     music: 10,
     favorite: 50,
     child: 40,
-    tech: 30,
+    skill: 30,
     monologue: 60,
-    other: 100,
+    other: 100
   }
 
   validates :fixed_category, presence: true
@@ -115,10 +110,15 @@ class Post < ApplicationRecord
   # 最新活動日時で投稿を並べ替えるスコープ
   scope :ordered_by_latest_activity, lambda {
     includes(:user, :category, audio_attachment: :blob)
-      .order(latest_activity: :desc)
   }
 
   scope :reposted, -> { joins(:reposts).distinct }
+
+  scope :recommended, -> { reposted.where(privacy: privacies[:open]) }
+
+  # リポストが作成されたときに最新活動日時を更新
+  after_create :update_latest_activity
+  after_update :update_latest_activity, if: :saved_change_to_created_at?
 
   private
 

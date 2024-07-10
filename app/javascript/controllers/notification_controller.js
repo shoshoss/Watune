@@ -10,10 +10,10 @@ export default class extends Controller {
 
     document.addEventListener("turbo:load", this.updateActiveLink.bind(this));
 
-    // 30秒ごとに未読通知数を更新
+    // 60秒ごとに未読通知数を更新
     this.notificationInterval = setInterval(() => {
       this.updateUnreadNotifications();
-    }, 30000);
+    }, 60000);
   }
 
   disconnect() {

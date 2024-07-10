@@ -1,7 +1,7 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
+      <%= link_to posts_path,
                   id: "header-logo-link",
                   data: { turbo_frame: "_top", turbo_action: :advance },
                   class: "#{active_if(posts_path)}" do %>
@@ -36,7 +36,7 @@
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to posts_path( category: (cookies[:selected_post_category] || 'recommended')),
+            <%= link_to posts_path,
                         data: { turbo_frame: "_top" },
                         id: "header-home-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(posts_path)}" do %>
