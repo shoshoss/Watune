@@ -23,7 +23,7 @@ module PostsHelper
     if category == 'recommended'
       Post.recommended
     else
-      fixed_category = categories[category] || Post.fixed_categories[:recommended]
+      fixed_category = categories[category] || Post.recommended
       Post.open.where(fixed_category: fixed_category)
     end
   end
