@@ -49,16 +49,13 @@ class Post < ApplicationRecord
 
   # カテゴリー設定
   enum fixed_category: {
-    congratulation: 1,
+    praise_gratitude: 0,
     music: 10,
-    self_introduction: 70,
-    app_review: 20,
-    tech: 30,
-    child: 40,
     favorite: 50,
+    child: 40,
+    tech: 30,
     monologue: 60,
     other: 100,
-    gratitude: 0,
   }
 
   validates :fixed_category, presence: true
@@ -120,6 +117,8 @@ class Post < ApplicationRecord
     includes(:user, :category, audio_attachment: :blob)
       .order(latest_activity: :desc)
   }
+
+  scope :reposted, -> { joins(:reposts).distinct }
 
   private
 

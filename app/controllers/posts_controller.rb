@@ -93,19 +93,19 @@ class PostsController < ApplicationController
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_category(category)
-    posts = Post.open.ordered_by_latest_activity
+    if category == 'recommended'
+      posts = Post.open.reposted.ordered_by_latest_activity
+    else
+      posts = Post.open.ordered_by_latest_activity
 
-    unless category == 'recommended'
       categories = {
+        'praise_gratitude' => Post.fixed_categories[:praise_gratitude],
         'music' => Post.fixed_categories[:music],
-        'app_review' => Post.fixed_categories[:app_review],
         'child' => Post.fixed_categories[:child],
-        'tech' => Post.fixed_categories[:tech],
         'favorite' => Post.fixed_categories[:favorite],
+        'tech' => Post.fixed_categories[:tech],
+        'monologue' => Post.fixed_categories[:monologue],
         'other' => Post.fixed_categories[:other],
-        'gratitude' => Post.fixed_categories[:gratitude],
-        'congratulation' => Post.fixed_categories[:congratulation],
-        'monologue' => Post.fixed_categories[:monologue]
       }
 
       fixed_category = categories[category] || Post.fixed_categories[:recommended]
