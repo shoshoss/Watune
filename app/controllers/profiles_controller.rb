@@ -7,7 +7,6 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @notifications = current_user&.received_notifications&.unread
-
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
     category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
     # 選択されたカテゴリーをクッキーに保存
@@ -69,6 +68,7 @@ class ProfilesController < ApplicationController
     @user = User.find_by(username_slug: params[:username_slug] || current_user.username_slug)
   end
 
+  # 現在のユーザーを設定
   def set_current_user
     @user = current_user
   end
@@ -95,7 +95,6 @@ class ProfilesController < ApplicationController
   end
 
   # フィルタリングされた投稿を取得
-  # N+1クエリ問題を回避するために関連データを一緒にロード
   def set_posts
     category = params[:category] || cookies[:selected_profile_category] || 'my_posts_open'
     @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),

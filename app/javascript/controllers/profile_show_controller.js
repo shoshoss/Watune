@@ -8,7 +8,6 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-
     // 初期ロード時にクッキーを確認してリダイレクト
     this.redirectToCategoryFromCookie();
   }
@@ -88,7 +87,7 @@ export default class extends Controller {
     localStorage.setItem("selectedCategory", category);
 
     // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
+    Turbo.visit(event.currentTarget.href, { frame: "main-content" });
 
     // 必要な場合のみクッキーを設定
     if (this.getCurrentCategory() !== category) {
@@ -97,6 +96,9 @@ export default class extends Controller {
 
     // アクティブなタブを更新
     this.updateActiveTab(category);
+
+    // URLを手動で更新
+    history.pushState(null, "", event.currentTarget.href);
   }
 
   // タブの状態を復元
@@ -178,9 +180,16 @@ export default class extends Controller {
       !currentPath.includes(`category=${currentCategory}`) &&
       currentCategory !== "my_posts_open"
     ) {
-      const newUrl = `/profile?category=${currentCategory}`;
-      Turbo.visit(newUrl, { frame: "_top" });
+      const usernameSlug = this.getUsernameSlug(); // 新しいメソッドでusername_slugを取得
+      const newUrl = `/${usernameSlug}?category=${currentCategory}`;
+      Turbo.visit(newUrl, { frame: "main-content" });
       this.updateActiveTab(currentCategory);
     }
+  }
+
+  // 新しいメソッドでusername_slugを取得
+  getUsernameSlug() {
+    const urlParts = window.location.pathname.split("/");
+    return urlParts.length > 1 ? urlParts[1] : "";
   }
 }
