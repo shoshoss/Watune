@@ -12,7 +12,7 @@ class ProfilesController < ApplicationController
     category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
     # 選択されたカテゴリーをクッキーに保存
     cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
-    
+
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return
@@ -21,6 +21,29 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       format.html
       format.turbo_stream
+    end
+  end
+
+  # プロフィール編集アクション
+  def edit
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
+  end
+
+  # プロフィール更新アクション
+  def update
+    display_name_param = user_params[:display_name]
+    if @user.update(user_params) && display_name_param.blank?
+      @user.update(display_name: "ウェーチュン#{@user.id}")
+      flash[:notice] = t('defaults.flash_message.updated_with_default_name', item: 'プロフィール')
+    elsif @user.update(user_params)
+      flash[:notice] = t('defaults.flash_message.updated', item: 'プロフィール')
+      redirect_to profile_show_path(username_slug: @user.username_slug)
+    else
+      flash.now[:alert] = t('defaults.flash_message.update_failed', item: 'プロフィール')
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -60,27 +83,38 @@ class ProfilesController < ApplicationController
   # フィルタリングされた投稿を取得
   def set_posts
     category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
-    @pagy, @posts = pagy_countless(filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob),
-                                   items: 5)
+    @pagy, @posts = pagy_countless(
+      filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob), items: 5
+    )
   end
 
   # プロフィール表示の許可を確認
   def authorize_view!
     category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
-    if category == 'only_me' && current_user != @user
-      redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
-    elsif category == 'selected_users' && !@user.following?(current_user)
-      redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
+    return if category_accessible?(category)
+
+    redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
+  end
+
+  # 特定のカテゴリーへのアクセスを許可するかどうかを確認
+  def category_accessible?(category)
+    case category
+    when 'only_me'
+      current_user == @user
+    when 'selected_users'
+      @user.following?(current_user)
+    else
+      true
     end
   end
 
-  # クッキーキーを取得
-  def get_cookie_key(key)
-    "#{@user.username_slug}_#{key}"
-  end
-
-  # デフォルトカテゴリーを取得
+  # デフォルトのカテゴリーを設定
   def default_category
     current_user == @user ? 'all_my_posts' : 'my_posts_open'
+  end
+
+  # クッキーキーを生成
+  def get_cookie_key(key)
+    "#{@user.username_slug}_#{key}"
   end
 end
