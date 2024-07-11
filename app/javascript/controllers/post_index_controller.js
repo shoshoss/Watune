@@ -5,12 +5,17 @@ export default class extends Controller {
   static targets = ["tab"];
 
   connect() {
+    this.initialized = false; // 初期ロード時にクッキーによるリダイレクトが行われたかを管理するフラグ
     this.initializePage();
-    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
-    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-
     // 初期ロード時にクッキーを確認してリダイレクト
     this.redirectToCategoryFromCookie();
+    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
+    if (!this.initialized) {
+      window.addEventListener(
+        "popstate",
+        this.updateActiveTabFromUrl.bind(this)
+      );
+    }
   }
 
   // ページの初期化
@@ -160,7 +165,7 @@ export default class extends Controller {
     ) {
       const newUrl = `/waves?category=${currentCategory}`;
       Turbo.visit(newUrl, { frame: "_top" });
-      this.updateActiveTab(currentCategory);
+      this.initialized = true; // クッキーによるリダイレクトが行われたことを示す
     }
   }
 }
