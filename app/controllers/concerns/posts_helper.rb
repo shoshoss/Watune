@@ -20,11 +20,18 @@ module PostsHelper
       'monologue' => Post.fixed_categories[:monologue],
       'other' => Post.fixed_categories[:other]
     }
+
+    base_query = Post.open.includes(:user, :category, audio_attachment: :blob)
+
     if category == 'recommended'
-      Post.recommended
+      base_query.reposted.order(latest_activity: :desc)
     else
-      fixed_category = categories[category] || Post.recommended
-      Post.open.where(fixed_category:)
+      fixed_category = categories[category]
+      if fixed_category
+        base_query.where(fixed_category: fixed_category).order(latest_activity: :desc)
+      else
+        Post.none
+      end
     end
   end
 

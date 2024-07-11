@@ -106,14 +106,7 @@ class Post < ApplicationRecord
     self.category = custom_category
   end
 
-  # 最新活動日時で投稿を並べ替えるスコープ
-  scope :ordered_by_latest_activity, lambda {
-    includes(:user, :category, audio_attachment: :blob)
-  }
-
   scope :reposted, -> { joins(:reposts).distinct }
-
-  scope :recommended, -> { reposted.where(privacy: privacies[:open]) }
 
   # リポストが作成されたときに最新活動日時を更新
   after_create :update_latest_activity

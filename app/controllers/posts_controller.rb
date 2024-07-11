@@ -11,7 +11,10 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     category = fetch_category
-    @pagy, @posts = pagy_countless(fetch_posts_by_fixed_category(category).order(latest_activity: :desc), items: 5)
+    @pagy, @posts = pagy_countless(
+      fetch_posts_by_fixed_category(category), 
+      items: 5
+    )
   end
 
   # 投稿詳細を表示するアクション
