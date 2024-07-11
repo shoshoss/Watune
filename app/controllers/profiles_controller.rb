@@ -66,25 +66,32 @@ class ProfilesController < ApplicationController
 
   # 投稿をフィルタリング
   def filtered_posts(category)
+    user_posts_scope = @user.posts
+    base_scope = Post.all
+  
     scopes = {
-      'all_my_posts' => @user.posts.order(created_at: :desc),
-      'only_me' => @user.posts.only_me.order(created_at: :desc),
-      'my_posts_following' => Post.my_posts_following(@user),
-      'my_posts_open' => @user.posts.my_posts_open.order(created_at: :desc),
+      'all_my_posts' => user_posts_scope,
+      'only_me' => user_posts_scope.where(privacy: 'only_me'),
+      'my_posts_following' => Post.my_posts_following(@user, user_posts_scope),
+      'my_posts_open' => user_posts_scope.where(privacy: 'open'),
       'posts_to_you' => Post.posts_to_you(@user),
-      'bookmarked' => @user.bookmarked_posts.order('bookmarks.created_at DESC'),
-      'liked' => @user.liked_posts.order('likes.created_at DESC'),
+      'bookmarked' => base_scope.joins(:bookmarks).where(bookmarks: { user_id: @user.id }).order('bookmarks.created_at DESC'),
+      'liked' => base_scope.joins(:likes).where(likes: { user_id: @user.id }).order('likes.created_at DESC'),
       'shared_with_you' => Post.shared_with_you(current_user, @user)
     }
-
-    scopes[category] || Post.none
+  
+    posts = scopes[category] || Post.none
+    posts.order(created_at: :desc)
   end
 
   # フィルタリングされた投稿を取得
   def set_posts
     category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+  
+    # まず、関連データをロードしてから5件の投稿を取得
     @pagy, @posts = pagy_countless(
-      filtered_posts(category).includes(:user, :category, post_users: :user, audio_attachment: :blob), items: 5
+      filtered_posts(category).includes(:user, post_users: :user, audio_attachment: :blob),
+      items: 5
     )
   end
 
