@@ -6,15 +6,14 @@
       <!-- 音声クリップはここに表示 -->
     </section>
 
-
     <!-- 送信先設定 -->
     <%= turbo_frame_tag "privacy-settings" do %>
       <div class="form-control pt-2">
         <label for="post_privacy" class="block text-lg font-semibold">送信先</label>
         <div class="flex space-x-4 pt-2">
-          <%= link_to '自分', new_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings" } %>
-          <%= link_to 'DM', new_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings" } %>
-          <%= link_to '全体', new_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings" } %>
+          <%= link_to '自分', new_post_path(privacy: 'only_me'), class: "btn-choice #{active_bottom('only_me')}", data: { turbo_frame: "privacy-settings", turbo_action: :advance } %>
+          <%= link_to 'DM', new_post_path(privacy: 'selected_users', selected_user_ids: params[:selected_user_ids]), class: "btn-choice #{active_bottom('selected_users')}", data: { turbo_frame: "privacy-settings", turbo_action: :advance } %>
+          <%= link_to '全体', new_post_path(privacy: 'open'), class: "btn-choice #{active_bottom('open')}", data: { turbo_frame: "privacy-settings", turbo_action: :advance } %>
         </div>
         <input type="hidden" name="post[privacy]" id="post_privacy" value="<%= params[:privacy] || post.privacy %>">
       </div>
@@ -32,6 +31,7 @@
           </div>
         </div>
       <% end %>
+    <% end %>
 
     <!-- カテゴリー設定 -->
     <div class="form-control pt-2">
@@ -54,7 +54,6 @@
     <%= f.file_field :audio, direct_upload: true, class: "hidden" %>
     <%= f.hidden_field :duration, class: "duration-field" %>
 
-    <% end %>
   </div>
   <div class="form-control mt-4 lg:mt-6">
     <%= f.submit t('helpers.submit.post'), class: "text-white font-bold rounded-full text-xl sm:text-2xl btn btn-info sm:btn-lg bg-opacity-80 opacity-50 cursor-not-allowed", disabled: true, data: { "post-create-target" => "submitButton" } %>

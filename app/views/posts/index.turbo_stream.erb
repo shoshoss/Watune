@@ -13,17 +13,10 @@
 <%= turbo_stream.replace "scripts" do %>
   <%= javascript_tag do %>
     document.addEventListener("turbo:load", function() {
-      history.pushState(null, "", "<%= posts_path(category: params[:category]) %>");
-      const category = new URLSearchParams(window.location.search).get('category');
+      const category = "<%= params[:category] %>";
       if (category) {
-        document.querySelectorAll('.c-post-tab').forEach(tab => {
-          if (tab.href.includes(`category=${category}`)) {
-            tab.classList.add('active');
-            tab.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-          } else {
-            tab.classList.remove('active');
-          }
-        });
+        const event = new CustomEvent("categoryChange", { detail: { category } });
+        document.dispatchEvent(event);
       }
     });
   <% end %>

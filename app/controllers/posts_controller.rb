@@ -11,11 +11,13 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     category = fetch_category
+    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now } if params[:category]
     @pagy, @posts = pagy_countless(
       fetch_posts_by_fixed_category(category).includes(:user, :category, audio_attachment: :blob), 
       items: 5
     )
   end
+
 
   # 投稿詳細を表示するアクション
   def show

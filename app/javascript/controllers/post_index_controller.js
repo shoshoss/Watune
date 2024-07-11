@@ -6,19 +6,23 @@ export default class extends Controller {
   static targets = ["tab"];
 
   connect() {
-    this.initializePage();
+    this.initializePage(); // ページの初期化
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-
-    // 初期ロード時にクッキーを確認してリダイレクト
-    this.redirectToCategoryFromCookie();
+    // カテゴリ変更イベントをリスンしてタブを更新
+    document.addEventListener(
+      "categoryChange",
+      this.handleCategoryChange.bind(this)
+    );
+    // 初期ロード時にカテゴリを確認してリダイレクト
+    this.redirectToCategory();
   }
 
   // ページの初期化
   initializePage() {
-    this.handleNavbarOpacity();
-    this.handleCategoryTabs();
-    this.restoreTabState();
+    this.handleNavbarOpacity(); // ナビバーの透明度を制御
+    this.handleCategoryTabs(); // カテゴリータブの固定を制御
+    this.restoreTabState(); // タブの状態を復元
   }
 
   // ナビバーの透明度を制御
@@ -83,13 +87,13 @@ export default class extends Controller {
     }
     localStorage.setItem("selectedCategory", category);
 
-    // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
+    const newUrl = `/waves?category=${category}`;
+    Turbo.visit(newUrl, { frame: "_top" });
 
-    // 選択されたカテゴリーをクッキーに保存
-    this.setCategoryCookie(category);
     // アクティブなタブを更新
     this.updateActiveTab(category);
+    // URLを手動で更新
+    history.pushState(null, "", newUrl);
   }
 
   // タブの状態を復元
@@ -101,10 +105,7 @@ export default class extends Controller {
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
       // スクロール位置が正しく反映されるまで待機してからスクロールを実行
       requestAnimationFrame(() => {
-        container.scrollTo({
-          left: parsedScrollPosition,
-          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
-        });
+        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
       });
     }
 
@@ -118,26 +119,18 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
+    const categoryFromLocalStorage = localStorage.getItem("selectedCategory");
     const categoryFromCookie = document.cookie
       .split("; ")
       .find((row) => row.startsWith("selected_post_category="))
       ?.split("=")[1];
-    const categoryFromLocalStorage = localStorage.getItem("selectedCategory");
 
     return (
       categoryFromUrl ||
-      categoryFromCookie ||
       categoryFromLocalStorage ||
+      categoryFromCookie ||
       "recommended"
     );
-  }
-
-  // 選択されたカテゴリーをクッキーに保存
-  setCategoryCookie(selectedCategory) {
-    const category = selectedCategory || "recommended";
-    const expires = new Date();
-    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
-    document.cookie = `selected_post_category=${category}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
   }
 
   // アクティブなタブを更新
@@ -160,13 +153,25 @@ export default class extends Controller {
     this.scrollToActiveTab();
   }
 
-  // クッキーからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromCookie() {
-    const currentPath = window.location.pathname + window.location.search;
+  // カテゴリ変更イベントを処理
+  handleCategoryChange(event) {
+    const category = event.detail.category;
+    this.updateActiveTab(category);
+    this.scrollToActiveTab();
+  }
+
+  // 初期ロード時にカテゴリを確認してリダイレクト
+  redirectToCategory() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryFromUrl = urlParams.get("category");
     const currentCategory = this.getCurrentCategory();
 
-    if (
-      !currentPath.includes(`category=${currentCategory}`) &&
+    if (categoryFromUrl) {
+      // URLパラメータがある場合はそれを優先して処理
+      this.updateActiveTab(categoryFromUrl);
+      localStorage.setItem("selectedCategory", categoryFromUrl);
+    } else if (
+      !window.location.search.includes(`category=${currentCategory}`) &&
       currentCategory !== "recommended"
     ) {
       const newUrl = `/waves?category=${currentCategory}`;
