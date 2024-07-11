@@ -4,10 +4,10 @@ module Posts
 
     included do
       # 自分だけの投稿を取得するスコープ
-      scope :only_me, -> { where(privacy: 'only_me').order(created_at: :desc) }
+      scope :only_me, -> { where(privacy: 'only_me') }
 
       # 公開設定された自分の投稿を取得するスコープ
-      scope :my_posts_open, -> { where(privacy: 'open').order(created_at: :desc) }
+      scope :my_posts_open, -> { where(privacy: 'open') }
 
       # 仲間への投稿を取得するスコープ（自分がselected_usersで投稿したものを取得するスコープ）
       scope :my_posts_following, lambda { |user|
@@ -16,7 +16,7 @@ module Posts
 
         Post.where(id: direct_posts.select(:id))
             .or(Post.where(id: reply_posts.select(:id)))
-            .distinct.order(created_at: :desc)
+            .distinct
       }
 
       # 仲間からの投稿を取得するスコープ
@@ -28,7 +28,7 @@ module Posts
 
         Post.where(id: direct_posts.select(:id))
             .or(Post.where(id: reply_posts.select(:id)))
-            .distinct.order(created_at: :desc)
+            .distinct
       }
     end
   end

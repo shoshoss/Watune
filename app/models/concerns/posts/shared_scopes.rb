@@ -32,7 +32,7 @@ module Posts
               .or(Post.where(id: direct_to_current_user.select(:id)))
               .or(Post.where(id: reply_from_current_user.select(:id)))
               .or(Post.where(id: reply_from_profile_user.select(:id)))
-              .distinct.order(created_at: :desc)
+              .distinct
         end
       }
     end
