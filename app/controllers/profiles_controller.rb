@@ -78,7 +78,7 @@ class ProfilesController < ApplicationController
       'shared_with_you' => Post.shared_with_you(current_user, @user)
     }
 
-    scopes[category] || Post.none
+    posts = scopes[category] || Post.none
     # パフォーマンス向上のために最後にソートを適用
     posts.order(created_at: :desc)
   end

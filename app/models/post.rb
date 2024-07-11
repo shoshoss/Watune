@@ -1,5 +1,4 @@
 class Post < ApplicationRecord
-  include Posts::LikeScopes
   include Posts::UserPostScopes
   include Posts::SharedScopes
   include Posts::Notification

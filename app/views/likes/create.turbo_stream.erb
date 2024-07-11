@@ -2,8 +2,3 @@
   <%= render partial: 'posts/shared/like_icon', locals: { post: @post } %>
 <% end %>
 
-<%= turbo_stream.replace "likes_chance_count" do %>
-  <%= turbo_frame_tag "likes_chance_count" do %>
-    <%= @likes_chance_count %>
-  <% end %>
-<% end %>
