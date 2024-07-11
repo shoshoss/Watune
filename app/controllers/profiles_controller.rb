@@ -66,11 +66,12 @@ class ProfilesController < ApplicationController
 
   # 投稿をフィルタリング
   def filtered_posts(category)
+    base_scope = @user.posts
     scopes = {
-      'all_my_posts' => @user.posts.order(created_at: :desc),
-      'only_me' => @user.posts.only_me.order(created_at: :desc),
-      'my_posts_following' => Post.my_posts_following(@user),
-      'my_posts_open' => @user.posts.my_posts_open.order(created_at: :desc),
+      'all_my_posts' => base_scope,
+      'only_me' => base_scope.where(privacy: 'only_me'),
+      'my_posts_following' => Post.my_posts_following(@user, base_scope),
+      'my_posts_open' => base_scope.where(privacy: 'open'),
       'posts_to_you' => Post.posts_to_you(@user),
       'bookmarked' => @user.bookmarked_posts.order('bookmarks.created_at DESC'),
       'liked' => @user.liked_posts.order('likes.created_at DESC'),
@@ -78,6 +79,8 @@ class ProfilesController < ApplicationController
     }
 
     scopes[category] || Post.none
+    # パフォーマンス向上のために最後にソートを適用
+    posts.order(created_at: :desc)
   end
 
   # フィルタリングされた投稿を取得

@@ -10,9 +10,9 @@ module Posts
       scope :my_posts_open, -> { where(privacy: 'open') }
 
       # 仲間への投稿を取得するスコープ（自分がselected_usersで投稿したものを取得するスコープ）
-      scope :my_posts_following, lambda { |user|
-        direct_posts = where(user_id: user.id, privacy: Post.privacies[:selected_users])
-        reply_posts = where(user_id: user.id, post_reply_id: Post.select(:id))
+      scope :my_posts_following, lambda { |user, base_scope = Post.all|
+        direct_posts = base_scope.where(user_id: user.id, privacy: Post.privacies[:selected_users])
+        reply_posts = base_scope.where(user_id: user.id, post_reply_id: Post.select(:id))
 
         Post.where(id: direct_posts.select(:id))
             .or(Post.where(id: reply_posts.select(:id)))
