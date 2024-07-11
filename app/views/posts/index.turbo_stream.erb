@@ -9,15 +9,3 @@
 <%= turbo_stream.update "flash" do %>
   <%= render 'shared/flash_message' %>
 <% end %>
-
-<%= turbo_stream.replace "scripts" do %>
-  <%= javascript_tag do %>
-    document.addEventListener("turbo:load", function() {
-      const category = "<%= params[:category] %>";
-      if (category) {
-        const event = new CustomEvent("categoryChange", { detail: { category } });
-        document.dispatchEvent(event);
-      }
-    });
-  <% end %>
-<% end %>

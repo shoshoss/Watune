@@ -1,4 +1,3 @@
-// app/javascript/controllers/post_index_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -6,23 +5,20 @@ export default class extends Controller {
   static targets = ["tab"];
 
   connect() {
-    this.initializePage(); // ページの初期化
+    this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // カテゴリ変更イベントをリスンしてタブを更新
-    document.addEventListener(
-      "categoryChange",
-      this.handleCategoryChange.bind(this)
-    );
-    // 初期ロード時にカテゴリを確認してリダイレクト
-    this.redirectToCategory();
+
+    // 初期ロード時にクッキーを確認してリダイレクト
+    this.redirectToCategoryFromCookie();
   }
 
   // ページの初期化
   initializePage() {
-    this.handleNavbarOpacity(); // ナビバーの透明度を制御
-    this.handleCategoryTabs(); // カテゴリータブの固定を制御
-    this.restoreTabState(); // タブの状態を復元
+    this.handleNavbarOpacity();
+    this.handleCategoryTabs();
+    this.restoreTabState();
+    this.setCategoryCookie();
   }
 
   // ナビバーの透明度を制御
@@ -87,13 +83,13 @@ export default class extends Controller {
     }
     localStorage.setItem("selectedCategory", category);
 
-    const newUrl = `/waves?category=${category}`;
-    Turbo.visit(newUrl, { frame: "_top" });
+    // Turbo Frameのロードをトリガー
+    Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
+    // 選択されたカテゴリーをサーバーに送信
+    this.setCategoryCookie();
     // アクティブなタブを更新
     this.updateActiveTab(category);
-    // URLを手動で更新
-    history.pushState(null, "", newUrl);
   }
 
   // タブの状態を復元
@@ -105,39 +101,41 @@ export default class extends Controller {
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
       // スクロール位置が正しく反映されるまで待機してからスクロールを実行
       requestAnimationFrame(() => {
-        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
+        container.scrollTo({
+          left: parsedScrollPosition,
+          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
+        });
       });
     }
 
     const selectedCategory = this.getCurrentCategory();
-    this.updateActiveTab(selectedCategory);
-    // アクティブなタブにスクロール
-    this.scrollToActiveTab();
+    if (selectedCategory) {
+      this.updateActiveTab(selectedCategory);
+    }
   }
 
   // 現在のカテゴリーを取得
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromLocalStorage = localStorage.getItem("selectedCategory");
     const categoryFromCookie = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("selected_post_category="))
+      .find((row) => row.startsWith("selected_category="))
       ?.split("=")[1];
 
-    return (
-      categoryFromUrl ||
-      categoryFromLocalStorage ||
-      categoryFromCookie ||
-      "recommended"
-    );
+    return categoryFromUrl || categoryFromCookie || "recommended";
+  }
+
+  // 選択されたカテゴリーをサーバーに送信
+  setCategoryCookie() {
+    const selectedCategory = this.getCurrentCategory();
+    document.cookie = `selected_category=${selectedCategory}; path=/`;
   }
 
   // アクティブなタブを更新
   updateActiveTab(selectedCategory) {
-    const category = selectedCategory || "recommended";
     this.tabTargets.forEach((tab) => {
-      if (tab.href.includes(category)) {
+      if (tab.href.includes(selectedCategory)) {
         tab.classList.add("active");
       } else {
         tab.classList.remove("active");
@@ -149,44 +147,20 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
-    // アクティブなタブにスクロール
-    this.scrollToActiveTab();
   }
 
-  // カテゴリ変更イベントを処理
-  handleCategoryChange(event) {
-    const category = event.detail.category;
-    this.updateActiveTab(category);
-    this.scrollToActiveTab();
-  }
-
-  // 初期ロード時にカテゴリを確認してリダイレクト
-  redirectToCategory() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryFromUrl = urlParams.get("category");
+  // クッキーからカテゴリーを取得してリダイレクト
+  redirectToCategoryFromCookie() {
+    const currentPath = window.location.pathname + window.location.search;
     const currentCategory = this.getCurrentCategory();
 
-    if (categoryFromUrl) {
-      // URLパラメータがある場合はそれを優先して処理
-      this.updateActiveTab(categoryFromUrl);
-      localStorage.setItem("selectedCategory", categoryFromUrl);
-    } else if (
-      !window.location.search.includes(`category=${currentCategory}`) &&
+    if (
+      !currentPath.includes(`category=${currentCategory}`) &&
       currentCategory !== "recommended"
     ) {
       const newUrl = `/waves?category=${currentCategory}`;
       Turbo.visit(newUrl, { frame: "_top" });
       this.updateActiveTab(currentCategory);
-    } else if (currentCategory === "recommended") {
-      this.updateActiveTab("recommended");
-    }
-  }
-
-  // アクティブなタブにスクロールするメソッドを追加
-  scrollToActiveTab() {
-    const activeTab = document.querySelector(".c-post-tab.active");
-    if (activeTab) {
-      activeTab.scrollIntoView({ behavior: "smooth", inline: "center" });
     }
   }
 }
