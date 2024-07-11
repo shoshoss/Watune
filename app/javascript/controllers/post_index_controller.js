@@ -5,17 +5,11 @@ export default class extends Controller {
   static targets = ["tab"];
 
   connect() {
-    this.initialized = false; // 初期ロード時にクッキーによるリダイレクトが行われたかを管理するフラグ
     this.initializePage();
-    // 初期ロード時にクッキーを確認してリダイレクト
-    this.redirectToCategoryFromCookie();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
-    if (!this.initialized) {
-      window.addEventListener(
-        "popstate",
-        this.updateActiveTabFromUrl.bind(this)
-      );
-    }
+    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
+    // 初期ロード時にURLパラメータを確認してリダイレクト
+    this.redirectToCategoryFromUrl();
   }
 
   // ページの初期化
@@ -23,7 +17,6 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
-    this.setCategoryCookie();
   }
 
   // ナビバーの透明度を制御
@@ -91,8 +84,6 @@ export default class extends Controller {
     // Turbo Frameのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
-    // 選択されたカテゴリーをサーバーに送信
-    this.setCategoryCookie();
     // アクティブなタブを更新
     this.updateActiveTab(category);
   }
@@ -112,7 +103,6 @@ export default class extends Controller {
         });
       });
     }
-
     const selectedCategory = this.getCurrentCategory();
     if (selectedCategory) {
       this.updateActiveTab(selectedCategory);
@@ -122,19 +112,11 @@ export default class extends Controller {
   // 現在のカテゴリーを取得
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
-    const categoryFromUrl = urlParams.get("category");
-    const categoryFromCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("selected_category="))
-      ?.split("=")[1];
-
-    return categoryFromUrl || categoryFromCookie || "recommended";
-  }
-
-  // 選択されたカテゴリーをサーバーに送信
-  setCategoryCookie() {
-    const selectedCategory = this.getCurrentCategory();
-    document.cookie = `selected_category=${selectedCategory}; path=/`;
+    return (
+      urlParams.get("category") ||
+      localStorage.getItem("selectedCategory") ||
+      "recommended"
+    );
   }
 
   // アクティブなタブを更新
@@ -154,8 +136,8 @@ export default class extends Controller {
     this.updateActiveTab(category);
   }
 
-  // クッキーからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromCookie() {
+  // URLパラメータからカテゴリーを取得してリダイレクト
+  redirectToCategoryFromUrl() {
     const currentPath = window.location.pathname + window.location.search;
     const currentCategory = this.getCurrentCategory();
 
@@ -165,7 +147,6 @@ export default class extends Controller {
     ) {
       const newUrl = `/waves?category=${currentCategory}`;
       Turbo.visit(newUrl, { frame: "_top" });
-      this.initialized = true; // クッキーによるリダイレクトが行われたことを示す
     }
   }
 }

@@ -11,7 +11,6 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     category = fetch_category
-    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now } if params[:category]
     @pagy, @posts = pagy_countless(
       fetch_posts_by_fixed_category(category).includes(:user, :category, audio_attachment: :blob), 
       items: 5
@@ -45,20 +44,6 @@ class PostsController < ApplicationController
     end
   end
 
-  # 成功した投稿作成の処理
-  def handle_successful_create
-    flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-    recipient_ids = post_params[:recipient_ids] || []
-    PostCreationJob.perform_later(@post.id, recipient_ids, @post.privacy)
-    redirect_based_on_privacy
-  end
-
-  # 失敗した投稿作成の処理
-  def handle_failed_create
-    flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
-    render :new, status: :unprocessable_entity
-  end
-
   # 投稿を更新するアクション
   def update
     if @post.update(post_params.except(:recipient_ids))
@@ -88,4 +73,21 @@ class PostsController < ApplicationController
       end
     end
   end
+
+  private
+
+    # 成功した投稿作成の処理
+    def handle_successful_create
+      flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
+      recipient_ids = post_params[:recipient_ids] || []
+      PostCreationJob.perform_later(@post.id, recipient_ids, @post.privacy)
+      redirect_to posts_path(category: 'skill') 
+    end
+  
+    # 失敗した投稿作成の処理
+    def handle_failed_create
+      flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
+      render :new, status: :unprocessable_entity
+    end  
 end
+
