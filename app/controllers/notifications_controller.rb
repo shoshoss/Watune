@@ -23,7 +23,16 @@ class NotificationsController < ApplicationController
   end
 
   def unread_count
-    unread_count = current_user.received_notifications.unread.count
+    unread_count = Rails.cache.fetch("user_#{current_user.id}_unread_count", expires_in: 1.minute) do
+      current_user.received_notifications.unread.count
+    end
     render json: { unread_count: }
+  end
+
+  def latest_unread_notification_id
+    latest_notification = Rails.cache.fetch("user_#{current_user.id}_latest_unread_notification_id", expires_in: 1.minute) do
+      current_user.received_notifications.unread.order(created_at: :desc).first&.id
+    end
+    render json: { latest_unread_notification_id: latest_notification }
   end
 end
