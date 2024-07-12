@@ -6,6 +6,7 @@ const additionalUrlsToCache = [
   // ページURL
   "/top",
   "/about",
+  "/waves",
   "/privacy_policy",
   "/terms_of_use",
   // 画像ファイル
