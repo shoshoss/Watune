@@ -59,8 +59,8 @@ class User < ApplicationRecord
   def self.recently_registered(current_user = nil)
     users = where(guest: false)
     if current_user
-      followed_user_ids = current_user.followings.pluck(:id)
-      users = users.where.not(id: followed_user_ids + [current_user.id])
+      users = users.left_joins(:followings).where('friendships.followed_id IS NULL OR friendships.follower_id != ?',
+                                                  current_user.id).where.not(id: current_user.id)
     end
     users.order(created_at: :desc)
   end

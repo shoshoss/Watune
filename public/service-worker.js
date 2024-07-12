@@ -1,13 +1,23 @@
 const CACHE_NAME = "Watune-cache-v1"; // キャッシュ名
 const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連のキャッシュ名
 
-// キャッシュする必要がある重要なURLリスト
-const essentialUrlsToCache = [
-  "/manifest.webmanifest",
+// キャッシュする必要がある重要なページURLリスト
+const essentialPagesToCache = [
   "/top",
   "/about",
   "/privacy_policy",
   "/terms_of_use",
+];
+
+// キャッシュする必要がある重要なファイルURLリスト
+const essentialFilesToCache = [
+  "/manifest.webmanifest",
+  "<%= asset_path('ogp.webp') %>",
+  "<%= asset_path('mail-setting-mobile.png') %>",
+  "<%= asset_path('new-post-mobile.png') %>",
+  "<%= asset_path('logo-watune-en.png') %>",
+  "<%= asset_path('logo-watune.png') %>",
+  "/favicon.ico",
 ];
 
 // カテゴリごとの追加URLリスト
@@ -41,7 +51,8 @@ self.addEventListener("install", (event) => {
       .then((cache) => {
         console.log("キャッシュをオープンしました");
         return cache.addAll([
-          ...essentialUrlsToCache,
+          ...essentialPagesToCache,
+          ...essentialFilesToCache,
           ...additionalUrlsToCache,
         ]);
       })

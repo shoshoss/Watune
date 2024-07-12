@@ -49,6 +49,13 @@ if ("serviceWorker" in navigator) {
                 action: "cacheUserSpecificResources",
                 urls: [
                   `/${usernameSlug}`,
+                  `/${usernameSlug}?category=all_my_posts`,
+                  `/${usernameSlug}?category=only_me`,
+                  `/${usernameSlug}?category=my_posts_following`,
+                  `/${usernameSlug}?category=my_posts_open`,
+                  `/${usernameSlug}?category=posts_to_you`,
+                  `/${usernameSlug}?category=bookmarked`,
+                  `/${usernameSlug}?category=liked`,
                   "/notifications",
                   "/notification_settings/edit",
                   `/${usernameSlug}/following`,

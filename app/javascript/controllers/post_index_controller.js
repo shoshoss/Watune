@@ -2,19 +2,22 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["tab"];
+  initialized = false; // 初期化済みフラグ
 
   connect() {
+    // 初期化処理を実行
     this.initializePage();
-    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
+    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // 初期ロード時にURLパラメータを確認してリダイレクト
-    this.redirectToCategoryFromUrl();
   }
 
   // ページの初期化
   initializePage() {
+    // ナビバーの透明度を制御
     this.handleNavbarOpacity();
+    // カテゴリータブの固定を制御
     this.handleCategoryTabs();
+    // タブの状態を復元
     this.restoreTabState();
   }
 
@@ -95,21 +98,25 @@ export default class extends Controller {
 
   // タブの状態を復元
   restoreTabState() {
-    const container = document.getElementById("post-category-tabs-container");
     const selectedCategory = this.getCurrentCategory();
+    this.restoreTabScrollPosition(selectedCategory);
+    if (selectedCategory) {
+      this.updateActiveTab(selectedCategory);
+    }
+  }
+
+  // タブのスクロール位置を復元
+  restoreTabScrollPosition(category) {
+    const container = document.getElementById("post-category-tabs-container");
     const tabScrollPositions =
       JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
-    const scrollPosition = tabScrollPositions[selectedCategory];
+    const scrollPosition = tabScrollPositions[category];
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
-      // タブが表示されてからスクロール位置を復元する
       requestAnimationFrame(() => {
         container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
       });
-    }
-    if (selectedCategory) {
-      this.updateActiveTab(selectedCategory);
     }
   }
 
@@ -139,38 +146,5 @@ export default class extends Controller {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
     this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
-  }
-
-  // タブのスクロール位置を復元
-  restoreTabScrollPosition(category) {
-    const container = document.getElementById("post-category-tabs-container");
-    const tabScrollPositions =
-      JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
-    const scrollPosition = tabScrollPositions[category];
-    if (container && scrollPosition !== null) {
-      const parsedScrollPosition = parseFloat(scrollPosition);
-      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
-      requestAnimationFrame(() => {
-        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
-      });
-    }
-  }
-
-  // URLパラメータからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromUrl() {
-    const currentPath = window.location.pathname + window.location.search;
-    const currentCategory = this.getCurrentCategory();
-
-    console.log("Current Path:", currentPath);
-    console.log("Current Category:", currentCategory);
-
-    if (
-      !currentPath.includes(`category=${currentCategory}`) &&
-      currentCategory !== "recommended"
-    ) {
-      const newUrl = `/waves?category=${currentCategory}`;
-      console.log("Redirecting to:", newUrl);
-      Turbo.visit(newUrl, { frame: "_top" });
-    }
   }
 }
