@@ -5,12 +5,27 @@ export default class extends Controller {
   initialized = false; // 初期化済みフラグ
 
   connect() {
-    // 初期化処理を実行
-    this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // ロード時にローカルストレージからカテゴリを取得し、リダイレクト
-    this.redirectToLocalStorageCategory();
+    // ローカルストレージからカテゴリを取得してリダイレクト、リダイレクトが行われなかった場合に初期化処理を実行
+    if (!this.redirectToLocalStorageCategory()) {
+      this.initializePage();
+    }
+  }
+
+  // ローカルストレージからカテゴリを取得し、必要に応じてリダイレクト
+  redirectToLocalStorageCategory() {
+    const selectedCategory = localStorage.getItem("selectedCategory");
+    if (
+      selectedCategory &&
+      !new URLSearchParams(window.location.search).has("category")
+    ) {
+      const newUrl = `${window.location.pathname}?category=${selectedCategory}`;
+      console.log(`リダイレクト先: ${newUrl}`);
+      Turbo.visit(newUrl, { frame: "_top" });
+      return true; // リダイレクトが行われた
+    }
+    return false; // リダイレクトが行われなかった
   }
 
   // ページの初期化
@@ -91,11 +106,11 @@ export default class extends Controller {
     }
     localStorage.setItem("selectedCategory", category);
 
-    // アクティブなタブを更新
-    this.updateActiveTab(category);
-
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
+
+    // アクティブなタブを更新
+    this.updateActiveTab(category);
   }
 
   // タブの状態を復元
@@ -148,18 +163,5 @@ export default class extends Controller {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
     this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
-  }
-
-  // ローカルストレージからカテゴリを取得し、必要に応じてリダイレクト
-  redirectToLocalStorageCategory() {
-    const selectedCategory = localStorage.getItem("selectedCategory");
-    if (
-      selectedCategory &&
-      !window.location.search.includes(`category=${selectedCategory}`)
-    ) {
-      const newUrl = `${window.location.pathname}?category=${selectedCategory}`;
-      console.log(`リダイレクト先: ${newUrl}`);
-      Turbo.visit(newUrl, { frame: "_top" });
-    }
   }
 }
