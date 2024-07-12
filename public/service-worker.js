@@ -1,27 +1,28 @@
 const CACHE_NAME = "Watune-cache-v1"; // キャッシュ名
 const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連のキャッシュ名
 
-// キャッシュする必要がある重要なページURLリスト
-const essentialPagesToCache = [
+// バックグラウンドでキャッシュする追加URLリスト（共通リソース）
+const additionalUrlsToCache = [
+  // ページURL
   "/top",
   "/about",
   "/privacy_policy",
   "/terms_of_use",
-];
-
-// キャッシュする必要がある重要なファイルURLリスト
-const essentialFilesToCache = [
-  "/manifest.webmanifest",
+  // 画像ファイル
   "/images/mail-setting-mobile.png",
   "/images/new-post-mobile.png",
   "/ogp.webp",
-  "/logo-watune-en.png",
-  "/logo-watune.png",
-];
-
-// カテゴリごとの追加URLリスト
-const categoryUrlsToCache = [
-  `/waves`,
+  "/logo-watune-en.png", // ロゴ画像
+  "/logo-watune.png", // ロゴ画像
+  "/icon-192.png",
+  "/icon-512.png",
+  "/apple-touch-icon.png",
+  "/favicon.ico",
+  "/icon.svg",
+  // スタイルシートとJavaScriptファイル
+  "https://kit.fontawesome.com/630314d173.js", // FontAwesomeのJavaScript
+  "/manifest.webmanifest", // ウェブアプリのマニフェストファイル
+  // カテゴリURL
   `/waves?category=recommended`,
   `/waves?category=music`,
   `/waves?category=praise_gratitude`,
@@ -32,38 +33,15 @@ const categoryUrlsToCache = [
   `/waves?category=monologue`,
 ];
 
-// 追加でキャッシュするURLリスト
-const additionalUrlsToCache = [
-  "/icon-192.png",
-  "/icon-512.png",
-  "/apple-touch-icon.png",
-  "/favicon.ico",
-  "/icon.svg",
-];
-
 // キャッシュしないURLリスト
-const noCacheUrls = ["/", "/oauth/google", "/oauth/callback"];
+const noCacheUrls = ["/oauth/google", "/oauth/callback"];
 
-// インストールイベント
+// インストールイベント: キャッシュの設定を行わない
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches
-      .open(CACHE_NAME)
-      .then((cache) => {
-        console.log("キャッシュをオープンしました");
-        return cache.addAll([
-          ...essentialPagesToCache,
-          ...essentialFilesToCache,
-          ...additionalUrlsToCache,
-        ]);
-      })
-      .catch((error) => {
-        console.error("インストール中にキャッシュに失敗しました:", error);
-      })
-  );
+  console.log("Service Worker がインストールされました");
 });
 
-// アクティベートイベント
+// アクティベートイベント: 古いキャッシュを削除して新しいキャッシュを有効にする
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME, SESSION_CACHE_NAME];
   event.waitUntil(
@@ -79,7 +57,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// フェッチイベント
+// フェッチイベント: リクエストごとにキャッシュを確認し、必要に応じて更新
 self.addEventListener("fetch", (event) => {
   // chrome-extension スキームや POST リクエストを除外
   if (
@@ -132,7 +110,7 @@ self.addEventListener("fetch", (event) => {
   );
 });
 
-// メッセージイベント
+// メッセージイベント: 動的にキャッシュを追加する処理
 self.addEventListener("message", (event) => {
   if (event.data.action === "cacheUserSpecificResources") {
     caches.open(SESSION_CACHE_NAME).then((cache) => {
