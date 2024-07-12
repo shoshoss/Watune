@@ -21,7 +21,7 @@ module PostsHelper
       'other' => Post.fixed_categories[:other]
     }
 
-    base_query = Post.open.includes(:user, :category, audio_attachment: :blob)
+    base_query = Post.open
 
     if category == 'recommended'
       base_query.reposted.order(latest_activity: :desc)

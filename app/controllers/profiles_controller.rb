@@ -7,7 +7,6 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示アクション
   def show
-
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
       return
@@ -84,10 +83,14 @@ class ProfilesController < ApplicationController
     category = params[:category] || default_category
 
     # まず、関連データをロードしてから5件の投稿を取得
-    @pagy, @posts = pagy_countless(
-      filtered_posts(category).includes(:user, post_users: :user, audio_attachment: :blob),
-      items: 5
-    )
+    @pagy, @posts = pagy_countless(filtered_posts(category)
+                                    .includes(:user,
+                                              { post_users: :user },
+                                              { audio_attachment: :blob },
+                                              :bookmarks,
+                                              :likes,
+                                              { reposts: :user }),
+                                   items: 5)
   end
 
   # プロフィール表示の許可を確認

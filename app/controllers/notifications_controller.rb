@@ -21,5 +21,4 @@ class NotificationsController < ApplicationController
     notifications_scope.update_all(unread: false) if @category == 'all'
     # rubocop:enable Rails/SkipsModelValidations
   end
-
 end

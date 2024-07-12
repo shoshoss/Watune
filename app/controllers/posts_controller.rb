@@ -12,7 +12,8 @@ class PostsController < ApplicationController
   def index
     category = fetch_category
     @pagy, @posts = pagy_countless(
-      fetch_posts_by_fixed_category(category).includes(:user, :category, audio_attachment: :blob),
+      fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes,
+                                                        { reposts: :user }]),
       items: 5
     )
   end
