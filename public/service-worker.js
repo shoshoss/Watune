@@ -16,6 +16,8 @@ const essentialFilesToCache = [
   "<%= asset_path('mail-setting-mobile.png') %>",
   "<%= asset_path('new-post-mobile.png') %>",
   "<%= asset_path('logo-watune-en.png') %>",
+  "<%= asset_path('logo-watune.png') %>",
+  "/favicon.ico",
 ];
 
 // カテゴリごとの追加URLリスト
