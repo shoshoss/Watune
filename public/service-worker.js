@@ -1,12 +1,12 @@
-const CACHE_NAME = "Watune-cache-v1"; // キャッシュ名
+const STATIC_CACHE_NAME = "Watune-static-cache-v1"; // 静的リソースのキャッシュ名
+const DYNAMIC_CACHE_NAME = "Watune-dynamic-cache-v1"; // 動的リソースのキャッシュ名
 const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連のキャッシュ名
 
-// バックグラウンドでキャッシュする追加URLリスト（共通リソース）
-const additionalUrlsToCache = [
+// 静的リソースのキャッシュ対象
+const staticAssetsToCache = [
   // ページURL
   "/top",
   "/about",
-  "/waves",
   "/privacy_policy",
   "/terms_of_use",
   // 画像ファイル
@@ -23,6 +23,10 @@ const additionalUrlsToCache = [
   // スタイルシートとJavaScriptファイル
   "https://kit.fontawesome.com/630314d173.js", // FontAwesomeのJavaScript
   "/manifest.webmanifest", // ウェブアプリのマニフェストファイル
+];
+
+// 動的リソースのキャッシュ対象
+const dynamicUrlsToCache = [
   // カテゴリURL
   `/waves?category=recommended`,
   `/waves?category=music`,
@@ -37,14 +41,23 @@ const additionalUrlsToCache = [
 // キャッシュしないURLリスト
 const noCacheUrls = ["/oauth/google", "/oauth/callback"];
 
-// インストールイベント: キャッシュの設定を行わない
+// インストールイベント: 静的リソースをキャッシュ
 self.addEventListener("install", (event) => {
-  console.log("Service Worker がインストールされました");
+  event.waitUntil(
+    caches.open(STATIC_CACHE_NAME).then((cache) => {
+      console.log("静的リソースをキャッシュします");
+      return cache.addAll(staticAssetsToCache);
+    })
+  );
 });
 
 // アクティベートイベント: 古いキャッシュを削除して新しいキャッシュを有効にする
 self.addEventListener("activate", (event) => {
-  const cacheWhitelist = [CACHE_NAME, SESSION_CACHE_NAME];
+  const cacheWhitelist = [
+    STATIC_CACHE_NAME,
+    DYNAMIC_CACHE_NAME,
+    SESSION_CACHE_NAME,
+  ];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -58,7 +71,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// フェッチイベント: リクエストごとにキャッシュを確認し、必要に応じて更新
+// フェッチイベント: 静的リソースはキャッシュから提供し、動的リソースはStale-While-Revalidate戦略を適用
 self.addEventListener("fetch", (event) => {
   // chrome-extension スキームや POST リクエストを除外
   if (
@@ -83,32 +96,36 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Stale While Revalidate 戦略の実装
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      const fetchPromise = fetch(event.request, { redirect: "follow" })
-        .then((networkResponse) => {
-          // ネットワークからのレスポンスをキャッシュに保存
+  if (staticAssetsToCache.includes(new URL(event.request.url).pathname)) {
+    // 静的リソースのキャッシュ戦略
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        return cachedResponse || fetch(event.request);
+      })
+    );
+  } else if (dynamicUrlsToCache.includes(new URL(event.request.url).pathname)) {
+    // 動的リソースのキャッシュ戦略（Stale-While-Revalidate）
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
           if (
             networkResponse &&
             networkResponse.status === 200 &&
             networkResponse.type === "basic"
           ) {
-            const responseToCache = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseToCache);
+            caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+              cache.put(event.request, networkResponse.clone());
             });
           }
           return networkResponse;
-        })
-        .catch((error) => {
-          console.error("フェッチに失敗しました:", error);
         });
-
-      // キャッシュがあればキャッシュを返し、同時にバックグラウンドで更新
-      return cachedResponse || fetchPromise;
-    })
-  );
+        return cachedResponse || fetchPromise;
+      })
+    );
+  } else {
+    // 他のリクエストはネットワークから取得
+    event.respondWith(fetch(event.request));
+  }
 });
 
 // メッセージイベント: 動的にキャッシュを追加する処理
@@ -128,10 +145,10 @@ self.addEventListener("message", (event) => {
       });
     });
   } else if (event.data.action === "cacheAdditionalResources") {
-    caches.open(CACHE_NAME).then((cache) => {
-      cache.addAll(additionalUrlsToCache).catch((error) => {
+    caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+      cache.addAll(dynamicUrlsToCache).catch((error) => {
         console.error("追加リソースのキャッシュに失敗しました:", error);
-        additionalUrlsToCache.forEach((url) => {
+        dynamicUrlsToCache.forEach((url) => {
           cache.add(url).catch((err) => {
             console.error(`キャッシュに失敗しました ${url}:`, err);
           });
@@ -141,7 +158,7 @@ self.addEventListener("message", (event) => {
   } else if (event.data.action === "skipWaiting") {
     self.skipWaiting();
   } else if (event.data.action === "cacheAudioFiles") {
-    caches.open(CACHE_NAME).then((cache) => {
+    caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
       cache.addAll(event.data.audioUrls).catch((error) => {
         console.error("音声ファイルのキャッシュに失敗しました:", error);
         event.data.audioUrls.forEach((url) => {
