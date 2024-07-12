@@ -14,9 +14,6 @@
       <%= link_to posts_path(category: 'praise_gratitude'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-sun text-orange-400 mr-1 sm:mr-2"></i><span>褒めや感謝</span>
       <% end %>
-      <%= link_to posts_path(category: 'favorite'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
-        <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなことや自己紹介</span>
-      <% end %>
       <%= link_to posts_path(category: 'music'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-music text-blue-500 mr-1 sm:mr-2"></i><span>音楽</span>
       <% end %>
@@ -25,6 +22,9 @@
       <% end %>
       <%= link_to posts_path(category: 'skill'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa-solid fa-lightbulb text-yellow-400-accent mr-1 sm:mr-2"></i><span>特技や技術</span>
+      <% end %>
+      <%= link_to posts_path(category: 'favorite'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+        <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなことや自己紹介</span>
       <% end %>
       <%= link_to posts_path(category: 'monologue'), method: :post, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>

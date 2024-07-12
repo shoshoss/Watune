@@ -118,8 +118,4 @@ class ProfilesController < ApplicationController
     current_user == @user ? 'all_my_posts' : 'my_posts_open'
   end
 
-  # クッキーキーを生成
-  def get_cookie_key(key)
-    "#{@user.username_slug}_#{key}"
-  end
 end
