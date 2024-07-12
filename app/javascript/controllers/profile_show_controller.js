@@ -1,15 +1,14 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  // ターゲットを定義
   static targets = ["tab"];
 
   connect() {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // 初期ロード時にクッキーを確認してリダイレクト
-    this.redirectToCategoryFromCookie();
+    // 初期ロード時にローカルストレージを確認してリダイレクト
+    this.redirectToCategoryFromLocalStorage();
   }
 
   // ページの初期化
@@ -89,19 +88,11 @@ export default class extends Controller {
     }
     localStorage.setItem(this.getStorageKey("selectedCategory"), category);
 
-    // Turbo Frameのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "main-content" });
-
-    // 必要な場合のみクッキーを設定
-    if (this.getCurrentCategory() !== category) {
-      this.setCategoryCookie(category);
-    }
+    // Turbo Driveのロードをトリガー
+    Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
     // アクティブなタブを更新
     this.updateActiveTab(category);
-
-    // URLを手動で更新
-    history.pushState(null, "", event.currentTarget.href);
   }
 
   // タブの状態を復元
@@ -117,10 +108,7 @@ export default class extends Controller {
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
       // スクロール位置が正しく反映されるまで待機してからスクロールを実行
       requestAnimationFrame(() => {
-        container.scrollTo({
-          left: parsedScrollPosition,
-          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
-        });
+        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" }); // スムーススクロールではなく、即座にスクロールする
       });
     }
 
@@ -134,34 +122,15 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromCookie = document.cookie
-      .split("; ")
-      .find((row) =>
-        row.startsWith(this.getCookieKey("selected_profile_category="))
-      )
-      ?.split("=")[1];
     const categoryFromLocalStorage = localStorage.getItem(
       this.getStorageKey("selectedCategory")
     );
 
     return (
       categoryFromUrl ||
-      categoryFromCookie ||
       categoryFromLocalStorage ||
       (this.isCurrentUser() ? "all_my_posts" : "my_posts_open")
     );
-  }
-
-  // 選択されたカテゴリーをサーバーに送信
-  setCategoryCookie(selectedCategory) {
-    const category =
-      selectedCategory || this.getCurrentCategory() || "my_posts_open";
-    const expires = new Date();
-    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000); // 1年間有効
-    document.cookie = `${this.getCookieKey(
-      "selected_profile_category="
-    )}${category}; path=/; expires=${expires.toUTCString()}; SameSite=Lax;`;
-    localStorage.setItem(this.getStorageKey("selectedCategory"), category);
   }
 
   // アクティブなタブを更新
@@ -182,8 +151,8 @@ export default class extends Controller {
     this.updateActiveTab(category);
   }
 
-  // クッキーからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromCookie() {
+  // ローカルストレージからカテゴリーを取得してリダイレクト
+  redirectToCategoryFromLocalStorage() {
     const currentPath = window.location.pathname + window.location.search;
     const currentCategory = this.getCurrentCategory();
 
@@ -194,8 +163,7 @@ export default class extends Controller {
     ) {
       const usernameSlug = this.getUsernameSlug(); // 新しいメソッドでusername_slugを取得
       const newUrl = `/${usernameSlug}?category=${currentCategory}`;
-      Turbo.visit(newUrl, { frame: "main-content" });
-      this.updateActiveTab(currentCategory);
+      Turbo.visit(newUrl, { frame: "_top" });
     }
   }
 
@@ -220,11 +188,6 @@ export default class extends Controller {
 
   // ストレージキーを取得
   getStorageKey(key) {
-    return `${this.getUsernameSlug()}_${key}`;
-  }
-
-  // クッキーキーを取得
-  getCookieKey(key) {
     return `${this.getUsernameSlug()}_${key}`;
   }
 }

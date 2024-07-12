@@ -9,9 +9,7 @@ class ProfilesController < ApplicationController
   def show
     @notifications = current_user&.received_notifications&.unread
     # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
-    # 選択されたカテゴリーをクッキーに保存
-    cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
+    category = params[:category] || default_category
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
