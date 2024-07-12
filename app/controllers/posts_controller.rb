@@ -81,7 +81,7 @@ class PostsController < ApplicationController
       flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
       recipient_ids = post_params[:recipient_ids] || []
       PostCreationJob.perform_later(@post.id, recipient_ids, @post.privacy)
-      redirect_to posts_path(category: 'skill') 
+      redirect_based_on_privacy
     end
   
     # 失敗した投稿作成の処理
@@ -90,4 +90,3 @@ class PostsController < ApplicationController
       render :new, status: :unprocessable_entity
     end  
 end
-

@@ -23,7 +23,7 @@ ja:
     flash_message:
       updated_with_default_name: "名前が未入力なので%{item}を初期の名前で更新しました。"
       require_login: "お手数をおかけします。<br>ログインまたは新規登録のほどよろしくお願いします！"
-      created: "ありがとうございます！<br>%{item}しました！<br>おめでとうございます！"
+      created: "ありがとうございます！<br>%{item}しました！"
       not_created: "お手数をおかけします。<br>%{item}できませんでした。"
       updated: "ありがとうございます！<br>%{item}を更新しました！"
       not_updated: "お手数をおかけします。<br>%{item}を更新できませんでした。"

@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  // ターゲットを定義
   static targets = ["tab"];
 
   connect() {
@@ -97,10 +96,7 @@ export default class extends Controller {
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
       // スクロール位置が正しく反映されるまで待機してからスクロールを実行
       requestAnimationFrame(() => {
-        container.scrollTo({
-          left: parsedScrollPosition,
-          behavior: "auto", // スムーススクロールではなく、即座にスクロールする
-        });
+        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
       });
     }
     const selectedCategory = this.getCurrentCategory();
