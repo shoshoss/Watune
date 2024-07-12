@@ -12,9 +12,10 @@ const essentialPagesToCache = [
 // キャッシュする必要がある重要なファイルURLリスト
 const essentialFilesToCache = [
   "/manifest.webmanifest",
-  "/images/mail-setting-mobile.png",
-  "/images/new-post-mobile.png",
-  "/logo-watune-en.png",
+  "<%= asset_path('ogp.webp') %>",
+  "<%= asset_path('mail-setting-mobile.png') %>",
+  "<%= asset_path('new-post-mobile.png') %>",
+  "<%= asset_path('logo-watune-en.png') %>",
 ];
 
 // カテゴリごとの追加URLリスト

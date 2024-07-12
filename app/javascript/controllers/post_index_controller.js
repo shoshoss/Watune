@@ -2,10 +2,12 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["tab"];
+  initialized = false; // 初期化済みフラグ
 
   connect() {
+    // 初期化処理を実行
     this.initializePage();
-    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
+    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
     // 初期ロード時にURLパラメータを確認してリダイレクト
     this.redirectToCategoryFromUrl();
@@ -13,8 +15,14 @@ export default class extends Controller {
 
   // ページの初期化
   initializePage() {
+    // 初期化が一度だけ実行されるようにする
+    if (this.initialized) return;
+    this.initialized = true;
+    // ナビバーの透明度を制御
     this.handleNavbarOpacity();
+    // カテゴリータブの固定を制御
     this.handleCategoryTabs();
+    // タブの状態を復元
     this.restoreTabState();
   }
 
