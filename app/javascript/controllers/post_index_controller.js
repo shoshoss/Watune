@@ -75,12 +75,18 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      localStorage.setItem("tabScrollPosition", scrollPosition);
+      const tabScrollPositions =
+        JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
+      tabScrollPositions[category] = scrollPosition;
+      localStorage.setItem(
+        "tabScrollPositions",
+        JSON.stringify(tabScrollPositions)
+      );
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
     localStorage.setItem("selectedCategory", category);
 
-    // Turbo Frameのロードをトリガー
+    // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
 
     // アクティブなタブを更新
@@ -90,16 +96,18 @@ export default class extends Controller {
   // タブの状態を復元
   restoreTabState() {
     const container = document.getElementById("post-category-tabs-container");
-    const scrollPosition = localStorage.getItem("tabScrollPosition");
+    const selectedCategory = this.getCurrentCategory();
+    const tabScrollPositions =
+      JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
+    const scrollPosition = tabScrollPositions[selectedCategory];
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
-      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
+      // タブが表示されてからスクロール位置を復元する
       requestAnimationFrame(() => {
         container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
       });
     }
-    const selectedCategory = this.getCurrentCategory();
     if (selectedCategory) {
       this.updateActiveTab(selectedCategory);
     }
@@ -130,6 +138,22 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
+    this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
+  }
+
+  // タブのスクロール位置を復元
+  restoreTabScrollPosition(category) {
+    const container = document.getElementById("post-category-tabs-container");
+    const tabScrollPositions =
+      JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
+    const scrollPosition = tabScrollPositions[category];
+    if (container && scrollPosition !== null) {
+      const parsedScrollPosition = parseFloat(scrollPosition);
+      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
+      requestAnimationFrame(() => {
+        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
+      });
+    }
   }
 
   // URLパラメータからカテゴリーを取得してリダイレクト
@@ -137,11 +161,15 @@ export default class extends Controller {
     const currentPath = window.location.pathname + window.location.search;
     const currentCategory = this.getCurrentCategory();
 
+    console.log("Current Path:", currentPath);
+    console.log("Current Category:", currentCategory);
+
     if (
       !currentPath.includes(`category=${currentCategory}`) &&
       currentCategory !== "recommended"
     ) {
       const newUrl = `/waves?category=${currentCategory}`;
+      console.log("Redirecting to:", newUrl);
       Turbo.visit(newUrl, { frame: "_top" });
     }
   }

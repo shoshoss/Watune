@@ -28,7 +28,7 @@ module PostsHelper
     else
       fixed_category = categories[category]
       if fixed_category
-        base_query.where(fixed_category: fixed_category).order(latest_activity: :desc)
+        base_query.where(fixed_category:).order(latest_activity: :desc)
       else
         Post.none
       end
@@ -41,7 +41,6 @@ module PostsHelper
                                                  add_category_name: post_params[:custom_category])
     @post.category = custom_category
   end
-
 
   # カテゴリーごとのパス設定
   def category_path(category)
