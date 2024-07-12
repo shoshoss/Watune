@@ -30,11 +30,8 @@ export default class extends Controller {
 
   // ページの初期化
   initializePage() {
-    // ナビバーの透明度を制御
     this.handleNavbarOpacity();
-    // カテゴリータブの固定を制御
     this.handleCategoryTabs();
-    // タブの状態を復元
     this.restoreTabState();
   }
 
@@ -91,6 +88,8 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
+    if (!category) return; // カテゴリーが取得できない場合は何もしない
+
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
