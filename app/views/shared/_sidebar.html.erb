@@ -4,7 +4,7 @@
                 method: :get,
                 data: { turbo_frame: "_top" },
                 class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
-      <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: 'rounded-full h-32 w-32' %>
+      <%= image_tag (current_user.avatar.presence || '/logo-watune-en.png'), class: 'rounded-full h-32 w-32' %>
     <% end %>
   </div>
   <ul class="space-y-2">

@@ -19,7 +19,7 @@
       <% if user.avatar.attached? %>
         <%= image_tag user.avatar, class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
       <% else %>
-        <%= image_tag asset_path('logo-watune-en.png'), class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
+        <%= image_tag '/logo-watune-en.png', class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
       <% end %>
     <% end %>
   </div>

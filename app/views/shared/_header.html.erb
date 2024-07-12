@@ -7,8 +7,8 @@
                   method: :get,
                   class: "#{active_if(posts_path)}" do %>
         <picture>
-          <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
-          <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
+          <source srcset="/logo-watune.png" media="(min-width: 768px)">
+          <img src="/logo-watune-en.png" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
         </picture>
       <% end %>
     </div>
@@ -27,7 +27,7 @@
                   class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
-          <%= image_tag (current_user.avatar.presence || asset_path('logo-watune-en.png')), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>
+          <%= image_tag (current_user.avatar.presence || '/logo-watune-en.png'), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>
         </label>
         <ul tabindex="0" class="menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">

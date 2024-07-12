@@ -9,6 +9,8 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
+    // ロード時にローカルストレージからカテゴリを取得し、リダイレクト
+    this.redirectToLocalStorageCategory();
   }
 
   // ページの初期化
@@ -89,11 +91,11 @@ export default class extends Controller {
     }
     localStorage.setItem("selectedCategory", category);
 
-    // Turbo Driveのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
-
     // アクティブなタブを更新
     this.updateActiveTab(category);
+
+    // Turbo Driveのロードをトリガー
+    Turbo.visit(event.currentTarget.href, { frame: "_top" });
   }
 
   // タブの状態を復元
@@ -146,5 +148,18 @@ export default class extends Controller {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
     this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
+  }
+
+  // ローカルストレージからカテゴリを取得し、必要に応じてリダイレクト
+  redirectToLocalStorageCategory() {
+    const selectedCategory = localStorage.getItem("selectedCategory");
+    if (
+      selectedCategory &&
+      !window.location.search.includes(`category=${selectedCategory}`)
+    ) {
+      const newUrl = `${window.location.pathname}?category=${selectedCategory}`;
+      console.log(`リダイレクト先: ${newUrl}`);
+      Turbo.visit(newUrl, { frame: "_top" });
+    }
   }
 }
