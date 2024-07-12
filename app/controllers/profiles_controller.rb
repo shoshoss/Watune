@@ -8,8 +8,6 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @notifications = current_user&.received_notifications&.unread
-    # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    params[:category] || default_category
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
@@ -84,7 +82,7 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def set_posts
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+    category = params[:category] || default_category
 
     # まず、関連データをロードしてから5件の投稿を取得
     @pagy, @posts = pagy_countless(
@@ -95,7 +93,7 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示の許可を確認
   def authorize_view!
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+    category = params[:category] || default_category
     return if category_accessible?(category)
 
     redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
