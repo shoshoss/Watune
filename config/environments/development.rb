@@ -3,6 +3,9 @@
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
+  # Webコンソールにアクセスを許可するIPアドレスを追加
+  config.web_console.permissions = ['172.19.0.4', '127.0.0.0/8', '::1', '192.168.65.1']
+
   config.hosts.clear
   # ここに指定された設定はconfig/application.rbよりも優先されます。
 
