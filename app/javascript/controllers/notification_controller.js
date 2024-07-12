@@ -1,77 +1,39 @@
-// app/javascript/controllers/navbar_controller.js
-import { Controller } from "@hotwired/stimulus";
+// app/javascript/controllers/notification_controller.js
+
+import { Controller } from "@hotwired/stimulus"; // Stimulusコントローラをインポート
 
 export default class extends Controller {
-  static targets = ["notificationCount"];
+  static targets = ["notificationCount"]; // notificationCountターゲットを定義
+  static values = { url: String }; // url値を定義
 
   connect() {
-    this.updateActiveLink();
-    this.updateUnreadNotifications(); // 初期の未読通知数を設定
-
-    document.addEventListener("turbo:load", this.updateActiveLink.bind(this));
-
-    // 60秒ごとに未読通知数を更新
-    this.notificationInterval = setInterval(() => {
-      this.updateUnreadNotifications();
-    }, 60000);
+    this.checkNotifications(); // 通知をチェック
+    this.interval = setInterval(this.checkNotifications.bind(this), 30000); // 30秒間隔で通知をチェック
   }
 
   disconnect() {
-    document.removeEventListener(
-      "turbo:load",
-      this.updateActiveLink.bind(this)
-    );
-    clearInterval(this.notificationInterval);
+    clearInterval(this.interval); // コントローラが切断されたときにインターバルをクリア
   }
 
-  updateActiveLink() {
-    const activeLinks = document.querySelectorAll(".active-link");
-    activeLinks.forEach((link) => link.classList.remove("active-link"));
-
-    const currentPath = window.location.pathname;
-    const links = document.querySelectorAll(
-      "a[data-action='click->navbar#setActive']"
-    );
-    links.forEach((link) => {
-      if (link.getAttribute("href") === currentPath) {
-        link.classList.add("active-link");
-      }
-    });
+  checkNotifications() {
+    fetch(this.urlValue) // URLから通知データを取得
+      .then((response) => response.json())
+      .then((data) => {
+        this.handleNotification(data); // 取得したデータを処理
+      })
+      .catch((error) => console.error("Error fetching notifications:", error)); // エラーハンドリング
   }
 
-  setActive(event) {
-    event.preventDefault();
-
-    const target = event.currentTarget;
-    const url = new URL(target.href);
-    history.pushState({}, "", url);
-
-    this.updateActiveLink();
-  }
-
-  async updateUnreadNotifications() {
-    try {
-      const response = await fetch("/notifications/unread_count", {
-        cache: "no-store",
-      });
-      const data = await response.json();
-      this.renderUnreadCount(data.unread_count);
-    } catch (error) {
-      console.error("Failed to fetch unread notifications count:", error);
-    }
-  }
-
-  renderUnreadCount(count) {
-    const unreadCountElements = document.querySelectorAll(
-      "[data-notification-target='notificationCount']"
-    );
-    unreadCountElements.forEach((element) => {
-      element.textContent = count;
-      if (count > 0) {
-        element.style.display = "block";
+  handleNotification(data) {
+    // 取得したデータの処理をここに記述
+    // 例: 未読通知数の表示更新など
+    if (this.hasNotificationCountTarget && data.unread_count !== undefined) {
+      if (data.unread_count > 0) {
+        this.notificationCountTarget.textContent = data.unread_count; // 未読通知数を更新
+        this.notificationCountTarget.style.display = "block"; // カウントを表示
       } else {
-        element.style.display = "none";
+        this.notificationCountTarget.style.display = "none"; // カウントを非表示
       }
-    });
+    }
   }
 }

@@ -103,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // ユーザーのusername_slugを取得する関数
 function getUsernameSlug() {
-  const userDataElement = document.getElementById("user-data");
-  return userDataElement ? userDataElement.dataset.usernameSlug : null;
+  const metaTag = document.querySelector(
+    'meta[name="current-user-username-slug"]'
+  );
+  return metaTag ? metaTag.content : null;
 }

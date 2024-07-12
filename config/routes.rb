@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index] do
     collection do
       get :unread_count
+      get :latest_unread_notification_id
     end
   end
   resource :notification_settings, only: %i[edit update]

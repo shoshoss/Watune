@@ -3,7 +3,6 @@ class LikesController < ApplicationController
 
   def create
     @like = current_user.like(@post)
-    update_likes_chance_count
 
     respond_to do |format|
       format.turbo_stream
@@ -12,7 +11,6 @@ class LikesController < ApplicationController
 
   def destroy
     @like = current_user.unlike(@post)
-    update_likes_chance_count
 
     respond_to do |format|
       format.turbo_stream

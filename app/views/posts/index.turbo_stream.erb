@@ -1,5 +1,5 @@
 <%= turbo_stream.replace "main-content" do %>
-  <%= render partial: 'posts/index', locals: { posts: @posts, pagy: @pagy, notifications: @notifications } %>
+  <%= render partial: 'posts/index', locals: { posts: @posts, post_category: @post_category, pagy: @pagy, notifications: @notifications } %>
 <% end %>
 
 <%= turbo_stream.update "after-widget" do %>
@@ -8,23 +8,4 @@
 
 <%= turbo_stream.update "flash" do %>
   <%= render 'shared/flash_message' %>
-<% end %>
-
-<%= turbo_stream.replace "scripts" do %>
-  <%= javascript_tag do %>
-    document.addEventListener("turbo:load", function() {
-      history.pushState(null, "", "<%= posts_path(category: params[:category]) %>");
-      const category = new URLSearchParams(window.location.search).get('category');
-      if (category) {
-        document.querySelectorAll('.c-post-tab').forEach(tab => {
-          if (tab.href.includes(`category=${category}`)) {
-            tab.classList.add('active');
-            tab.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-          } else {
-            tab.classList.remove('active');
-          }
-        });
-      }
-    });
-  <% end %>
 <% end %>

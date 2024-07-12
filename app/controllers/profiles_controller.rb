@@ -8,10 +8,6 @@ class ProfilesController < ApplicationController
   # プロフィール表示アクション
   def show
     @notifications = current_user&.received_notifications&.unread
-    # URLパラメータのカテゴリーが存在しない場合、クッキーからカテゴリーを取得
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
-    # 選択されたカテゴリーをクッキーに保存
-    cookies[get_cookie_key('selected_profile_category')] = { value: category, expires: 1.year.from_now } if params[:category]
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
@@ -68,7 +64,7 @@ class ProfilesController < ApplicationController
   def filtered_posts(category)
     user_posts_scope = @user.posts
     base_scope = Post.all
-  
+
     scopes = {
       'all_my_posts' => user_posts_scope,
       'only_me' => user_posts_scope.where(privacy: 'only_me'),
@@ -79,15 +75,15 @@ class ProfilesController < ApplicationController
       'liked' => base_scope.joins(:likes).where(likes: { user_id: @user.id }).order('likes.created_at DESC'),
       'shared_with_you' => Post.shared_with_you(current_user, @user)
     }
-  
+
     posts = scopes[category] || Post.none
     posts.order(created_at: :desc)
   end
 
   # フィルタリングされた投稿を取得
   def set_posts
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
-  
+    category = params[:category] || default_category
+
     # まず、関連データをロードしてから5件の投稿を取得
     @pagy, @posts = pagy_countless(
       filtered_posts(category).includes(:user, post_users: :user, audio_attachment: :blob),
@@ -97,7 +93,7 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示の許可を確認
   def authorize_view!
-    category = params[:category] || cookies[get_cookie_key('selected_profile_category')] || default_category
+    category = params[:category] || default_category
     return if category_accessible?(category)
 
     redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'

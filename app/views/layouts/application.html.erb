@@ -13,7 +13,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    // G-10YY0QQ95M のトラッキング (新しいプロパティ)
     gtag('config', 'G-10YY0QQ95M');
   </script>
 
@@ -47,6 +46,10 @@
   <link rel="manifest" href="/manifest.webmanifest">
 
   <%= show_meta_tags %>
+  <!-- username_slugをJavaScriptに渡す ログインユーザのプロフィールの読み込みのため -->
+  <% if current_user %>
+    <meta name="current-user-username-slug" content="<%= current_user.username_slug %>">
+  <% end %>
 </head>
 
 <body id="main-body" class="font-sans bg-white flex flex-col min-h-screen">
@@ -99,9 +102,6 @@
 
   <!-- フッター -->
   <%= render 'shared/footer' %>
-
-  <!-- username_slugをJavaScriptに渡す ログインユーザのプロフィールの読み込みのため -->
-  <div id="user-data" data-username-slug="<%= current_user&.username_slug %>"></div>
 
 </body>
 </html>

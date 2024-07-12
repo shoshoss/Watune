@@ -6,7 +6,7 @@ module PostsHelper
 
   # カテゴリーを取得するメソッド
   def fetch_category
-    params[:category] || cookies[:selected_post_category] || 'recommended'
+    params[:category] || 'recommended'
   end
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
@@ -28,7 +28,7 @@ module PostsHelper
     else
       fixed_category = categories[category]
       if fixed_category
-        base_query.where(fixed_category: fixed_category).order(latest_activity: :desc)
+        base_query.where(fixed_category:).order(latest_activity: :desc)
       else
         Post.none
       end
@@ -40,19 +40,6 @@ module PostsHelper
     custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category],
                                                  add_category_name: post_params[:custom_category])
     @post.category = custom_category
-  end
-
-  # 成功した投稿作成の処理
-  def handle_successful_create
-    flash[:notice] = t('defaults.flash_message.created', item: Post.model_name.human, default: '投稿が作成されました。')
-    PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy) if post_params[:recipient_ids].present?
-    redirect_based_on_privacy
-  end
-
-  # 失敗した投稿作成の処理
-  def handle_failed_create
-    flash.now[:danger] = t('defaults.flash_message.not_created', item: Post.model_name.human, default: '投稿の作成に失敗しました。')
-    render :new, status: :unprocessable_entity
   end
 
   # カテゴリーごとのパス設定

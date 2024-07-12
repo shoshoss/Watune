@@ -4,6 +4,7 @@
       <%= link_to posts_path,
                   id: "header-logo-link",
                   data: { turbo_frame: "_top", turbo_action: :advance },
+                  method: :get,
                   class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
@@ -16,12 +17,13 @@
         <%= link_to '引き継ぐ',
                     new_signup_modal_path,
                     id: "guest-update",
+                    method: :get,
                     class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4',
                     data: { turbo_frame: "signup_modal" } %>
       <% end %>
       <%= link_to t('header.post_audio'),
                   new_post_path(privacy: 'open'),
-                  data: { turbo_frame: "_top", turbo_action: :advance },
+                  data: { turbo_frame: "_top" },
                   class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
@@ -32,12 +34,14 @@
             <%= link_to t('header.about'),
                         top_path,
                         data: { turbo_frame: "_top" },
+                        method: :get,
                         id: "header-about-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
             <%= link_to posts_path,
                         data: { turbo_frame: "_top" },
+                        method: :get,
                         id: "header-home-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(posts_path)}" do %>
               <i class="fa-solid fa-house text-[15px] sm:text-lg"></i>
@@ -47,6 +51,7 @@
           <li class="block py-2">
             <%= link_to profile_show_path(current_user.username_slug),
                         data: { turbo_frame: "_top" },
+                        method: :get,
                         id: "header-profile-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-[15px] sm:text-lg"></i>
@@ -56,6 +61,7 @@
           <li class="block py-2 text-[15px] sm:text-lg">
             <%= link_to users_path,
                         data: { turbo_frame: "_top" },
+                        method: :get,
                         id: "header-users-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-[15px] sm:text-lg"></i>
@@ -74,6 +80,7 @@
           <li class="block py-2">
             <%= link_to edit_notification_settings_path,
                         data: { turbo_frame: "_top" },
+                        method: :get,
                         id: "header-settings-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-[15px] sm:text-lg"></i>

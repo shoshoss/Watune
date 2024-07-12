@@ -1,6 +1,6 @@
-<li class="<%= defined?(menu_class) ? menu_class : '' %>" data-controller="notification">
+<li class="<%= defined?(menu_class) ? menu_class : '' %>" data-controller="notification" data-notification-url-value="<%= unread_count_notifications_path(format: :json) %>">
   <%= link_to notifications_path, data: { turbo_frame: "_top" }, id: link_id, method: :post, class: link_class do %>
-    <div class="justify-self-center relative <%= defined?(div_class) ? div_class : '' %>"">
+    <div class="justify-self-center relative <%= defined?(div_class) ? div_class : '' %>">
       <i class="fas fa-bell <%= defined?(i_class) ? i_class : '' %>"></i>
       <span class="absolute <%= defined?(notification_position_class) ? notification_position_class : 'top-0 right-[20px]' %> inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" data-notification-target="notificationCount" style="<%= current_user.received_notifications.unread.count > 0 ? 'display: block;' : 'display: none;' %>">
         <%= current_user.received_notifications.unread.count %>
