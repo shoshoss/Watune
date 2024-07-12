@@ -7,7 +7,6 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示アクション
   def show
-    @notifications = current_user&.received_notifications&.unread
 
     if @user.nil?
       redirect_to root_path, alert: 'ユーザーが見つかりません。'
