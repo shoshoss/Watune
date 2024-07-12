@@ -16,6 +16,7 @@ const essentialFilesToCache = [
   "/images/new-post-mobile.png",
   "/ogp.webp",
   "/logo-watune-en.png",
+  "/logo-watune.png",
 ];
 
 // カテゴリごとの追加URLリスト
