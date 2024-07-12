@@ -6,8 +6,8 @@
     <div class="mx-2 md-plus:mx-5 shrink-0">
       <%= link_to root_path, data: { turbo_frame: '_top'}, id: "header-logo-link" do %>
         <picture>
-          <source srcset="<%= image_path('logo-watune.png') %>" media="(min-width: 768px)">
-          <img src="<%= image_path('logo-watune-en.png') %>" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
+          <source srcset="/logo-watune.png" media="(min-width: 768px)">
+          <img src="/logo-watune-en.png" alt="ロゴ" class="rounded-full h-[48px] w-[48px] md:h-[48px] md:w-[200px]">
         </picture>
       <% end %>
     </div>

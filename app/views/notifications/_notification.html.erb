@@ -3,7 +3,7 @@
     <div class="flex items-center p-2">
       <i class="fas fa-heart text-[#F91980] min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
+        <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
@@ -15,7 +15,7 @@
     <div class="flex items-center p-2">
       <i class="fas fa-reply text-blue-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
+        <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
@@ -27,7 +27,7 @@
     <div class="flex items-center p-2">
       <i class="fa-solid fa-retweet text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
+        <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
@@ -39,7 +39,7 @@
     <div class="flex items-center p-2">
       <i class="fas fa-user-plus text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top, turbo_action: :advance" } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
+        <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
@@ -50,7 +50,7 @@
     <div class="flex items-center p-2">
       <i class="fa-regular fa-envelope text-orange-400 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
-        <%= image_tag(notification.sender.avatar.presence || asset_path('logo-watune-en.png'), alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
+        <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
       <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
