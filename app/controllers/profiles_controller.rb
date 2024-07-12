@@ -117,5 +117,4 @@ class ProfilesController < ApplicationController
   def default_category
     current_user == @user ? 'all_my_posts' : 'my_posts_open'
   end
-
 end
