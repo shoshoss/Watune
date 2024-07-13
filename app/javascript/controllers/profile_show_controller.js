@@ -1,3 +1,4 @@
+// app/javascript/controllers/profile_show_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -70,7 +71,17 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
-    if (!category) return; // カテゴリーが取得できない場合は何もしない
+    if (!category) {
+      // カテゴリーが取得できない場合はクッキーのURLで更新
+      const savedCategory = this.getCookieValue(
+        this.getCookieName("selectedCategory")
+      );
+      if (savedCategory) {
+        const newUrl = `${window.location.pathname}?category=${savedCategory}`;
+        Turbo.visit(newUrl, { frame: "_top" });
+      }
+      return;
+    }
 
     const container = document.getElementById(
       "profile-category-tabs-container"
@@ -83,9 +94,6 @@ export default class extends Controller {
       )}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    document.cookie = `${this.getCookieName(
-      "selectedCategory"
-    )}=${category}; path=/; max-age=31536000`;
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });

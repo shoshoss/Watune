@@ -1,7 +1,7 @@
 <nav id="bottom-navbar" class="sm:hidden fixed bottom-0 left-0 z-10 w-full bg-white border-t transition-opacity duration-300 border-t-1 border-gray-200">
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
-      <%= link_to posts_path(category: params[:category] || cookies[:selected_post_category] || 'recommended'),
+      <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
       
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-home-link",
@@ -10,7 +10,7 @@
       <% end %>
     </li>
     <li class="flex-1 text-center">
-      <%= link_to profile_show_path(username_slug: current_user.username_slug),
+      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] ),
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-profile-link",
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug))}" do %>

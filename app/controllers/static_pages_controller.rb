@@ -4,7 +4,7 @@ class StaticPagesController < ApplicationController
   def root
     return unless logged_in?
 
-    redirect_to posts_path(category: params[:category] || cookies[:selected_post_category] || 'recommended')
+    redirect_to posts_path(category: cookies[:selected_post_category] || 'recommended')
   end
 
   def top; end
