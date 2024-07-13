@@ -11,8 +11,8 @@
     <!-- みんなのWave -->
     <li>
       <%= link_to posts_path,
-                  data: { turbo_frame: "_top" },
                   method: :get,
+                  data: { turbo_frame: "_top" },
                   id: "sidebar-posts-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
@@ -22,8 +22,8 @@
     <!-- プロフィール -->
     <li>
       <%= link_to profile_show_path(username_slug: current_user.username_slug),
-                  data: { turbo_frame: "_top" },
                   method: :get,
+                  data: { turbo_frame: "_top" },
                   id: "sidebar-profile-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
@@ -41,8 +41,8 @@
     <!-- 通知設定 -->
     <li>
       <%= link_to edit_notification_settings_path,
-          data: { turbo_frame: "_top" },
           method: :get,
+          data: { turbo_frame: "_top" },
           id: "sidebar-settings-link",
           class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl"></i>
@@ -53,6 +53,7 @@
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
                   new_post_path,
+                  method: :get,
                   data: { turbo_frame: "_top" },
                   id: "sidebar-new-post-link",
                   class: "flex text-white text-2xl btn btn-info rounded-full bg-opacity-80" %>

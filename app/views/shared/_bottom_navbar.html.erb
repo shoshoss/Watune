@@ -2,6 +2,7 @@
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
       <%= link_to posts_path,
+      
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-home-link",
                   class: "block py-2 #{active_if(posts_path)}" do %>
@@ -28,6 +29,7 @@
     } %>
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'),
+                  method: :get,
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-messages-link",
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'))}" do %>
@@ -36,6 +38,7 @@
     </li>
     <li class="flex-1 text-center">
       <%= link_to edit_notification_settings_path,
+                  method: :get,
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-settings-link",
                   class: "block py-2 #{active_if(edit_notification_settings_path)}" do %>
@@ -48,6 +51,7 @@
 <!-- 投稿ボタン -->
 <% if params[:controller] == "posts" && params[:action] == "show" %>
   <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
+              method: :get,
               data: { turbo_frame: "_top" },
               id: "reply-button",
               class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg" do %>
@@ -55,6 +59,7 @@
   <% end %>
 <% else %>
   <%= link_to new_post_path(privacy: 'open'),
+              method: :get,
               data: { turbo_frame: "_top" },
               class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
               id: "post-button" do %>
