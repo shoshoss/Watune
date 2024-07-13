@@ -7,6 +7,11 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
+    // Turboのbefore-renderイベントを監視して、タブのアクティブ状態を更新
+    document.addEventListener(
+      "turbo:before-render",
+      this.updateActiveTabFromUrl.bind(this)
+    );
   }
 
   // ページの初期化
@@ -70,7 +75,14 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
-    if (!category) return; // カテゴリーが取得できない場合は何もしない
+    if (!category) {
+      // カテゴリーが取得できない場合はクッキーのURLで更新
+      const savedCategory = this.getCookieValue("selectedPostCategory");
+      const newCategory = savedCategory || "recommended";
+      const newUrl = `${window.location.pathname}?category=${newCategory}`;
+      Turbo.visit(newUrl, { frame: "_top", turbo_action: "advance" });
+      return;
+    }
 
     const container = document.getElementById("post-category-tabs-container");
     if (container) {
@@ -82,7 +94,10 @@ export default class extends Controller {
     }
 
     // Turbo Driveのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
+    Turbo.visit(event.currentTarget.href, {
+      frame: "open-posts",
+      turbo_action: "advance",
+    });
 
     // アクティブなタブを更新
     this.updateActiveTab(category);
