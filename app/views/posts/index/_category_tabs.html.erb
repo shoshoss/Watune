@@ -65,12 +65,23 @@
       }
     }
 
-    updateActiveTab();
+    function logScrollPosition() {
+      console.log('現在のY方向の位置:', window.scrollY || document.documentElement.scrollTop || document.body.scrollTop);
+    }
 
-    document.addEventListener('turbo:render', updateActiveTab);
+    updateActiveTab();
+    logScrollPosition();
+
+    document.addEventListener('turbo:render', function() {
+      updateActiveTab();
+      logScrollPosition();
+    });
 
     window.addEventListener('popstate', function() {
       updateActiveTab();
+      logScrollPosition();
     });
+
+    window.addEventListener('scroll', logScrollPosition); // スクロールイベントをリッスンしてリアルタイムで表示
   });
 </script>
