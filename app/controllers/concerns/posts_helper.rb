@@ -5,7 +5,7 @@ module PostsHelper
 
   # カテゴリーを取得するメソッド
   def fetch_category
-    params[:category] || cookies["selected_post_category"] || 'recommended'
+    params[:category] || cookies[:selected_post_category] || 'recommended'
   end
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
@@ -36,8 +36,7 @@ module PostsHelper
 
   # カスタムカテゴリーを設定するメソッド
   def assign_custom_category
-    custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category],
-                                                 add_category_name: post_params[:custom_category])
+    custom_category = Category.find_or_create_by(category_name: post_params[:fixed_category], add_category_name: post_params[:custom_category])
     @post.category = custom_category
   end
 
@@ -72,10 +71,7 @@ module PostsHelper
 
   # プライバシー設定が「only_me」の場合のリダイレクト処理
   def redirect_to_only_me
-    redirect_to profile_show_path(username_slug: current_user.username_slug,
-                                  category: 'only_me'),
-                status: :see_other,
-                notice: flash[:notice]
+    redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'only_me'), status: :see_other, notice: flash[:notice]
   end
 
   # プライバシー設定が「selected_users」の場合のリダイレクト処理
@@ -84,15 +80,9 @@ module PostsHelper
     if recipient_ids.blank?
       redirect_to_only_me
     elsif recipient_ids.size > 1
-      redirect_to profile_show_path(username_slug: current_user.username_slug,
-                                    category: 'my_posts_following'),
-                  status: :see_other,
-                  notice: flash[:notice]
+      redirect_to profile_show_path(username_slug: current_user.username_slug, category: 'my_posts_following'), status: :see_other, notice: flash[:notice]
     elsif recipient_user
-      redirect_to profile_show_path(username_slug: recipient_user.username_slug,
-                                    category: 'shared_with_you'),
-                  status: :see_other,
-                  notice: flash[:notice]
+      redirect_to profile_show_path(username_slug: recipient_user.username_slug, category: 'shared_with_you'), status: :see_other, notice: flash[:notice]
     end
   end
 
@@ -117,8 +107,7 @@ module PostsHelper
   def setup_show_variables
     @show_reply_line = true
     @reply = Post.new
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
-                                     items: 15)
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc), items: 15)
     @parent_posts = @post.ancestors
   end
 
@@ -151,8 +140,7 @@ module PostsHelper
 
   # 投稿のパラメータを許可する
   def post_params
-    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :fixed_category, :custom_category, :post_reply_id,
-                                 recipient_ids: [])
+    params.require(:post).permit(:user_id, :body, :audio, :duration, :privacy, :fixed_category, :custom_category, :post_reply_id, recipient_ids: [])
   end
 
   # フォローしているユーザーを投稿数でソートする

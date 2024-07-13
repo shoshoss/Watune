@@ -25,7 +25,7 @@
             <%= link_to profile_show_path(username_slug: post.user.username_slug),
                         class: "text-xl font-semibold text-blue-500 hover:underline",
                         method: :get,
-                        data: { turbo_frame: "_top", turbo_action: :advance } do %>
+                        data: { turbo_frame: "_top"} do %>
               <%= post.user.display_name %><span class="font-normal">さん</span>
             <% end %><br>
 
@@ -35,7 +35,7 @@
                 <%= link_to profile_show_path(username_slug: user.username_slug),
                             class: "text-blue-500 hover:underline",
                             method: :get,
-                            data: { turbo_frame: "_top", turbo_action: :advance } do %>
+                            data: { turbo_frame: "_top"} do %>
                   <%= user.display_name %><span class="font-normal">さん</span>
                 <% end %>
                 <% unless user == post.ancestors.map(&:user).uniq.last %>、<% end %>

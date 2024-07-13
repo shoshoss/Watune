@@ -1,7 +1,7 @@
 <nav id="bottom-navbar" class="sm:hidden fixed bottom-0 left-0 z-10 w-full bg-white border-t transition-opacity duration-300 border-t-1 border-gray-200">
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
-      <%= link_to posts_path,
+      <%= link_to posts_path(category: params[:category] || cookies[:selected_post_category] || 'recommended'),
       
                   data: { turbo_frame: "_top" },
                   id: "bottom-navbar-home-link",

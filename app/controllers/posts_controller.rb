@@ -11,8 +11,7 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     category = fetch_category
-    # クッキーに現在のカテゴリを保存
-    cookies["selected_post_category"] = { value: category, expires: 1.year.from_now }
+    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now } if category
     @pagy, @posts = pagy_countless(
       fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes,
                                                         { reposts: :user }]),

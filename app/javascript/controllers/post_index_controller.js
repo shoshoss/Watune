@@ -76,10 +76,10 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
+      // クッキーにスクロール位置を保存
       document.cookie = `postTabScrollPosition_${category}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    document.cookie = `selectedPostCategory=${category}; path=/; max-age=31536000`;
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });

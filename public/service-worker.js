@@ -39,7 +39,7 @@ const dynamicUrlsToCache = [
 ];
 
 // キャッシュしないURLリスト
-const noCacheUrls = ["/oauth/google", "/oauth/callback", "/waves/new"];
+const noCacheUrls = ["/oauth/google", "/oauth/callback", "/waves"];
 
 // インストールイベント: 静的および動的リソースをキャッシュ
 self.addEventListener("install", (event) => {

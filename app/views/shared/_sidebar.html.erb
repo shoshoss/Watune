@@ -10,7 +10,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path,
+      <%= link_to posts_path(category: params[:category] || cookies[:selected_post_category] || 'recommended'),
                   method: :get,
                   data: { turbo_frame: "_top" },
                   id: "sidebar-posts-link",
