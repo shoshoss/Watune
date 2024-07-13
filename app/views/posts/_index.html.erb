@@ -6,7 +6,7 @@
     <div class="max-w-[670px] w-full bg-white border-x">
       <% unless logged_in? %>
         <div class="flex justify-center my-4">
-          <%= link_to 'このアプリについて', root_path, data: { turbo_frame: "_top", turbo_action: :advance }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
+          <%= link_to 'このアプリについて', root_path, method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: 'btn btn-outline btn-info btn-base sm:btn-lg rounded-full transition-colors duration-300' %>
         </div>
       <% end %>
 
