@@ -2,15 +2,11 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["tab"];
-  initialized = false; // 初期化済みフラグ
 
   connect() {
+    this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // ページの初期化処理を実行
-    this.initializePage();
-    // 初期ロード時にリダイレクト
-    this.redirectToStoredCategoryOrDefault();
   }
 
   // ページの初期化
@@ -18,6 +14,7 @@ export default class extends Controller {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
     this.restoreTabState();
+    this.updateActiveTab(this.getCurrentCategory());
   }
 
   // ナビバーの透明度を制御
@@ -80,15 +77,15 @@ export default class extends Controller {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
       const tabScrollPositions =
-        JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
+        JSON.parse(localStorage.getItem("postTabScrollPositions")) || {};
       tabScrollPositions[category] = scrollPosition;
       localStorage.setItem(
-        "tabScrollPositions",
+        "postTabScrollPositions",
         JSON.stringify(tabScrollPositions)
       );
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    localStorage.setItem("selectedCategory", category);
+    localStorage.setItem("selectedPostCategory", category);
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
@@ -99,36 +96,31 @@ export default class extends Controller {
 
   // タブの状態を復元
   restoreTabState() {
-    const selectedCategory = this.getCurrentCategory();
-    this.restoreTabScrollPosition(selectedCategory);
-    if (selectedCategory) {
-      this.updateActiveTab(selectedCategory);
-    }
-  }
-
-  // タブのスクロール位置を復元
-  restoreTabScrollPosition(category) {
     const container = document.getElementById("post-category-tabs-container");
     const tabScrollPositions =
-      JSON.parse(localStorage.getItem("tabScrollPositions")) || {};
-    const scrollPosition = tabScrollPositions[category];
+      JSON.parse(localStorage.getItem("postTabScrollPositions")) || {};
+    const selectedCategory = this.getCurrentCategory();
+    const scrollPosition = tabScrollPositions[selectedCategory];
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
+      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
       requestAnimationFrame(() => {
-        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" });
+        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" }); // スムーススクロールではなく、即座にスクロールする
       });
     }
+    this.updateActiveTab(selectedCategory);
   }
 
   // 現在のカテゴリーを取得
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
-    return (
-      urlParams.get("category") ||
-      localStorage.getItem("selectedCategory") ||
-      "recommended"
+    const categoryFromUrl = urlParams.get("category");
+    const categoryFromLocalStorage = localStorage.getItem(
+      "selectedPostCategory"
     );
+
+    return categoryFromUrl || categoryFromLocalStorage || "recommended";
   }
 
   // アクティブなタブを更新
@@ -146,24 +138,5 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
-    this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
-  }
-
-  // ローカルストレージからカテゴリーを取得してリダイレクト
-  redirectToStoredCategoryOrDefault() {
-    const currentPath = window.location.pathname + window.location.search;
-    const selectedCategory = this.getCurrentCategory();
-    const defaultCategory = "recommended";
-
-    if (
-      window.location.pathname === "/waves" &&
-      !currentPath.includes(`category=`)
-    ) {
-      if (selectedCategory && selectedCategory !== defaultCategory) {
-        Turbo.visit(`/waves?category=${selectedCategory}`, { frame: "_top" });
-      } else {
-        Turbo.visit(`/waves?category=${defaultCategory}`, { frame: "_top" });
-      }
-    }
   }
 }

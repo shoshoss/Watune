@@ -7,8 +7,6 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // 初期ロード時にローカルストレージを確認してリダイレクト
-    this.redirectToCategoryFromLocalStorage();
   }
 
   // ページの初期化
@@ -80,13 +78,14 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      localStorage.setItem(
-        this.getStorageKey("tabScrollPosition"),
-        scrollPosition
-      );
+      document.cookie = `${this.getStorageKey(
+        "tabScrollPosition"
+      )}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    localStorage.setItem(this.getStorageKey("selectedCategory"), category);
+    document.cookie = `${this.getStorageKey(
+      "selectedCategory"
+    )}=${category}; path=/; max-age=31536000`;
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
@@ -100,7 +99,7 @@ export default class extends Controller {
     const container = document.getElementById(
       "profile-category-tabs-container"
     );
-    const scrollPosition = localStorage.getItem(
+    const scrollPosition = this.getCookie(
       this.getStorageKey("tabScrollPosition")
     );
     if (container && scrollPosition !== null) {
@@ -122,13 +121,13 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromLocalStorage = localStorage.getItem(
+    const categoryFromCookie = this.getCookie(
       this.getStorageKey("selectedCategory")
     );
 
     return (
       categoryFromUrl ||
-      categoryFromLocalStorage ||
+      categoryFromCookie ||
       (this.isCurrentUser() ? "all_my_posts" : "my_posts_open")
     );
   }
@@ -149,25 +148,6 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
-  }
-
-  // ローカルストレージからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromLocalStorage() {
-    const currentPath = window.location.pathname + window.location.search;
-    const currentCategory = this.getCurrentCategory();
-    const defaultCategory = this.isCurrentUser()
-      ? "all_my_posts"
-      : "my_posts_open";
-
-    if (
-      !currentPath.includes(`category=${currentCategory}`) &&
-      currentPath === "/waves"
-    ) {
-      if (currentCategory !== defaultCategory) {
-        const newUrl = `/waves?category=${currentCategory}`;
-        Turbo.visit(newUrl, { frame: "_top" });
-      }
-    }
   }
 
   // 新しいメソッドでusername_slugを取得
@@ -192,5 +172,12 @@ export default class extends Controller {
   // ストレージキーを取得
   getStorageKey(key) {
     return `${this.getUsernameSlug()}_${key}`;
+  }
+
+  // クッキーから値を取得
+  getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 }
