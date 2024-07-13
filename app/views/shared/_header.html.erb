@@ -1,9 +1,9 @@
 <div id="after-header">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
-      <%= link_to posts_path,
+      <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                   id: "header-logo-link",
-                  data: { turbo_frame: "_top", turbo_action: :advance },
+                  data: { turbo_frame: "_top"},
                   method: :get,
                   class: "#{active_if(posts_path)}" do %>
         <picture>
@@ -40,7 +40,7 @@
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
-            <%= link_to posts_path,
+            <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                         method: :get,
                         data: { turbo_frame: "_top" },
                         id: "header-home-link",
@@ -50,7 +50,7 @@
             <% end %>
           </li>
           <li class="block py-2">
-            <%= link_to profile_show_path(current_user.username_slug),
+            <%= link_to profile_show_path(current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
                         method: :get,
                         data: { turbo_frame: "_top" },
                         id: "header-profile-link",

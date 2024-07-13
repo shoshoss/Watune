@@ -12,6 +12,9 @@ class ProfilesController < ApplicationController
       return
     end
 
+    # クッキーに現在のカテゴリを保存
+    cookies["#{@user.username_slug}_selected_category"] = { value: params[:category] || default_category, expires: 1.year.from_now }
+
     respond_to do |format|
       format.html
       format.turbo_stream
@@ -80,7 +83,7 @@ class ProfilesController < ApplicationController
 
   # フィルタリングされた投稿を取得
   def set_posts
-    category = params[:category] || default_category
+    category = params[:category] || cookies["#{@user.username_slug}_selected_category"] || default_category
 
     # まず、関連データをロードしてから5件の投稿を取得
     @pagy, @posts = pagy_countless(filtered_posts(category)
@@ -95,7 +98,7 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示の許可を確認
   def authorize_view!
-    category = params[:category] || default_category
+    category = params[:category] || cookies["#{@user.username_slug}_selected_category"] || default_category
     return if category_accessible?(category)
 
     redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'

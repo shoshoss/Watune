@@ -1,7 +1,7 @@
 <div class="max-w-[263.75px] sm:max-w-[432px] flex justify-between items-center mb-2">
   <div class="overflow-x-auto whitespace-nowrap pb-2 max-w-[80%]">
     <%= link_to profile_show_path(username_slug: post.user.username_slug),
-        data: { turbo_frame: "_top", turbo_action: :advance },
+        data: { turbo_frame: "_top"},
         class: "flex items-center text-lg font-semibold text-black hover:underline" do %>
       <%= post.user.display_name %>
     <% end %>
@@ -13,7 +13,7 @@
         <% post.direct_recipients.each do |recipient| %>
           <%= link_to profile_show_path(username_slug: recipient.username_slug),
                       class: "text-blue-500 font-semibold hover:underline",
-                      data: { turbo_frame: "_top", turbo_action: :advance } do %>
+                      data: { turbo_frame: "_top"} do %>
             <%= recipient.display_name %><span class="font-normal">さん</span>
           <% end %>
         <% end %>
@@ -41,7 +41,7 @@
       <% unless post.user.id == user.id %>
         <%= link_to profile_show_path(username_slug: user.username_slug),
                     class: "text-blue-500 font-semibold hover:underline",
-                    data: { turbo_frame: "_top", turbo_action: :advance } do %>
+                    data: { turbo_frame: "_top"} do %>
           <%= user.display_name %><span class="font-normal">さん</span>
         <% end %>
       <% end %>

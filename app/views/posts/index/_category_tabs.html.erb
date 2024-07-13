@@ -8,33 +8,33 @@
     </div>
     <!-- タブのリンク -->
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
-      <%= link_to posts_path(category: 'recommended'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'recommended'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab #{('active' if params[:category].nil?) } hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
-      <%= link_to posts_path(category: 'praise_gratitude'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'praise_gratitude'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-sun text-orange-400 mr-1 sm:mr-2"></i><span>褒めや感謝</span>
       <% end %>
-      <%= link_to posts_path(category: 'music'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'music'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-music text-blue-500 mr-1 sm:mr-2"></i><span>音楽</span>
       <% end %>
-      <%= link_to posts_path(category: 'child'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'child'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-smile-o text-pink-400 mr-1 sm:mr-2"></i><span>子供の声</span>
       <% end %>
-      <%= link_to posts_path(category: 'skill'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'skill'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa-solid fa-lightbulb text-yellow-400-accent mr-1 sm:mr-2"></i><span>特技や技術</span>
       <% end %>
-      <%= link_to posts_path(category: 'favorite'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'favorite'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなことや自己紹介</span>
       <% end %>
-      <%= link_to posts_path(category: 'monologue'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'monologue'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>
       <% end %>
-      <%= link_to posts_path(category: 'other'), method: :get, data: { action: "click->post-index#saveTabState", post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'other'), data: { action: "click->post-index#saveTabState", turbo_action: :advance, post_index_target: "tab" }, class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
         <i class="fa fa-ellipsis-h text-gray-500 mr-1 sm:mr-2"></i><span>その他</span>
       <% end %>
       <!-- タブの後ろに追加の空白を挿入 -->
       <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
-        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
+        <%= link_to "気軽にウェーブ！", new_post_path(privacy: 'open'), data: { turbo_frame: "_top"}, class: "w-[150px] text-white font-bold btn btn-info flex rounded-full btn-sm text-sm bg-opacity-80" %>
       </div>
     </div>
   </div>

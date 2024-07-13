@@ -1,3 +1,4 @@
+// app/javascript/controllers/profile_show_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -7,8 +8,6 @@ export default class extends Controller {
     this.initializePage();
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新する
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // 初期ロード時にローカルストレージを確認してリダイレクト
-    this.redirectToCategoryFromLocalStorage();
   }
 
   // ページの初期化
@@ -72,7 +71,17 @@ export default class extends Controller {
   saveTabState(event) {
     event.preventDefault(); // デフォルトのリンク動作を無効化
     const category = event.currentTarget.href.split("category=")[1];
-    if (!category) return; // カテゴリーが取得できない場合は何もしない
+    if (!category) {
+      // カテゴリーが取得できない場合はクッキーのURLで更新
+      const savedCategory = this.getCookieValue(
+        this.getCookieName("selectedCategory")
+      );
+      if (savedCategory) {
+        const newUrl = `${window.location.pathname}?category=${savedCategory}`;
+        Turbo.visit(newUrl, { frame: "_top" });
+      }
+      return;
+    }
 
     const container = document.getElementById(
       "profile-category-tabs-container"
@@ -80,13 +89,11 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      localStorage.setItem(
-        this.getStorageKey("tabScrollPosition"),
-        scrollPosition
-      );
+      document.cookie = `${this.getCookieName(
+        "tabScrollPosition"
+      )}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    localStorage.setItem(this.getStorageKey("selectedCategory"), category);
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
@@ -100,8 +107,8 @@ export default class extends Controller {
     const container = document.getElementById(
       "profile-category-tabs-container"
     );
-    const scrollPosition = localStorage.getItem(
-      this.getStorageKey("tabScrollPosition")
+    const scrollPosition = this.getCookieValue(
+      this.getCookieName("tabScrollPosition")
     );
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
@@ -122,13 +129,13 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromLocalStorage = localStorage.getItem(
-      this.getStorageKey("selectedCategory")
+    const categoryFromCookies = this.getCookieValue(
+      this.getCookieName("selectedCategory")
     );
 
     return (
       categoryFromUrl ||
-      categoryFromLocalStorage ||
+      categoryFromCookies ||
       (this.isCurrentUser() ? "all_my_posts" : "my_posts_open")
     );
   }
@@ -151,23 +158,17 @@ export default class extends Controller {
     this.updateActiveTab(category);
   }
 
-  // ローカルストレージからカテゴリーを取得してリダイレクト
-  redirectToCategoryFromLocalStorage() {
-    const currentPath = window.location.pathname + window.location.search;
-    const currentCategory = this.getCurrentCategory();
-    const defaultCategory = this.isCurrentUser()
-      ? "all_my_posts"
-      : "my_posts_open";
+  // クッキーの値を取得するヘルパーメソッド
+  getCookieValue(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
+  }
 
-    if (
-      !currentPath.includes(`category=${currentCategory}`) &&
-      currentPath === "/waves"
-    ) {
-      if (currentCategory !== defaultCategory) {
-        const newUrl = `/waves?category=${currentCategory}`;
-        Turbo.visit(newUrl, { frame: "_top" });
-      }
-    }
+  // クッキー名を生成するヘルパーメソッド
+  getCookieName(key) {
+    return `${this.getUsernameSlug()}_${key}`;
   }
 
   // 新しいメソッドでusername_slugを取得
@@ -187,10 +188,5 @@ export default class extends Controller {
   getCurrentUsernameSlug() {
     return document.querySelector('meta[name="current-user-username-slug"]')
       .content;
-  }
-
-  // ストレージキーを取得
-  getStorageKey(key) {
-    return `${this.getUsernameSlug()}_${key}`;
   }
 }

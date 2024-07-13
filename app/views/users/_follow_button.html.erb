@@ -3,7 +3,7 @@
     <% if current_user.following?(user) %>
       <%= button_to 'フォロー中', user_friendships_path(user), method: :delete, class: "#{following_button_class(location: local_assigns[:location])} btn-following btn-unfollow-hover", data: { turbo_frame: "_top", unfollow_text: "フォロー解除" } %>
     <% elsif current_user != user %>
-      <%= button_to 'フォロー', user_friendships_path(user), method: :post, class: "#{follow_button_class(location: local_assigns[:location])} btn-follow", data: { turbo_frame: "_top", turbo_action: :advance } %>
+      <%= button_to 'フォロー', user_friendships_path(user), method: :post, class: "#{follow_button_class(location: local_assigns[:location])} btn-follow", data: { turbo_frame: "_top"} %>
     <% end %>
   <% else %>
     <%= link_to new_signup_modal_path, method: :get, data: { turbo_frame: "signup_modal" }, class: "#{follow_button_class(location: local_assigns[:location])} btn-follow" do %>
