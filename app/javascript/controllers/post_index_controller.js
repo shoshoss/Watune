@@ -76,16 +76,10 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      const tabScrollPositions =
-        JSON.parse(localStorage.getItem("postTabScrollPositions")) || {};
-      tabScrollPositions[category] = scrollPosition;
-      localStorage.setItem(
-        "postTabScrollPositions",
-        JSON.stringify(tabScrollPositions)
-      );
+      document.cookie = `postTabScrollPosition_${category}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    localStorage.setItem("selectedPostCategory", category);
+    document.cookie = `selectedPostCategory=${category}; path=/; max-age=31536000`;
 
     // Turbo Driveのロードをトリガー
     Turbo.visit(event.currentTarget.href, { frame: "_top" });
@@ -97,10 +91,10 @@ export default class extends Controller {
   // タブの状態を復元
   restoreTabState() {
     const container = document.getElementById("post-category-tabs-container");
-    const tabScrollPositions =
-      JSON.parse(localStorage.getItem("postTabScrollPositions")) || {};
     const selectedCategory = this.getCurrentCategory();
-    const scrollPosition = tabScrollPositions[selectedCategory];
+    const scrollPosition = this.getCookieValue(
+      `postTabScrollPosition_${selectedCategory}`
+    );
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
       console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
@@ -116,11 +110,9 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromLocalStorage = localStorage.getItem(
-      "selectedPostCategory"
-    );
+    const categoryFromCookies = this.getCookieValue("selectedPostCategory");
 
-    return categoryFromUrl || categoryFromLocalStorage || "recommended";
+    return categoryFromUrl || categoryFromCookies || "recommended";
   }
 
   // アクティブなタブを更新
@@ -138,5 +130,13 @@ export default class extends Controller {
   updateActiveTabFromUrl() {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
+  }
+
+  // クッキーの値を取得するヘルパーメソッド
+  getCookieValue(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
   }
 }

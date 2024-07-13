@@ -78,12 +78,12 @@ export default class extends Controller {
     if (container) {
       const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
       const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      document.cookie = `${this.getStorageKey(
+      document.cookie = `${this.getCookieName(
         "tabScrollPosition"
       )}=${scrollPosition}; path=/; max-age=31536000`;
       console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
     }
-    document.cookie = `${this.getStorageKey(
+    document.cookie = `${this.getCookieName(
       "selectedCategory"
     )}=${category}; path=/; max-age=31536000`;
 
@@ -99,8 +99,8 @@ export default class extends Controller {
     const container = document.getElementById(
       "profile-category-tabs-container"
     );
-    const scrollPosition = this.getCookie(
-      this.getStorageKey("tabScrollPosition")
+    const scrollPosition = this.getCookieValue(
+      this.getCookieName("tabScrollPosition")
     );
     if (container && scrollPosition !== null) {
       const parsedScrollPosition = parseFloat(scrollPosition);
@@ -121,13 +121,13 @@ export default class extends Controller {
   getCurrentCategory() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromUrl = urlParams.get("category");
-    const categoryFromCookie = this.getCookie(
-      this.getStorageKey("selectedCategory")
+    const categoryFromCookies = this.getCookieValue(
+      this.getCookieName("selectedCategory")
     );
 
     return (
       categoryFromUrl ||
-      categoryFromCookie ||
+      categoryFromCookies ||
       (this.isCurrentUser() ? "all_my_posts" : "my_posts_open")
     );
   }
@@ -150,6 +150,19 @@ export default class extends Controller {
     this.updateActiveTab(category);
   }
 
+  // クッキーの値を取得するヘルパーメソッド
+  getCookieValue(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
+  }
+
+  // クッキー名を生成するヘルパーメソッド
+  getCookieName(key) {
+    return `${this.getUsernameSlug()}_${key}`;
+  }
+
   // 新しいメソッドでusername_slugを取得
   getUsernameSlug() {
     const urlParts = window.location.pathname.split("/");
@@ -167,17 +180,5 @@ export default class extends Controller {
   getCurrentUsernameSlug() {
     return document.querySelector('meta[name="current-user-username-slug"]')
       .content;
-  }
-
-  // ストレージキーを取得
-  getStorageKey(key) {
-    return `${this.getUsernameSlug()}_${key}`;
-  }
-
-  // クッキーから値を取得
-  getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 }

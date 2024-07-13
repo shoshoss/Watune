@@ -13,7 +13,7 @@ class ProfilesController < ApplicationController
     end
 
     # クッキーに現在のカテゴリを保存
-    cookies["#{@user.username_slug}_selected_category"] = { value: @category, expires: 1.year.from_now }
+    cookies["#{@user.username_slug}_selected_category"] = { value: params[:category] || default_category, expires: 1.year.from_now }
 
     respond_to do |format|
       format.html
@@ -98,7 +98,8 @@ class ProfilesController < ApplicationController
 
   # プロフィール表示の許可を確認
   def authorize_view!
-    return if category_accessible?(@category)
+    category = params[:category] || cookies["#{@user.username_slug}_selected_category"] || default_category
+    return if category_accessible?(category)
 
     redirect_to profile_show_path(username_slug: @user.username_slug, category: 'my_posts_open'), alert: 'この投稿は非公開です。'
   end

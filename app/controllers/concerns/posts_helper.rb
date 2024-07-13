@@ -1,4 +1,3 @@
-# app/controllers/concerns/posts_helper.rb
 module PostsHelper
   extend ActiveSupport::Concern
 
@@ -6,7 +5,7 @@ module PostsHelper
 
   # カテゴリーを取得するメソッド
   def fetch_category
-    params[:category] || 'recommended'
+    params[:category] || cookies["selected_post_category"] || 'recommended'
   end
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
