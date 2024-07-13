@@ -155,15 +155,18 @@ export default class extends Controller {
   redirectToCategoryFromLocalStorage() {
     const currentPath = window.location.pathname + window.location.search;
     const currentCategory = this.getCurrentCategory();
+    const defaultCategory = this.isCurrentUser()
+      ? "all_my_posts"
+      : "my_posts_open";
 
     if (
       !currentPath.includes(`category=${currentCategory}`) &&
-      currentCategory !==
-        (this.isCurrentUser() ? "all_my_posts" : "my_posts_open")
+      currentPath === "/waves"
     ) {
-      const usernameSlug = this.getUsernameSlug(); // 新しいメソッドでusername_slugを取得
-      const newUrl = `/${usernameSlug}?category=${currentCategory}`;
-      Turbo.visit(newUrl, { frame: "_top" });
+      if (currentCategory !== defaultCategory) {
+        const newUrl = `/waves?category=${currentCategory}`;
+        Turbo.visit(newUrl, { frame: "_top" });
+      }
     }
   }
 

@@ -7,25 +7,10 @@ export default class extends Controller {
   connect() {
     // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
     window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // ローカルストレージからカテゴリを取得してリダイレクト、リダイレクトが行われなかった場合に初期化処理を実行
-    if (!this.redirectToLocalStorageCategory()) {
-      this.initializePage();
-    }
-  }
-
-  // ローカルストレージからカテゴリを取得し、必要に応じてリダイレクト
-  redirectToLocalStorageCategory() {
-    const selectedCategory = localStorage.getItem("selectedCategory");
-    if (
-      selectedCategory &&
-      !new URLSearchParams(window.location.search).has("category")
-    ) {
-      const newUrl = `${window.location.pathname}?category=${selectedCategory}`;
-      console.log(`リダイレクト先: ${newUrl}`);
-      Turbo.visit(newUrl, { frame: "_top" });
-      return true; // リダイレクトが行われた
-    }
-    return false; // リダイレクトが行われなかった
+    // ページの初期化処理を実行
+    this.initializePage();
+    // 初期ロード時にリダイレクト
+    this.redirectToStoredCategoryOrDefault();
   }
 
   // ページの初期化
@@ -162,5 +147,23 @@ export default class extends Controller {
     const category = this.getCurrentCategory();
     this.updateActiveTab(category);
     this.restoreTabScrollPosition(category); // タブのスクロール位置を復元
+  }
+
+  // ローカルストレージからカテゴリーを取得してリダイレクト
+  redirectToStoredCategoryOrDefault() {
+    const currentPath = window.location.pathname + window.location.search;
+    const selectedCategory = this.getCurrentCategory();
+    const defaultCategory = "recommended";
+
+    if (
+      window.location.pathname === "/waves" &&
+      !currentPath.includes(`category=`)
+    ) {
+      if (selectedCategory && selectedCategory !== defaultCategory) {
+        Turbo.visit(`/waves?category=${selectedCategory}`, { frame: "_top" });
+      } else {
+        Turbo.visit(`/waves?category=${defaultCategory}`, { frame: "_top" });
+      }
+    }
   }
 }
