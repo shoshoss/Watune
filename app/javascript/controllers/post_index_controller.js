@@ -1,25 +1,14 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["tab"];
-
   connect() {
     this.initializePage();
-    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
-    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
-    // Turboのbefore-renderイベントを監視して、タブのアクティブ状態を更新
-    document.addEventListener(
-      "turbo:before-render",
-      this.updateActiveTabFromUrl.bind(this)
-    );
   }
 
   // ページの初期化
   initializePage() {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
-    this.restoreTabState();
-    this.updateActiveTab(this.getCurrentCategory());
   }
 
   // ナビバーの透明度を制御
@@ -69,82 +58,6 @@ export default class extends Controller {
         );
       }
     });
-  }
-
-  // タブの状態を保存
-  saveTabState(event) {
-    event.preventDefault(); // デフォルトのリンク動作を無効化
-    const category = event.currentTarget.href.split("category=")[1];
-    if (!category) {
-      // カテゴリーが取得できない場合はクッキーのURLで更新
-      const savedCategory = this.getCookieValue("selectedPostCategory");
-      const newCategory = savedCategory || "recommended";
-      const newUrl = `${window.location.pathname}?category=${newCategory}`;
-      Turbo.visit(newUrl, { frame: "_top", turbo_action: "advance" });
-      return;
-    }
-
-    const container = document.getElementById("post-category-tabs-container");
-    if (container) {
-      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
-      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      // クッキーにスクロール位置を保存
-      document.cookie = `postTabScrollPosition_${category}=${scrollPosition}; path=/; max-age=31536000`;
-      console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
-    }
-
-    // Turbo Driveのロードをトリガー
-    Turbo.visit(event.currentTarget.href, {
-      frame: "open-posts",
-      turbo_action: "advance",
-    });
-
-    // アクティブなタブを更新
-    this.updateActiveTab(category);
-  }
-
-  // タブの状態を復元
-  restoreTabState() {
-    const container = document.getElementById("post-category-tabs-container");
-    const selectedCategory = this.getCurrentCategory();
-    const scrollPosition = this.getCookieValue(
-      `postTabScrollPosition_${selectedCategory}`
-    );
-    if (container && scrollPosition !== null) {
-      const parsedScrollPosition = parseFloat(scrollPosition);
-      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
-      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
-      requestAnimationFrame(() => {
-        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" }); // スムーススクロールではなく、即座にスクロールする
-      });
-    }
-    this.updateActiveTab(selectedCategory);
-  }
-
-  // 現在のカテゴリーを取得
-  getCurrentCategory() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryFromUrl = urlParams.get("category");
-    const categoryFromCookies = this.getCookieValue("selectedPostCategory");
-
-    return categoryFromUrl || categoryFromCookies || "recommended";
-  }
-
-  // アクティブなタブを更新
-  updateActiveTab(selectedCategory) {
-    this.tabTargets.forEach((tab) => {
-      if (tab.href.includes(selectedCategory)) {
-        tab.classList.add("active");
-      } else {
-        tab.classList.remove("active");
-      }
-    });
-  }
-
-  // URLが変更されたときにアクティブなタブを更新
-  updateActiveTabFromUrl() {
-    const category = this.getCurrentCategory();
-    this.updateActiveTab(category);
   }
 
   // クッキーの値を取得するヘルパーメソッド

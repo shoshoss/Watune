@@ -8,28 +8,28 @@
     </div>
     <!-- タブのリンク -->
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
-      <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'recommended' }, id: "tab-recommended", class: "c-post-tab hover:bg-sky-100 text-center py-2  #{('active' if params[:category].nil?) } " do %>
+      <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-recommended", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'recommended' || params[:category].nil?}" do %>
         <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       <% end %>
-      <%= link_to posts_path(category: 'praise_gratitude'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'praise_gratitude' }, id: "tab-praise_gratitude", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'praise_gratitude'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-praise_gratitude", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'praise_gratitude'}" do %>
         <i class="fa fa-sun text-orange-400 mr-1 sm:mr-2"></i><span>褒めや感謝</span>
       <% end %>
-      <%= link_to posts_path(category: 'music'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'music' }, id: "tab-music", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'music'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-music", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'music'}" do %>
         <i class="fa fa-music text-blue-500 mr-1 sm:mr-2"></i><span>音楽</span>
       <% end %>
-      <%= link_to posts_path(category: 'child'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'child' }, id: "tab-child", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'child'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-child", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'child'}" do %>
         <i class="fa fa-smile-o text-pink-400 mr-1 sm:mr-2"></i><span>子供の声</span>
       <% end %>
-      <%= link_to posts_path(category: 'skill'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'skill' }, id: "tab-skill", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'skill'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-skill", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'skill'}" do %>
         <i class="fa-solid fa-lightbulb text-yellow-400-accent mr-1 sm:mr-2"></i><span>特技や技術</span>
       <% end %>
-      <%= link_to posts_path(category: 'favorite'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'favorite' }, id: "tab-favorite", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'favorite'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-favorite", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'favorite'}" do %>
         <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなことや自己紹介</span>
       <% end %>
-      <%= link_to posts_path(category: 'monologue'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'monologue' }, id: "tab-monologue", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'monologue'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-monologue", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'monologue'}" do %>
         <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>
       <% end %>
-      <%= link_to posts_path(category: 'other'), data: { turbo_frame: "open-posts", turbo_action: :advance, category: 'other' }, id: "tab-other", class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
+      <%= link_to posts_path(category: 'other'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-other", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'other'}" do %>
         <i class="fa fa-ellipsis-h text-gray-500 mr-1 sm:mr-2"></i><span>その他</span>
       <% end %>
       <!-- タブの後ろに追加の空白を挿入 -->
@@ -45,18 +45,32 @@
     function updateActiveTab() {
       const currentCategory = new URL(window.location.href).searchParams.get('category') || 'recommended';
       const tabs = document.querySelectorAll('.c-post-tab');
-    
+
       tabs.forEach(tab => {
-        if (tab.getAttribute('data-category') === currentCategory) {
+        if (tab.href.includes(`category=${currentCategory}`)) {
           tab.classList.add('active');
         } else {
           tab.classList.remove('active');
         }
       });
+
+      // スクロールを一番上に戻す
+      window.scrollTo(0, 0);
+
+      // アクティブなタブが見えるようにスクロール
+      const activeTab = document.querySelector('.c-post-tab.active');
+      if (activeTab) {
+        const container = document.getElementById('post-category-tabs-container');
+        container.scrollLeft = activeTab.offsetLeft - container.offsetWidth / 2 + activeTab.offsetWidth / 2;
+      }
     }
 
     updateActiveTab();
 
     document.addEventListener('turbo:render', updateActiveTab);
+
+    window.addEventListener('popstate', function() {
+      updateActiveTab();
+    });
   });
 </script>
