@@ -12,7 +12,7 @@
             <br>つながりと元氣をともに！
           </p>
         </div>
-        <%= link_to "ウェーブ（投稿）を見てみる", posts_path, data: { turbo_frame: "_top", turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+        <%= link_to "ウェーブ（投稿）を見てみる", posts_path, method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
       </div>
     </div>
   </div>
@@ -85,7 +85,7 @@
       <div class="px-3 mx-auto max-w-2xl">
         <p class="text-md">
           アプリへの想いや由来などは、<br class="sm:hidden">
-          <%= link_to about_path, data: { turbo_frame: "_top" }, class: "font-bold text-blue-500 rounded-full hover:bg-sky-100 text-center p-2" do %>
+          <%= link_to about_path , method: :get, data: { turbo_frame: "_top" }, class: "font-bold text-blue-500 rounded-full hover:bg-sky-100 text-center p-2" do %>
             こちらのアプリへの想い
           <% end %>
           <br class="sm:hidden">でご紹介しています。

@@ -15,7 +15,7 @@
 
   <!-- アバター画像 -->
   <div class="flex justify-center flex-grow items-center ">
-    <%= link_to profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top" } do %>
+    <%= link_to profile_show_path(username_slug: user.username_slug), method: :get, data: { turbo_frame: "_top" } do %>
       <% if user.avatar.attached? %>
         <%= image_tag user.avatar, class: "rounded-full object-cover h-[77px] w-[77px] sm:min-h-[150px] sm:min-w-[150px]" %>
       <% else %>
@@ -65,8 +65,8 @@
 </div>
 <!-- ユーザー名-->
 <div class="mb-2 flex flex-col justify-center items-center">
-  <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top", turbo_action: :advance }, class: "text-xl font-semibold" %>
-  <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), data: { turbo_frame: "_top", turbo_action: :advance }, class: "text-[15px] text-gray-500" %>
+  <%= link_to user.display_name, profile_show_path(username_slug: user.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "text-xl font-semibold" %>
+  <%= link_to "@#{user.username_slug}", profile_show_path(username_slug: user.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "text-[15px] text-gray-500" %>
 </div>
 <!-- 自己紹介 -->
 <div class="flex flex-col items-center mx-auto px-2 sm:px-5">
@@ -92,7 +92,7 @@
 <!-- フォロー中とフォロワーのリンク -->
 <% if current_user == user %>
   <div class="mt-4 flex justify-center space-x-4">
-    <%= link_to "フォロー中 #{user.followings.count}", user_following_path(username_slug: user.username_slug, category: 'following'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top", turbo_action: :advance } %>
-    <%= link_to "フォロワー #{user.followers.count}", user_followers_path(username_slug: user.username_slug, category: 'followers'), class: "text-lg text-blue-500 hover:underline", data: { turbo_frame: "_top", turbo_action: :advance } %>
+    <%= link_to "フォロー中 #{user.followings.count}", user_following_path(username_slug: user.username_slug, category: 'following'), class: "text-lg text-blue-500 hover:underline", method: :get, data: { turbo_frame: "_top", turbo_action: :advance } %>
+    <%= link_to "フォロワー #{user.followers.count}", user_followers_path(username_slug: user.username_slug, category: 'followers'), class: "text-lg text-blue-500 hover:underline", method: :get, data: { turbo_frame: "_top", turbo_action: :advance } %>
   </div>
 <% end %>
