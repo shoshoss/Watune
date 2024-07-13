@@ -5,7 +5,7 @@
       <%= render partial: 'users/user', collection: users, as: :user, locals: { location: :widget } %>
     </div>
     <div id="widget-load-more" class="text-center">
-      <%= link_to 'さらに表示', users_path, class: "text-[#1D9BF0] text-[15px] py-4 px-2 block hover:bg-gray-200 hover:underline focus:outline-none focus:ring-2 focus:ring-[#1D9BF0]" %>
+      <%= link_to 'さらに表示', users_path, method: :get, class: "text-[#1D9BF0] text-[15px] py-4 px-2 block hover:bg-gray-200 hover:underline focus:outline-none focus:ring-2 focus:ring-[#1D9BF0]" %>
     </div>
   </div>
 
@@ -15,11 +15,13 @@
       <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
                   id: "pc-reply-button",
                   class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:opacity-100",
+                  method: :get,
                   data: { turbo_frame: "reply_modal" } do %>
         <i class="fa-regular fa-comment text-6xl"></i>
       <% end %>
     <% else %>
       <%= link_to new_post_path(privacy: 'open'),
+                  method: :get,
                   data: { turbo_frame: "_top", turbo_action: :advance},
                   id: "pc-post-button",
                   class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100" do %>

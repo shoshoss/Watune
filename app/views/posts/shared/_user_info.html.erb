@@ -1,6 +1,7 @@
 <div class="max-w-[293px] sm:max-w-[592px] flex justify-between items-center mb-2">
   <div class="overflow-x-auto whitespace-nowrap pb-2 max-w-[80%]">
     <%= link_to profile_show_path(username_slug: post.user.username_slug),
+                method: :get,
                 data: { turbo_frame: "_top", turbo_action: :advance },
                 class: "flex items-center text-lg font-semibold text-black hover:underline" do %>
       <%= post.user.display_name %>
