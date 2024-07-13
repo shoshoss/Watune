@@ -94,7 +94,7 @@
     </section>
 
     <div class="text-center mt-8">
-      <%= link_to "ウェーブ（投稿）を見てみる", posts_path, class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
+      <%= link_to "ウェーブ（投稿）を見てみる", posts_path, method: :get, class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
       <% unless current_user %>
         <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>
           お試しで始める<br>ログイン中で<br class="sm:hidden">データの引き継ぎ可能

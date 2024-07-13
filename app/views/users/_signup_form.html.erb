@@ -42,10 +42,12 @@
     </div>
     <p class="text-base mt-4">
       WaveConGraのご利用で、
-      <%= link_to '利用規約', tou_modal_path, class: "text-blue-500 hover:text-blue-600",
+      <%= link_to '利用規約', tou_modal_path,  class: "text-blue-500 hover:text-blue-600",
+                  method: :get,
                   data: { turbo_frame: "tou_modal" } %>
         と
       <%= link_to 'プライバシーポリシー', privacy_modal_path, class: "text-blue-500 hover:text-blue-600",
+                  method: :get,
                   data: { turbo_frame: "privacy_modal" } %>
       が適用されます。<br>
     </p>
@@ -56,6 +58,7 @@
   <%= link_to 'ログインページへ',
               new_login_modal_path,
               class: "text-blue-500 hover:text-blue-600 text-lg",
+              method: :get,
               data: { turbo_frame: "login_modal",
               action: "click->signup-modal#closeModal" } %>
 </div>

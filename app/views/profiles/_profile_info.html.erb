@@ -32,6 +32,7 @@
           <% if current_user == user %>
             <%= link_to "自分へ",
                 new_post_path(privacy: 'only_me'),
+                method: :get,
                 data: { turbo_frame: "_top", turbo_action: :advance },
                 class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300" %>
           <% else %>
@@ -39,6 +40,7 @@
               <% if current_user && current_user.following?(user) %>
                 <%= link_to "あなたへ",
                     new_post_path(privacy: 'selected_users', selected_user_ids: [user.id]),
+                    method: :get,
                     data: { turbo_frame: "_top", turbo_action: :advance },
                     class: "mb-2 text-white font-bold text-lg sm:text-xl btn btn-info rounded-full transition-colors duration-300" %>
               <% end %>
@@ -51,6 +53,7 @@
           <div class="mr-2 sm:mr-5">
             <% if current_user == user %>
               <%= link_to "編集へ", edit_profile_path, class: 'text-lg sm:text-xl btn btn-outline btn-secondary rounded-full',
+                  method: :get,
                   data: { turbo_frame: "profile_edit_modal" } %>
             <% else %>
               <div id="user-<%= user.id %>-follow">

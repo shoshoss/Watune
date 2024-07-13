@@ -51,6 +51,7 @@
   <%= link_to t('user_sessions.new_modal.to_signup_page'),
               new_signup_modal_path,
               class: 'text-lg text-gray-600 hover:underline',
+              method: :get,
               data: { turbo_frame: "signup_modal",
               action: "click->login-modal#closeModal" } %>
 </div>
