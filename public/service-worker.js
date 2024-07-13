@@ -41,12 +41,12 @@ const dynamicUrlsToCache = [
 // キャッシュしないURLリスト
 const noCacheUrls = ["/oauth/google", "/oauth/callback", "/waves/new"];
 
-// インストールイベント: 静的リソースをキャッシュ
+// インストールイベント: 静的および動的リソースをキャッシュ
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE_NAME).then((cache) => {
-      console.log("静的リソースをキャッシュします");
-      return cache.addAll(staticAssetsToCache);
+      console.log("静的および動的リソースをキャッシュします");
+      return cache.addAll([...staticAssetsToCache, ...dynamicUrlsToCache]);
     })
   );
 });
@@ -71,7 +71,7 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// フェッチイベント: 静的リソースはキャッシュから提供し、動的リソースはStale-While-Revalidate戦略を適用
+// フェッチイベント: 静的および動的リソースはキャッシュから提供し、バックグラウンドでフェッチして更新
 self.addEventListener("fetch", (event) => {
   // chrome-extension スキームや POST リクエストを除外
   if (
@@ -96,35 +96,54 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (staticAssetsToCache.includes(new URL(event.request.url).pathname)) {
-    // 静的リソースのキャッシュ戦略
+  // Stale-While-Revalidate 戦略を使用して動的リソースをキャッシュ
+  if (dynamicUrlsToCache.includes(new URL(event.request.url).pathname)) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
-        return cachedResponse || fetch(event.request);
-      })
-    );
-  } else if (dynamicUrlsToCache.includes(new URL(event.request.url).pathname)) {
-    // 動的リソースのキャッシュ戦略（Stale-While-Revalidate）
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        const fetchPromise = fetch(event.request).then((networkResponse) => {
+        // キャッシュにリクエストに対応するレスポンスがある場合
+        if (cachedResponse) {
+          // キャッシュからレスポンスを返す
+          fetch(event.request).then((networkResponse) => {
+            // ネットワークからのレスポンスが正常な場合
+            if (
+              networkResponse &&
+              networkResponse.status === 200 &&
+              networkResponse.type === "basic"
+            ) {
+              caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+                // ネットワークからのレスポンスをキャッシュに保存
+                cache.put(event.request, networkResponse.clone());
+              });
+            }
+          });
+          return cachedResponse;
+        }
+
+        // キャッシュにリクエストに対応するレスポンスがない場合
+        return fetch(event.request).then((networkResponse) => {
+          // ネットワークからのレスポンスが正常な場合
           if (
             networkResponse &&
             networkResponse.status === 200 &&
             networkResponse.type === "basic"
           ) {
             caches.open(DYNAMIC_CACHE_NAME).then((cache) => {
+              // ネットワークからのレスポンスをキャッシュに保存
               cache.put(event.request, networkResponse.clone());
             });
           }
+          // ネットワークからのレスポンスを返す
           return networkResponse;
         });
-        return cachedResponse || fetchPromise;
       })
     );
   } else {
-    // 他のリクエストはネットワークから取得
-    event.respondWith(fetch(event.request));
+    // 静的リソースのキャッシュ戦略: キャッシュから提供し、キャッシュがなければネットワークから取得
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        return cachedResponse || fetch(event.request);
+      })
+    );
   }
 });
 
