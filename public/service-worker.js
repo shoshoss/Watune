@@ -1,4 +1,4 @@
-const STATIC_CACHE_NAME = "Watune-static-cache-v1"; // 静的リソースのキャッシュ名
+const STATIC_CACHE_NAME = "Watune-static-cache-v2"; // 静的リソースのキャッシュ名（バージョンを更新）
 const DYNAMIC_CACHE_NAME = "Watune-dynamic-cache-v1"; // 動的リソースのキャッシュ名
 const SESSION_CACHE_NAME = "Watune-session-cache-v1"; // セッション関連のキャッシュ名
 
@@ -39,7 +39,7 @@ const dynamicUrlsToCache = [
 ];
 
 // キャッシュしないURLリスト
-const noCacheUrls = ["/oauth/google", "/oauth/callback"];
+const noCacheUrls = ["/oauth/google", "/oauth/callback", "/waves/new"];
 
 // インストールイベント: 静的リソースをキャッシュ
 self.addEventListener("install", (event) => {

@@ -13,13 +13,13 @@
     </div>
     <%= turbo_frame_tag "notify" do %>
       <div class="c-tabs flex mb-2">
-        <%= link_to notifications_path(category: 'all'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+        <%= link_to notifications_path(category: 'all'), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('all', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
           すべて
         <% end %>
-        <%= link_to notifications_path(category: 'friends'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+        <%= link_to notifications_path(category: 'friends'), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('friends', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
           仲間から
         <% end %>
-        <%= link_to notifications_path(category: 'others'), data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('others', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
+        <%= link_to notifications_path(category: 'others'), method: :get, data: { turbo_frame: "_top", turbo_action: :advance }, class: "c-tab #{active_tab_class('others', initial_category: 'all')} hover:bg-sky-100 text-center py-2" do %>
           その他
         <% end %>
       </div>

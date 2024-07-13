@@ -11,7 +11,7 @@
       <% end %>
     <% end %>
   <% else %>
-    <%= link_to new_signup_modal_path, data: { turbo_frame: "signup_modal" }, class: "text-gray-500 hover:text-green-500" do %>
+    <%= link_to new_signup_modal_path, method: :get, data: { turbo_frame: "signup_modal" }, class: "text-gray-500 hover:text-green-500" do %>
       <i class="fa-solid fa-retweet text-xl"></i>
     <% end %>
   <% end %>

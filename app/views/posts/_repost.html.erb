@@ -6,7 +6,7 @@
     <div class="flex items-center space-x-2 overflow-x-auto whitespace-nowrap pb-2 pl-[8px]">
       <i class="fa-solid fa-retweet text-base text-green-500"></i>
       <% post.reposts.order(created_at: :desc).each_with_index do |repost, index| %>
-        <%= link_to profile_show_path(username_slug: repost.user.username_slug), class: "text-[13px] font-semibold text-green-500 hover:underline ml-[2px]", data: { turbo_frame: "_top" } do %>
+        <%= link_to profile_show_path(username_slug: repost.user.username_slug), class: "text-[13px] font-semibold text-green-500 hover:underline ml-[2px]", method: :get, data: { turbo_frame: "_top" } do %>
           <% repost_user_is_current_user = repost.user == current_user %>
           <%= repost_user_is_current_user ? "あなた" : "#{repost.user.display_name}さん" %>
         <% end %>

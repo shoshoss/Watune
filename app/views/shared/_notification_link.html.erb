@@ -1,5 +1,5 @@
 <li class="<%= defined?(menu_class) ? menu_class : '' %>">
-  <%= link_to notifications_path, data: { turbo_frame: "_top" }, id: link_id, method: :post, class: link_class do %>
+  <%= link_to notifications_path, method: :post, data: { turbo_frame: "_top" }, id: link_id,, class: link_class do %>
     <div class="justify-self-center relative <%= defined?(div_class) ? div_class : '' %>">
       <i class="fas fa-bell <%= defined?(i_class) ? i_class : '' %>"></i>
       <span class="absolute <%= defined?(notification_position_class) ? notification_position_class : 'top-0 right-[20px]' %> inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" style="<%= @unread_count > 0 ? 'display: block;' : 'display: none;' %>">

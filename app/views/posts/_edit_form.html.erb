@@ -1,4 +1,4 @@
-<%= form_with model: @post, data: { controller: "post-edit-modal", action: "turbo:submit-end->post-edit-modal#afterClose" } do |f| %>
+<%= form_with model: @post, method: :patch, data: { controller: "post-edit-modal", action: "turbo:submit-end->post-edit-modal#afterClose" } do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="card-body mx-auto">
     <div class="form-control pt-2">

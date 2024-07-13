@@ -2,10 +2,10 @@
   <% if notification.action == 'like' %>
     <div class="flex items-center p-2">
       <i class="fas fa-heart text-[#F91980] min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance } do %>
         <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", method: :get, data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-[15px]">さんがあなたの投稿にいいねしました。</span>
@@ -14,10 +14,10 @@
   <% elsif notification.action == 'reply' %>
     <div class="flex items-center p-2">
       <i class="fas fa-reply text-blue-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance } do %>
         <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", method: :get, data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-[15px]">さんがあなたへ返信しました。</span>
@@ -26,10 +26,10 @@
   <% elsif notification.action == 'repost' %>
     <div class="flex items-center p-2">
       <i class="fa-solid fa-retweet text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance } do %>
         <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", method: :get, data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-[15px]">さんがあなたの投稿をリウェーブしました。</span>
@@ -38,10 +38,10 @@
   <% elsif notification.action == 'follow' %>
     <div class="flex items-center p-2">
       <i class="fas fa-user-plus text-green-500 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top, turbo_action: :advance" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), method: :get, data: { turbo_frame: "_top, turbo_action: :advance" } do %>
         <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", method: :get, data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-[15px]">さんがあなたをフォローしました。</span>
@@ -49,10 +49,10 @@
   <% elsif notification.action == 'direct' %>
     <div class="flex items-center p-2">
       <i class="fa-regular fa-envelope text-orange-400 min-w-[30px] min-h-[30px] max-w-[30px] max-h-[30px]"></i>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), data: { turbo_frame: "_top", turbo_action: :advance } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), method: :get, data: { turbo_frame: "_top", turbo_action: :advance } do %>
         <%= image_tag(notification.sender.avatar.presence || '/logo-watune-en.png', alt: "プロフィール画像", class: "mx-2 rounded-full min-w-[32px] min-h-[32px] max-w-[32px] max-h-[32px]") %>
       <% end %>
-      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", data: { turbo_frame: "_top" } do %>
+      <%= link_to profile_show_path(username_slug: notification.sender.username_slug), class: "text-[15px] font-semibold", method: :get, data: { turbo_frame: "_top" } do %>
         <%= notification.sender.display_name %>
       <% end %>
       <span class="text-[15px]">さんがあなたへ投稿しました。</span>
