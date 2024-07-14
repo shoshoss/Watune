@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import Cookies from "js-cookie";
 
 export default class extends Controller {
   static targets = ["categoryContent"];
@@ -82,6 +83,9 @@ export default class extends Controller {
 
     // アクティブタブを更新
     this.updateActiveTab();
+
+    // クッキーに選択されたタブを保存
+    Cookies.set("selected_post_category", category, { expires: 365 });
 
     // すべてのカテゴリーを非表示にする
     document

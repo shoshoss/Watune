@@ -11,7 +11,6 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     @current_category = fetch_category || 'recommended'
-    cookies[:selected_post_category] = { value: @current_category, expires: 1.year.from_now } if @current_category
 
     @posts_by_category = {}
     @pagys = {}
@@ -19,7 +18,7 @@ class PostsController < ApplicationController
     (Post.fixed_categories.keys + ['recommended']).each do |category|
       @pagys[category], @posts_by_category[category] = pagy_countless(
         fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
-        items: 3, # 初回ロードの件数を3に制限
+        items: 1, # 初回ロードの件数を3に制限
         overflow: :empty_page
       )
     end
