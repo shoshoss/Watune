@@ -18,6 +18,5 @@ class NotificationsController < ApplicationController
     # 未読通知を既読にする
     # 3秒後に未読通知を既読にするジョブを実行
     MarkNotificationsAsReadJob.set(wait: 3.seconds).perform_later(current_user.id)
-    
   end
 end
