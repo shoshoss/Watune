@@ -1,17 +1,16 @@
-<nav id="bottom-navbar" class="sm:hidden fixed bottom-0 left-0 z-10 w-full bg-white border-t transition-opacity duration-300 border-t-1 border-gray-200">
+<nav id="bottom-navbar" class="sm:hidden fixed bottom-0 left-0 z-10 w-full bg-white border-t transition-opacity duration-300 border-t-1 border-gray-200" data-controller="bottom-history">
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
       <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
-      
-                  data: { turbo_frame: "_top" },
+                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-home-link",
                   class: "block py-2 #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
       <% end %>
     </li>
     <li class="flex-1 text-center">
-      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] ),
-                  data: { turbo_frame: "_top" },
+      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
+                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-profile-link",
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
@@ -30,7 +29,7 @@
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'),
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: {  action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-messages-link",
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'))}" do %>
         <i class="fa-regular fa-envelope text-2xl"></i>
@@ -39,7 +38,7 @@
     <li class="flex-1 text-center">
       <%= link_to edit_notification_settings_path,
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-settings-link",
                   class: "block py-2 #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl"></i>

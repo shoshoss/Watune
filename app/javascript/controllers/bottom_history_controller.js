@@ -1,4 +1,4 @@
-// app/javascript/controllers/header_history_controller.js
+// app/javascript/controllers/bottom_history_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -20,8 +20,8 @@ export default class extends Controller {
     // アクティブなリンクを更新
     this.updateActiveLink(url.pathname);
 
-    // クリックされたリンクのIDが "header-notifications-link" ならば5秒後に未読カウントを非表示にする
-    if (event.currentTarget.id === "header-notifications-link") {
+    // クリックされたリンクのIDが "bottom-navbar-notifications-link" ならば5秒後に未読カウントを非表示にする
+    if (event.currentTarget.id === "bottom-navbar-notifications-link") {
       this.hideUnreadCountAfterDelay();
     }
   }
@@ -38,15 +38,11 @@ export default class extends Controller {
 
   updateActiveLink(url) {
     const links = [
-      "header-logo-link",
-      "header-about-link",
-      "header-home-link",
-      "header-profile-link",
-      "header-users-link",
-      "header-notifications-link",
-      "header-settings-link",
-      "header-logout-link",
-      "header-delete-account-link",
+      "bottom-navbar-home-link",
+      "bottom-navbar-profile-link",
+      "bottom-navbar-notifications-link",
+      "bottom-navbar-messages-link",
+      "bottom-navbar-settings-link",
     ];
 
     links.forEach((id) => {
@@ -76,7 +72,7 @@ export default class extends Controller {
   hideUnreadCountAfterDelay() {
     setTimeout(() => {
       const unreadCountElement = document.querySelector(
-        "#header-notifications-link .absolute"
+        "#bottom-navbar-notifications-link .absolute"
       );
       if (unreadCountElement) {
         unreadCountElement.style.display = "none";
