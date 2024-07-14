@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import Cookies from "js-cookie";
+import Cookies from "js-cookie"; // js-cookieをインポート
 
 export default class extends Controller {
   static targets = ["categoryContent"];
@@ -84,9 +84,6 @@ export default class extends Controller {
     // アクティブタブを更新
     this.updateActiveTab();
 
-    // クッキーに選択されたタブを保存
-    Cookies.set("selected_post_category", category, { expires: 365 });
-
     // すべてのカテゴリーを非表示にする
     document
       .querySelectorAll(".category-posts")
@@ -104,6 +101,9 @@ export default class extends Controller {
       top: scrollPosition,
       behavior: "smooth",
     });
+
+    // クッキーに選択されたタブを保存
+    Cookies.set("selected_post_category", category, { expires: 365 });
   }
 
   // アクティブなタブを更新
