@@ -1,4 +1,4 @@
-// app/javascript/controllers/sidebar_history_controller.js
+// app/javascript/controllers/header_history_controller.js
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
@@ -33,12 +33,15 @@ export default class extends Controller {
 
   updateActiveLink(url) {
     const links = [
-      "sidebar-profile-avatar-link",
-      "sidebar-posts-link",
-      "sidebar-profile-link",
-      "sidebar-notifications-link",
-      "sidebar-settings-link",
-      "sidebar-new-post-link",
+      "header-logo-link",
+      "header-about-link",
+      "header-home-link",
+      "header-profile-link",
+      "header-users-link",
+      "header-notifications-link",
+      "header-settings-link",
+      "header-logout-link",
+      "header-delete-account-link",
     ];
 
     links.forEach((id) => {

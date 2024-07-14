@@ -1,10 +1,10 @@
-<div id="after-header">
+<div id="after-header" data-controller="header-history">
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
       <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                   id: "header-logo-link",
                   method: :get,
-                  data: { turbo: "false" },
+                  data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                   class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="/logo-watune.png" media="(min-width: 768px)">
@@ -24,7 +24,7 @@
       <%= link_to t('header.post_audio'),
                   new_post_path(privacy: 'open'),
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                   class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
@@ -35,14 +35,14 @@
             <%= link_to t('header.about'),
                         top_path,
                         method: :get,
-                        data: { turbo_frame: "_top" },
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                         id: "header-about-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
             <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                         method: :get,
-                        data: { turbo_frame: "_top" },
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                         id: "header-home-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(posts_path)}" do %>
               <i class="fa-solid fa-house text-[15px] sm:text-lg"></i>
@@ -52,7 +52,7 @@
           <li class="block py-2">
             <%= link_to profile_show_path(current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
                         method: :get,
-                        data: { turbo_frame: "_top" },
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                         id: "header-profile-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-[15px] sm:text-lg"></i>
@@ -62,26 +62,32 @@
           <li class="block py-2 text-[15px] sm:text-lg">
             <%= link_to users_path,
                         method: :get,
-                        data: { turbo_frame: "_top" },
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                         id: "header-users-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-[15px] sm:text-lg"></i>
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong></span>
             <% end %>
           </li>
-          <%= render partial: 'shared/notification_link', locals: { 
-            menu_class: "block py-2 text-[15px] sm:text-lg relative", 
-            link_id: "header-notifications-link", 
-            link_class: "flex items-center block py-2 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
-            corresponding_link_id: "sidebar-notifications-link", 
-            i_class: "text-[15px] sm:text-lg",
-            notification_position_class: "-top-[7px] -right-[3px]",
-            show_text: true
-          } %>
+          <li class="block py-2 text-[15px] sm:text-lg">
+            <%= link_to notifications_path,
+                        method: :post,
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
+                        id: "header-notifications-link",
+                        class: "flex items-center block py-2 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
+              <div class="justify-self-center relative">
+                <i class="fas fa-bell text-[15px] sm:text-lg"></i>
+                <span class="absolute -top-[7px] -right-[3px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" style="<%= @unread_count > 0 ? 'display: block;' : 'display: none;' %>">
+                  <%= @unread_count %>
+                </span>
+              </div>
+              <span>通知</span>
+            <% end %>
+          </li>
           <li class="block py-2">
             <%= link_to edit_notification_settings_path,
-                        data: { turbo_frame: "_top" },
                         method: :get,
+                        data: { turbo_frame: "main-content", action: "click->header-history#navigate" },
                         id: "header-settings-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-[15px] sm:text-lg"></i>
