@@ -3,6 +3,14 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   connect() {
     this.initializePage();
+    this.updateActiveTab();
+    window.addEventListener("popstate", this.updateActiveTab.bind(this));
+
+    // Turbo Frame Loadedイベントリスナーを追加
+    document.addEventListener(
+      "turbo:frame-load",
+      this.updateActiveTab.bind(this)
+    );
   }
 
   // ページの初期化
@@ -60,11 +68,44 @@ export default class extends Controller {
     });
   }
 
-  // クッキーの値を取得するヘルパーメソッド
-  getCookieValue(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
+  // アクティブなタブを更新
+  updateActiveTab() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    const tabIds = [
+      "recommended",
+      "praise_gratitude",
+      "music",
+      "child",
+      "skill",
+      "favorite",
+      "monologue",
+      "other",
+    ];
+
+    tabIds.forEach((category) => {
+      const tab = document.getElementById(`tab-${category}`);
+      if (tab) {
+        if (category === currentCategory) {
+          tab.classList.add("active");
+        } else {
+          tab.classList.remove("active");
+        }
+      }
+    });
+
+    // アクティブなタブが見えるようにスクロール
+    const activeTab = document.querySelector(".c-post-tab.active");
+    if (activeTab) {
+      const container = document.getElementById("post-category-tabs-container");
+      container.scrollTo({
+        left:
+          activeTab.offsetLeft -
+          container.offsetWidth / 2 +
+          activeTab.offsetWidth / 2,
+        behavior: "smooth",
+      });
+    }
   }
 }

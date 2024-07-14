@@ -8,29 +8,13 @@
     </div>
     <!-- タブのリンク -->
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
-      <%= link_to posts_path(category: 'recommended'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-recommended", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'recommended' || params[:category].nil?}" do %>
+      <a href="#" data-category="recommended" class="c-post-tab hover:bg-sky-100 text-center py-2" id="tab-recommended">
         <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
-      <% end %>
-      <%= link_to posts_path(category: 'praise_gratitude'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-praise_gratitude", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'praise_gratitude'}" do %>
-        <i class="fa fa-sun text-orange-400 mr-1 sm:mr-2"></i><span>褒めや感謝</span>
-      <% end %>
-      <%= link_to posts_path(category: 'music'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-music", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'music'}" do %>
-        <i class="fa fa-music text-blue-500 mr-1 sm:mr-2"></i><span>音楽</span>
-      <% end %>
-      <%= link_to posts_path(category: 'child'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-child", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'child'}" do %>
-        <i class="fa fa-smile-o text-pink-400 mr-1 sm:mr-2"></i><span>子供の声</span>
-      <% end %>
-      <%= link_to posts_path(category: 'skill'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-skill", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'skill'}" do %>
-        <i class="fa-solid fa-lightbulb text-yellow-400-accent mr-1 sm:mr-2"></i><span>特技や技術</span>
-      <% end %>
-      <%= link_to posts_path(category: 'favorite'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-favorite", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'favorite'}" do %>
-        <i class="fa fa-heart text-red-500 mr-1 sm:mr-2"></i><span>好きなことや自己紹介</span>
-      <% end %>
-      <%= link_to posts_path(category: 'monologue'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-monologue", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'monologue'}" do %>
-        <i class="fa fa-comment-dots text-teal-500 mr-1 sm:mr-2"></i><span>ひとりごと</span>
-      <% end %>
-      <%= link_to posts_path(category: 'other'), data: { turbo_frame: "open-posts", turbo_action: :advance }, id: "tab-other", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if params[:category] == 'other'}" do %>
-        <i class="fa fa-ellipsis-h text-gray-500 mr-1 sm:mr-2"></i><span>その他</span>
+      </a>
+      <% Post.fixed_categories.keys.each do |category| %>
+        <a href="#" data-category="<%= category %>" class="c-post-tab hover:bg-sky-100 text-center py-2" id="tab-<%= category %>">
+          <i class="fa <%= category_icon(category) %> mr-1 sm:mr-2"></i><span><%= category_name(category) %></span>
+        </a>
       <% end %>
       <!-- タブの後ろに追加の空白を挿入 -->
       <div class="w-[190px] flex-shrink-0 flex justify-center items-center">
@@ -39,55 +23,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  document.addEventListener('turbo:load', function() {
-    function updateActiveTab() {
-      const currentCategory = new URL(window.location.href).searchParams.get('category') || 'recommended';
-      const tabs = document.querySelectorAll('.c-post-tab');
-
-      tabs.forEach(tab => {
-        if (tab.href.includes(`category=${currentCategory}`)) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
-      });
-
-      // スムーズスクロールを使って一番上に戻す
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-
-      // アクティブなタブが見えるようにスクロール
-      const activeTab = document.querySelector('.c-post-tab.active');
-      if (activeTab) {
-        const container = document.getElementById('post-category-tabs-container');
-        container.scrollTo({
-          left: activeTab.offsetLeft - container.offsetWidth / 2 + activeTab.offsetWidth / 2,
-          behavior: 'smooth'
-        });
-      }
-    }
-
-    function logScrollPosition() {
-      console.log('現在のY方向の位置:', window.scrollY || document.documentElement.scrollTop || document.body.scrollTop);
-    }
-
-    updateActiveTab();
-    logScrollPosition();
-
-    document.addEventListener('turbo:render', function() {
-      updateActiveTab();
-      logScrollPosition();
-    });
-
-    window.addEventListener('popstate', function() {
-      updateActiveTab();
-      logScrollPosition();
-    });
-
-    window.addEventListener('scroll', logScrollPosition); // スクロールイベントをリッスンしてリアルタイムで表示
-  });
-</script>

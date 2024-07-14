@@ -1,5 +1,5 @@
 <%= turbo_stream.replace "main-content" do %>
-  <%= render partial: 'posts/index', locals: { posts: @posts, post_category: @post_category, pagy: @pagy, notifications: @notifications } %>
+  <%= render partial: 'posts/index', locals: { posts: @posts, current_category: @current_category, posts_by_category: @posts_category, pagys: @pagys, notifications: @notifications } %>
 <% end %>
 
 <%= turbo_stream.update "after-widget" do %>

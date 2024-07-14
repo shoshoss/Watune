@@ -1,4 +1,4 @@
-module PostsHelper
+module PostsAllHelper
   extend ActiveSupport::Concern
 
   private
@@ -10,27 +10,12 @@ module PostsHelper
 
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_fixed_category(category)
-    categories = {
-      'praise_gratitude' => Post.fixed_categories[:praise_gratitude],
-      'music' => Post.fixed_categories[:music],
-      'child' => Post.fixed_categories[:child],
-      'favorite' => Post.fixed_categories[:favorite],
-      'skill' => Post.fixed_categories[:skill],
-      'monologue' => Post.fixed_categories[:monologue],
-      'other' => Post.fixed_categories[:other]
-    }
-
     base_query = Post.open
 
     if category == 'recommended'
       base_query.reposted.order(latest_activity: :desc)
     else
-      fixed_category = categories[category]
-      if fixed_category
-        base_query.where(fixed_category:).order(latest_activity: :desc)
-      else
-        Post.none
-      end
+      base_query.where(fixed_category: Post.fixed_categories[category]).order(latest_activity: :desc)
     end
   end
 

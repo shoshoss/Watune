@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  include PostsHelper
+  include PostsAllHelper
   include ActionView::RecordIdentifier
 
   skip_before_action :require_login, only: %i[index show]
@@ -10,12 +10,16 @@ class PostsController < ApplicationController
 
   # 投稿一覧を表示するアクション
   def index
-    category = fetch_category
-    cookies[:selected_post_category] = { value: category, expires: 1.year.from_now } if category
-    @pagy, @posts = pagy_countless(
-      fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes,
-                                                        { reposts: :user }]),
-      items: 5
+    @current_category = fetch_category || 'recommended'
+    cookies[:selected_post_category] = { value: @current_category, expires: 1.year.from_now } if @current_category
+
+    @pagys = {}
+    @posts_by_category = {}
+
+    @pagys[@current_category], @posts_by_category[@current_category] = pagy_countless(
+      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
+      items: 5,
+      overflow: :empty_page
     )
   end
 

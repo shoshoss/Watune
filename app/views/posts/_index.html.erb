@@ -22,11 +22,19 @@
 
       <!-- タブメニュー -->
       <%= render 'posts/index/category_tabs' %>
-      <%= turbo_frame_tag "open-posts" do %>
-        <!-- 投稿一覧 -->
-        <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
+      <!-- recommended カテゴリーの特別処理 -->
+      <% if @current_category == 'recommended' %>
+        <div id="recommended-posts" class="category-posts">
+          <%= render 'posts/posts_list', posts: @posts_by_category['recommended'], pagy: @pagys['recommended'], notifications: @notifications %>
+        </div>
+      <% end %>
+
+      <!-- その他のカテゴリー処理 -->
+      <% Post.fixed_categories.keys.each do |category| %>
+        <div id="<%= category %>-posts" class="category-posts <%= 'hidden' unless category == @current_category %>">
+          <%= render 'posts/posts_list', posts: @posts_by_category[category], pagy: @pagys[category], notifications: @notifications %>
+        </div>
       <% end %>
     </div>
   </div>
-
 </turbo-frame>
