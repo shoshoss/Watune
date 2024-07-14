@@ -214,10 +214,7 @@ export default class extends Controller {
     // ハッシュが存在する場合、その要素までスクロール
     const hash = window.location.hash;
     if (hash) {
-      const element = document.querySelector(hash);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
     }
   }
 }

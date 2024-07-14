@@ -3,6 +3,7 @@
     <li class="flex-1 text-center">
       <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
                   id: "bottom-navbar-home-link",
+                  method: :get,
                   data: { action: "click->bottom-history#navigate" },
                   class: "block py-2 #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
@@ -11,6 +12,7 @@
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
                   id: "bottom-navbar-profile-link",
+                  method: :get,
                   data: { action: "click->bottom-history#navigate" },
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
