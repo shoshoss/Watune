@@ -2,16 +2,16 @@
   <ul class="py-1 flex justify-around">
     <li class="flex-1 text-center">
       <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
-                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-home-link",
+                  data: { action: "click->bottom-history#navigate" },
                   class: "block py-2 #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
       <% end %>
     </li>
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
-                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-profile-link",
+                  data: { action: "click->bottom-history#navigate" },
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
       <% end %>
@@ -29,7 +29,7 @@
     <li class="flex-1 text-center">
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'),
                   method: :get,
-                  data: {  action: "click->bottom-history#navigate" },
+                  data: { action: "click->bottom-history#navigate" },
                   id: "bottom-navbar-messages-link",
                   class: "block py-2 #{active_if(profile_show_path(username_slug: current_user.username_slug, category: 'posts_to_you'))}" do %>
         <i class="fa-regular fa-envelope text-2xl"></i>
@@ -51,7 +51,7 @@
 <% if params[:controller] == "posts" && params[:action] == "show" %>
   <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
               method: :get,
-              data: { turbo_frame: "_top" },
+              data: { action: "click->bottom-history#navigate" },
               id: "reply-button",
               class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg" do %>
     <i class="fa-regular fa-comment text-2xl"></i>
@@ -59,7 +59,7 @@
 <% else %>
   <%= link_to new_post_path(privacy: 'open'),
               method: :get,
-              data: { turbo_frame: "_top" },
+              data: { action: "click->bottom-history#navigate" },
               class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
               id: "post-button" do %>
     <i class="fa-solid fa-gift text-2xl"></i>

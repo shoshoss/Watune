@@ -18,8 +18,8 @@
                     new_signup_modal_path,
                     id: "guest-update",
                     method: :get,
-                    class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4',
-                    data: { turbo_frame: "signup_modal" } %>
+                    data: { turbo_frame: "signup_modal" },
+                    class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4' %>
       <% end %>
       <%= link_to t('header.post_audio'),
                   new_post_path(privacy: 'open'),

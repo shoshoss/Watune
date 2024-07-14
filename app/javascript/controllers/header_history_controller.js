@@ -74,13 +74,19 @@ export default class extends Controller {
   }
 
   hideUnreadCountAfterDelay() {
+    const notificationLinks = [
+      "#bottom-navbar-notifications-link .absolute",
+      "#header-notifications-link .absolute",
+      "#sidebar-notifications-link .absolute",
+    ];
+
     setTimeout(() => {
-      const unreadCountElement = document.querySelector(
-        "#header-notifications-link .absolute"
-      );
-      if (unreadCountElement) {
-        unreadCountElement.style.display = "none";
-      }
+      notificationLinks.forEach((selector) => {
+        const unreadCountElement = document.querySelector(selector);
+        if (unreadCountElement) {
+          unreadCountElement.style.display = "none";
+        }
+      });
     }, 5000); // 5秒後に実行
   }
 }
