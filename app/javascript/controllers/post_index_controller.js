@@ -7,6 +7,7 @@ export default class extends Controller {
     this.initializePage();
     this.updateActiveTab();
     window.addEventListener("popstate", this.handlePopState.bind(this));
+    this.scrollPositions = {};
   }
 
   // ページの初期化
@@ -68,6 +69,12 @@ export default class extends Controller {
     event.preventDefault();
     const category = event.currentTarget.dataset.category;
 
+    // 現在のカテゴリーのスクロール位置を保存
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    this.scrollPositions[currentCategory] = window.scrollY;
+
     // URLを更新
     const url = new URL(window.location);
     url.searchParams.set("category", category);
@@ -87,9 +94,10 @@ export default class extends Controller {
       selectedCategoryPosts.classList.remove("hidden");
     }
 
-    // スクロールを上部にする
+    // スクロール位置を復元
+    const scrollPosition = this.scrollPositions[category] || 0;
     window.scrollTo({
-      top: 0,
+      top: scrollPosition,
       behavior: "smooth",
     });
   }
@@ -160,5 +168,12 @@ export default class extends Controller {
     if (selectedCategoryPosts) {
       selectedCategoryPosts.classList.remove("hidden");
     }
+
+    // スクロール位置を復元
+    const scrollPosition = this.scrollPositions[currentCategory] || 0;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
   }
 }
