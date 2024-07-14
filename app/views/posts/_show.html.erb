@@ -52,7 +52,7 @@
                 <%= render 'posts/post', post: reply, notifications: reply_notifications %>
               <% end %>
               <% if @pagy.next %>
-                <%= render 'shared/next_page' %>
+                <%= render 'shared/next_page', pagy: pagy %>
               <% end %>
             <% end %>
           <% end %>

@@ -21,12 +21,16 @@
       </div>
 
       <!-- タブメニュー -->
-      <%= render 'posts/index/category_tabs' %>
-      <%= turbo_frame_tag "open-posts" do %>
-        <!-- 投稿一覧 -->
-        <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
-      <% end %>
+      <%= render 'posts/index/category_tabs', current_category: current_category %>
+      <!-- カテゴリーコンテンツ -->
+      <div id="posts-container" data-controller="posts">
+        <% ['recommended', 'praise_gratitude', 'music', 'child', 'favorite', 'skill', 'monologue', 'other'].each do |category| %>
+          <div id="<%= category %>-posts" class="category-posts <%= 'hidden' unless category == current_category %>">
+            <%= render partial: 'posts_list', locals: { posts: posts_by_category[category], pagy: pagys[category], notifications: notifications } %>
+          </div>
+        <% end %>
+        <div data-posts-target="loadMore"></div>
+      </div>
     </div>
   </div>
-
 </turbo-frame>

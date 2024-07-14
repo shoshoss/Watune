@@ -31,7 +31,7 @@
                 <%= render partial: 'notifications/notification', locals: { notification: notification } %>
               <% end %>
               <% if @pagy.next %>
-                <%= render 'shared/next_page' %>
+                <%= render 'shared/next_page', pagy: pagy %>
               <% end %>
             <% end %>
           <% else %>

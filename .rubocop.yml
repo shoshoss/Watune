@@ -40,6 +40,8 @@ Metrics/AbcSize:
   Max: 40 # ABCサイズの最大値を40に設定
 Metrics/ModuleLength:
   Max: 150
+Metrics/CyclomaticComplexity:
+  Max: 10
 
 # ドキュメンテーションコメントの強制を無効化
 Style/Documentation:

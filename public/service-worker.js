@@ -29,13 +29,6 @@ const staticAssetsToCache = [
 const dynamicUrlsToCache = [
   // カテゴリURL
   `/waves?category=recommended`,
-  `/waves?category=music`,
-  `/waves?category=praise_gratitude`,
-  `/waves?category=skill`,
-  `/waves?category=child`,
-  `/waves?category=favorite`,
-  `/waves?category=other`,
-  `/waves?category=monologue`,
 ];
 
 // キャッシュしないURLリスト

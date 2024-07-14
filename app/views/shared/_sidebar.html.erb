@@ -1,8 +1,9 @@
-<aside class="px-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
+<aside class="px-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto" data-controller="sidebar-history">
   <div class="flex flex-col items-center mb-5 pt-2">
     <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] || 'all_my_posts'),
                 method: :get,
-                data: { turbo_frame: "_top" },
+                data: { action: "click->sidebar-history#navigate" },
+                id: "sidebar-profile-avatar-link",
                 class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
       <%= image_tag (current_user.avatar.presence || '/logo-watune-en.png'), class: 'rounded-full h-32 w-32' %>
     <% end %>
@@ -10,9 +11,9 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended' ),
+      <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: { action: "click->sidebar-history#navigate" },
                   id: "sidebar-posts-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(posts_path)}" do %>
         <i class="fa-solid fa-house text-2xl"></i>
@@ -21,9 +22,9 @@
     </li>
     <!-- プロフィール -->
     <li>
-      <%= link_to profile_show_path( username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] || 'all_my_posts'),
+      <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] || 'all_my_posts'),
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: { action: "click->sidebar-history#navigate" },
                   id: "sidebar-profile-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
@@ -31,18 +32,26 @@
       <% end %>
     </li>
     <!-- 通知 -->
-    <%= render partial: 'shared/notification_link',
-               locals: { 
-                link_id: "sidebar-notifications-link", 
-                link_class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}", 
-                notification_position_class: "-top-[7px] -right-[3px]",
-                show_text: true,
-               } %>
+    <li>
+      <%= link_to notifications_path,
+          method: :post,
+          data: { action: "click->sidebar-history#navigate" },
+          id: "sidebar-notifications-link",
+          class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
+        <div class="justify-self-center relative">
+          <i class="fas fa-bell"></i>
+          <span class="absolute -top-[7px] -right-[3px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" style="<%= @unread_count > 0 ? 'display: block;' : 'display: none;' %>">
+            <%= @unread_count %>
+          </span>
+        </div>
+        <h2 class="text-lg flex-grow">通知</h2>
+      <% end %>
+    </li>
     <!-- 通知設定 -->
     <li>
       <%= link_to edit_notification_settings_path,
           method: :get,
-          data: { turbo_frame: "_top" },
+          data: { action: "click->sidebar-history#navigate" },
           id: "sidebar-settings-link",
           class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl"></i>
@@ -54,7 +63,7 @@
     <%= link_to t('header.post_audio'),
                   new_post_path,
                   method: :get,
-                  data: { turbo_frame: "_top" },
+                  data: { action: "click->sidebar-history#navigate" },
                   id: "sidebar-new-post-link",
                   class: "flex text-white text-2xl btn btn-info rounded-full bg-opacity-80" %>
   </div>

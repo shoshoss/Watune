@@ -16,9 +16,7 @@ class NotificationsController < ApplicationController
                                            items: 10)
 
     # 未読通知を既読にする
-    # バリデーション不要な一括更新のため、update_allを使用
-    # rubocop:disable Rails/SkipsModelValidations
-    notifications_scope.update_all(unread: false) if @category == 'all'
-    # rubocop:enable Rails/SkipsModelValidations
+    # 3秒後に未読通知を既読にするジョブを実行
+    MarkNotificationsAsReadJob.set(wait: 3.seconds).perform_later(current_user.id)
   end
 end

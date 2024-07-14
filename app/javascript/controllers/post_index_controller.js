@@ -1,20 +1,21 @@
 import { Controller } from "@hotwired/stimulus";
+import Cookies from "js-cookie";
 
 export default class extends Controller {
-  static targets = ["tab"];
+  static targets = ["categoryContent"];
 
   connect() {
     this.initializePage();
-    // popstateイベントを監視してURLが変わったときにタブのアクティブ状態を更新
-    window.addEventListener("popstate", this.updateActiveTabFromUrl.bind(this));
+    this.updateActiveTab();
+    window.addEventListener("popstate", this.handlePopState.bind(this));
+    window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
+    this.scrollPositions = this.loadScrollPositions();
   }
 
   // ページの初期化
   initializePage() {
     this.handleNavbarOpacity();
     this.handleCategoryTabs();
-    this.restoreTabState();
-    this.updateActiveTab(this.getCurrentCategory());
   }
 
   // ナビバーの透明度を制御
@@ -66,77 +67,154 @@ export default class extends Controller {
     });
   }
 
-  // タブの状態を保存
-  saveTabState(event) {
-    event.preventDefault(); // デフォルトのリンク動作を無効化
-    const category = event.currentTarget.href.split("category=")[1];
-    if (!category) return; // カテゴリーが取得できない場合は何もしない
+  switchCategory(event) {
+    event.preventDefault();
+    const category = event.currentTarget.dataset.category;
 
-    const container = document.getElementById("post-category-tabs-container");
-    if (container) {
-      const maxScrollLeft = container.scrollWidth - container.clientWidth - 180; // 180pxの余白を考慮
-      const scrollPosition = Math.min(container.scrollLeft, maxScrollLeft);
-      // クッキーにスクロール位置を保存
-      document.cookie = `postTabScrollPosition_${category}=${scrollPosition}; path=/; max-age=31536000`;
-      console.log(`タブのスクロール位置を保存: ${scrollPosition}`);
+    // 現在のカテゴリーのスクロール位置を保存
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    this.scrollPositions[currentCategory] = window.scrollY;
+
+    // URLを更新
+    const url = new URL(window.location);
+    url.searchParams.set("category", category);
+    history.pushState({ category }, "", url);
+
+    // アクティブタブを更新
+    this.updateActiveTab();
+
+    // すべてのカテゴリーを非表示にする
+    document
+      .querySelectorAll(".category-posts")
+      .forEach((el) => el.classList.add("hidden"));
+
+    // 選択されたカテゴリーを表示する
+    const selectedCategoryPosts = document.getElementById(`${category}-posts`);
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
     }
 
-    // Turbo Driveのロードをトリガー
-    Turbo.visit(event.currentTarget.href, { frame: "_top" });
+    // スクロール位置を復元
+    const scrollPosition = this.scrollPositions[category] || 0;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
 
-    // アクティブなタブを更新
-    this.updateActiveTab(category);
+    // クッキーに選択されたタブを保存
+    Cookies.set("selected_post_category", category, { expires: 365 });
   }
 
-  // タブの状態を復元
-  restoreTabState() {
-    const container = document.getElementById("post-category-tabs-container");
-    const selectedCategory = this.getCurrentCategory();
-    const scrollPosition = this.getCookieValue(
-      `postTabScrollPosition_${selectedCategory}`
+  // スクロール位置を保存
+  saveScrollPosition() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    this.scrollPositions[currentCategory] = window.scrollY;
+    sessionStorage.setItem(
+      "scrollPositions",
+      JSON.stringify(this.scrollPositions)
     );
-    if (container && scrollPosition !== null) {
-      const parsedScrollPosition = parseFloat(scrollPosition);
-      console.log(`タブのスクロール位置を復元: ${parsedScrollPosition}`);
-      // スクロール位置が正しく反映されるまで待機してからスクロールを実行
-      requestAnimationFrame(() => {
-        container.scrollTo({ left: parsedScrollPosition, behavior: "auto" }); // スムーススクロールではなく、即座にスクロールする
-      });
-    }
-    this.updateActiveTab(selectedCategory);
   }
 
-  // 現在のカテゴリーを取得
-  getCurrentCategory() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryFromUrl = urlParams.get("category");
-    const categoryFromCookies = this.getCookieValue("selectedPostCategory");
-
-    return categoryFromUrl || categoryFromCookies || "recommended";
+  // スクロール位置をロード
+  loadScrollPositions() {
+    const scrollPositions = sessionStorage.getItem("scrollPositions");
+    return scrollPositions ? JSON.parse(scrollPositions) : {};
   }
 
   // アクティブなタブを更新
-  updateActiveTab(selectedCategory) {
-    this.tabTargets.forEach((tab) => {
-      if (tab.href.includes(selectedCategory)) {
-        tab.classList.add("active");
-      } else {
-        tab.classList.remove("active");
+  updateActiveTab() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    const tabIds = [
+      "recommended",
+      "praise_gratitude",
+      "music",
+      "child",
+      "skill",
+      "favorite",
+      "monologue",
+      "other",
+    ];
+
+    tabIds.forEach((category) => {
+      const tab = document.getElementById(`tab-${category}`);
+      if (tab) {
+        if (category === currentCategory) {
+          tab.classList.add("active");
+        } else {
+          tab.classList.remove("active");
+        }
       }
     });
+
+    this.scrollToActiveTab();
   }
 
-  // URLが変更されたときにアクティブなタブを更新
-  updateActiveTabFromUrl() {
-    const category = this.getCurrentCategory();
-    this.updateActiveTab(category);
+  scrollToActiveTab() {
+    const activeTab = document.querySelector(".c-post-tab.active");
+    if (activeTab) {
+      const container = document.getElementById("post-category-tabs-container");
+      container.scrollTo({
+        left:
+          activeTab.offsetLeft -
+          container.offsetWidth / 2 +
+          activeTab.offsetWidth / 2,
+        behavior: "smooth",
+      });
+    }
   }
 
-  // クッキーの値を取得するヘルパーメソッド
-  getCookieValue(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
+  handlePopState(event) {
+    const state = event.state;
+    if (state && state.category) {
+      this.switchCategory({
+        preventDefault: () => {},
+        currentTarget: {
+          dataset: {
+            category: state.category,
+          },
+        },
+      });
+    } else {
+      this.updateActiveTab();
+      this.showCurrentCategory();
+    }
+  }
+
+  showCurrentCategory() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+
+    // すべてのカテゴリーを非表示にする
+    document
+      .querySelectorAll(".category-posts")
+      .forEach((el) => el.classList.add("hidden"));
+
+    // 選択されたカテゴリーを表示する
+    const selectedCategoryPosts = document.getElementById(
+      `${currentCategory}-posts`
+    );
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
+    }
+
+    // スクロール位置を復元
+    const scrollPosition = this.scrollPositions[currentCategory] || 0;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
+
+    // ハッシュが存在する場合、その要素までスクロール
+    const hash = window.location.hash;
+    if (hash) {
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+    }
   }
 }

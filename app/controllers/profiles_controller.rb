@@ -13,7 +13,8 @@ class ProfilesController < ApplicationController
     end
 
     # クッキーに現在のカテゴリを保存
-    cookies["#{@user.username_slug}_selected_category"] = { value: params[:category] || default_category, expires: 1.year.from_now }
+    cookies["#{@user.username_slug}_selected_category"] =
+      { value: params[:category] || default_category, expires: 1.year.from_now }
 
     respond_to do |format|
       format.html
