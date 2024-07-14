@@ -11,14 +11,12 @@
 
   <!-- PC画面での投稿ボタン -->
   <div class="fixed pl-[100px] bottom-10">
-    <% if params[:controller] == "posts" && params[:action] == "show" %>
-      <%= link_to new_post_path(privacy: 'open'),
-                  method: :get,
-                  data: { turbo_frame: "main-content", turbo_action: :advance, action: "click->widget-history#navigate" },
-                  id: "pc-post-button",
-                  class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100" do %>
-        <i class="fa-solid fa-gift text-6xl"></i>
-      <% end %>
+    <%= link_to new_post_path(privacy: 'open'),
+                method: :get,
+                data: { turbo_frame: "main-content", turbo_action: :advance, action: "click->widget-history#navigate" },
+                id: "pc-post-button",
+                class: "z-50 text-5xl w-[150px] h-[150px] rounded-full bg-sky-400 flex items-center justify-center text-white shadow-lg opacity-90 transition-opacity duration-300 hover:bg-sky-500 hover:opacity-100" do %>
+      <i class="fa-solid fa-gift text-6xl"></i>
     <% end %>
   </div>
 </div>
