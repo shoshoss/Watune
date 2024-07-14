@@ -15,7 +15,7 @@ class PostsController < ApplicationController
     @posts_by_category = {}
     @pagys = {}
 
-    (Post.fixed_categories.keys + ['recommended']).each do |category|
+    (['recommended'] + Post.fixed_categories.keys).each do |category|
       @pagys[category], @posts_by_category[category] = pagy_countless(
         fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
         items: 1, # 初回ロードの件数を3に制限

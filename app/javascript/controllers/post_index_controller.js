@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import Cookies from "js-cookie"; // js-cookieをインポート
+import Cookies from "js-cookie";
 
 export default class extends Controller {
   static targets = ["categoryContent"];
@@ -8,7 +8,8 @@ export default class extends Controller {
     this.initializePage();
     this.updateActiveTab();
     window.addEventListener("popstate", this.handlePopState.bind(this));
-    this.scrollPositions = {};
+    window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
+    this.scrollPositions = this.loadScrollPositions();
   }
 
   // ページの初期化
@@ -106,6 +107,24 @@ export default class extends Controller {
     Cookies.set("selected_post_category", category, { expires: 365 });
   }
 
+  // スクロール位置を保存
+  saveScrollPosition() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+    this.scrollPositions[currentCategory] = window.scrollY;
+    sessionStorage.setItem(
+      "scrollPositions",
+      JSON.stringify(this.scrollPositions)
+    );
+  }
+
+  // スクロール位置をロード
+  loadScrollPositions() {
+    const scrollPositions = sessionStorage.getItem("scrollPositions");
+    return scrollPositions ? JSON.parse(scrollPositions) : {};
+  }
+
   // アクティブなタブを更新
   updateActiveTab() {
     const currentCategory =
@@ -179,5 +198,14 @@ export default class extends Controller {
       top: scrollPosition,
       behavior: "smooth",
     });
+
+    // ハッシュが存在する場合、その要素までスクロール
+    const hash = window.location.hash;
+    if (hash) {
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }
 }
