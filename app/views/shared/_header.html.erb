@@ -3,8 +3,8 @@
     <div class="mx-2 md-plus:mx-5 shrink-0">
       <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                   id: "header-logo-link",
-                  data: { turbo_frame: "_top"},
                   method: :get,
+                  data: { turbo: "false" },
                   class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="/logo-watune.png" media="(min-width: 768px)">

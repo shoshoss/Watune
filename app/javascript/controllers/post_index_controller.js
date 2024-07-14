@@ -80,7 +80,7 @@ export default class extends Controller {
     // URLを更新
     const url = new URL(window.location);
     url.searchParams.set("category", category);
-    history.pushState({}, "", url);
+    history.pushState({ category }, "", url);
 
     // アクティブタブを更新
     this.updateActiveTab();
@@ -170,8 +170,20 @@ export default class extends Controller {
   }
 
   handlePopState(event) {
-    this.updateActiveTab();
-    this.showCurrentCategory();
+    const state = event.state;
+    if (state && state.category) {
+      this.switchCategory({
+        preventDefault: () => {},
+        currentTarget: {
+          dataset: {
+            category: state.category,
+          },
+        },
+      });
+    } else {
+      this.updateActiveTab();
+      this.showCurrentCategory();
+    }
   }
 
   showCurrentCategory() {
