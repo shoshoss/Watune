@@ -8,13 +8,13 @@
     </div>
     <!-- タブのリンク -->
     <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
-      <a href="#" data-category="recommended" class="c-post-tab hover:bg-sky-100 text-center py-2" id="tab-recommended">
+      <%= link_to "#", id: "tab-recommended", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if @current_category == 'recommended'}", data: { action: "click->post-index#switchCategory", category: "recommended" } do %>
         <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
-      </a>
+      <% end %>
       <% Post.fixed_categories.keys.each do |category| %>
-        <a href="#" data-category="<%= category %>" class="c-post-tab hover:bg-sky-100 text-center py-2" id="tab-<%= category %>">
+        <%= link_to "#", id: "tab-#{category}", class: "c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if @current_category == category}", data: { action: "click->post-index#switchCategory", category: category } do %>
           <i class="fa <%= category_icon(category) %> mr-1 sm:mr-2"></i><span><%= category_name(category) %></span>
-        </a>
+        <% end %>
       <% end %>
       <!-- タブの後ろに追加の空白を挿入 -->
       <div class="w-[190px] flex-shrink-0 flex justify-center items-center">

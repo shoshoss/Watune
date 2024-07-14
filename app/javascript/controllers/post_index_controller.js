@@ -1,16 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+  static targets = ["categoryContent"];
+
   connect() {
     this.initializePage();
     this.updateActiveTab();
-    window.addEventListener("popstate", this.updateActiveTab.bind(this));
-
-    // Turbo Frame Loadedイベントリスナーを追加
-    document.addEventListener(
-      "turbo:frame-load",
-      this.updateActiveTab.bind(this)
-    );
+    window.addEventListener("popstate", this.handlePopState.bind(this));
   }
 
   // ページの初期化
@@ -68,6 +64,36 @@ export default class extends Controller {
     });
   }
 
+  switchCategory(event) {
+    event.preventDefault();
+    const category = event.currentTarget.dataset.category;
+
+    // URLを更新
+    const url = new URL(window.location);
+    url.searchParams.set("category", category);
+    history.pushState({}, "", url);
+
+    // アクティブタブを更新
+    this.updateActiveTab();
+
+    // すべてのカテゴリーを非表示にする
+    document
+      .querySelectorAll(".category-posts")
+      .forEach((el) => el.classList.add("hidden"));
+
+    // 選択されたカテゴリーを表示する
+    const selectedCategoryPosts = document.getElementById(`${category}-posts`);
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
+    }
+
+    // スクロールを上部にする
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+
   // アクティブなタブを更新
   updateActiveTab() {
     const currentCategory =
@@ -95,7 +121,10 @@ export default class extends Controller {
       }
     });
 
-    // アクティブなタブが見えるようにスクロール
+    this.scrollToActiveTab();
+  }
+
+  scrollToActiveTab() {
     const activeTab = document.querySelector(".c-post-tab.active");
     if (activeTab) {
       const container = document.getElementById("post-category-tabs-container");
@@ -106,6 +135,30 @@ export default class extends Controller {
           activeTab.offsetWidth / 2,
         behavior: "smooth",
       });
+    }
+  }
+
+  handlePopState(event) {
+    this.updateActiveTab();
+    this.showCurrentCategory();
+  }
+
+  showCurrentCategory() {
+    const currentCategory =
+      new URLSearchParams(window.location.search).get("category") ||
+      "recommended";
+
+    // すべてのカテゴリーを非表示にする
+    document
+      .querySelectorAll(".category-posts")
+      .forEach((el) => el.classList.add("hidden"));
+
+    // 選択されたカテゴリーを表示する
+    const selectedCategoryPosts = document.getElementById(
+      `${currentCategory}-posts`
+    );
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
     }
   }
 }

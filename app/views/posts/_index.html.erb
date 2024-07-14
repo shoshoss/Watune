@@ -21,20 +21,16 @@
       </div>
 
       <!-- タブメニュー -->
-      <%= render 'posts/index/category_tabs' %>
-      <!-- recommended カテゴリーの特別処理 -->
-      <% if @current_category == 'recommended' %>
-        <div id="recommended-posts" class="category-posts">
-          <%= render 'posts/posts_list', posts: @posts_by_category['recommended'], pagy: @pagys['recommended'], notifications: @notifications %>
-        </div>
-      <% end %>
-
-      <!-- その他のカテゴリー処理 -->
-      <% Post.fixed_categories.keys.each do |category| %>
-        <div id="<%= category %>-posts" class="category-posts <%= 'hidden' unless category == @current_category %>">
-          <%= render 'posts/posts_list', posts: @posts_by_category[category], pagy: @pagys[category], notifications: @notifications %>
-        </div>
-      <% end %>
+      <%= render 'posts/index/category_tabs', current_category: current_category %>
+      <!-- カテゴリーコンテンツ -->
+      <div id="posts-container" data-controller="posts">
+        <% ['recommended', 'praise_gratitude', 'music', 'child', 'favorite', 'skill', 'monologue', 'other'].each do |category| %>
+          <div id="<%= category %>-posts" class="category-posts <%= 'hidden' unless category == current_category %>">
+            <%= render partial: 'posts_list', locals: { posts: posts_by_category[category], pagy: pagys[category], notifications: notifications } %>
+          </div>
+        <% end %>
+        <div data-posts-target="loadMore"></div>
+      </div>
     </div>
   </div>
 </turbo-frame>
