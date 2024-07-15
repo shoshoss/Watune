@@ -25,9 +25,9 @@
       <!-- カテゴリーコンテンツ -->
       <div id="tab_posts-container">
         <% ['recommended', 'praise_gratitude', 'music', 'child', 'favorite', 'skill', 'monologue', 'other'].each do |tab_category| %>
-          <div id="<%= tab_category %>-posts" class="category-posts <%= 'hidden' unless tab_category == @current_category %>" data-loaded="<%= tab_category == @current_category %>">
-            <% if tab_category == @current_category %>
-              <%= render partial: 'posts/tab_posts_list', locals: { posts: @posts_by_category[tab_category], tab_category: tab_category, pagy: @pagys[tab_category], notifications: @notifications } %>
+          <div id="<%= tab_category %>-posts" class="category-posts <%= 'hidden' unless tab_category == current_category %>" data-loaded="<%= tab_category == current_category %>">
+            <% if tab_category == current_category %>
+              <%= render partial: 'posts/tab_posts_list', locals: { posts: posts_by_category[tab_category], tab_category: tab_category, pagy: pagys[tab_category], notifications: notifications } %>
             <% end %>
           </div>
         <% end %>

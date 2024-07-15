@@ -29,10 +29,10 @@ class PostsController < ApplicationController
       items: 5,
       overflow: :empty_page
     )
-    
+  
     respond_to do |format|
       format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
+        render turbo_stream: turbo_stream.append(
           "#{category}-posts",
           partial: 'posts/tab_posts_list',
           locals: { posts: posts, tab_category: category, pagy: pagy, notifications: @notifications }

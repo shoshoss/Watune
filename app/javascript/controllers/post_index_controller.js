@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 
 export default class extends Controller {
   static targets = ["categoryContent"];
+  static values = { loading: Boolean };
 
   connect() {
     this.initializePage();
@@ -20,7 +21,7 @@ export default class extends Controller {
     // 無限スクロールのイベントリスナーを追加
     window.addEventListener("scroll", this.loadMorePosts.bind(this));
 
-    console.log("Infinite scroll event listener added");
+    console.log("Controller connected");
   }
 
   // ページの初期化
@@ -266,7 +267,7 @@ export default class extends Controller {
     }
 
     const rect = loadMoreTarget.getBoundingClientRect();
-    const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+    const isVisible = rect.top - window.innerHeight < 100; // 100px 余裕を持たせる
 
     console.log("Load more posts:", isVisible, this.loading);
 
@@ -297,9 +298,7 @@ export default class extends Controller {
           .then((response) => response.text())
           .then((html) => {
             console.log("Fetched more posts HTML:", html);
-            document
-              .querySelector(`#${currentCategory}-list`)
-              .insertAdjacentHTML("beforeend", html);
+            Turbo.renderStreamMessage(html);
             this.loading = false;
           })
           .catch((error) => {
@@ -311,12 +310,5 @@ export default class extends Controller {
         this.loading = false;
       }
     }
-  }
-
-  getNextPage() {
-    const params = new URLSearchParams(window.location.search);
-    const nextPage = parseInt(params.get("page") || "1") + 1;
-    console.log("Next page:", nextPage);
-    return nextPage;
   }
 }
