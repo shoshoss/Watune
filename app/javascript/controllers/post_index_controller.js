@@ -1,3 +1,4 @@
+// app/javascript/controllers/post_index_controller.js
 import { Controller } from "@hotwired/stimulus";
 import Cookies from "js-cookie";
 
@@ -79,6 +80,7 @@ export default class extends Controller {
     });
   }
 
+  // カテゴリーを切り替える
   switchCategory(event) {
     event.preventDefault();
     const category = event.currentTarget.dataset.category;
@@ -107,6 +109,7 @@ export default class extends Controller {
     });
   }
 
+  // 現在のカテゴリーを取得
   getCurrentCategory() {
     return (
       new URLSearchParams(window.location.search).get("category") ||
@@ -115,6 +118,7 @@ export default class extends Controller {
     );
   }
 
+  // カテゴリーコンテンツを切り替え
   toggleCategoryContent(category) {
     document.querySelectorAll(".category-posts").forEach((el) => {
       el.classList.add("hidden");
@@ -130,6 +134,7 @@ export default class extends Controller {
     }
   }
 
+  // カテゴリーの投稿をフェッチ
   fetchCategoryPosts(category) {
     fetch(`/waves/fetch_category_posts?category=${category}`, {
       headers: {
@@ -148,6 +153,7 @@ export default class extends Controller {
       .catch((error) => console.error("Error fetching category posts:", error));
   }
 
+  // アクティブなタブを更新
   updateActiveTab() {
     const currentCategory = this.getCurrentCategory();
     const tabIds = [
@@ -175,6 +181,7 @@ export default class extends Controller {
     this.scrollToActiveTab();
   }
 
+  // アクティブなタブへスクロール
   scrollToActiveTab() {
     const activeTab = document.querySelector(".c-post-tab.active");
     if (activeTab) {
@@ -189,6 +196,7 @@ export default class extends Controller {
     }
   }
 
+  // ブラウザの戻るボタンを押した際の処理
   handlePopState(event) {
     const state = event.state;
     if (state && state.category) {
@@ -206,6 +214,7 @@ export default class extends Controller {
     }
   }
 
+  // 現在のカテゴリーを表示
   showCurrentCategory() {
     const currentCategory = this.getCurrentCategory();
 
@@ -252,7 +261,6 @@ export default class extends Controller {
     return scrollPositions ? JSON.parse(scrollPositions) : {};
   }
 
-  // 無限スクロールでさらに投稿を読み込む
   // 無限スクロールでさらに投稿を読み込む
   loadMorePosts() {
     const currentCategory = this.getCurrentCategory();

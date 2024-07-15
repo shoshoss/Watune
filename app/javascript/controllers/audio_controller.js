@@ -179,24 +179,23 @@ export default class extends Controller {
 
   // 他のすべての音声を停止
   stopAllOtherAudios(currentAudioId) {
-    document.querySelectorAll("audio").forEach((audio) => {
-      if (audio.id !== `audio-${currentAudioId}` && !audio.paused) {
-        audio.pause();
-        this.updateIcon(
-          document.getElementById(
-            `audio-icon-${audio.id.replace("audio-", "")}`
-          ),
-          false
-        );
-        this.updateButtonColor(
-          document.querySelector(
-            `button[data-audio-id="${audio.id.replace("audio-", "")}`
-          ),
-          false
-        );
-        this.updateTextColor(audio.id.replace("audio-", ""), false); // IDを使って更新
-      }
-    });
+    document
+      .querySelectorAll(`audio:not(#audio-${currentAudioId})`)
+      .forEach((audio) => {
+        if (!audio.paused) {
+          audio.pause();
+          const audioId = audio.id.replace("audio-", "");
+          this.updateIcon(
+            document.getElementById(`audio-icon-${audioId}`),
+            false
+          );
+          this.updateButtonColor(
+            document.querySelector(`button[data-audio-id="${audioId}"]`),
+            false
+          );
+          this.updateTextColor(audioId, false);
+        }
+      });
   }
 
   // 音声の再生/一時停止を切り替える
