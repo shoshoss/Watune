@@ -84,9 +84,15 @@ export default class extends Controller {
     // URLとCookieを更新
     const url = new URL(window.location);
     url.searchParams.set("category", category);
-    history.pushState({ category }, "", url);
+    history.pushState({ category, manualSwitch: true }, "", url);
     Cookies.set("selected_post_category", category, { expires: 365 });
 
+    // カテゴリーコンテンツの更新
+    this.updateCategoryContent(category);
+  }
+
+  // カテゴリーコンテンツを更新
+  updateCategoryContent(category) {
     // アクティブタブを更新
     this.updateActiveTab();
 
@@ -100,10 +106,8 @@ export default class extends Controller {
       behavior: "smooth",
     });
 
-    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
-    if (!this.loadedCategories.has(category)) {
-      this.fetchCategoryPosts(category);
-    }
+    // カテゴリーのデータを常に再取得
+    this.fetchCategoryPosts(category);
   }
 
   // 現在のカテゴリーを取得
@@ -198,15 +202,10 @@ export default class extends Controller {
   handlePopState(event) {
     const state = event.state;
     if (state && state.category) {
-      this.switchCategory({
-        preventDefault: () => {},
-        currentTarget: {
-          dataset: {
-            category: state.category,
-          },
-        },
-      });
+      // カテゴリーが指定されている場合、常にコンテンツを更新
+      this.updateCategoryContent(state.category);
     } else {
+      // カテゴリーが指定されていない場合（初期状態など）
       this.updateActiveTab();
       this.showCurrentCategory();
     }
@@ -215,32 +214,7 @@ export default class extends Controller {
   // 現在のカテゴリーを表示
   showCurrentCategory() {
     const currentCategory = this.getCurrentCategory();
-
-    // すべてのカテゴリーを非表示にする
-    document
-      .querySelectorAll(".category-posts")
-      .forEach((el) => el.classList.add("hidden"));
-
-    // 選択されたカテゴリーを表示する
-    const selectedCategoryPosts = document.getElementById(
-      `${currentCategory}-posts`
-    );
-    if (selectedCategoryPosts) {
-      selectedCategoryPosts.classList.remove("hidden");
-    }
-
-    // スクロール位置を復元
-    const scrollPosition = this.scrollPositions[currentCategory] || 0;
-    window.scrollTo({
-      top: scrollPosition,
-      behavior: "smooth",
-    });
-
-    // ハッシュが存在する場合、その要素までスクロール
-    const hash = window.location.hash;
-    if (hash) {
-      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
-    }
+    this.updateCategoryContent(currentCategory);
   }
 
   // スクロール位置を保存
