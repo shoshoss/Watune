@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   include PostsAllHelper
   include ActionView::RecordIdentifier
 
-  skip_before_action :require_login, only: %i[index show]
+  skip_before_action :require_login, only: %i[index fetch_category_posts show]
   before_action :set_post, only: %i[show edit update destroy]
   before_action :set_current_user_post, only: %i[edit update destroy]
   before_action :set_followings_by_post_count, only: %i[new edit create update]
@@ -10,18 +10,37 @@ class PostsController < ApplicationController
 
   # 投稿一覧を表示するアクション
   def index
-    @current_category = fetch_category || 'recommended'
+    @current_category = params[:category] || cookies[:selected_post_category] || 'recommended'
+    cookies[:selected_post_category] = @current_category
 
-    @posts_by_category = {}
-    @pagys = {}
+    pagy, posts = pagy_countless(
+      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
+      items: 5,
+      overflow: :empty_page
+    )
+    @posts_by_category = { @current_category => posts }
+    @pagys = { @current_category => pagy }
+  end
 
-    (['recommended'] + Post.fixed_categories.keys).each do |category|
-      @pagys[category], @posts_by_category[category] = pagy_countless(
-        fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes,
-                                                          { reposts: :user }]),
-        items: 1, # 初回ロードの件数を3に制限
-        overflow: :empty_page
-      )
+  def fetch_category_posts
+    category = params[:category]
+    pagy, posts = pagy_countless(
+      fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
+      items: 5,
+      overflow: :empty_page
+    )
+    
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "#{category}-posts",
+          partial: 'posts/tab_posts_list',
+          locals: { posts: posts, tab_category: category, pagy: pagy, notifications: @notifications }
+        )
+      end
+      format.html do
+        render partial: 'posts/tab_posts_list', locals: { posts: posts, tab_category: category, pagy: pagy, notifications: @notifications }
+      end
     end
   end
 

@@ -1,0 +1,5 @@
+<% if post.repost? %>
+  <%= render partial: 'posts/tab_repost', locals: { post: post, tab_category: tab_category } %>
+<% else %>
+  <%= render partial: 'posts/tab_post_content', locals: { post: post, tab_category: tab_category } %>
+<% end %>

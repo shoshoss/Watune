@@ -3,11 +3,6 @@ module PostsAllHelper
 
   private
 
-  # カテゴリーを取得するメソッド
-  def fetch_category
-    params[:category] || cookies[:selected_post_category] || 'recommended'
-  end
-
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_fixed_category(category)
     base_query = Post.open

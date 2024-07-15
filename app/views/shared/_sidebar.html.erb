@@ -11,7 +11,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
+      <%= link_to posts_path(category: 'recommended'),
                   method: :get,
                   data: { action: "click->sidebar-history#navigate" },
                   id: "sidebar-posts-link",

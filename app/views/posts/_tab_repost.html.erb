@@ -1,0 +1,25 @@
+<%= turbo_frame_tag dom_id(post, :repost) do %>
+  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
+  <div data-controller="audio" data-action="click->audio#navigateToPost" data-url="<%= user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
+       id="repost-id-<%= post.id %>"
+       class="cursor-pointer hover:bg-sky-100 overflow-y-hidden border-b p-[8px] <%= 'bg-orange-100' if unread_notification %>">
+    
+    <!-- カテゴリ名を表示 -->
+    <div class="text-sm text-gray-500 mb-2">
+      <%= post.fixed_category_i18n %>
+    </div>
+
+    <div class="flex items-center space-x-2 overflow-x-auto whitespace-nowrap pb-2 pl-[8px]">
+      <i class="fa-solid fa-retweet text-base text-green-500"></i>
+      <% post.reposts.order(created_at: :desc).each_with_index do |repost, index| %>
+        <%= link_to profile_show_path(username_slug: repost.user.username_slug), class: "text-[13px] font-semibold text-green-500 hover:underline ml-[2px]", method: :get, data: { turbo_frame: "_top" } do %>
+          <% repost_user_is_current_user = repost.user == current_user %>
+          <%= repost_user_is_current_user ? "あなた" : "#{repost.user.display_name}さん" %>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="flex">
+      <%= render 'posts/post_body', post: post %>
+    </div>
+  </div>
+<% end %>

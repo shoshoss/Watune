@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :waves, controller: 'posts', as: 'posts', except: [:show] do
     collection do
       get :privacy_settings
+      get :fetch_category_posts
     end
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]

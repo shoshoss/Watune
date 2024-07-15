@@ -10,6 +10,17 @@ export default class extends Controller {
     window.addEventListener("popstate", this.handlePopState.bind(this));
     window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
     this.scrollPositions = this.loadScrollPositions();
+
+    // Turbo Frameのロード完了時にタブを更新
+    document.addEventListener(
+      "turbo:frame-load",
+      this.updateActiveTab.bind(this)
+    );
+
+    // 無限スクロールのイベントリスナーを追加
+    window.addEventListener("scroll", this.loadMorePosts.bind(this));
+
+    console.log("Infinite scroll event listener added");
   }
 
   // ページの初期化
@@ -72,29 +83,20 @@ export default class extends Controller {
     const category = event.currentTarget.dataset.category;
 
     // 現在のカテゴリーのスクロール位置を保存
-    const currentCategory =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
+    const currentCategory = this.getCurrentCategory();
     this.scrollPositions[currentCategory] = window.scrollY;
 
-    // URLを更新
+    // URLとCookieを更新
     const url = new URL(window.location);
     url.searchParams.set("category", category);
     history.pushState({ category }, "", url);
+    Cookies.set("selected_post_category", category, { expires: 365 });
 
     // アクティブタブを更新
     this.updateActiveTab();
 
-    // すべてのカテゴリーを非表示にする
-    document
-      .querySelectorAll(".category-posts")
-      .forEach((el) => el.classList.add("hidden"));
-
-    // 選択されたカテゴリーを表示する
-    const selectedCategoryPosts = document.getElementById(`${category}-posts`);
-    if (selectedCategoryPosts) {
-      selectedCategoryPosts.classList.remove("hidden");
-    }
+    // カテゴリーコンテンツの表示を切り替え
+    this.toggleCategoryContent(category);
 
     // スクロール位置を復元
     const scrollPosition = this.scrollPositions[category] || 0;
@@ -102,34 +104,51 @@ export default class extends Controller {
       top: scrollPosition,
       behavior: "smooth",
     });
-
-    // クッキーに選択されたタブを保存
-    Cookies.set("selected_post_category", category, { expires: 365 });
   }
 
-  // スクロール位置を保存
-  saveScrollPosition() {
-    const currentCategory =
+  getCurrentCategory() {
+    return (
       new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
-    this.scrollPositions[currentCategory] = window.scrollY;
-    sessionStorage.setItem(
-      "scrollPositions",
-      JSON.stringify(this.scrollPositions)
+      Cookies.get("selected_post_category") ||
+      "recommended"
     );
   }
 
-  // スクロール位置をロード
-  loadScrollPositions() {
-    const scrollPositions = sessionStorage.getItem("scrollPositions");
-    return scrollPositions ? JSON.parse(scrollPositions) : {};
+  toggleCategoryContent(category) {
+    document.querySelectorAll(".category-posts").forEach((el) => {
+      el.classList.add("hidden");
+    });
+
+    const selectedCategoryPosts = document.getElementById(`${category}-posts`);
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
+
+      if (selectedCategoryPosts.dataset.loaded !== "true") {
+        this.fetchCategoryPosts(category);
+      }
+    }
   }
 
-  // アクティブなタブを更新
+  fetchCategoryPosts(category) {
+    fetch(`/waves/fetch_category_posts?category=${category}`, {
+      headers: {
+        Accept: "text/vnd.turbo-stream.html",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    })
+      .then((response) => {
+        console.log("Response status:", response.status);
+        return response.text();
+      })
+      .then((html) => {
+        console.log("Fetched HTML:", html);
+        Turbo.renderStreamMessage(html);
+      })
+      .catch((error) => console.error("Error fetching category posts:", error));
+  }
+
   updateActiveTab() {
-    const currentCategory =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
+    const currentCategory = this.getCurrentCategory();
     const tabIds = [
       "recommended",
       "praise_gratitude",
@@ -187,9 +206,7 @@ export default class extends Controller {
   }
 
   showCurrentCategory() {
-    const currentCategory =
-      new URLSearchParams(window.location.search).get("category") ||
-      "recommended";
+    const currentCategory = this.getCurrentCategory();
 
     // すべてのカテゴリーを非表示にする
     document
@@ -216,5 +233,90 @@ export default class extends Controller {
     if (hash) {
       document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
     }
+  }
+
+  // スクロール位置を保存
+  saveScrollPosition() {
+    const currentCategory = this.getCurrentCategory();
+    this.scrollPositions[currentCategory] = window.scrollY;
+    sessionStorage.setItem(
+      "scrollPositions",
+      JSON.stringify(this.scrollPositions)
+    );
+  }
+
+  // スクロール位置をロード
+  loadScrollPositions() {
+    const scrollPositions = sessionStorage.getItem("scrollPositions");
+    return scrollPositions ? JSON.parse(scrollPositions) : {};
+  }
+
+  // 無限スクロールでさらに投稿を読み込む
+  // 無限スクロールでさらに投稿を読み込む
+  loadMorePosts() {
+    const currentCategory = this.getCurrentCategory();
+    const loadMoreTarget = document.querySelector(
+      `#${currentCategory}-load-more`
+    );
+    if (!loadMoreTarget) {
+      console.log(
+        `Load more element not found for category: ${currentCategory}`
+      );
+      return;
+    }
+
+    const rect = loadMoreTarget.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+
+    console.log("Load more posts:", isVisible, this.loading);
+
+    if (isVisible && !this.loading) {
+      this.loading = true;
+      const turboFrame = loadMoreTarget.querySelector("turbo-frame");
+      if (!turboFrame || !turboFrame.src) {
+        console.log("Turbo frame or src not found");
+        this.loading = false;
+        return;
+      }
+
+      try {
+        // 相対URLを絶対URLに変換
+        const url = new URL(turboFrame.src, window.location.origin);
+
+        // カテゴリ情報をURLに追加
+        url.searchParams.set("category", currentCategory);
+        url.searchParams.set("page", this.getNextPage());
+
+        console.log("Fetching more posts from:", url.toString());
+
+        fetch(url.toString(), {
+          headers: {
+            Accept: "text/vnd.turbo-stream.html",
+          },
+        })
+          .then((response) => response.text())
+          .then((html) => {
+            console.log("Fetched more posts HTML:", html);
+            document
+              .querySelector(`#${currentCategory}-list`)
+              .insertAdjacentHTML("beforeend", html);
+            this.loading = false;
+          })
+          .catch((error) => {
+            console.error("Error loading more posts:", error);
+            this.loading = false;
+          });
+      } catch (e) {
+        console.error("Invalid URL:", turboFrame.src);
+        this.loading = false;
+      }
+    }
+  }
+
+  getNextPage() {
+    const params = new URLSearchParams(window.location.search);
+    const nextPage = parseInt(params.get("page") || "1") + 1;
+    console.log("Next page:", nextPage);
+    return nextPage;
   }
 }

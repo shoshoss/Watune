@@ -7,7 +7,7 @@
       </button>
     </div>
     <!-- タブのリンク -->
-    <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" data-controller="post-index">
+    <div id="post-category-tabs-container" class="c-tabs flex overflow-x-auto whitespace-nowrap pb-2 relative" >
       <button type="button" id="tab-recommended" class="c-post-tab hover:bg-sky-100 text-center py-2 #{'active' if @current_category == 'recommended'}" data-action="click->post-index#switchCategory" data-category="recommended">
         <i class="fa fa-star text-yellow-400-accent mr-1 sm:mr-2"></i><span>おすすめ</span>
       </button>
