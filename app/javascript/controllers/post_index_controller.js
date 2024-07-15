@@ -12,15 +12,7 @@ export default class extends Controller {
     window.addEventListener("popstate", this.handlePopState.bind(this));
     window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
     this.scrollPositions = this.loadScrollPositions();
-
-    // Turbo Frameのロード完了時にタブを更新
-    document.addEventListener(
-      "turbo:frame-load",
-      this.updateActiveTab.bind(this)
-    );
-
-    // 無限スクロールのイベントリスナーを追加
-    window.addEventListener("scroll", this.loadMorePosts.bind(this));
+    this.loadedCategories = new Set([this.getCurrentCategory()]);
 
     console.log("Controller connected");
   }
@@ -107,6 +99,11 @@ export default class extends Controller {
       top: scrollPosition,
       behavior: "smooth",
     });
+
+    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
+    if (!this.loadedCategories.has(category)) {
+      this.fetchCategoryPosts(category);
+    }
   }
 
   // 現在のカテゴリーを取得
@@ -127,28 +124,29 @@ export default class extends Controller {
     const selectedCategoryPosts = document.getElementById(`${category}-posts`);
     if (selectedCategoryPosts) {
       selectedCategoryPosts.classList.remove("hidden");
-
-      if (selectedCategoryPosts.dataset.loaded !== "true") {
-        this.fetchCategoryPosts(category);
-      }
     }
   }
 
-  // カテゴリーの投稿をフェッチ
+  // カテゴリーの投稿を非同期で取得
   fetchCategoryPosts(category) {
-    fetch(`/waves/fetch_category_posts?category=${category}`, {
+    fetch(`/waves?category=${category}`, {
       headers: {
-        Accept: "text/vnd.turbo-stream.html",
+        Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
       },
     })
       .then((response) => {
-        console.log("Response status:", response.status);
-        return response.text();
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
       })
-      .then((html) => {
-        console.log("Fetched HTML:", html);
-        Turbo.renderStreamMessage(html);
+      .then((data) => {
+        const postsContainer = document.getElementById(`${category}-posts`);
+        if (postsContainer) {
+          postsContainer.innerHTML = data.html;
+          this.loadedCategories.add(category);
+        }
       })
       .catch((error) => console.error("Error fetching category posts:", error));
   }
