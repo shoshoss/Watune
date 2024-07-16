@@ -1,4 +1,3 @@
-// app/javascript/controllers/post_index_controller.js
 import { Controller } from "@hotwired/stimulus";
 import Cookies from "js-cookie";
 
