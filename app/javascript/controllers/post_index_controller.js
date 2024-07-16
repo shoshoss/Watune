@@ -84,15 +84,9 @@ export default class extends Controller {
     // URLとCookieを更新
     const url = new URL(window.location);
     url.searchParams.set("category", category);
-    history.pushState({ category, manualSwitch: true }, "", url);
+    history.pushState({ category }, "", url); // 履歴に状態を追加
     Cookies.set("selected_post_category", category, { expires: 365 });
 
-    // カテゴリーコンテンツの更新
-    this.updateCategoryContent(category);
-  }
-
-  // カテゴリーコンテンツを更新
-  updateCategoryContent(category) {
     // アクティブタブを更新
     this.updateActiveTab();
 
@@ -106,8 +100,10 @@ export default class extends Controller {
       behavior: "smooth",
     });
 
-    // カテゴリーのデータを常に再取得
-    this.fetchCategoryPosts(category);
+    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
+    if (!this.loadedCategories.has(category)) {
+      this.fetchCategoryPosts(category);
+    }
   }
 
   // 現在のカテゴリーを取得
@@ -135,21 +131,16 @@ export default class extends Controller {
   fetchCategoryPosts(category) {
     fetch(`/waves?category=${category}`, {
       headers: {
-        Accept: "application/json",
+        Accept: "application/json", // JSON形式での応答を期待
         "X-Requested-With": "XMLHttpRequest",
       },
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
+      .then((response) => response.json()) // JSON形式で応答を解析
       .then((data) => {
         const postsContainer = document.getElementById(`${category}-posts`);
         if (postsContainer) {
-          postsContainer.innerHTML = data.html;
-          this.loadedCategories.add(category);
+          postsContainer.innerHTML = data.html; // 取得したHTMLを挿入
+          this.loadedCategories.add(category); // データが読み込まれたカテゴリーを記録
         }
       })
       .catch((error) => console.error("Error fetching category posts:", error));
@@ -202,10 +193,16 @@ export default class extends Controller {
   handlePopState(event) {
     const state = event.state;
     if (state && state.category) {
-      // カテゴリーが指定されている場合、常にコンテンツを更新
-      this.updateCategoryContent(state.category);
+      // カテゴリーの切り替えを行う
+      this.switchCategory({
+        preventDefault: () => {},
+        currentTarget: {
+          dataset: {
+            category: state.category,
+          },
+        },
+      });
     } else {
-      // カテゴリーが指定されていない場合（初期状態など）
       this.updateActiveTab();
       this.showCurrentCategory();
     }
@@ -214,7 +211,32 @@ export default class extends Controller {
   // 現在のカテゴリーを表示
   showCurrentCategory() {
     const currentCategory = this.getCurrentCategory();
-    this.updateCategoryContent(currentCategory);
+
+    // すべてのカテゴリーを非表示にする
+    document
+      .querySelectorAll(".category-posts")
+      .forEach((el) => el.classList.add("hidden"));
+
+    // 選択されたカテゴリーを表示する
+    const selectedCategoryPosts = document.getElementById(
+      `${currentCategory}-posts`
+    );
+    if (selectedCategoryPosts) {
+      selectedCategoryPosts.classList.remove("hidden");
+    }
+
+    // スクロール位置を復元
+    const scrollPosition = this.scrollPositions[currentCategory] || 0;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
+
+    // ハッシュが存在する場合、その要素までスクロール
+    const hash = window.location.hash;
+    if (hash) {
+      document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
   // スクロール位置を保存
@@ -231,64 +253,5 @@ export default class extends Controller {
   loadScrollPositions() {
     const scrollPositions = sessionStorage.getItem("scrollPositions");
     return scrollPositions ? JSON.parse(scrollPositions) : {};
-  }
-
-  // 無限スクロールでさらに投稿を読み込む
-  loadMorePosts() {
-    const currentCategory = this.getCurrentCategory();
-    const loadMoreTarget = document.querySelector(
-      `#${currentCategory}-load-more`
-    );
-    if (!loadMoreTarget) {
-      console.log(
-        `Load more element not found for category: ${currentCategory}`
-      );
-      return;
-    }
-
-    const rect = loadMoreTarget.getBoundingClientRect();
-    const isVisible = rect.top - window.innerHeight < 100; // 100px 余裕を持たせる
-
-    console.log("Load more posts:", isVisible, this.loading);
-
-    if (isVisible && !this.loading) {
-      this.loading = true;
-      const turboFrame = loadMoreTarget.querySelector("turbo-frame");
-      if (!turboFrame || !turboFrame.src) {
-        console.log("Turbo frame or src not found");
-        this.loading = false;
-        return;
-      }
-
-      try {
-        // 相対URLを絶対URLに変換
-        const url = new URL(turboFrame.src, window.location.origin);
-
-        // カテゴリ情報をURLに追加
-        url.searchParams.set("category", currentCategory);
-        url.searchParams.set("page", this.getNextPage());
-
-        console.log("Fetching more posts from:", url.toString());
-
-        fetch(url.toString(), {
-          headers: {
-            Accept: "text/vnd.turbo-stream.html",
-          },
-        })
-          .then((response) => response.text())
-          .then((html) => {
-            console.log("Fetched more posts HTML:", html);
-            Turbo.renderStreamMessage(html);
-            this.loading = false;
-          })
-          .catch((error) => {
-            console.error("Error loading more posts:", error);
-            this.loading = false;
-          });
-      } catch (e) {
-        console.error("Invalid URL:", turboFrame.src);
-        this.loading = false;
-      }
-    }
   }
 }
