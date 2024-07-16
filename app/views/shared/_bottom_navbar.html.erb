@@ -52,10 +52,10 @@
 <!-- 投稿ボタン -->
 <% if params[:controller] == "posts" && params[:action] == "show" %>
   <%= link_to new_reply_modal_path(username_slug: params[:username_slug], id: params[:id]),
-              method: :get,
-              data: { action: "click->bottom-history#navigate" },
               id: "reply-button",
-              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg" do %>
+              class: "sm:hidden z-50 fixed text-2xl right-5 bottom-16 w-[56px] h-[56px] rounded-full bg-sky-400-accent flex items-center justify-center text-white shadow-lg",
+              method: :get,
+              data: { turbo_frame: "reply_modal" } do %>
     <i class="fa-regular fa-comment text-2xl"></i>
   <% end %>
 <% else %>
