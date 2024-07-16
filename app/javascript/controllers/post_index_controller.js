@@ -12,6 +12,7 @@ export default class extends Controller {
     window.addEventListener("popstate", this.handlePopState.bind(this));
     window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
     this.scrollPositions = this.loadScrollPositions();
+    this.cachedData = {}; // データキャッシュ用のオブジェクト
     this.loadedCategories = new Set([this.getCurrentCategory()]);
 
     console.log("Controller connected");
@@ -76,9 +77,16 @@ export default class extends Controller {
   switchCategory(event) {
     event.preventDefault();
     const category = event.currentTarget.dataset.category;
+    const currentCategory = this.getCurrentCategory();
+
+    // 同じカテゴリのタブがクリックされた場合、最新のデータを取得して画面上部にスクロール
+    if (category === currentCategory) {
+      this.fetchCategoryPosts(category, true); // 最新のデータを取得
+      window.scrollTo({ top: 0, behavior: "smooth" }); // 画面上部にスクロール
+      return;
+    }
 
     // 現在のカテゴリーのスクロール位置を保存
-    const currentCategory = this.getCurrentCategory();
     this.scrollPositions[currentCategory] = window.scrollY;
 
     // URLとCookieを更新
@@ -100,9 +108,11 @@ export default class extends Controller {
       behavior: "smooth",
     });
 
-    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
-    if (!this.loadedCategories.has(category)) {
+    // カテゴリーのデータがキャッシュされていない場合、非同期で取得
+    if (!this.cachedData[category]) {
       this.fetchCategoryPosts(category);
+    } else {
+      this.displayCategoryPosts(category, this.cachedData[category]);
     }
   }
 
@@ -128,7 +138,13 @@ export default class extends Controller {
   }
 
   // カテゴリーの投稿を非同期で取得
-  fetchCategoryPosts(category) {
+  fetchCategoryPosts(category, forceUpdate = false) {
+    // forceUpdateがtrueの場合、キャッシュを無視してデータを取得
+    if (!forceUpdate && this.cachedData[category]) {
+      this.displayCategoryPosts(category, this.cachedData[category]);
+      return;
+    }
+
     fetch(`/waves?category=${category}`, {
       headers: {
         Accept: "application/json", // JSON形式での応答を期待
@@ -137,13 +153,18 @@ export default class extends Controller {
     })
       .then((response) => response.json()) // JSON形式で応答を解析
       .then((data) => {
-        const postsContainer = document.getElementById(`${category}-posts`);
-        if (postsContainer) {
-          postsContainer.innerHTML = data.html; // 取得したHTMLを挿入
-          this.loadedCategories.add(category); // データが読み込まれたカテゴリーを記録
-        }
+        this.cachedData[category] = data.html; // データをキャッシュ
+        this.displayCategoryPosts(category, data.html); // 取得したデータを表示
       })
       .catch((error) => console.error("Error fetching category posts:", error));
+  }
+
+  // カテゴリの投稿を表示
+  displayCategoryPosts(category, html) {
+    const postsContainer = document.getElementById(`${category}-posts`);
+    if (postsContainer) {
+      postsContainer.innerHTML = html; // 取得したHTMLを挿入
+    }
   }
 
   // アクティブなタブを更新
@@ -194,13 +215,16 @@ export default class extends Controller {
     const state = event.state;
     if (state && state.category) {
       // カテゴリーの切り替えを行う
-      this.switchCategory({
-        preventDefault: () => {},
-        currentTarget: {
-          dataset: {
-            category: state.category,
-          },
-        },
+      this.updateActiveTab();
+      this.toggleCategoryContent(state.category);
+      this.displayCategoryPosts(
+        state.category,
+        this.cachedData[state.category]
+      );
+      const scrollPosition = this.scrollPositions[state.category] || 0;
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
       });
     } else {
       this.updateActiveTab();

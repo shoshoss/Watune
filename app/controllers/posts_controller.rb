@@ -42,7 +42,11 @@ class PostsController < ApplicationController
 
   # 投稿詳細を表示するアクション
   def show
-    setup_show_variables
+    @show_reply_line = true
+    @reply = Post.new
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
+                                     items: 15)
+    @parent_posts = @post.ancestors
   end
 
   # 新しい投稿フォームを表示するアクション
