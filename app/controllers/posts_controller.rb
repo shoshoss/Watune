@@ -14,7 +14,8 @@ class PostsController < ApplicationController
     cookies[:selected_post_category] = @current_category
 
     pagy, posts = pagy_countless(
-      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
+      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks,
+                                                                 :likes, { reposts: :user }]),
       items: 5,
       overflow: :empty_page
     )
@@ -27,11 +28,11 @@ class PostsController < ApplicationController
         render json: {
           html: render_to_string(
             partial: 'posts/tab_posts_list',
-            locals: { 
-              posts: posts, 
-              tab_category: @current_category, 
-              pagy: @pagys[@current_category], 
-              notifications: @notifications 
+            locals: {
+              posts:,
+              tab_category: @current_category,
+              pagy: @pagys[@current_category],
+              notifications: @notifications
             },
             formats: [:html]
           )
