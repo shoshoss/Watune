@@ -10,24 +10,44 @@ class PostsController < ApplicationController
 
   # 投稿一覧を表示するアクション
   def index
-    @current_category = fetch_category || 'recommended'
+    @current_category = params[:category] || cookies[:selected_post_category] || 'recommended'
+    cookies[:selected_post_category] = @current_category
 
-    @posts_by_category = {}
-    @pagys = {}
+    pagy, posts = pagy_countless(
+      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks,
+                                                                 :likes, { reposts: :user }]),
+      items: 5,
+      overflow: :empty_page
+    )
+    @posts_by_category = { @current_category => posts }
+    @pagys = { @current_category => pagy }
 
-    (['recommended'] + Post.fixed_categories.keys).each do |category|
-      @pagys[category], @posts_by_category[category] = pagy_countless(
-        fetch_posts_by_fixed_category(category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes,
-                                                          { reposts: :user }]),
-        items: 1, # 初回ロードの件数を3に制限
-        overflow: :empty_page
-      )
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          html: render_to_string(
+            partial: 'posts/tab_posts_list',
+            locals: {
+              posts:,
+              tab_category: @current_category,
+              pagy: @pagys[@current_category],
+              notifications: @notifications
+            },
+            formats: [:html]
+          )
+        }
+      end
     end
   end
 
   # 投稿詳細を表示するアクション
   def show
-    setup_show_variables
+    @show_reply_line = true
+    @reply = Post.new
+    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
+                                     items: 15)
+    @parent_posts = @post.ancestors
   end
 
   # 新しい投稿フォームを表示するアクション

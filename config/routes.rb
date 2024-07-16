@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   resources :waves, controller: 'posts', as: 'posts', except: [:show] do
     collection do
       get :privacy_settings
+      get :latest, to: 'posts#latest' # 最新データ取得のルートを追加
     end
     resources :likes, only: %i[create destroy]
     resources :bookmarks, only: %i[create destroy]

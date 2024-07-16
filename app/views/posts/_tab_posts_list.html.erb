@@ -1,0 +1,20 @@
+<!-- 投稿一覧 -->
+<div class="mx-auto max-w-[670px] w-full">
+  <div id="<%= tab_category %>-list" class="grid grid-cols-1">
+    <% if posts.present? %>
+      <%= turbo_frame_tag "#{tab_category}-next-page" do %>
+        <% posts.each do |post| %>
+          <% post_notifications = (local_assigns[:notifications] || []).select { |notification| notification.notifiable == post } %>
+          <%= render 'posts/tab_post', post: post, tab_category: tab_category, notifications: post_notifications %>
+        <% end %>
+        <% if pagy&.next %>
+          <div id="<%= tab_category %>-load-more">
+            <%= turbo_frame_tag "#{tab_category}-next-page", src: pagy_url_for(pagy, pagy.next), loading: "lazy" %>
+          </div>
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="text-center mb-3">投稿がありません。</div>
+    <% end %>
+  </div>
+</div>

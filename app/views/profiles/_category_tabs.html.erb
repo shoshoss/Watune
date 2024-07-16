@@ -30,7 +30,7 @@
                     data: { action: "click->profile-show#saveTabState",
                             turbo_action: :advance,
                             profile_show_target: "tab" },
-                    class: "c-post-tab } hover:bg-sky-100 text-center py-2" do %>
+                    class: "c-post-tab hover:bg-sky-100 text-center py-2" do %>
           <i class="fa-regular fa-handshake text-blue-400 mr-1 sm:mr-2"></i><span>仲間へ</span>
         <% end %>
         <%= link_to profile_show_path(username_slug: user.username_slug, category: 'my_posts_open'),

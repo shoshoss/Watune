@@ -3,11 +3,6 @@ module PostsAllHelper
 
   private
 
-  # カテゴリーを取得するメソッド
-  def fetch_category
-    params[:category] || cookies[:selected_post_category] || 'recommended'
-  end
-
   # 指定されたカテゴリーに基づいて投稿を取得するメソッド
   def fetch_posts_by_fixed_category(category)
     base_query = Post.open
@@ -90,15 +85,6 @@ module PostsAllHelper
   def recipient_user
     recipient_id = post_params[:recipient_ids]&.first
     User.find(recipient_id) if recipient_id && post_params[:recipient_ids].size == 1
-  end
-
-  # 表示用の変数を設定するメソッド
-  def setup_show_variables
-    @show_reply_line = true
-    @reply = Post.new
-    @pagy, @replies = pagy_countless(@post.replies.includes(:user, :replies, :likes, :bookmarks).order(created_at: :asc),
-                                     items: 15)
-    @parent_posts = @post.ancestors
   end
 
   # オーディオファイルのキャッシュヘッダーを設定するメソッド

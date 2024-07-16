@@ -1,0 +1,19 @@
+<%= turbo_frame_tag dom_id(post) do %>
+  <% unread_notification = @notifications&.find { |n| n.unread? && n.notifiable_type == 'Post' && n.notifiable_id == post.id } %>
+  <div data-controller="audio" 
+       data-action="click->audio#navigateToPost"
+       data-url="<%= @post && post == @post ? '' : user_post_path(username_slug: post.user.username_slug, id: post.id) %>"
+       data-post-id="<%= post.id %>"
+       id="<%= dom_id(post) %>"
+       class="cursor-pointer hover:bg-sky-100 overflow-hidden border-b py-[12px] px-[16px] <%= 'bg-orange-100' if unread_notification %>">
+
+    <!-- カテゴリ名を表示 -->
+    <div class="text-sm text-gray-500 mb-2">
+      <%= post.fixed_category_i18n %>
+    </div>
+
+    <div class="flex">
+      <%= render 'posts/post_body', post: post %>
+    </div>
+  </div>
+<% end %>

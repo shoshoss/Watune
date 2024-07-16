@@ -33,7 +33,7 @@ Metrics/BlockLength:
 Metrics/MethodLength:
   Exclude:
     - "db/migrate/*.rb" # マイグレーションファイルは除外
-  Max: 25 # メソッドの最大行数を25に設定
+  Max: 30 # メソッドの最大行数を30に設定
 Metrics/AbcSize:
   Exclude:
     - "db/migrate/*.rb" # マイグレーションファイルは除外

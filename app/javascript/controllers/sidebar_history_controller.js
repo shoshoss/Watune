@@ -12,7 +12,7 @@ export default class extends Controller {
     const url = new URL(event.currentTarget.href);
 
     // Turboフレームでの遷移
-    document.querySelector("#main-content").src = url.pathname;
+    document.querySelector("#main-content").setAttribute("src", url.pathname);
 
     // URLを変更し、履歴に追加
     history.pushState({ url: url.pathname }, "", url.pathname);
@@ -30,7 +30,7 @@ export default class extends Controller {
     const state = event.state;
     if (state && state.url) {
       // Turboフレームでの遷移
-      document.querySelector("#main-content").src = state.url;
+      document.querySelector("#main-content").setAttribute("src", state.url);
       // アクティブなリンクを更新
       this.updateActiveLink(state.url);
     }
