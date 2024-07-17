@@ -10,8 +10,7 @@ class PostsController < ApplicationController
 
   # 投稿一覧を表示するアクション
   def index
-    @current_category = params[:category] || cookies[:selected_post_category] || 'recommended'
-    cookies[:selected_post_category] = @current_category
+    @current_category = cookies[:selected_post_category] || 'recommended'
 
     pagy, posts = pagy_countless(
       fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks,

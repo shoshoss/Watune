@@ -15,7 +15,10 @@
         <%= link_to "ウェーブ（投稿）を見てみる",
                     posts_path,
                     method: :get,
-                    data: { turbo_frame: "_top" },
+                    data: { 
+                      action: "click->history#navigate",
+                      category: cookies[:selected_post_category] || 'recommended'
+                    },
                     class: "mb-3 mt-3 sm:mt-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
       </div>
     </div>
@@ -100,7 +103,10 @@
     <div class="text-center mt-8">
       <%= link_to "ウェーブ（投稿）を見てみる", posts_path,
                                             method: :get,
-                                            data: { turbo_frame: "_top" },
+                                            data: { 
+                                              action: "click->history#navigate",
+                                              category: cookies[:selected_post_category] || 'recommended'
+                                            },
                                             class: "mb-6 text-xl sm:text-2xl btn btn-accent bg-opacity-80 hover:bg-opacity-100 rounded-full transition-colors duration-300" %>
       <% unless current_user %>
         <%= link_to guest_login_path, method: :post, class: 'mb-6 trial-btn text-xl sm:text-2xl' do %>

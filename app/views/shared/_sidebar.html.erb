@@ -1,8 +1,8 @@
-<aside class="px-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto" data-controller="history">
+<aside class="px-5 w-[260px] hidden md:block sticky top-[74px] h-[calc(100vh-74px)] overflow-y-auto">
   <div class="flex flex-col items-center mb-5 pt-2">
     <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] || 'all_my_posts'),
                 method: :get,
-                data: { action: "click->history#navigate" },
+                data: { turbo_frame: "_top"},
                 id: "sidebar-profile-avatar-link",
                 class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
       <%= image_tag (current_user.avatar.presence || '/logo-watune-en.png'), class: 'rounded-full h-32 w-32' %>
@@ -11,7 +11,7 @@
   <ul class="space-y-2">
     <!-- みんなのWave -->
     <li>
-      <%= link_to posts_path(category: cookies[:selected_post_category] || 'recommended'),
+      <%= link_to posts_path,
                   method: :get,
                   data: { 
                     action: "click->history#navigate",
@@ -27,7 +27,7 @@
     <li>
       <%= link_to profile_show_path(username_slug: current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"] || 'all_my_posts'),
                   method: :get,
-                  data: { action: "click->history#navigate" },
+                  data: { turbo_frame: "_top"},
                   id: "sidebar-profile-link",
                   class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(profile_show_path(current_user.username_slug))}" do %>
         <i class="fas fa-user text-2xl"></i>
@@ -38,7 +38,7 @@
     <li>
       <%= link_to notifications_path,
           method: :post,
-          data: { action: "click->history#navigate" },
+          data: { turbo_frame: "_top"},
           id: "sidebar-notifications-link",
           class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
         <div class="justify-self-center relative">
@@ -54,7 +54,7 @@
     <li>
       <%= link_to edit_notification_settings_path,
           method: :get,
-          data: { action: "click->history#navigate" },
+          data: { turbo_frame: "_top"},
           id: "sidebar-settings-link",
           class: "flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(edit_notification_settings_path)}" do %>
         <i class="fas fa-cog text-2xl"></i>
@@ -66,7 +66,7 @@
     <%= link_to t('header.post_audio'),
                   new_post_path,
                   method: :get,
-                  data: { action: "click->history#navigate" },
+                  data: { turbo_frame: "_top"},
                   id: "sidebar-new-post-link",
                   class: "flex text-white text-2xl btn btn-info rounded-full bg-opacity-80" %>
   </div>
