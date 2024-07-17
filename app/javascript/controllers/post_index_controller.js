@@ -10,6 +10,7 @@ export default class extends Controller {
     this.updateActiveTab();
     window.addEventListener("popstate", this.handlePopState.bind(this));
     window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
+    window.addEventListener("scroll", this.handleScroll.bind(this));
     this.scrollPositions = this.loadScrollPositions();
     this.cachedData = {}; // データキャッシュ用のオブジェクト
     this.loadedCategories = new Set([this.getCurrentCategory()]);
@@ -23,21 +24,24 @@ export default class extends Controller {
     this.handleCategoryTabs();
   }
 
+  // スクロールイベントを処理するメソッド
+  handleScroll() {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    this.handleNavbarOpacity(scrollTop);
+    this.handleCategoryTabs(scrollTop);
+  }
+
   // ナビバーの透明度を制御
-  handleNavbarOpacity() {
+  handleNavbarOpacity(scrollTop) {
     const navbar = document.getElementById("bottom-navbar");
     if (!navbar) return;
 
-    let lastScrollTop = 0;
-    window.addEventListener("scroll", () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      navbar.style.opacity = scrollTop > lastScrollTop ? "0.5" : "1";
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    });
+    navbar.style.opacity = scrollTop > this.lastScrollTop ? "0.5" : "1";
+    this.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
   }
 
   // カテゴリータブの固定を制御
-  handleCategoryTabs() {
+  handleCategoryTabs(scrollTop) {
     const categoryTabsWrapper = document.getElementById(
       "post-category-tabs-wrapper"
     );
@@ -45,47 +49,38 @@ export default class extends Controller {
     if (!categoryTabsWrapper || !categoryTabs) return;
 
     const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > categoryTabsOffsetTop) {
-        categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
-        categoryTabs.classList.add(
-          "fixed",
-          "top-0",
-          "left-0",
-          "w-full",
-          "bg-white",
-          "shadow-md",
-          "z-10"
-        );
-      } else {
-        categoryTabsWrapper.style.height = "auto";
-        categoryTabs.classList.remove(
-          "fixed",
-          "top-0",
-          "left-0",
-          "w-full",
-          "bg-white",
-          "shadow-md",
-          "z-10"
-        );
-      }
-    });
+    if (scrollTop > categoryTabsOffsetTop) {
+      categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
+      categoryTabs.classList.add(
+        "fixed",
+        "top-0",
+        "left-0",
+        "w-full",
+        "bg-white",
+        "shadow-md",
+        "z-10"
+      );
+    } else {
+      categoryTabsWrapper.style.height = "auto";
+      categoryTabs.classList.remove(
+        "fixed",
+        "top-0",
+        "left-0",
+        "w-full",
+        "bg-white",
+        "shadow-md",
+        "z-10"
+      );
+    }
   }
 
   // カテゴリーを切り替える
   switchCategory(event) {
     event.preventDefault();
     const category = event.currentTarget.dataset.category;
-    const currentCategory = this.getCurrentCategory();
-
-    // 同じカテゴリのタブがクリックされた場合、最新のデータを取得して画面上部にスクロール
-    if (category === currentCategory) {
-      this.fetchCategoryPosts(category, true); // 最新のデータを取得
-      window.scrollTo({ top: 0, behavior: "smooth" }); // 画面上部にスクロール
-      return;
-    }
 
     // 現在のカテゴリーのスクロール位置を保存
+    const currentCategory = this.getCurrentCategory();
     this.scrollPositions[currentCategory] = window.scrollY;
 
     // URLとCookieを更新
@@ -107,11 +102,11 @@ export default class extends Controller {
       behavior: "smooth",
     });
 
-    // カテゴリーのデータがキャッシュされていない場合、非同期で取得
-    if (!this.cachedData[category]) {
+    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
+    if (!this.loadedCategories.has(category)) {
       this.fetchCategoryPosts(category);
     } else {
-      this.displayCategoryPosts(category, this.cachedData[category]);
+      this.displayCategoryPosts(category);
     }
   }
 
@@ -137,13 +132,7 @@ export default class extends Controller {
   }
 
   // カテゴリーの投稿を非同期で取得
-  fetchCategoryPosts(category, forceUpdate = false) {
-    // forceUpdateがtrueの場合、キャッシュを無視してデータを取得
-    if (!forceUpdate && this.cachedData[category]) {
-      this.displayCategoryPosts(category, this.cachedData[category]);
-      return;
-    }
-
+  fetchCategoryPosts(category) {
     fetch(`/waves?category=${category}`, {
       headers: {
         Accept: "application/json", // JSON形式での応答を期待
@@ -152,17 +141,21 @@ export default class extends Controller {
     })
       .then((response) => response.json()) // JSON形式で応答を解析
       .then((data) => {
-        this.cachedData[category] = data.html; // データをキャッシュ
-        this.displayCategoryPosts(category, data.html); // 取得したデータを表示
+        const postsContainer = document.getElementById(`${category}-posts`);
+        if (postsContainer) {
+          postsContainer.innerHTML = data.html; // 取得したHTMLを挿入
+          this.loadedCategories.add(category); // データが読み込まれたカテゴリーを記録
+          this.cachedData[category] = data.html; // データをキャッシュ
+        }
       })
       .catch((error) => console.error("Error fetching category posts:", error));
   }
 
   // カテゴリの投稿を表示
-  displayCategoryPosts(category, html) {
+  displayCategoryPosts(category) {
     const postsContainer = document.getElementById(`${category}-posts`);
-    if (postsContainer) {
-      postsContainer.innerHTML = html; // 取得したHTMLを挿入
+    if (postsContainer && this.cachedData[category]) {
+      postsContainer.innerHTML = this.cachedData[category]; // キャッシュされたHTMLを挿入
     }
   }
 
@@ -214,16 +207,13 @@ export default class extends Controller {
     const state = event.state;
     if (state && state.category) {
       // カテゴリーの切り替えを行う
-      this.updateActiveTab();
-      this.toggleCategoryContent(state.category);
-      this.displayCategoryPosts(
-        state.category,
-        this.cachedData[state.category]
-      );
-      const scrollPosition = this.scrollPositions[state.category] || 0;
-      window.scrollTo({
-        top: scrollPosition,
-        behavior: "smooth",
+      this.switchCategory({
+        preventDefault: () => {},
+        currentTarget: {
+          dataset: {
+            category: state.category,
+          },
+        },
       });
     } else {
       this.updateActiveTab();
@@ -270,6 +260,15 @@ export default class extends Controller {
       "scrollPositions",
       JSON.stringify(this.scrollPositions)
     );
+  }
+
+  // スクロール位置を復元
+  restoreScrollPosition(category) {
+    const scrollPosition = this.scrollPositions[category] || 0;
+    window.scrollTo({
+      top: scrollPosition,
+      behavior: "smooth",
+    });
   }
 
   // スクロール位置をロード
