@@ -64,7 +64,7 @@
   </ul>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
-                  new_post_path,
+                  new_post_path(privacy: 'open'),
                   method: :get,
                   data: { turbo_frame: "_top"},
                   id: "sidebar-new-post-link",
