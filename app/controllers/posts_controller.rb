@@ -11,15 +11,16 @@ class PostsController < ApplicationController
   # 投稿一覧を表示するアクション
   def index
     @current_category = cookies[:selected_post_category] || 'recommended'
-  
+
     pagy, posts = pagy_countless(
-      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks, :likes, { reposts: :user }]),
+      fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks,
+                                                                 :likes, { reposts: :user }]),
       items: 5,
       overflow: :empty_page
     )
     @posts_by_category = { @current_category => posts }
     @pagys = { @current_category => pagy }
-  
+
     respond_to do |format|
       format.html
       format.json do
@@ -27,7 +28,7 @@ class PostsController < ApplicationController
           html: render_to_string(
             partial: 'posts/tab_posts_list',
             locals: {
-              posts: posts,
+              posts:,
               tab_category: @current_category,
               pagy: @pagys[@current_category],
               notifications: @notifications
@@ -38,7 +39,6 @@ class PostsController < ApplicationController
       end
     end
   end
-
 
   # 投稿詳細を表示するアクション
   def show
