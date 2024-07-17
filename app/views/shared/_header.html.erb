@@ -4,7 +4,7 @@
       <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                   id: "header-logo-link",
                   method: :get,
-                  data: { turbo: "false" },
+                  data: { turbo_frame: "_top" },
                   class: "#{active_if(posts_path)}" do %>
         <picture>
           <source srcset="/logo-watune.png" media="(min-width: 768px)">
