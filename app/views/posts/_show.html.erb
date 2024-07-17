@@ -2,13 +2,17 @@
 <%= turbo_frame_tag 'post_edit_modal' %>
 
   <div class="container min-h-screen max-w-[670px] mx-auto border-x">
-    <div class="sticky top-0 z-10 mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+    <div class="sticky top-0 z-10 mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[30px] sm:h-[53px]">
       <!-- 戻るボタン -->
-      <%= render 'shared/back_button' %>
-      <div class="flex justify-center items-center flex-grow">
-        <p class="text-xl font-bold">ウェーブ</p>
+      <div class="flex items-center w-[30px] sm:w-[56px] h-[30px] sm:h-[53px]">
+        <button id="back-button" class="flex items-center rounded-full w-[25px] h-[25px] sm:w-[34px] sm:h-[34px] text-center hover:bg-sky-100" onclick="window.history.back()">
+          <i class="fas fa-arrow-left w-[20px] h-[20px]"></i>
+        </button>
       </div>
-      <div class="invisible w-[56px] h-[53px]">ダミー</div>
+
+      <div class="flex items-center flex-grow overflow-x-auto whitespace-nowrap">
+        <h1 class="text-[17px] sm:text-xl font-bold" id="posts-show-header"><%= post.user.display_name %>さんのウェーブ</h1>
+      </div>
     </div>
     <div class="grid grid-cols-1">
       <!-- 親投稿の一覧表示 -->
@@ -115,6 +119,10 @@
 
       observer.observe(repliesContainer, { childList: true, subtree: true });
     }
+
+    document.getElementById('posts-show-header').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  });
   });
 </script>
 </turbo-frame>

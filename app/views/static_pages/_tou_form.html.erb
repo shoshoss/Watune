@@ -1,12 +1,12 @@
 <turbo-frame id="main-content">
 <% content_for(:title, t('.title')) %>
-  <div class="sticky top-0 z-10 mb-8 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+  <div class="sticky top-0 z-10 mb-8 flex flex mx-auto justify-between bg-white px-[16px] h-[30px] sm:h-[53px]">
     <!-- 戻るボタン -->
     <%= render 'shared/back_button' %>
     <div class="flex justify-center items-center flex-grow">
-        <h1 class="text-4xl font-bold text-center">利用規約</h1>
+        <h1 class="text-[17px] sm:text-4xl font-bold text-center">利用規約</h1>
     </div>
-    <div class="invisible w-[56px] h-[53px]">ダミー</div>
+    <div class="invisible w-[56px] h-[30px] sm:h-[53px]">ダミー</div>
   </div>
   <div class="list text-base leading-7 text-gray-800">
     <!-- 第1条 適用 -->

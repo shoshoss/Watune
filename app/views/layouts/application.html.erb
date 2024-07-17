@@ -57,11 +57,11 @@
 
   <!-- ヘッダー -->
   <% if logged_in? %>
-    <header class="z-10 bg-white w-full shadow max-w-screen-xl mx-auto">
+    <header class="z-15 bg-white w-full shadow max-w-screen-xl mx-auto">
         <%= render 'shared/header' %>
     </header>
   <% else %>
-    <header class="sticky top-0 z-10 bg-white w-full shadow max-w-screen-xl mx-auto">
+    <header class="sticky top-0 z-15 bg-white w-full shadow max-w-screen-xl mx-auto">
       <div id="before_login_header">
         <%= render 'shared/before_login_header' %>
       </div>

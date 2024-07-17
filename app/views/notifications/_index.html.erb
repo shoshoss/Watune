@@ -2,13 +2,13 @@
 <%= turbo_frame_tag 'post_edit_modal' %>
 <div class="flex justify-center min-h-screen">
   <div class="max-w-[670px] w-full bg-white border-x">
-    <div class="sticky top-0 z-10 mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+    <div class="sticky top-0 z-10 mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[30px] sm:h-[53px]">
       <!-- 戻るボタン -->
       <%= render 'shared/back_button' %>
       <div class="flex justify-center items-center flex-grow">
-        <h1 class="text-center font-bold text-xl">通知</h1>
+        <h1 class="text-center font-bold text-[17px] sm:text-xl">通知</h1>
       </div>
-      <div class="invisible w-[56px] h-[53px]">ダミー</div>
+      <div class="invisible w-[56px] h-[30px] sm:h-[53px]">ダミー</div>
     </div>
     <%= turbo_frame_tag "notify" do %>
       <div class="c-tabs flex mb-2">

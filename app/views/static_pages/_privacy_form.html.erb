@@ -1,12 +1,16 @@
 <turbo-frame id="main-content">
 <% content_for(:title, t('.title')) %>
-  <div class="sticky top-0 z-10 mb-8 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
+  <div class="sticky top-0 z-10 mb-8 flex flex mx-auto justify-between bg-white px-[16px] h-[30px] sm:h-[53px]">
     <!-- 戻るボタン -->
-    <%= render 'shared/back_button' %>
-    <div class="flex justify-center items-center flex-grow">
-      <h1 class="text-4xl font-bold text-center">プライバシーポリシー</h1>
+    <div class="flex items-center w-[30px] sm:w-[56px] h-[30px] sm:h-[53px]">
+      <button id="back-button" class="flex items-center rounded-full w-[25px] h-[25px] sm:w-[34px] sm:h-[34px] text-center hover:bg-sky-100" onclick="window.history.back()">
+        <i class="fas fa-arrow-left w-[20px] h-[20px]"></i>
+      </button>
     </div>
-    <div class="invisible w-[56px] h-[53px]">ダミー</div>
+    <div class="flex justify-center items-center flex-grow">
+      <h1 class="text-[17px] sm:text-4xl font-bold text-center">プライバシーポリシー</h1>
+    </div>
+    <div class="invisible w-[30px] sm:w-[56px] h-[30px] sm:h-[53px]">ダミー</div>
   </div>
   <div class="list text-base leading-7 text-gray-800">
     
