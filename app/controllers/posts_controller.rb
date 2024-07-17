@@ -15,7 +15,7 @@ class PostsController < ApplicationController
     pagy, posts = pagy_countless(
       fetch_posts_by_fixed_category(@current_category).includes([:user, :category, { audio_attachment: :blob }, :bookmarks,
                                                                  :likes, { reposts: :user }]),
-      items: 5,
+      items: 3,
       overflow: :empty_page
     )
     @posts_by_category = { @current_category => posts }
