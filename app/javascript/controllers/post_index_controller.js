@@ -22,14 +22,12 @@ export default class extends Controller {
   // ページの初期化
   initializePage() {
     this.handleNavbarOpacity();
-    this.handleCategoryTabs();
   }
 
   // スクロールイベントを処理するメソッド
   handleScroll() {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     this.handleNavbarOpacity(scrollTop); // ナビバーの透明度を調整
-    this.handleCategoryTabs(scrollTop); // カテゴリータブの位置を調整
   }
 
   // ナビバーの透明度を制御
@@ -39,40 +37,6 @@ export default class extends Controller {
 
     navbar.style.opacity = scrollTop > this.lastScrollTop ? "0.5" : "1";
     this.lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  }
-
-  // カテゴリータブの固定を制御
-  handleCategoryTabs(scrollTop) {
-    const categoryTabsWrapper = document.getElementById(
-      "post-category-tabs-wrapper"
-    );
-    const categoryTabs = document.getElementById("post-category-tabs");
-    if (!categoryTabsWrapper || !categoryTabs) return;
-
-    const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
-    if (scrollTop > categoryTabsOffsetTop) {
-      categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
-      categoryTabs.classList.add(
-        "fixed",
-        "top-0",
-        "left-0",
-        "w-full",
-        "bg-white",
-        "shadow-md",
-        "z-10"
-      );
-    } else {
-      categoryTabsWrapper.style.height = "auto";
-      categoryTabs.classList.remove(
-        "fixed",
-        "top-0",
-        "left-0",
-        "w-full",
-        "bg-white",
-        "shadow-md",
-        "z-10"
-      );
-    }
   }
 
   // カテゴリーを切り替える

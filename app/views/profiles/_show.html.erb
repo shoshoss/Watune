@@ -1,25 +1,31 @@
 <turbo-frame id="main-content">
-<%= turbo_frame_tag 'post_edit_modal' %>
-<% content_for(:title, t('.title')) %>
-<div class="flex justify-center min-h-screen">
-  <div class="max-w-[670px] w-full bg-white border-x">
-    <div class="mt-2 flex flex mx-auto justify-between bg-white px-[16px] h-[53px]">
-      <!-- 戻るボタン -->
-      <%= render 'shared/back_button' %>
-      <div class="flex justify-center items-center flex-grow">
-        <p class="text-xl font-bold">プロフィール</p>
+  <%= turbo_frame_tag 'post_edit_modal' %>
+  <% content_for(:title, t('.title')) %>
+  <div class="flex justify-center min-h-screen">
+    <div class="max-w-[670px] w-full bg-white border-x">
+      <div class="sticky top-0 z-10 mt-2 flex mx-auto justify-between bg-white px-[16px] h-[30px] sm:h-[53px]">
+        <!-- 戻るボタン -->
+        <%= render 'shared/back_button' %>
+        <div class="flex justify-center items-center flex-grow">
+          <h1 class="text-[17px] sm:text-xl font-bold cursor-pointer" id="profile-header"><%= user.display_name %></h1>
+        </div>
+        <div class="invisible w-[56px] h-[30px] sm:h-[53px]">ダミー</div>
       </div>
-      <div class="invisible w-[56px] h-[53px]">ダミー</div>
-    </div>
-    <div class="pt-4">
-      <%= render 'profiles/profile_info', user: user %>
-      <%= turbo_frame_tag "profile-posts" do %>
-        <!-- タブメニュー -->
-        <%= render 'profiles/category_tabs', user: user %>
-        <!-- 投稿一覧 -->
-        <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
-      <% end %>
+      <div class="pt-4">
+        <%= render 'profiles/profile_info', user: user %>
+        <%= turbo_frame_tag "profile-posts" do %>
+          <!-- タブメニュー -->
+          <%= render 'profiles/category_tabs', user: user %>
+          <!-- 投稿一覧 -->
+          <%= render 'posts/posts_list', posts: posts, pagy: pagy, notifications: notifications %>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
+
+<script>
+  document.getElementById('profile-header').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  });
+</script>
 </turbo-frame>

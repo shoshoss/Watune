@@ -30,7 +30,7 @@
         <label tabindex="0" class="btn btn-ghost rounded-btn">
           <%= image_tag (current_user.avatar.presence || '/logo-watune-en.png'), class: "rounded-full h-10 w-10 min-w-[40px] md:h-12 md:w-12 sm:min-w-[35px]" %>
         </label>
-        <ul tabindex="0" class="menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
+        <ul tabindex="0" class="z-20 menu dropdown-content p-2 bg-white rounded-box" style="min-width: 300px; max-width: 670px;">
           <li class="py-2">
             <%= link_to t('header.about'),
                         top_path,

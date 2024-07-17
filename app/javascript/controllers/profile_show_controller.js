@@ -12,59 +12,8 @@ export default class extends Controller {
 
   // ページの初期化
   initializePage() {
-    this.handleNavbarOpacity();
-    this.handleCategoryTabs();
     this.restoreTabState();
     this.updateActiveTab(this.getCurrentCategory());
-  }
-
-  // ナビバーの透明度を制御
-  handleNavbarOpacity() {
-    const navbar = document.getElementById("bottom-navbar");
-    if (!navbar) return;
-
-    let lastScrollTop = 0;
-    window.addEventListener("scroll", () => {
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      navbar.style.opacity = scrollTop > lastScrollTop ? "0.5" : "1";
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    });
-  }
-
-  // カテゴリータブの固定を制御
-  handleCategoryTabs() {
-    const categoryTabsWrapper = document.getElementById(
-      "profile-category-tabs-wrapper"
-    );
-    const categoryTabs = document.getElementById("profile-category-tabs");
-    if (!categoryTabsWrapper || !categoryTabs) return;
-
-    const categoryTabsOffsetTop = categoryTabsWrapper.offsetTop;
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > categoryTabsOffsetTop) {
-        categoryTabsWrapper.style.height = categoryTabs.offsetHeight + "px";
-        categoryTabs.classList.add(
-          "fixed",
-          "top-0",
-          "left-0",
-          "w-full",
-          "bg-white",
-          "shadow-md",
-          "z-10"
-        );
-      } else {
-        categoryTabsWrapper.style.height = "auto";
-        categoryTabs.classList.remove(
-          "fixed",
-          "top-0",
-          "left-0",
-          "w-full",
-          "bg-white",
-          "shadow-md",
-          "z-10"
-        );
-      }
-    });
   }
 
   // タブの状態を保存
