@@ -94,7 +94,7 @@ class ProfilesController < ApplicationController
                                               :bookmarks,
                                               :likes,
                                               { reposts: :user }),
-                                   items: 5)
+                                   items: 3)
   end
 
   # プロフィール表示の許可を確認
