@@ -1,4 +1,4 @@
-<div id="after-header" data-controller="history">
+<div id="after-header" >
   <div class="py-2 flex items-center justify-between w-full">
     <div class="mx-2 md-plus:mx-5 shrink-0">
       <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
@@ -24,7 +24,7 @@
       <%= link_to t('header.post_audio'),
                   new_post_path(privacy: 'open'),
                   method: :get,
-                  data: { action: "click->history#navigate" },
+                  data: { turbo_frame: "_top"},
                   class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
       <div class="dropdown dropdown-hover dropdown-end shrink-0 sm:ml-0">
         <label tabindex="0" class="btn btn-ghost rounded-btn">
@@ -35,14 +35,14 @@
             <%= link_to t('header.about'),
                         top_path,
                         method: :get,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-about-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(about_path)}" %>
           </li>
           <li class="block py-2">
             <%= link_to posts_path( category: cookies[:selected_post_category] || 'recommended'),
                         method: :get,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-home-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(posts_path)}" do %>
               <i class="fa-solid fa-house text-[15px] sm:text-lg"></i>
@@ -52,7 +52,7 @@
           <li class="block py-2">
             <%= link_to profile_show_path(current_user.username_slug, category: cookies["#{current_user.username_slug}_selected_category"]),
                         method: :get,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-profile-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(profile_show_path(current_user.username_slug))}" do %>
               <i class="fas fa-user text-[15px] sm:text-lg"></i>
@@ -62,7 +62,7 @@
           <li class="block py-2 text-[15px] sm:text-lg">
             <%= link_to users_path,
                         method: :get,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-users-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(users_path)}" do %>
               <i class="fas fa-users text-[15px] sm:text-lg"></i>
@@ -72,7 +72,7 @@
           <li class="block py-2 text-[15px] sm:text-lg">
             <%= link_to notifications_path,
                         method: :post,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-notifications-link",
                         class: "flex items-center block py-2 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
               <div class="justify-self-center relative">
@@ -87,7 +87,7 @@
           <li class="block py-2">
             <%= link_to edit_notification_settings_path,
                         method: :get,
-                        data: { action: "click->history#navigate" },
+                        data: { turbo_frame: "_top"},
                         id: "header-settings-link",
                         class: "text-[15px] sm:text-lg hover:bg-sky-100 rounded-full px-4 #{active_if(edit_notification_settings_path)}" do %>
               <i class="fas fa-cog text-[15px] sm:text-lg"></i>

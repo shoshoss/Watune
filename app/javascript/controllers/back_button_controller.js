@@ -2,23 +2,38 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   connect() {
-    console.log("BackButtonController connected");
-
-    // 戻るボタンのイベントリスナーを追加
-    const backButton = document.getElementById("back-button");
-    if (backButton) {
-      backButton.addEventListener(
-        "click",
-        this.handleBackButtonClick.bind(this)
-      );
-    }
+    this.element.addEventListener("click", this.handleClick.bind(this));
   }
 
-  handleBackButtonClick(event) {
-    event.preventDefault();
-    console.log("Back button clicked");
+  disconnect() {
+    this.element.removeEventListener("click", this.handleClick.bind(this));
+  }
 
-    // 履歴を戻す
-    window.history.back();
+  handleClick(event) {
+    event.preventDefault();
+
+    // 直前のページのURLを取得
+    var previousPageUrl = document.referrer;
+
+    // 直前のページが指定されたページかどうかをチェック
+    var specifiedPages = [
+      "/posts",
+      "/posts/recommended",
+      "/posts/praise_gratitude",
+      "/posts/music",
+      "/posts/child",
+      "/posts/favorite",
+      "/posts/skill",
+      "/posts/monologue",
+      "/posts/other",
+    ];
+
+    if (specifiedPages.some((page) => previousPageUrl.includes(page))) {
+      // キャッシュを使用して戻る
+      window.location.href = previousPageUrl;
+    } else {
+      // 通常の戻る動作
+      window.history.back();
+    }
   }
 }

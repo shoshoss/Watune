@@ -3,19 +3,20 @@ import Cookies from "js-cookie";
 
 export default class extends Controller {
   static targets = ["categoryContent"];
-  static values = { loading: Boolean };
 
   connect() {
     this.initializePage();
     this.updateActiveTab();
-    window.addEventListener("popstate", this.handlePopState.bind(this));
-    window.addEventListener("beforeunload", this.saveScrollPosition.bind(this));
-    window.addEventListener("scroll", this.handleScroll.bind(this));
-    this.scrollPositions = this.loadScrollPositions();
+    window.addEventListener("popstate", this.handlePopState.bind(this)); // ブラウザの戻るボタン用のイベントリスナーを追加
+    window.addEventListener("beforeunload", this.saveScrollPosition.bind(this)); // ページを離れる前にスクロール位置を保存
+    window.addEventListener("scroll", this.handleScroll.bind(this)); // スクロールイベントを処理
+    this.scrollPositions = this.loadScrollPositions(); // スクロール位置をセッションストレージから読み込む
     this.cachedData = {}; // データキャッシュ用のオブジェクト
-    this.loadedCategories = new Set([this.getCurrentCategory()]);
+    this.loadedCategories = new Set([this.getCurrentCategory()]); // 読み込まれたカテゴリーを記録
 
     console.log("Controller connected");
+    console.log("Initial category:", this.getCurrentCategory());
+    console.log("Initial scroll positions:", this.scrollPositions);
   }
 
   // ページの初期化
@@ -27,8 +28,8 @@ export default class extends Controller {
   // スクロールイベントを処理するメソッド
   handleScroll() {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    this.handleNavbarOpacity(scrollTop);
-    this.handleCategoryTabs(scrollTop);
+    this.handleNavbarOpacity(scrollTop); // ナビバーの透明度を調整
+    this.handleCategoryTabs(scrollTop); // カテゴリータブの位置を調整
   }
 
   // ナビバーの透明度を制御
@@ -79,15 +80,22 @@ export default class extends Controller {
     event.preventDefault();
     const category = event.currentTarget.dataset.category;
 
+    console.log("Switching category to:", category);
+
     // 現在のカテゴリーのスクロール位置を保存
     const currentCategory = this.getCurrentCategory();
     this.scrollPositions[currentCategory] = window.scrollY;
+    console.log(
+      "Saving scroll position for category",
+      currentCategory,
+      ":",
+      window.scrollY
+    );
+    this.saveScrollPosition();
 
-    // URLとCookieを更新
-    const url = new URL(window.location);
-    url.searchParams.set("category", category);
-    history.pushState({ category }, "", url); // 履歴に状態を追加
+    // Cookieを更新
     Cookies.set("selected_post_category", category, { expires: 365 });
+    console.log("Updated cookies for category:", category);
 
     // アクティブタブを更新
     this.updateActiveTab();
@@ -97,6 +105,12 @@ export default class extends Controller {
 
     // スクロール位置を復元
     const scrollPosition = this.scrollPositions[category] || 0;
+    console.log(
+      "Restoring scroll position for category",
+      category,
+      ":",
+      scrollPosition
+    );
     window.scrollTo({
       top: scrollPosition,
       behavior: "smooth",
@@ -112,17 +126,14 @@ export default class extends Controller {
 
   // 現在のカテゴリーを取得
   getCurrentCategory() {
-    return (
-      new URLSearchParams(window.location.search).get("category") ||
-      Cookies.get("selected_post_category") ||
-      "recommended"
-    );
+    return Cookies.get("selected_post_category") || "recommended";
   }
 
   // カテゴリーコンテンツを切り替え
   toggleCategoryContent(category) {
-    document.querySelectorAll(".category-posts").forEach((el) => {
-      el.classList.add("hidden");
+    console.log("Toggling content for category:", category);
+    this.categoryContentTargets.forEach((el) => {
+      el.classList.toggle("hidden", el.dataset.category !== category);
     });
 
     const selectedCategoryPosts = document.getElementById(`${category}-posts`);
@@ -176,11 +187,7 @@ export default class extends Controller {
     tabIds.forEach((category) => {
       const tab = document.getElementById(`tab-${category}`);
       if (tab) {
-        if (category === currentCategory) {
-          tab.classList.add("active");
-        } else {
-          tab.classList.remove("active");
-        }
+        tab.classList.toggle("active", category === currentCategory);
       }
     });
 
@@ -205,16 +212,38 @@ export default class extends Controller {
   // ブラウザの戻るボタンを押した際の処理
   handlePopState(event) {
     const state = event.state;
+    console.log("Handling popstate event:", state);
+
     if (state && state.category) {
       // カテゴリーの切り替えを行う
-      this.switchCategory({
-        preventDefault: () => {},
-        currentTarget: {
-          dataset: {
-            category: state.category,
-          },
-        },
-      });
+      const category = state.category;
+
+      // Cookieを更新
+      Cookies.set("selected_post_category", category, { expires: 365 });
+
+      // アクティブタブを更新
+      this.updateActiveTab();
+
+      // カテゴリーコンテンツの表示を切り替え
+      this.toggleCategoryContent(category);
+
+      // スクロール位置を復元
+      if (state.scrollPosition !== undefined) {
+        console.log(
+          "Restoring scroll position from state:",
+          state.scrollPosition
+        );
+        setTimeout(() => {
+          window.scrollTo({ top: state.scrollPosition, behavior: "smooth" });
+        }, 0); // 少し遅延させてスクロール位置を復元
+      }
+
+      // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
+      if (!this.loadedCategories.has(category)) {
+        this.fetchCategoryPosts(category);
+      } else {
+        this.displayCategoryPosts(category);
+      }
     } else {
       this.updateActiveTab();
       this.showCurrentCategory();
@@ -224,11 +253,12 @@ export default class extends Controller {
   // 現在のカテゴリーを表示
   showCurrentCategory() {
     const currentCategory = this.getCurrentCategory();
+    console.log("Showing current category:", currentCategory);
 
     // すべてのカテゴリーを非表示にする
-    document
-      .querySelectorAll(".category-posts")
-      .forEach((el) => el.classList.add("hidden"));
+    this.categoryContentTargets.forEach((el) => {
+      el.classList.add("hidden");
+    });
 
     // 選択されたカテゴリーを表示する
     const selectedCategoryPosts = document.getElementById(
@@ -240,6 +270,12 @@ export default class extends Controller {
 
     // スクロール位置を復元
     const scrollPosition = this.scrollPositions[currentCategory] || 0;
+    console.log(
+      "Restoring scroll position for current category",
+      currentCategory,
+      ":",
+      scrollPosition
+    );
     window.scrollTo({
       top: scrollPosition,
       behavior: "smooth",
@@ -260,11 +296,23 @@ export default class extends Controller {
       "scrollPositions",
       JSON.stringify(this.scrollPositions)
     );
+    console.log(
+      "Scroll position saved for category",
+      currentCategory,
+      ":",
+      window.scrollY
+    );
   }
 
   // スクロール位置を復元
   restoreScrollPosition(category) {
     const scrollPosition = this.scrollPositions[category] || 0;
+    console.log(
+      "Restoring scroll position for category",
+      category,
+      ":",
+      scrollPosition
+    );
     window.scrollTo({
       top: scrollPosition,
       behavior: "smooth",
@@ -274,6 +322,7 @@ export default class extends Controller {
   // スクロール位置をロード
   loadScrollPositions() {
     const scrollPositions = sessionStorage.getItem("scrollPositions");
+    console.log("Loaded scroll positions:", scrollPositions);
     return scrollPositions ? JSON.parse(scrollPositions) : {};
   }
 }

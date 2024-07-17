@@ -1,7 +1,7 @@
 <turbo-frame id="main-content">
   <%= turbo_frame_tag 'post_edit_modal' %>
 
-  <div class="flex justify-center min-h-screen" data-controller="post-index">
+  <div class="flex justify-center min-h-screen">
     <div class="max-w-[670px] w-full bg-white border-x">
       <% unless logged_in? %>
         <div class="flex justify-center my-4">
@@ -19,17 +19,26 @@
         </form>
       </div>
 
-      <!-- タブメニュー -->
-      <%= render 'posts/index/category_tabs', current_category: current_category %>
-      <!-- カテゴリーコンテンツ -->
-      <div id="tab_posts-container">
-        <% ['recommended', 'praise_gratitude', 'music', 'child', 'favorite', 'skill', 'monologue', 'other'].each do |tab_category| %>
-          <div id="<%= tab_category %>-posts" class="category-posts <%= 'hidden' unless tab_category == current_category %>" data-loaded="<%= tab_category == current_category %>">
-            <% if tab_category == current_category %>
-              <%= render partial: 'posts/tab_posts_list', locals: { posts: posts_by_category[tab_category], tab_category: tab_category, pagy: pagys[tab_category], notifications: notifications } %>
-            <% end %>
-          </div>
-        <% end %>
+      <div id="post-index" data-controller="post-index">
+        <%= render 'posts/index/category_tabs', current_category: current_category %>
+
+        <div id="tab_posts-container">
+          <% Post.fixed_categories.keys.each do |category| %>
+            <div id="<%= category %>-posts"
+                 class="category-posts <%= 'hidden' unless category == current_category %>"
+                 data-post-index-target="categoryContent">
+              <% if category == current_category %>
+                <%= render partial: 'posts/tab_posts_list',
+                           locals: {
+                             posts: posts_by_category[category],
+                             tab_category: category,
+                             pagy: pagys[category],
+                             notifications: notifications
+                           } %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
