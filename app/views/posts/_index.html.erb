@@ -23,18 +23,19 @@
         <%= render 'posts/index/category_tabs', current_category: current_category %>
 
         <div id="tab_posts-container">
-          <% Post.fixed_categories.keys.each do |category| %>
+          <% categories = ['recommended'] + Post.fixed_categories.keys %>
+          <% categories.uniq.each do |category| %>
             <div id="<%= category %>-posts"
-                 class="category-posts <%= 'hidden' unless category == current_category %>"
-                 data-post-index-target="categoryContent">
+                class="category-posts <%= 'hidden' unless category == current_category %>"
+                data-post-index-target="categoryContent">
               <% if category == current_category %>
                 <%= render partial: 'posts/tab_posts_list',
-                           locals: {
-                             posts: posts_by_category[category],
-                             tab_category: category,
-                             pagy: pagys[category],
-                             notifications: notifications
-                           } %>
+                          locals: {
+                            posts: posts_by_category[category],
+                            tab_category: category,
+                            pagy: pagys[category],
+                            notifications: notifications
+                          } %>
               <% end %>
             </div>
           <% end %>
