@@ -35,12 +35,12 @@
       <% end %>
     </li>
     <!-- 通知 -->
-    <li>
+    <li data-controller="notification">
       <%= link_to notifications_path,
-          method: :post,
-          data: { turbo_frame: "_top"},
-          id: "sidebar-notifications-link",
-          class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
+                  method: :post,
+                  data: { turbo_frame: "_top", action: "click->notification#specialLinkHandler" },
+                  id: "sidebar-notifications-link",
+                  class: "text-2xl flex items-center space-x-4 p-3 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
         <div class="justify-self-center relative">
           <i class="fas fa-bell"></i>
           <span class="absolute -top-[7px] -right-[3px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" style="<%= @unread_count > 0 ? 'display: block;' : 'display: none;' %>">
@@ -64,7 +64,7 @@
   </ul>
   <div class="mt-auto py-5">
     <%= link_to t('header.post_audio'),
-                  new_post_path,
+                  new_post_path(privacy: 'open'),
                   method: :get,
                   data: { turbo_frame: "_top"},
                   id: "sidebar-new-post-link",

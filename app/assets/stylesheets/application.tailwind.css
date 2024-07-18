@@ -76,15 +76,43 @@
 
 /* 投稿のプライバシー選択のボタンのレイアウト */
 .btn-choice {
-  @apply inline-block px-4 py-2 text-xl text-gray-500 bg-sky-100 cursor-pointer font-bold rounded-full;
+  @apply inline-block px-4 py-2 text-xl cursor-pointer font-bold rounded-full transition-colors;
 }
 
-.btn-choice-active {
-  @apply bg-sky-400 text-white;
+.btn-choice-only_me {
+  @apply bg-orange-100 text-gray-500;
 }
 
-.btn-choice:hover {
-  @apply bg-sky-400;
+.btn-choice-selected_users {
+  @apply bg-yellow-100 text-gray-500;
+}
+
+.btn-choice-open {
+  @apply bg-sky-100 text-gray-500;
+}
+
+.btn-choice-only_me-active {
+  @apply bg-orange-400 text-black border-2 border-black;
+}
+
+.btn-choice-selected_users-active {
+  @apply bg-yellow-400-accent text-black border-2 border-black;
+}
+
+.btn-choice-open-active {
+  @apply bg-sky-400 text-black border-2 border-black;
+}
+
+.btn-choice-only_me:hover {
+  @apply bg-orange-400 text-black;
+}
+
+.btn-choice-selected_users:hover {
+  @apply bg-yellow-400-accent text-black;
+}
+
+.btn-choice-open:hover {
+  @apply bg-sky-400 text-black;
 }
 
 .trial-btn {

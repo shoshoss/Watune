@@ -71,7 +71,16 @@ module ApplicationHelper
 
   # 投稿画面 paramsの値に応じてアクティブクラスを適用
   def active_bottom(privacy_value)
-    params[:privacy] == privacy_value ? 'btn-choice-active' : ''
+    case privacy_value
+    when 'only_me'
+      params[:privacy] == 'only_me' ? 'btn-choice-only_me-active' : 'btn-choice-only_me'
+    when 'selected_users'
+      params[:privacy] == 'selected_users' ? 'btn-choice-selected_users-active' : 'btn-choice-selected_users'
+    when 'open'
+      params[:privacy] == 'open' ? 'btn-choice-open-active' : 'btn-choice-open'
+    else
+      ''
+    end
   end
 
   def active_if(path)
