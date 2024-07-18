@@ -8,7 +8,7 @@
 }
 
 .c-post-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
+  @apply flex-1 px-4 py-2 text-center text-base hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
 }
 
 .active {
