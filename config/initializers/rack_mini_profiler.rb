@@ -1,8 +1,7 @@
-# frozen_string_literal: true
-
+# config/initializers/rack_profiler.rb
 if Rails.env.development?
   require 'rack-mini-profiler'
 
-  # The initializer was required late, so initialize it manually.
-  Rack::MiniProfilerRails.initialize!(Rails.application)
+  # rack-mini-profilerを無効にする設定
+  Rack::MiniProfiler.config.enabled = false
 end

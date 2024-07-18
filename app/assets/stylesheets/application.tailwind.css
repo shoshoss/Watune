@@ -3,12 +3,21 @@
 @tailwind utilities;
 
 /* カスタムスタイル */
+
+.link {
+  @apply text-blue-500 underline;
+}
+
+.link:hover {
+  @apply text-blue-700 underline;
+}
+
 .input-style {
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }
 
 .c-post-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
+  @apply flex-1 px-4 py-2 text-center text-base hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
 }
 
 .active {
@@ -34,7 +43,7 @@
 }
 
 .c-tab {
-  @apply flex-1 px-4 py-2 text-center text-lg border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
+  @apply flex-1 px-4 py-2 text-center border-b-2 border-gray-300 hover:bg-sky-100 hover:border-b-4 hover:border-sky-400 whitespace-nowrap;
 }
 
 .c-tab span {
