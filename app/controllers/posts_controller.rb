@@ -78,7 +78,6 @@ class PostsController < ApplicationController
 
       PostCreationJob.perform_later(@post.id, post_params[:recipient_ids], @post.privacy) if post_params[:recipient_ids].present?
       flash[:notice] = t('defaults.flash_message.updated', item: Post.model_name.human, default: '投稿が更新されました。')
-      redirect_to user_post_path(current_user.username_slug, @post)
     else
       flash.now[:danger] = t('defaults.flash_message.not_updated', item: Post.model_name.human, default: '投稿の更新に失敗しました。')
       render :edit, status: :unprocessable_entity
