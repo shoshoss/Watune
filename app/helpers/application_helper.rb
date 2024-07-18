@@ -9,7 +9,6 @@ module ApplicationHelper
     title.present? ? "#{title} | #{base_title}" : base_title
   end
 
-
   def format_text_with_links(text)
     simple_format(Rinku.auto_link(h(text), :all, 'target="_blank" class="link"'))
   end
