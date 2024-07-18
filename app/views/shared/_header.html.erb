@@ -22,7 +22,7 @@
                     class: 'btn btn-outline btn-accent flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg sm:btn-sm sm:rounded-full mr-2 sm:mr-4' %>
       <% end %>
       <%= link_to t('header.post_audio'),
-                  new_post_path(privacy: 'open'),
+                  new_post_path(privacy: 'only_me'),
                   method: :get,
                   data: { turbo_frame: "_top"},
                   class: "text-white font-bold btn btn-info flex rounded-full btn-sm text-sm sm:btn-md sm:text-lg bg-opacity-80" %>
