@@ -141,6 +141,7 @@ export default class extends Controller {
       "recommended",
       "praise_gratitude",
       "music",
+      "learn",
       "child",
       "skill",
       "favorite",
