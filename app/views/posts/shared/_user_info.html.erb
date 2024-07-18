@@ -3,7 +3,7 @@
     <%= link_to profile_show_path(username_slug: post.user.username_slug),
                 method: :get,
                 data: { turbo_frame: "_top"},
-                class: "flex items-center text-lg font-semibold text-black hover:underline" do %>
+                class: "flex items-center text-[15px] font-semibold text-black hover:underline" do %>
       <%= post.user.display_name %>
     <% end %>
     <span class="text-[15px] text-gray-500">@<%= post.user.username_slug %></span>
