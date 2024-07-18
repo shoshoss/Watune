@@ -50,6 +50,7 @@ class ProfilesController < ApplicationController
   # ユーザーを設定
   def set_user
     @user = User.find_by(username_slug: params[:username_slug])
+    redirect_to(root_path, alert: 'ユーザーが見つかりません') unless @user
   end
 
   # 現在のユーザーを設定
