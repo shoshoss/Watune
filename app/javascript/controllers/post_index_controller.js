@@ -46,45 +46,52 @@ export default class extends Controller {
 
     console.log("Switching category to:", category);
 
-    // 現在のカテゴリーのスクロール位置を保存
     const currentCategory = this.getCurrentCategory();
-    this.scrollPositions[currentCategory] = window.scrollY;
-    console.log(
-      "Saving scroll position for category",
-      currentCategory,
-      ":",
-      window.scrollY
-    );
-    this.saveScrollPosition();
 
-    // Cookieを更新
-    Cookies.set("selected_post_category", category, { expires: 365 });
-    console.log("Updated cookies for category:", category);
-
-    // アクティブタブを更新
-    this.updateActiveTab();
-
-    // カテゴリーコンテンツの表示を切り替え
-    this.toggleCategoryContent(category);
-
-    // スクロール位置を復元
-    const scrollPosition = this.scrollPositions[category] || 0;
-    console.log(
-      "Restoring scroll position for category",
-      category,
-      ":",
-      scrollPosition
-    );
-    window.scrollTo({
-      top: scrollPosition,
-      behavior: "smooth",
-    });
-
-    // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
-    if (!this.loadedCategories.has(category)) {
+    if (currentCategory === category) {
+      // 同じカテゴリーが再度クリックされた場合、最新データを取得して上部にスクロール
       this.fetchCategoryPosts(category);
+      window.scrollTo({ top: 0, behavior: "auto" });
     } else {
-      this.displayCategoryPosts(category);
+      // 現在のカテゴリーのスクロール位置を保存
+      this.scrollPositions[currentCategory] = window.scrollY;
+      console.log(
+        "Saving scroll position for category",
+        currentCategory,
+        ":",
+        window.scrollY
+      );
+      this.saveScrollPosition();
+
+      // Cookieを更新
+      Cookies.set("selected_post_category", category, { expires: 365 });
+      console.log("Updated cookies for category:", category);
+
+      // アクティブタブを更新
+      this.updateActiveTab();
+
+      // カテゴリーコンテンツの表示を切り替え
+      this.toggleCategoryContent(category);
+
+      // スクロール位置を復元
+      const scrollPosition = this.scrollPositions[category] || 0;
+      console.log(
+        "Restoring scroll position for category",
+        category,
+        ":",
+        scrollPosition
+      );
+      window.scrollTo({
+        top: scrollPosition,
+        behavior: "smooth",
+      });
+
+      // カテゴリーのデータがまだ読み込まれていない場合、非同期で取得
+      if (!this.loadedCategories.has(category)) {
+        this.fetchCategoryPosts(category);
+      } else {
+        this.displayCategoryPosts(category);
+      }
     }
   }
 
