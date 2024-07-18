@@ -24,7 +24,7 @@
           <%= render partial: 'users/user', locals: { user: user } %>
         <% end %>
         <% if pagy.next %>
-          <%= render 'shared/next_page' %>
+          <%= render 'shared/next_page', pagy: pagy %>
         <% end %>
       <% end %>
     <% else %>
