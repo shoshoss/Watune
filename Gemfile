@@ -81,7 +81,7 @@ gem 'meta-tags', '~> 2.21'
 
 gem 'enum_help'
 
-gem 'rails_autolink', '~> 1.1'
+gem 'rinku', '~> 2.0'
 
 group :development, :test do
   # リクエストの速度を表示するためのrack-mini-profiler

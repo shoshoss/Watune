@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 /* カスタムスタイル */
+
+.link {
+  @apply text-blue-500 underline;
+}
+
+.link:hover {
+  @apply text-blue-700 underline;
+}
+
 .input-style {
   @apply block mt-1 p-2 text-base sm:text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-sky-400 resize-y;
 }

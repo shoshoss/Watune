@@ -8,7 +8,7 @@
       </div>
     <% else %>
       <div class="text-base">
-        <%= auto_link(line, link: :urls) %><br>
+          <%= format_text_with_links(post.body) %><br>
       </div>
     <% end %>
   <% end %>
