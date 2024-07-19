@@ -72,7 +72,6 @@
               <span>未フォロー<strong> <%= @unfollowed_users_count %>ユーザー</strong></span>
             <% end %>
           </li>
-          <li class="block py-2 text-[15px] sm:text-lg">
             <li class="block py-2 text-[15px] sm:text-lg" data-controller="notification">
               <%= link_to notifications_path,
                           method: :post,
@@ -88,7 +87,6 @@
                 <span>通知</span>
               <% end %>
             </li>
-          </li>
           <li class="block py-2">
             <%= link_to edit_notification_settings_path,
                         method: :get,
