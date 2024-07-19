@@ -128,6 +128,7 @@ export default class extends Controller {
           postsContainer.innerHTML = data.html; // 取得したHTMLを挿入
           this.loadedCategories.add(category); // データが読み込まれたカテゴリーを記録
           this.cachedData[category] = data.html; // データをキャッシュ
+          postsContainer.classList.remove("hidden"); // 非表示を解除
         }
       })
       .catch((error) => console.error("Error fetching category posts:", error));
@@ -138,6 +139,7 @@ export default class extends Controller {
     const postsContainer = document.getElementById(`${category}-posts`);
     if (postsContainer && this.cachedData[category]) {
       postsContainer.innerHTML = this.cachedData[category]; // キャッシュされたHTMLを挿入
+      postsContainer.classList.remove("hidden"); // 非表示を解除
     }
   }
 
