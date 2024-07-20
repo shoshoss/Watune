@@ -19,7 +19,7 @@ WORKDIR /tmp
 RUN wget https://ffmpeg.org/releases/ffmpeg-7.0.1.tar.gz \
     && tar xzf ffmpeg-7.0.1.tar.gz \
     && cd ffmpeg-7.0.1 \
-    && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-ffplay --disable-ffprobe --disable-ffserver \
+    && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-ffplay --disable-ffprobe \
        --enable-libmp3lame --enable-libvpx \
     && make \
     && make install
