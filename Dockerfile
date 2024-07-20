@@ -13,7 +13,7 @@ RUN apt-get update -qq \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev libssl-dev nodejs yarn vim wget yasm pkg-config \
-    && apt-get install -y libmp3lame-dev
+    && apt-get install -y libmp3lame-dev libvorbis-dev libopus-dev
 
 # FFmpegのインストール（LGPL準拠）
 WORKDIR /tmp
@@ -21,7 +21,7 @@ RUN wget https://ffmpeg.org/releases/ffmpeg-7.0.1.tar.gz \
     && tar xzf ffmpeg-7.0.1.tar.gz \
     && cd ffmpeg-7.0.1 \
     && ./configure --enable-static --disable-shared --disable-debug --disable-doc --disable-ffplay --disable-ffprobe \
-       --enable-libmp3lame --enable-libvpx \
+       --enable-libmp3lame --enable-libvorbis --enable-libopus \
     && make \
     && make install
 
