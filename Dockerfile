@@ -14,7 +14,7 @@ RUN apt-get update -qq \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev libssl-dev nodejs yarn vim wget yasm pkg-config
 
-# FFmpegのインストール
+# FFmpegのインストール（LGPL準拠）
 WORKDIR /tmp
 RUN wget https://ffmpeg.org/releases/ffmpeg-7.0.1.tar.gz \
     && tar xzf ffmpeg-7.0.1.tar.gz \
