@@ -35,7 +35,7 @@ class Post < ApplicationRecord
   has_one_attached :audio
 
   # バリデーション
-  validates :body, length: { maximum: 10_000 }
+  validates :body, length: { maximum: 500_000 }
   validates :duration, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 3599 }, allow_nil: true
 
   # プライバシー設定
