@@ -1,20 +1,21 @@
 namespace :audio do
-  desc "Convert all webm audio files in R2 to mp3"
+  desc 'Convert all webm audio files in R2 to mp3'
   task convert_webm_to_mp3: :environment do
     require 'aws-sdk-s3'
     require 'open3'
 
-    puts "Starting audio conversion task..."
+    puts 'Starting audio conversion task...'
 
     # Cloudflare R2の設定
     Aws.config.update({
-      access_key_id: Rails.application.credentials.dig(:cloudflare, :r2_access_key_id),
-      secret_access_key: Rails.application.credentials.dig(:cloudflare, :r2_secret_access_key),
-      region: 'auto',
-      endpoint: "https://#{Rails.application.credentials.dig(:cloudflare, :r2_account_id)}.r2.cloudflarestorage.com"
-    })
+                        access_key_id: Rails.application.credentials.dig(:cloudflare, :r2_access_key_id),
+                        secret_access_key: Rails.application.credentials.dig(:cloudflare, :r2_secret_access_key),
+                        region: 'auto',
+                        endpoint: "https://#{Rails.application.credentials.dig(:cloudflare,
+                                                                               :r2_account_id)}.r2.cloudflarestorage.com"
+                      })
 
-    puts "AWS configuration set."
+    puts 'AWS configuration set.'
 
     s3 = Aws::S3::Client.new
     bucket = Rails.application.credentials.dig(:cloudflare, :r2_bucket)
@@ -22,9 +23,9 @@ namespace :audio do
     puts "Listing objects in bucket: #{bucket}"
 
     begin
-      objects = s3.list_objects_v2(bucket: bucket).contents
+      objects = s3.list_objects_v2(bucket:).contents
       if objects.empty?
-        puts "No objects found in bucket."
+        puts 'No objects found in bucket.'
       else
         objects.each do |obj|
           next unless obj.key.end_with?('.webm')
@@ -39,7 +40,7 @@ namespace :audio do
             # R2からファイルをダウンロード
             puts "Downloading #{obj.key}..."
             File.open(webm_path, 'wb') do |file|
-              s3.get_object(bucket: bucket, key: obj.key) do |chunk|
+              s3.get_object(bucket:, key: obj.key) do |chunk|
                 file.write(chunk)
               end
             end
@@ -73,7 +74,7 @@ namespace :audio do
               mp3_key = obj.key.sub('.webm', '.mp3')
               puts "Uploading #{mp3_key}..."
               s3.put_object(
-                bucket: bucket,
+                bucket:,
                 key: mp3_key,
                 body: File.open(mp3_path),
                 content_type: 'audio/mp3' # Content-Typeを設定
@@ -82,23 +83,22 @@ namespace :audio do
             else
               puts "Failed to convert #{obj.key}: #{stderr}"
             end
-
-          rescue => e
+          rescue StandardError => e
             puts "Error processing #{obj.key}: #{e.message}"
           ensure
             # 一時ファイルを削除
-            File.delete(webm_path) if File.exist?(webm_path)
-            File.delete(mp3_path) if File.exist?(mp3_path)
+            FileUtils.rm_f(webm_path)
+            FileUtils.rm_f(mp3_path)
             puts "Cleaned up temporary files for #{obj.key}"
           end
         end
       end
     rescue Aws::S3::Errors::ServiceError => e
       puts "AWS S3 error: #{e.message}"
-    rescue => e
+    rescue StandardError => e
       puts "General error: #{e.message}"
     end
 
-    puts "Audio conversion task completed."
+    puts 'Audio conversion task completed.'
   end
 end
