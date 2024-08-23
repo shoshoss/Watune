@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_10_233316) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_22_012257) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -128,6 +128,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_10_233316) do
     t.integer "fixed_category", default: 0, null: false
     t.bigint "category_id"
     t.datetime "latest_activity", default: -> { "CURRENT_TIMESTAMP" }
+    t.string "audio"
     t.index ["category_id"], name: "index_posts_on_category_id"
     t.index ["fixed_category"], name: "index_posts_on_fixed_category"
     t.index ["latest_activity"], name: "index_posts_on_latest_activity"
