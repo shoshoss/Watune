@@ -80,8 +80,8 @@
                           class: "flex items-center block py-2 hover:bg-sky-100 rounded-full #{active_if(notifications_path)}" do %>
                 <div class="justify-self-center relative">
                   <i class="fas fa-bell text-[15px] sm:text-lg"></i>
-                  <span class="absolute -top-[7px] -right-[7px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center" style="<%= @unread_count > 0 ? 'display: block;' : 'display: none;' %>">
-                    <%= @unread_count %>
+                  <span class="absolute -top-[7px] -right-[7px] inline-block w-4 h-4 bg-orange-400 text-white text-xs rounded-full text-center <%= @unread_count.to_i > 0 ? '' : 'hidden' %>">
+                    <%= @unread_count.to_i %>
                   </span>
                 </div>
                 <span>通知</span>

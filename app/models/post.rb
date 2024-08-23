@@ -32,7 +32,8 @@ class Post < ApplicationRecord
   has_many :notifications, as: :notifiable
 
   # 音声添付ファイル
-  has_one_attached :audio
+  has_one_attached :audio # ActiveStorageを利用してこれらのファイルを管理する場合
+  # mount_uploader :audio, AudioUploader
 
   # バリデーション
   validates :body, length: { maximum: 500_000 }
