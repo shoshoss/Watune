@@ -7,7 +7,7 @@ class AudioUploader < CarrierWave::Uploader::Base
   # Choose what kind of storage to use for this uploader:
   # storage :file # ローカルに保存される
   # storage :fog # 複数のクラウドに対応する
-  storage :aws  # Amazonが公式に提供するS3専用のツール（ただし、Cloudflare R2もS3互換なので使える）
+  storage :aws # Amazonが公式に提供するS3専用のツール（ただし、Cloudflare R2もS3互換なので使える）
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -18,7 +18,7 @@ class AudioUploader < CarrierWave::Uploader::Base
 
   # アップロード可能なファイル拡張子のホワイトリスト
   def extension_allowlist
-    %w(mp3 webm mp4)
+    %w[mp3 webm mp4]
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

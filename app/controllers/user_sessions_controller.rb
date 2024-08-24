@@ -31,5 +31,5 @@ class UserSessionsController < ApplicationController
     Rails.cache.delete("user_#{current_user.id}_unread_count")
     logout
     redirect_to root_path, status: :see_other, notice: t('flash_messages.user_sessions.logout')
-  end  
+  end
 end

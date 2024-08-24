@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
     @unread_count = Rails.cache.fetch("user_#{current_user&.id}_unread_count", expires_in: 1.minute) do
       current_user&.received_notifications&.unread&.count || 0
     end
-  
+
     @notifications = current_user&.received_notifications&.unread&.limit(10)
   end
 end
