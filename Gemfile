@@ -65,8 +65,8 @@ gem 'config', '~> 5.4'
 
 # ファイルのアップロードのためのcarrierwave
 gem 'carrierwave', '~> 3.0'
-gem 'carrierwave-aws', '~> 1.6'
 gem 'carrierwave-audio', '~> 1.0'
+gem 'carrierwave-aws', '~> 1.6'
 
 # ページネーションのためのpagy
 gem 'pagy', '~> 8.3'
