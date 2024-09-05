@@ -2,14 +2,14 @@ services:
   db:
     image: postgres:16.2
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_issue:/var/lib/postgresql/data
     environment:
       TZ: Asia/Tokyo
       POSTGRES_USER: app
       POSTGRES_PASSWORD: password
       POSTGRES_HOST_AUTH_METHOD: md5
     ports:
-      - "5432:5432"
+      - "5433:5432"
 
   web:
     build:
@@ -20,17 +20,17 @@ services:
     tty: true
     volumes:
       - ./:/app
-      - node_modules:/app/node_modules
+      - node_modules_issue:/app/node_modules
     environment:
       TZ: Asia/Tokyo
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      SENDER_ADDRESS: ${SENDER_ADDRESS}
+      GOOGLE_CLIENT_ID: dummy_client_id
+      GOOGLE_CLIENT_SECRET: dummy_client_secret
+      SENDER_ADDRESS: dummy@example.com
     ports:
-      - "3000:3000"
+      - "3006:3000"
     depends_on:
       - db
 
 volumes:
-  postgres_data:
-  node_modules:
+  postgres_data_issue:
+  node_modules_issue:
